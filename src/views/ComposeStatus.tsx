@@ -64,6 +64,7 @@ export const ComposeStatus = ({
 								onInput={(e) =>
 									setMessage((e.target as HTMLTextAreaElement).value)
 								}
+								autoFocus
 							></textarea>
 						</div>
 					</div>
