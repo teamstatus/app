@@ -1,0 +1,19 @@
+{
+  "extends": [
+    "@nordicsemiconductor/eslint-config-asset-tracker-cloud-typescript"
+  ],
+  "overrides": [
+    {
+      "files": ["*.spec.ts"],
+      "rules": {
+        "@typescript-eslint/no-floating-promises": "off"
+      }
+    },
+    {
+      "files": ["*.tsx"],
+      "rules": {
+        "@typescript-eslint/explicit-module-boundary-types": "off"
+      }
+    }
+  ]
+}

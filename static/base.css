@@ -1,0 +1,17 @@
+:root {
+  --sans-serif-font: "Instrument Sans";
+}
+
+abbr[title] {
+  text-decoration: none;
+}
+
+body {
+  font-family: var(--sans-serif-font);
+  font-size: 16px;
+}
+
+.lucide {
+  width: 24px;
+  height: 24px;
+}
