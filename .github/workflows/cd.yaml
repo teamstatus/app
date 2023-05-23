@@ -16,6 +16,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v3
         with:
@@ -32,8 +34,7 @@ jobs:
 
       - name: Set version
         run: |
-          VERSION=`git describe --tags HEAD | tr -d '\n'`
-          echo "VERSION=${VERSION:-${{ github.sha }}" >> $GITHUB_ENV
+          echo "VERSION=`git describe --tags HEAD | tr -d '\n'`" >> $GITHUB_ENV
 
       - name: Build
         env:
