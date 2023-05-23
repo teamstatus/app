@@ -40,11 +40,13 @@ export type StatusContext = {
 		projectId: string,
 		message: string,
 	) => { error: string } | { id: string }
+	deleteStatus: (status: Status) => { error: string } | { success: true }
 }
 
 export const StatusContext = createContext<StatusContext>({
 	projectStatus: () => [],
 	addProjectStatus: () => ({ error: 'Not ready.' }),
+	deleteStatus: () => ({ error: 'Not ready.' }),
 })
 
 export const Provider = ({ children }: { children: ComponentChildren }) => {
@@ -144,6 +146,33 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						.catch(console.error)
 
 					return { id }
+				},
+				deleteStatus: (statusToDelete: Status) => {
+					const exists = status[statusToDelete.project]?.find(
+						({ id }) => statusToDelete.id,
+					)
+					if (!exists) return { error: `Status ${status.id} not found` }
+
+					setStatus((status) => ({
+						...status,
+						[statusToDelete.project]: (
+							status[statusToDelete.project] ?? []
+						).filter(({ id }) => id !== statusToDelete.id),
+					}))
+
+					fetch(
+						`${API_ENDPOINT}/status/${encodeURIComponent(statusToDelete.id)}`,
+						{
+							method: 'DELETE',
+							headers: {
+								Accept: 'application/json; charset=utf-8',
+							},
+							mode: 'cors',
+							credentials: 'include',
+						},
+					).catch(console.error)
+
+					return { success: true }
 				},
 			}}
 		>

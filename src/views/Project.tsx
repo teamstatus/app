@@ -1,8 +1,17 @@
 import cx from 'classnames'
-import { Plus, SmilePlus, UploadCloud } from 'lucide-preact'
+import {
+	ChevronRight,
+	MoreHorizontal,
+	Plus,
+	SmilePlus,
+	Trash,
+	UploadCloud,
+} from 'lucide-preact'
+import { useState } from 'preact/hooks'
 import { decodeTime } from 'ulid'
 import { Ago } from '../components/Ago.js'
 import { ProjectHeader } from '../components/ProjectHeader.js'
+import { useAuth } from '../context/Auth.js'
 import { useProjects } from '../context/Projects.js'
 import {
 	ReactionRole,
@@ -90,6 +99,7 @@ const Status = ({ status }: { status: Status }) => (
 			</div>
 			<div class="d-flex flex-row align-items-center">
 				{status.persisted === false && <UploadCloud />}
+				<DeleteStatus status={status} key={status.id} />
 				<button type="button" class="btn btn-sm btn-light">
 					<SmilePlus />
 				</button>
@@ -97,6 +107,37 @@ const Status = ({ status }: { status: Status }) => (
 		</div>
 	</div>
 )
+
+const DeleteStatus = ({ status }: { status: Status }) => {
+	const [expanded, setExpanded] = useState(false)
+	const { deleteStatus } = useStatus()
+	const { user } = useAuth()
+	const userId = user?.id
+
+	if (userId === undefined || userId !== status.author) return null
+	return (
+		<>
+			{expanded && (
+				<button
+					type="button"
+					class="btn btn-sm btn-outline-danger"
+					onClick={() => {
+						deleteStatus(status)
+					}}
+				>
+					<Trash />
+				</button>
+			)}
+			<button
+				type="button"
+				class="btn btn-sm btn-light me-1"
+				onClick={() => setExpanded((e) => !e)}
+			>
+				{expanded ? <ChevronRight /> : <MoreHorizontal />}
+			</button>
+		</>
+	)
+}
 
 const Reaction = ({ reaction }: { reaction: Reaction }) => (
 	<button
