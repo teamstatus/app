@@ -38,7 +38,7 @@ export const Login = () => {
 								type="email"
 								class="form-control"
 								id="emailInput"
-								onChange={(e) => setEmail((e.target as HTMLInputElement).value)}
+								onInput={(e) => setEmail((e.target as HTMLInputElement).value)}
 								value={email}
 								placeholder='e.g. "alex@example.com"'
 								autoComplete="email"
@@ -86,7 +86,7 @@ export const Login = () => {
 							type="text"
 							class="form-control"
 							id="pinInput"
-							onChange={(e) => setPIN((e.target as HTMLInputElement).value)}
+							onInput={(e) => setPIN((e.target as HTMLInputElement).value)}
 							value={pin}
 							placeholder='e.g. "12345678"'
 							maxLength={8}
@@ -121,7 +121,9 @@ export const Login = () => {
 												credentials: 'include',
 											})
 												.then(async (res) => res.json())
-												.then(setUser)
+												.then((user) => {
+													setUser(user)
+												})
 										} else {
 											console.error(await res.json())
 										}

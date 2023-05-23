@@ -61,7 +61,7 @@ const ProjectAlias = ({
 		<input
 			type="text"
 			value={alias}
-			onChange={(e) => {
+			onInput={(e) => {
 				setAlias((e.target as HTMLInputElement).value)
 			}}
 			onBlur={() => {

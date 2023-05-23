@@ -1,7 +1,8 @@
 import cx from 'classnames'
-import { Building, Plus, SmilePlus, Sprout, UploadCloud } from 'lucide-preact'
+import { Plus, SmilePlus, UploadCloud } from 'lucide-preact'
 import { decodeTime } from 'ulid'
 import { Ago } from '../components/Ago.js'
+import { ProjectHeader } from '../components/ProjectHeader.js'
 import { useProjects } from '../context/Projects.js'
 import {
 	ReactionRole,
@@ -34,41 +35,37 @@ export const Project = ({
 		)
 	}
 	return (
-		<main class="container">
-			<h1>
-				<Sprout /> <abbr id={id}>{project.name ?? project.id}</abbr>
-				<br />
-				<small>
-					<Building /> {project.organization.name ?? project.organization.id}
-				</small>
-			</h1>
-			<section>
-				{projectStatus(project.id).map((status) => (
-					<>
-						<hr />
-						<Status status={status} />
-					</>
-				))}
-			</section>
-			<a
-				href={`/project/${encodeURIComponent(id)}/compose`}
-				style={{
-					borderRadius: '100%',
-					backgroundColor: '#35ca35',
-					color: '#ffffff',
-					display: 'block',
-					height: '48px',
-					width: '48px',
-					boxShadow: '0 0 8px 0 #00000075',
-					position: 'fixed',
-					right: '10px',
-					bottom: '70px',
-				}}
-				class="d-flex align-items-center justify-content-center"
-			>
-				<Plus />
-			</a>
-		</main>
+		<>
+			<ProjectHeader project={project} />
+			<main class="container">
+				<section>
+					{projectStatus(project.id).map((status) => (
+						<>
+							<Status status={status} />
+							<hr />
+						</>
+					))}
+				</section>
+				<a
+					href={`/project/${encodeURIComponent(id)}/compose`}
+					style={{
+						borderRadius: '100%',
+						backgroundColor: '#35ca35',
+						color: '#ffffff',
+						display: 'block',
+						height: '48px',
+						width: '48px',
+						boxShadow: '0 0 8px 0 #00000075',
+						position: 'fixed',
+						right: '10px',
+						bottom: '70px',
+					}}
+					class="d-flex align-items-center justify-content-center"
+				>
+					<Plus />
+				</a>
+			</main>
+		</>
 	)
 }
 

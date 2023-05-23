@@ -6,7 +6,7 @@ type Organization = {
 	name?: string
 }
 
-type Project = {
+export type Project = {
 	id: string
 	name?: string
 	organization: Organization
