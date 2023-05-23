@@ -80,11 +80,11 @@ export const Project = ({
 
 const Status = ({ status }: { status: Status }) => (
 	<div>
-		<div class="d-flex align-items-center justify-content-between">
-			<div>{status.author}</div>
-			<div>
+		<div class="d-flex align-items-center justify-content-between fw-light">
+			<small>{status.author}</small>
+			<small>
 				<Ago date={new Date(decodeTime(status.id))} />
-			</div>
+			</small>
 		</div>
 		<div>{status.message}</div>
 		<div class="d-flex align-items-center justify-content-between">
