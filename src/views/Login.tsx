@@ -42,7 +42,7 @@ export const Login = () => {
 								value={email}
 								placeholder='e.g. "alex@example.com"'
 								autoComplete="email"
-								pattern="/.+@.+/"
+								pattern=".+@.+"
 							/>
 						</div>
 						<div class="col-4">

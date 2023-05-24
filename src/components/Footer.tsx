@@ -15,26 +15,31 @@ export const Footer = () => {
 				<>
 					{!settingsVisible && (
 						<>
-							{visibleProjects.map((id) => {
-								const { color, name } = getProjectPersonalization(id)
-								return (
-									<div class="d-flex flex-column align-items-center">
-										<a
-											href={`/project/${encodeURIComponent(id)}`}
-											class="btn"
-											style={{
-												color:
-													new Color(color).luminosity() > 0.5
-														? 'black'
-														: 'white',
-												backgroundColor: color,
-											}}
-										>
-											{name}
-										</a>
-									</div>
-								)
-							})}
+							{visibleProjects.length > 0 && (
+								<div class="d-flex align-items-center">
+									{visibleProjects.map((id) => {
+										const { color, name } = getProjectPersonalization(id)
+										return (
+											<div class="d-flex flex-column align-items-center me-2">
+												<a
+													href={`/project/${encodeURIComponent(id)}`}
+													class="btn"
+													style={{
+														color:
+															new Color(color).luminosity() > 0.5
+																? 'black'
+																: 'white',
+														backgroundColor: color,
+													}}
+												>
+													{name}
+												</a>
+											</div>
+										)
+									})}
+								</div>
+							)}
+
 							<div class="d-flex flex-column align-items-center">
 								<button
 									type="button"

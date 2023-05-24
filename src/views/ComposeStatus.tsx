@@ -1,5 +1,5 @@
 import cx from 'classnames'
-import { Building, ChevronLeft, Send, Sprout } from 'lucide-preact'
+import { ChevronLeft, Send } from 'lucide-preact'
 import { route } from 'preact-router'
 import { useState } from 'preact/hooks'
 import { ProjectHeader } from '../components/ProjectHeader.js'
@@ -35,14 +35,6 @@ export const ComposeStatus = ({
 				<div class="card">
 					<div class="card-header">
 						<h1>Compose a new status</h1>
-						<p>
-							<Sprout /> {project.name ?? project.id}
-							<br />
-							<small>
-								<Building />{' '}
-								{project.organization.name ?? project.organization.id}
-							</small>
-						</p>
 					</div>
 					<div class="card-body">
 						{error !== undefined && (

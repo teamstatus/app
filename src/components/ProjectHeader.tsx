@@ -1,5 +1,5 @@
 import Color from 'color'
-import { Building, Sprout } from 'lucide-preact'
+import { Sprout } from 'lucide-preact'
 import { type Project } from '../context/Projects.js'
 import { useSettings } from '../context/Settings.js'
 
@@ -14,13 +14,9 @@ export const ProjectHeader = ({ project }: { project: Project }) => {
 			}}
 			class="d-flex align-items-center justify-content-between p-2 mb-2"
 		>
-			<h1>{name}</h1>
+			<h1 class={'mb-0'}>{name}</h1>
 			<div>
-				<Sprout /> <abbr id={project.id}>{project.name ?? project.id}</abbr>
-				<br />
-				<small>
-					<Building /> {project.organization.name ?? project.organization.id}
-				</small>
+				<Sprout /> {project.id}
 			</div>
 		</header>
 	)

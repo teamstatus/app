@@ -105,7 +105,7 @@ const Status = ({ status }: { status: Status }) => (
 				{status.persisted === false && <UploadCloud />}
 				<DeleteStatus status={status} key={status.id} />
 				<button type="button" class="btn btn-sm btn-light">
-					<SmilePlus />
+					<SmilePlus strokeWidth={1} />
 				</button>
 			</div>
 		</div>
@@ -129,7 +129,7 @@ const DeleteStatus = ({ status }: { status: Status }) => {
 						deleteStatus(status)
 					}}
 				>
-					<Trash />
+					<Trash strokeWidth={1} />
 				</button>
 			)}
 			<button
@@ -137,7 +137,11 @@ const DeleteStatus = ({ status }: { status: Status }) => {
 				class="btn btn-sm btn-light me-1"
 				onClick={() => setExpanded((e) => !e)}
 			>
-				{expanded ? <ChevronRight /> : <MoreHorizontal />}
+				{expanded ? (
+					<ChevronRight strokeWidth={1} />
+				) : (
+					<MoreHorizontal strokeWidth={1} />
+				)}
 			</button>
 		</>
 	)

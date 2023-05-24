@@ -1,4 +1,4 @@
-const slugPart = '[a-z0-9_-]+'
+export const slugPart = '[a-z0-9_-]+'
 const userIdRegex = new RegExp(`^@${slugPart}$`, 'i')
 /**
  * A user ID is a slug that starts with an `@` sign

@@ -1,4 +1,4 @@
-import { Building, Palette, Plus, Sprout } from 'lucide-preact'
+import { Palette, Plus, Sprout, UploadCloud } from 'lucide-preact'
 import { useState } from 'preact/hooks'
 import { useProjects } from '../context/Projects.js'
 import { useSettings } from '../context/Settings.js'
@@ -16,7 +16,7 @@ export const Projects = () => {
 	return (
 		<main class="container">
 			<h1>Projects</h1>
-			{Object.values(projects).map(({ id, name, organization }) => (
+			{Object.values(projects).map(({ id, name, persisted }) => (
 				<div class="form-check">
 					<input
 						class="form-check-input"
@@ -39,11 +39,10 @@ export const Projects = () => {
 							return personalizeProject(id, { color })
 						}}
 					/>
+					{persisted === false && <UploadCloud />}
 					<br />
 					<small>
-						<Sprout /> {name ?? id}
-						<br />
-						<Building /> {organization.name ?? organization.id}
+						<Sprout /> {id}
 					</small>
 				</div>
 			))}

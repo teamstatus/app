@@ -1,5 +1,6 @@
 import { createContext, type ComponentChildren } from 'preact'
 import { useContext, useEffect, useState } from 'preact/hooks'
+import { parseProjectId } from '../proto/ids.js'
 
 export type Organization = {
 	id: string
@@ -10,18 +11,29 @@ export type Project = {
 	id: string
 	name?: string
 	organization: Organization
+	persisted?: boolean
 }
 
 export type ProjectsContext = {
+	organizations: Organization[]
 	projects: Record<string, Project>
+	addProject: (
+		id: string,
+		name?: string,
+	) => { error: string } | { success: true }
 }
 
 export const ProjectsContext = createContext<ProjectsContext>({
 	projects: {},
+	addProject: () => ({ error: 'Not ready.' }),
+	organizations: [],
 })
 
 export const Provider = ({ children }: { children: ComponentChildren }) => {
 	const [projects, setProjects] = useState<Record<string, Project>>({})
+	const organizations: Organization[] = [
+		...new Set(Object.values(projects).map(({ organization }) => organization)),
+	]
 
 	useEffect(() => {
 		fetch(`${API_ENDPOINT}/organizations`, {
@@ -68,6 +80,46 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 		<ProjectsContext.Provider
 			value={{
 				projects,
+				addProject: (id, name) => {
+					const orgId = parseProjectId(id).organization
+					const organization = organizations.find(({ id }) => id === orgId)
+					if (organization === undefined)
+						return { error: `Unknown organization: ${orgId}` }
+					const newProject: Project = {
+						id,
+						name,
+						organization,
+						persisted: false,
+					}
+					setProjects((projects) => ({
+						...projects,
+						[newProject.id]: newProject,
+					}))
+
+					fetch(`${API_ENDPOINT}/projects`, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json; charset=utf-8',
+							Accept: 'application/json; charset=utf-8',
+						},
+						mode: 'cors',
+						credentials: 'include',
+						body: JSON.stringify({ id, name }),
+					})
+						.then(() => {
+							setProjects((projects) => ({
+								...projects,
+								[id]: {
+									...(projects[id] as Project),
+									persisted: true,
+								},
+							}))
+						})
+						.catch(console.error)
+
+					return { success: true }
+				},
+				organizations,
 			}}
 		>
 			{children}

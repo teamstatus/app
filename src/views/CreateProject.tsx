@@ -1,19 +1,21 @@
-import { ChevronLeft } from 'lucide-preact'
+import cx from 'classnames'
+import { ChevronLeft, Send } from 'lucide-preact'
+import { route } from 'preact-router'
 import { useState } from 'preact/hooks'
 import { useProjects } from '../context/Projects.js'
+import { isProjectId, slugPart } from '../proto/ids.js'
 
 export const CreateProject = () => {
-	//const [id, setId] = useState<string>('')
-	//const [name, setName] = useState<string>('')
-	const [organizationId, setOrganization] = useState<string | undefined>()
-	const { projects } = useProjects()
-	const [error, _ /*setError*/] = useState<string | undefined>()
+	const [name, setName] = useState<string>('')
+	const { addProject, organizations } = useProjects()
+	const [organizationId, setOrganization] = useState<string>(
+		organizations[0]?.id ?? '',
+	)
+	const [error, setError] = useState<string | undefined>()
+	const [id, setId] = useState('')
 
-	const organizations = [
-		...new Set(Object.values(projects).map(({ organization: { id } }) => id)),
-	]
-
-	//const isValid = isProjectId(`${organizationId}#${id}`)
+	const projectId = `${organizationId}#${id}`
+	const isValid = isProjectId(projectId)
 	return (
 		<>
 			<main class="container">
@@ -40,16 +42,71 @@ export const CreateProject = () => {
 									setOrganization((e.target as HTMLSelectElement).value)
 								}
 							>
-								{organizations.map((id) => (
-									<option value={id}>{id}</option>
+								{organizations.map(({ id, name }) => (
+									<option value={id}>
+										{name !== undefined ? `${name} (${id})` : id}
+									</option>
 								))}
 							</select>
+						</div>
+						<div class="mb-3 ">
+							<label for="idInput" class="form-label">
+								ID
+							</label>
+							<div class="input-group">
+								<span class="input-group-text">#</span>
+								<input
+									type="text"
+									class="form-control"
+									id="idInput"
+									onInput={(e) => setId((e.target as HTMLInputElement).value)}
+									value={id}
+									placeholder='e.g. "teamstatus"'
+									pattern={`^${slugPart}$`}
+									required
+								/>
+							</div>
+
+							<div class="form-text">(required)</div>
+						</div>
+						<div class="mb-3">
+							<label for="nameInput" class="form-label">
+								Name
+							</label>
+							<input
+								type="text"
+								class="form-control"
+								id="nameInput"
+								onInput={(e) => setName((e.target as HTMLInputElement).value)}
+								value={name}
+								placeholder='e.g. "Teamstatus"'
+							/>
 						</div>
 					</div>
 					<div class="card-footer d-flex align-items-center justify-content-between">
 						<a href={`/projects/`} class="btn btn-outline-danger">
 							<ChevronLeft />
 						</a>
+						<button
+							class={cx('btn', {
+								'btn-primary': isValid,
+								'btn-secondary': !isValid,
+							})}
+							disabled={!isValid}
+							onClick={() => {
+								const res = addProject(
+									projectId,
+									name.length > 0 ? name : undefined,
+								)
+								if ('error' in res) {
+									setError(res.error)
+								} else {
+									route(`/projects`)
+								}
+							}}
+						>
+							<Send />
+						</button>
 					</div>
 				</div>
 			</main>
