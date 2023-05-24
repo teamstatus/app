@@ -9,7 +9,7 @@ export const ProjectHeader = ({ project }: { project: Project }) => {
 	return (
 		<header
 			style={{
-				color: new Color(color).negate().hex(),
+				color: new Color(color).luminosity() > 0.5 ? 'black' : 'white',
 				backgroundColor: color,
 			}}
 			class="d-flex align-items-center justify-content-between p-2 mb-2"

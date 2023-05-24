@@ -23,7 +23,10 @@ export const Footer = () => {
 											href={`/project/${encodeURIComponent(id)}`}
 											class="btn"
 											style={{
-												color: new Color(color).negate().hex(),
+												color:
+													new Color(color).luminosity() > 0.5
+														? 'black'
+														: 'white',
 												backgroundColor: color,
 											}}
 										>

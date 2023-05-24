@@ -1,4 +1,4 @@
-import { Building, Palette } from 'lucide-preact'
+import { Building, Palette, Plus, Sprout } from 'lucide-preact'
 import { useState } from 'preact/hooks'
 import { useProjects } from '../context/Projects.js'
 import { useSettings } from '../context/Settings.js'
@@ -24,27 +24,47 @@ export const Projects = () => {
 						id={id}
 						onClick={() => toggleProject(id)}
 						checked={isVisible(id)}
+						placeholder="a short alias"
 					/>
-					<label class="form-check-label" for={id}>
-						{name ?? id}
-						<br />
-						<small>
-							<Building /> {organization.name ?? organization.id}
-						</small>
-					</label>
+					<ProjectAlias
+						currentValue={getProjectPersonalization(id).name ?? ''}
+						onAlias={(alias) => {
+							personalizeProject(id, {
+								name: alias.length > 0 ? alias : name ?? id,
+							})
+						}}
+					/>
 					<Colorpicker
 						onColor={(color) => {
 							return personalizeProject(id, { color })
 						}}
 					/>
-					<ProjectAlias
-						currentValue={getProjectPersonalization(id).name ?? ''}
-						onAlias={(alias) => {
-							personalizeProject(id, { name: alias })
-						}}
-					/>
+					<br />
+					<small>
+						<Sprout /> {name ?? id}
+						<br />
+						<Building /> {organization.name ?? organization.id}
+					</small>
 				</div>
 			))}
+			<a
+				href={`/project/create`}
+				style={{
+					borderRadius: '100%',
+					color: 'white',
+					backgroundColor: '#198754',
+					display: 'block',
+					height: '48px',
+					width: '48px',
+					boxShadow: '0 0 8px 0 #00000075',
+					position: 'fixed',
+					right: '10px',
+					bottom: '70px',
+				}}
+				class="d-flex align-items-center justify-content-center"
+			>
+				<Plus />
+			</a>
 		</main>
 	)
 }

@@ -1,7 +1,7 @@
 import { createContext, type ComponentChildren } from 'preact'
 import { useContext, useEffect, useState } from 'preact/hooks'
 
-type Organization = {
+export type Organization = {
 	id: string
 	name?: string
 }

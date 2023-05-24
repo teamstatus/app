@@ -1,4 +1,5 @@
 import cx from 'classnames'
+import Color from 'color'
 import {
 	ChevronRight,
 	MoreHorizontal,
@@ -13,6 +14,7 @@ import { Ago } from '../components/Ago.js'
 import { ProjectHeader } from '../components/ProjectHeader.js'
 import { useAuth } from '../context/Auth.js'
 import { useProjects } from '../context/Projects.js'
+import { useSettings } from '../context/Settings.js'
 import {
 	ReactionRole,
 	useStatus,
@@ -32,6 +34,8 @@ export const Project = ({
 }) => {
 	const { projects } = useProjects()
 	const { projectStatus } = useStatus()
+	const { getProjectPersonalization } = useSettings()
+	const { color } = getProjectPersonalization(id)
 
 	const project = projects[id]
 	if (project === undefined) {
@@ -59,8 +63,8 @@ export const Project = ({
 					href={`/project/${encodeURIComponent(id)}/compose`}
 					style={{
 						borderRadius: '100%',
-						backgroundColor: '#35ca35',
-						color: '#ffffff',
+						color: new Color(color).luminosity() > 0.5 ? 'black' : 'white',
+						backgroundColor: color,
 						display: 'block',
 						height: '48px',
 						width: '48px',

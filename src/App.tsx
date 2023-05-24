@@ -5,6 +5,7 @@ import { Provider as ProjectsProvider } from './context/Projects.js'
 import { Provider as SettingsProvider } from './context/Settings.js'
 import { Provider as StatusProvider } from './context/Status.js'
 import { ComposeStatus } from './views/ComposeStatus.js'
+import { CreateProject } from './views/CreateProject.js'
 import { Login } from './views/Login.js'
 import { Project } from './views/Project.js'
 import { Projects } from './views/Projects.js'
@@ -20,6 +21,7 @@ export const App = () => {
 					<StatusProvider>
 						<Router>
 							<Route path="/projects" component={Projects} />
+							<Route path="/project/create" component={CreateProject} />
 							<Route path="/project/:id" component={Project} />
 							<Route path="/project/:id/compose" component={ComposeStatus} />
 							<Route path="/user" component={User} />

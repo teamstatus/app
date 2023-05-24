@@ -71,7 +71,7 @@ export const ComposeStatus = ({
 					<div class="card-footer d-flex align-items-center justify-content-between">
 						<a
 							href={`/project/${encodeURIComponent(id)}`}
-							class="btn btn-danger"
+							class="btn btn-outline-danger"
 						>
 							<ChevronLeft />
 						</a>
