@@ -8,12 +8,7 @@ export enum ReactionRole {
 	SIGNIFICANT = 'SIGNIFICANT',
 	QUESTION = 'QUESTION',
 }
-export type Reaction = {
-	id: string // '01H0ZTWDBCN3RSG0ZV4P97AACY'
-
-	author: string // '@coderbyheart'
-	status: string // '01H0ZTK03XXT2FD5ND5E6DH7KD'
-} & (
+export type Reaction =
 	| {
 			emoji: string // '🚀'
 			description: string // 'A new feature was implemented'
@@ -23,14 +18,18 @@ export type Reaction = {
 			emoji: string // '🚀'
 			description?: string // 'A new feature was implemented'
 	  }
-)
+type PersistedReaction = {
+	id: string // '01H0ZTWDBCN3RSG0ZV4P97AACY'
+	author: string // '@coderbyheart'
+	status: string // '01H0ZTK03XXT2FD5ND5E6DH7KD'
+} & Reaction
 export type Status = {
 	project: string // '$teamstatus#development'
 	author: string // '@coderbyheart'
 	message: string // 'Added Reaction API.'
 	id: string // '01H0ZTK03XXT2FD5ND5E6DH7KD'
 	version: number // 1
-	reactions: Reaction[]
+	reactions: PersistedReaction[]
 	persisted?: boolean
 }
 
@@ -41,12 +40,22 @@ export type StatusContext = {
 		message: string,
 	) => { error: string } | { id: string }
 	deleteStatus: (status: Status) => { error: string } | { success: true }
+	addReaction: (
+		status: Status,
+		reaction: Reaction,
+	) => { error: string } | { id: string }
+	deleteReaction: (
+		status: Status,
+		reaction: PersistedReaction,
+	) => { error: string } | { success: true }
 }
 
 export const StatusContext = createContext<StatusContext>({
 	projectStatus: () => [],
 	addProjectStatus: () => ({ error: 'Not ready.' }),
 	deleteStatus: () => ({ error: 'Not ready.' }),
+	addReaction: () => ({ error: 'Not ready.' }),
+	deleteReaction: () => ({ error: 'Not ready.' }),
 })
 
 export const Provider = ({ children }: { children: ComponentChildren }) => {
@@ -90,7 +99,6 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 			value={{
 				projectStatus: (projectId) => status[projectId] ?? [],
 				addProjectStatus: (projectId, message) => {
-					console.log(projectId, message)
 					const author = user?.id
 					if (author === undefined) return { error: 'Not authorized!' }
 					const id = ulid()
@@ -149,7 +157,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 				},
 				deleteStatus: (statusToDelete: Status) => {
 					const exists = status[statusToDelete.project]?.find(
-						({ id }) => statusToDelete.id,
+						({ id }) => id === statusToDelete.id,
 					)
 					if (!exists) return { error: `Status ${status.id} not found` }
 
@@ -172,6 +180,60 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						},
 					).catch(console.error)
 
+					return { success: true }
+				},
+
+				addReaction: (status, reaction) => {
+					const author = user?.id
+					if (author === undefined) return { error: 'Not authorized!' }
+
+					const id = ulid()
+					const newReaction: PersistedReaction = {
+						id,
+						author,
+						status: status.id,
+						...reaction,
+					}
+					setStatus((s) => {
+						const statusToUpdate = s[status.project]?.find(
+							({ id }) => id === status.id,
+						)
+						if (statusToUpdate === undefined) return s
+						return {
+							...s,
+							[status.project]: (s[status.project] ?? []).map((st) => {
+								if (st.id !== status.id) return st
+								return {
+									...st,
+									reactions: [...st.reactions, newReaction],
+								}
+							}),
+						}
+					})
+					return { id }
+				},
+				deleteReaction: (status, reaction) => {
+					const author = user?.id
+					if (author === undefined) return { error: 'Not authorized!' }
+					if (reaction.author !== author) return { error: 'Not author!' }
+					setStatus((s) => {
+						const statusToUpdate = s[status.project]?.find(
+							({ id }) => id === status.id,
+						)
+						if (statusToUpdate === undefined) return s
+						return {
+							...s,
+							[status.project]: (s[status.project] ?? []).map((st) => {
+								if (st.id !== status.id) return st
+								return {
+									...st,
+									reactions: st.reactions.filter(
+										({ id }) => id !== reaction.id,
+									),
+								}
+							}),
+						}
+					})
 					return { success: true }
 				},
 			}}

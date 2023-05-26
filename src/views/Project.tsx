@@ -1,4 +1,3 @@
-import cx from 'classnames'
 import Color from 'color'
 import { useState } from 'preact/hooks'
 import { decodeTime } from 'ulid'
@@ -12,15 +11,11 @@ import {
 	SubMenuIcon,
 } from '../components/Icons.js'
 import { ProjectHeader } from '../components/ProjectHeader.js'
+import { Reaction, SelectReaction } from '../components/Reactions.js'
 import { useAuth } from '../context/Auth.js'
 import { useProjects } from '../context/Projects.js'
 import { useSettings } from '../context/Settings.js'
-import {
-	ReactionRole,
-	useStatus,
-	type Reaction,
-	type Status,
-} from '../context/Status.js'
+import { useStatus, type Status } from '../context/Status.js'
 
 export const Project = ({
 	id,
@@ -82,35 +77,85 @@ export const Project = ({
 	)
 }
 
-const Status = ({ status }: { status: Status }) => (
-	<div>
-		<div class="d-flex align-items-center justify-content-between fw-light">
-			<small>{status.author}</small>
-			<small>
-				<Ago date={new Date(decodeTime(status.id))} />
-			</small>
-		</div>
-		<div>{status.message}</div>
-		<div class="d-flex align-items-center justify-content-between">
-			<div>
-				{status.reactions.length > 0 && (
-					<div>
-						{status.reactions.map((reaction) => (
-							<Reaction reaction={reaction} />
-						))}
-					</div>
-				)}
+const Status = ({ status }: { status: Status }) => {
+	const [reactionActionsVisible, showReactionsActions] = useState(false)
+	const { user } = useAuth()
+	const userId = user?.id
+	const { deleteReaction } = useStatus()
+	return (
+		<div>
+			<div class="d-flex align-items-center justify-content-between fw-light">
+				<small>{status.author}</small>
+				<small>
+					<Ago date={new Date(decodeTime(status.id))} />
+				</small>
 			</div>
-			<div class="d-flex flex-row align-items-center">
-				{status.persisted === false && <PersistencePendingIcon class="me-1" />}
-				<DeleteStatus status={status} key={status.id} />
-				<button type="button" class="btn btn-sm btn-light">
-					<AddReactionIcon />
-				</button>
+			<div>{status.message}</div>
+			<div class="d-flex align-items-center justify-content-between">
+				<div>
+					{status.reactions.length > 0 && (
+						<div>
+							{status.reactions.map((reaction) => {
+								const isAuthor = reaction.author === userId
+								return (
+									<Reaction
+										reaction={reaction}
+										onClick={() => {
+											if (isAuthor) {
+												deleteReaction(status, reaction)
+											}
+										}}
+										byUser={isAuthor}
+									/>
+								)
+							})}
+						</div>
+					)}
+				</div>
+				<div class="d-flex flex-row align-items-center">
+					{!reactionActionsVisible && (
+						<>
+							{status.persisted === false && (
+								<PersistencePendingIcon class="me-1" />
+							)}
+							<DeleteStatus status={status} key={status.id} />
+							<button
+								type="button"
+								class="btn btn-sm btn-light"
+								onClick={() => showReactionsActions(true)}
+							>
+								<AddReactionIcon />
+							</button>
+						</>
+					)}
+					{reactionActionsVisible && (
+						<>
+							<ReactToStatus status={status} />
+							<button
+								type="button"
+								class="btn btn-sm btn-light"
+								onClick={() => showReactionsActions(false)}
+							>
+								<CollapseRightIcon />
+							</button>
+						</>
+					)}
+				</div>
 			</div>
 		</div>
-	</div>
-)
+	)
+}
+
+const ReactToStatus = ({ status }: { status: Status }) => {
+	const { addReaction } = useStatus()
+	return (
+		<SelectReaction
+			onReaction={(reaction) => {
+				addReaction(status, reaction)
+			}}
+		/>
+	)
+}
 
 const DeleteStatus = ({ status }: { status: Status }) => {
 	const [expanded, setExpanded] = useState(false)
@@ -142,18 +187,3 @@ const DeleteStatus = ({ status }: { status: Status }) => {
 		</>
 	)
 }
-
-const Reaction = ({ reaction }: { reaction: Reaction }) => (
-	<button
-		class={cx('btn btn-sm', {
-			'btn-light': !('role' in reaction),
-			'btn-warning':
-				'role' in reaction && reaction.role === ReactionRole.SIGNIFICANT,
-			'btn-danger':
-				'role' in reaction && reaction.role === ReactionRole.QUESTION,
-		})}
-		title={reaction.description}
-	>
-		{reaction.emoji}
-	</button>
-)

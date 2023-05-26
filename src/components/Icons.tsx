@@ -1,6 +1,8 @@
 import {
+	AlertCircle,
 	ChevronLeft,
-	ChevronRightIcon,
+	ChevronRight,
+	HelpCircle,
 	LogOut,
 	MoreHorizontal,
 	Palette,
@@ -16,16 +18,33 @@ import {
 } from 'lucide-preact'
 
 const strokeWidth = 1
-
+const size = 24
 const icon =
 	(Icon: LucideIcon) =>
-	({ class: c }: { class?: string }) =>
-		<Icon strokeWidth={strokeWidth} class={c} />
+	({
+		class: c,
+		color: col,
+		size: s,
+		strokeWidth: sw,
+	}: {
+		class?: string
+		color?: string
+		size?: number
+		strokeWidth?: number
+	}) =>
+		(
+			<Icon
+				strokeWidth={sw ?? strokeWidth}
+				class={c}
+				size={s ?? size}
+				color={col}
+			/>
+		)
 
 export const UserIcon = icon(User)
 export const CloseIcon = icon(X)
 export const BackIcon = icon(ChevronLeft)
-export const CollapseRightIcon = icon(ChevronRightIcon)
+export const CollapseRightIcon = icon(ChevronRight)
 export const SubmitIcon = icon(Send)
 export const ColorsIcon = icon(Palette)
 export const AddIcon = icon(Plus)
@@ -35,3 +54,5 @@ export const LogoutIcon = icon(LogOut)
 export const SubMenuIcon = icon(MoreHorizontal)
 export const AddReactionIcon = icon(SmilePlus)
 export const DeleteIcon = icon(Trash)
+export const SignificantIcon = icon(AlertCircle)
+export const QuestionIcon = icon(HelpCircle)
