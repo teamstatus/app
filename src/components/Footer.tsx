@@ -1,8 +1,14 @@
 import Color from 'color'
-import { LogOut, MoreHorizontal, Sprout, User, X } from 'lucide-preact'
 import { useState } from 'preact/hooks'
 import { useAuth } from '../context/Auth.js'
 import { useSettings } from '../context/Settings.js'
+import {
+	CloseIcon,
+	LogoutIcon,
+	ProjectsIcon,
+	SubMenuIcon,
+	UserIcon,
+} from './Icons.js'
 
 export const Footer = () => {
 	const { user, logout } = useAuth()
@@ -46,7 +52,7 @@ export const Footer = () => {
 									class="btn btn-outline-light"
 									onClick={() => setSettingsVisible((v) => !v)}
 								>
-									<MoreHorizontal />
+									<SubMenuIcon />
 								</button>
 							</div>
 						</>
@@ -55,12 +61,12 @@ export const Footer = () => {
 						<>
 							<div class="d-flex flex-column align-items-center">
 								<a href="/projects" class="btn btn-success">
-									<Sprout />
+									<ProjectsIcon />
 								</a>
 							</div>
 							<div class="d-flex flex-column align-items-center">
 								<a href="/user" class="btn btn-secondary">
-									<User />
+									<UserIcon />
 								</a>
 							</div>
 							<div class="d-flex flex-column align-items-center">
@@ -69,7 +75,7 @@ export const Footer = () => {
 									class="btn btn-outline-danger"
 									onClick={() => logout()}
 								>
-									<LogOut />
+									<LogoutIcon />
 								</button>
 							</div>
 							<div class="d-flex flex-column align-items-center">
@@ -78,7 +84,7 @@ export const Footer = () => {
 									class="btn btn-outline-light"
 									onClick={() => setSettingsVisible((v) => !v)}
 								>
-									<X />
+									<CloseIcon />
 								</button>
 							</div>
 						</>

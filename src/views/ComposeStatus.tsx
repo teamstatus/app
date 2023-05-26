@@ -1,7 +1,7 @@
 import cx from 'classnames'
-import { ChevronLeft, Send } from 'lucide-preact'
 import { route } from 'preact-router'
 import { useState } from 'preact/hooks'
+import { BackIcon, SubmitIcon } from '../components/Icons.js'
 import { ProjectHeader } from '../components/ProjectHeader.js'
 import { useProjects } from '../context/Projects.js'
 import { useStatus } from '../context/Status.js'
@@ -32,9 +32,9 @@ export const ComposeStatus = ({
 		<>
 			<ProjectHeader project={project} />
 			<main class="container">
-				<div class="card">
+				<div class="card col-md-6 offset-md-3 mt-3">
 					<div class="card-header">
-						<h1>Compose a new status</h1>
+						<h1 class="fw-light">Compose a new status</h1>
 					</div>
 					<div class="card-body">
 						{error !== undefined && (
@@ -65,7 +65,7 @@ export const ComposeStatus = ({
 							href={`/project/${encodeURIComponent(id)}`}
 							class="btn btn-outline-danger"
 						>
-							<ChevronLeft />
+							<BackIcon />
 						</a>
 						<button
 							class={cx('btn', {
@@ -86,7 +86,7 @@ export const ComposeStatus = ({
 								}
 							}}
 						>
-							<Send />
+							<SubmitIcon />
 						</button>
 					</div>
 				</div>

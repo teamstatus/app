@@ -1,5 +1,10 @@
-import { Palette, Plus, Sprout, UploadCloud } from 'lucide-preact'
 import { useState } from 'preact/hooks'
+import {
+	AddIcon,
+	ColorsIcon,
+	PersistencePendingIcon,
+	ProjectsIcon,
+} from '../components/Icons.js'
 import { useProjects } from '../context/Projects.js'
 import { useSettings } from '../context/Settings.js'
 
@@ -15,7 +20,7 @@ export const Projects = () => {
 
 	return (
 		<main class="container">
-			<h1>Projects</h1>
+			<h1 class="fw-light">Projects</h1>
 			{Object.values(projects).map(({ id, name, persisted }) => (
 				<div class="form-check">
 					<input
@@ -39,10 +44,10 @@ export const Projects = () => {
 							return personalizeProject(id, { color })
 						}}
 					/>
-					{persisted === false && <UploadCloud />}
+					{persisted === false && <PersistencePendingIcon />}
 					<br />
 					<small>
-						<Sprout /> {id}
+						<ProjectsIcon /> {id}
 					</small>
 				</div>
 			))}
@@ -62,7 +67,7 @@ export const Projects = () => {
 				}}
 				class="d-flex align-items-center justify-content-center"
 			>
-				<Plus />
+				<AddIcon />
 			</a>
 		</main>
 	)
@@ -121,7 +126,7 @@ const Colorpicker = ({ onColor }: { onColor: (color: string) => void }) => {
 	return (
 		<>
 			<button type="button" class="btn" onClick={() => setExpanded((x) => !x)}>
-				<Palette />
+				<ColorsIcon />
 			</button>
 			{expanded && (
 				<ul>

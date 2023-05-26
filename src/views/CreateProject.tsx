@@ -1,7 +1,7 @@
 import cx from 'classnames'
-import { ChevronLeft, Send } from 'lucide-preact'
 import { route } from 'preact-router'
 import { useState } from 'preact/hooks'
+import { BackIcon, SubmitIcon } from '../components/Icons.js'
 import { useProjects } from '../context/Projects.js'
 import { isProjectId, slugPart } from '../proto/ids.js'
 
@@ -19,9 +19,9 @@ export const CreateProject = () => {
 	return (
 		<>
 			<main class="container">
-				<div class="card mt-2">
+				<div class="card col-md-6 offset-md-3 mt-4">
 					<div class="card-header">
-						<h1>Create a new project</h1>
+						<h1 class="fw-light">Create a new project</h1>
 					</div>
 					<div class="card-body">
 						{error !== undefined && (
@@ -85,7 +85,7 @@ export const CreateProject = () => {
 					</div>
 					<div class="card-footer d-flex align-items-center justify-content-between">
 						<a href={`/projects/`} class="btn btn-outline-danger">
-							<ChevronLeft />
+							<BackIcon />
 						</a>
 						<button
 							class={cx('btn', {
@@ -105,7 +105,7 @@ export const CreateProject = () => {
 								}
 							}}
 						>
-							<Send />
+							<SubmitIcon />
 						</button>
 					</div>
 				</div>

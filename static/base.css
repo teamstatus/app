@@ -15,3 +15,7 @@ body {
   width: 24px;
   height: 24px;
 }
+
+.lucide + .lucide {
+  margin-left: 0.25rem;
+}

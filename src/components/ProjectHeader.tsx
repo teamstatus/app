@@ -1,7 +1,7 @@
 import Color from 'color'
-import { Sprout } from 'lucide-preact'
 import { type Project } from '../context/Projects.js'
 import { useSettings } from '../context/Settings.js'
+import { ProjectsIcon } from './Icons.js'
 
 export const ProjectHeader = ({ project }: { project: Project }) => {
 	const { getProjectPersonalization } = useSettings()
@@ -14,9 +14,9 @@ export const ProjectHeader = ({ project }: { project: Project }) => {
 			}}
 			class="d-flex align-items-center justify-content-between p-2 mb-2"
 		>
-			<h1 class={'mb-0'}>{name}</h1>
-			<div>
-				<Sprout /> {project.id}
+			<h1 class={'mb-0 fw-light'}>{name}</h1>
+			<div class={'fw-light'}>
+				<ProjectsIcon /> {project.id}
 			</div>
 		</header>
 	)

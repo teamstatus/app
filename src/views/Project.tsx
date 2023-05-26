@@ -1,16 +1,16 @@
 import cx from 'classnames'
 import Color from 'color'
-import {
-	ChevronRight,
-	MoreHorizontal,
-	Plus,
-	SmilePlus,
-	Trash,
-	UploadCloud,
-} from 'lucide-preact'
 import { useState } from 'preact/hooks'
 import { decodeTime } from 'ulid'
 import { Ago } from '../components/Ago.js'
+import {
+	AddIcon,
+	AddReactionIcon,
+	CollapseRightIcon,
+	DeleteIcon,
+	PersistencePendingIcon,
+	SubMenuIcon,
+} from '../components/Icons.js'
 import { ProjectHeader } from '../components/ProjectHeader.js'
 import { useAuth } from '../context/Auth.js'
 import { useProjects } from '../context/Projects.js'
@@ -75,7 +75,7 @@ export const Project = ({
 					}}
 					class="d-flex align-items-center justify-content-center"
 				>
-					<Plus />
+					<AddIcon />
 				</a>
 			</main>
 		</>
@@ -102,10 +102,10 @@ const Status = ({ status }: { status: Status }) => (
 				)}
 			</div>
 			<div class="d-flex flex-row align-items-center">
-				{status.persisted === false && <UploadCloud />}
+				{status.persisted === false && <PersistencePendingIcon class="me-1" />}
 				<DeleteStatus status={status} key={status.id} />
 				<button type="button" class="btn btn-sm btn-light">
-					<SmilePlus strokeWidth={1} />
+					<AddReactionIcon />
 				</button>
 			</div>
 		</div>
@@ -124,12 +124,12 @@ const DeleteStatus = ({ status }: { status: Status }) => {
 			{expanded && (
 				<button
 					type="button"
-					class="btn btn-sm btn-outline-danger"
+					class="btn btn-sm btn-outline-danger me-1"
 					onClick={() => {
 						deleteStatus(status)
 					}}
 				>
-					<Trash strokeWidth={1} />
+					<DeleteIcon />
 				</button>
 			)}
 			<button
@@ -137,11 +137,7 @@ const DeleteStatus = ({ status }: { status: Status }) => {
 				class="btn btn-sm btn-light me-1"
 				onClick={() => setExpanded((e) => !e)}
 			>
-				{expanded ? (
-					<ChevronRight strokeWidth={1} />
-				) : (
-					<MoreHorizontal strokeWidth={1} />
-				)}
+				{expanded ? <CollapseRightIcon /> : <SubMenuIcon />}
 			</button>
 		</>
 	)

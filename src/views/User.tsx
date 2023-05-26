@@ -4,7 +4,7 @@ export const User = () => {
 	const { user } = useAuth()
 	return (
 		<main class="container">
-			<h1>User</h1>
+			<h1 class="fw-light">User</h1>
 			<dl>
 				<dt>Email</dt>
 				<dd>{user?.email}</dd>
