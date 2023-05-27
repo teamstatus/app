@@ -81,7 +81,7 @@
     "date-fns": "2.30.0",
     "lodash-es": "4.17.21",
     "lucide-preact": "0.221.0",
-    "preact": "10.15.0",
+    "preact": "10.15.1",
     "preact-router": "4.1.1",
     "tsx": "3.12.7",
     "ulid": "2.3.0"
