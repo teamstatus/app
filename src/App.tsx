@@ -4,6 +4,7 @@ import { useAuth } from './context/Auth.js'
 import { Provider as ProjectsProvider } from './context/Projects.js'
 import { Provider as SettingsProvider } from './context/Settings.js'
 import { Provider as StatusProvider } from './context/Status.js'
+import { About } from './views/About.js'
 import { ComposeStatus } from './views/ComposeStatus.js'
 import { CreateProject } from './views/CreateProject.js'
 import { Login } from './views/Login.js'
@@ -20,6 +21,7 @@ export const App = () => {
 				<SettingsProvider>
 					<StatusProvider>
 						<Router>
+							<Route path="/" component={About} />
 							<Route path="/projects" component={Projects} />
 							<Route path="/project/create" component={CreateProject} />
 							<Route path="/project/:id" component={Project} />

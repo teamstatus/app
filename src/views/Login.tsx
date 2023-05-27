@@ -78,7 +78,7 @@ export const Login = () => {
 										})
 								}}
 							>
-								Confirm email
+								Request PIN
 							</button>
 						</div>
 					</div>
