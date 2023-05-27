@@ -1,5 +1,10 @@
-import cx from 'classnames'
-import { QuestionIcon, SignificantIcon } from './Icons.js'
+import type { PersistedReaction } from '../context/Status.js'
+import {
+	AuthorIcon,
+	PersistencePendingIcon,
+	QuestionIcon,
+	SignificantIcon,
+} from './Icons.js'
 
 // Reactions can have special roles
 export enum ReactionRole {
@@ -71,7 +76,7 @@ export const Reaction = ({
 	onClick,
 	byUser,
 }: {
-	reaction: Reaction
+	reaction: Reaction | PersistedReaction
 	onClick?: () => void
 	byUser?: boolean
 }) => {
@@ -80,15 +85,17 @@ export const Reaction = ({
 	return (
 		<button
 			type="button"
-			class={cx(`btn btn-sm me-1`, {
-				'btn-light': (byUser ?? false) === false,
-				'btn-warning': (byUser ?? false) === true,
-			})}
+			class={'btn btn-sm me-1 text-nowrap btn-light'}
+			style={byUser === true ? { borderColor: 'goldenrod' } : {}}
 			title={description}
 			onClick={() => onClick?.()}
 		>
 			{role !== undefined && <Role role={role} />}
-			<span style={{ lineHeight: '24px' }}>{emoji}</span>
+			<span>{emoji}</span>
+			{byUser === true && <AuthorIcon size={18} strokeWidth={1} class="ms-1" />}
+			{'persisted' in reaction && reaction.persisted === false && (
+				<PersistencePendingIcon class="ms-1" size={18} strokeWidth={1} />
+			)}
 		</button>
 	)
 }
@@ -97,10 +104,10 @@ export const Role = ({ role }: { role: ReactionRole }) => {
 	switch (role) {
 		case ReactionRole.SIGNIFICANT:
 			return (
-				<SignificantIcon class="me-2" size={20} strokeWidth={2} color="green" />
+				<SignificantIcon class="me-1" size={20} strokeWidth={2} color="green" />
 			)
 		case ReactionRole.QUESTION:
-			return <QuestionIcon class="me-2" size={20} strokeWidth={2} color="red" />
+			return <QuestionIcon class="me-1" size={20} strokeWidth={2} color="red" />
 		default:
 			return null
 	}

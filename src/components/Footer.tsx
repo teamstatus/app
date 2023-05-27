@@ -4,6 +4,7 @@ import { useAuth } from '../context/Auth.js'
 import { useSettings } from '../context/Settings.js'
 import {
 	CloseIcon,
+	HelpIcon,
 	LogoutIcon,
 	ProjectsIcon,
 	SubMenuIcon,
@@ -62,6 +63,11 @@ export const Footer = () => {
 							<div class="d-flex flex-column align-items-center">
 								<a href="/projects" class="btn btn-success">
 									<ProjectsIcon />
+								</a>
+							</div>
+							<div class="d-flex flex-column align-items-center">
+								<a href="/" class="btn btn-secondary">
+									<HelpIcon />
 								</a>
 							</div>
 							<div class="d-flex flex-column align-items-center">

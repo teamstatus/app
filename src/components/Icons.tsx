@@ -13,6 +13,7 @@ import {
 	Trash,
 	UploadCloud,
 	User,
+	UserCircle2,
 	X,
 	type LucideIcon,
 } from 'lucide-preact'
@@ -56,3 +57,5 @@ export const AddReactionIcon = icon(SmilePlus)
 export const DeleteIcon = icon(Trash)
 export const SignificantIcon = icon(AlertCircle)
 export const QuestionIcon = icon(HelpCircle)
+export const HelpIcon = icon(HelpCircle)
+export const AuthorIcon = icon(UserCircle2)

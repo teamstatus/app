@@ -45,7 +45,7 @@ export const Project = ({
 	return (
 		<>
 			<ProjectHeader project={project} />
-			<main class="container">
+			<main class="container" key={project.id}>
 				<section>
 					{projectStatus(project.id).map((status) => (
 						<>
@@ -81,7 +81,7 @@ const Status = ({ status }: { status: Status }) => {
 	const [reactionActionsVisible, showReactionsActions] = useState(false)
 	const { user } = useAuth()
 	const userId = user?.id
-	const { deleteReaction } = useStatus()
+	const { addReaction, deleteReaction } = useStatus()
 	return (
 		<div>
 			<div class="d-flex align-items-center justify-content-between fw-light">
@@ -90,29 +90,27 @@ const Status = ({ status }: { status: Status }) => {
 					<Ago date={new Date(decodeTime(status.id))} />
 				</small>
 			</div>
-			<div>{status.message}</div>
-			<div class="d-flex align-items-center justify-content-between">
-				<div>
-					{status.reactions.length > 0 && (
-						<div>
-							{status.reactions.map((reaction) => {
-								const isAuthor = reaction.author === userId
-								return (
-									<Reaction
-										reaction={reaction}
-										onClick={() => {
-											if (isAuthor) {
-												deleteReaction(status, reaction)
-											}
-										}}
-										byUser={isAuthor}
-									/>
-								)
-							})}
-						</div>
-					)}
-				</div>
-				<div class="d-flex flex-row align-items-center">
+			<div class="mt-2 mb-2">{status.message}</div>
+			<div class="clearfix">
+				{status.reactions.length > 0 && (
+					<div class="float-start mb-1">
+						{status.reactions.map((reaction) => {
+							const isAuthor = reaction.author === userId
+							return (
+								<Reaction
+									reaction={reaction}
+									onClick={() => {
+										if (isAuthor) {
+											deleteReaction(status, reaction)
+										}
+									}}
+									byUser={isAuthor}
+								/>
+							)
+						})}
+					</div>
+				)}
+				<div class="float-end d-flex flex-row align-items-center">
 					{!reactionActionsVisible && (
 						<>
 							{status.persisted === false && (
@@ -130,7 +128,11 @@ const Status = ({ status }: { status: Status }) => {
 					)}
 					{reactionActionsVisible && (
 						<>
-							<ReactToStatus status={status} />
+							<SelectReaction
+								onReaction={(reaction) => {
+									addReaction(status, reaction)
+								}}
+							/>
 							<button
 								type="button"
 								class="btn btn-sm btn-light"
@@ -143,17 +145,6 @@ const Status = ({ status }: { status: Status }) => {
 				</div>
 			</div>
 		</div>
-	)
-}
-
-const ReactToStatus = ({ status }: { status: Status }) => {
-	const { addReaction } = useStatus()
-	return (
-		<SelectReaction
-			onReaction={(reaction) => {
-				addReaction(status, reaction)
-			}}
-		/>
 	)
 }
 

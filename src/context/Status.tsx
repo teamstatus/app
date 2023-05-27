@@ -18,10 +18,11 @@ export type Reaction =
 			emoji: string // '🚀'
 			description?: string // 'A new feature was implemented'
 	  }
-type PersistedReaction = {
+export type PersistedReaction = {
 	id: string // '01H0ZTWDBCN3RSG0ZV4P97AACY'
 	author: string // '@coderbyheart'
 	status: string // '01H0ZTK03XXT2FD5ND5E6DH7KD'
+	persisted?: boolean
 } & Reaction
 export type Status = {
 	project: string // '$teamstatus#development'
@@ -115,7 +116,6 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						...status,
 						[projectId]: [newStatus, ...(status[projectId] ?? [])],
 					}))
-
 					fetch(
 						`${API_ENDPOINT}/project/${encodeURIComponent(projectId)}/status`,
 						{
@@ -193,12 +193,20 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						author,
 						status: status.id,
 						...reaction,
+						persisted: false,
 					}
+					let added = false
 					setStatus((s) => {
 						const statusToUpdate = s[status.project]?.find(
 							({ id }) => id === status.id,
 						)
 						if (statusToUpdate === undefined) return s
+
+						console.log(statusToUpdate.reactions)
+
+						const reactionHashs = statusToUpdate.reactions.map(reactionHash)
+						if (reactionHashs.includes(reactionHash(newReaction))) return s
+						added = true
 						return {
 							...s,
 							[status.project]: (s[status.project] ?? []).map((st) => {
@@ -210,17 +218,58 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 							}),
 						}
 					})
+					if (added) {
+						fetch(
+							`${API_ENDPOINT}/status/${encodeURIComponent(
+								status.id,
+							)}/reaction`,
+							{
+								method: 'POST',
+								headers: {
+									Accept: 'application/json; charset=utf-8',
+								},
+								mode: 'cors',
+								credentials: 'include',
+								body: JSON.stringify({
+									id,
+									...reaction,
+								}),
+							},
+						)
+							.then(() => {
+								setStatus((s) => ({
+									...s,
+									[status.project]: (s[status.project] ?? []).map((st) => {
+										if (st.id !== status.id) return st
+										return {
+											...st,
+											reactions: st.reactions.map((reaction) => {
+												if (reaction.id === id)
+													return {
+														...reaction,
+														persisted: true,
+													}
+												return reaction
+											}),
+										}
+									}),
+								}))
+							})
+							.catch(console.error)
+					}
 					return { id }
 				},
 				deleteReaction: (status, reaction) => {
 					const author = user?.id
 					if (author === undefined) return { error: 'Not authorized!' }
 					if (reaction.author !== author) return { error: 'Not author!' }
+					let deleted = false
 					setStatus((s) => {
 						const statusToUpdate = s[status.project]?.find(
 							({ id }) => id === status.id,
 						)
 						if (statusToUpdate === undefined) return s
+						deleted = true
 						return {
 							...s,
 							[status.project]: (s[status.project] ?? []).map((st) => {
@@ -234,6 +283,19 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 							}),
 						}
 					})
+					if (deleted) {
+						fetch(
+							`${API_ENDPOINT}/reaction/${encodeURIComponent(reaction.id)}`,
+							{
+								method: 'DELETE',
+								headers: {
+									Accept: 'application/json; charset=utf-8',
+								},
+								mode: 'cors',
+								credentials: 'include',
+							},
+						).catch(console.error)
+					}
 					return { success: true }
 				},
 			}}
@@ -246,3 +308,8 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 export const Consumer = StatusContext.Consumer
 
 export const useStatus = () => useContext(StatusContext)
+
+export const reactionHash = (reaction: Omit<PersistedReaction, 'id'>): string =>
+	`${reaction.emoji}:${reaction.description}:${reaction.status}:${
+		reaction.author
+	}:${'role' in reaction ? reaction.role : 'NO_ROLE'}`
