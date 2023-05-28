@@ -21,7 +21,7 @@ export const Projects = () => {
 
 	return (
 		<main class="container">
-			<h1 class="fw-light">Projects</h1>
+			<h1>Projects</h1>
 			{Object.values(projects).map(({ id, name, persisted }) => (
 				<div class="form-check">
 					<input

@@ -21,7 +21,7 @@ export const CreateProject = () => {
 			<main class="container">
 				<div class="card col-md-6 offset-md-3 mt-4">
 					<div class="card-header">
-						<h1 class="fw-light">Create a new project</h1>
+						<h1>Create a new project</h1>
 					</div>
 					<div class="card-body">
 						{error !== undefined && (

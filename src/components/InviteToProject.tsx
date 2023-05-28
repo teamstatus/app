@@ -22,7 +22,7 @@ export const InviteToProject = ({
 			<main class="container">
 				<div class="card col-md-6 offset-md-3 mt-4">
 					<div class="card-header">
-						<h1 class="fw-light">Invite a member</h1>
+						<h1>Invite a member</h1>
 						<p>
 							<small>
 								<ProjectsIcon /> {projects[id]?.id}

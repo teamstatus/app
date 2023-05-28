@@ -34,7 +34,7 @@ export const ComposeStatus = ({
 			<main class="container">
 				<div class="card col-md-6 offset-md-3 mt-3">
 					<div class="card-header">
-						<h1 class="fw-light">Compose a new status</h1>
+						<h1>Compose a new status</h1>
 					</div>
 					<div class="card-body">
 						{error !== undefined && (

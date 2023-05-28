@@ -14,8 +14,8 @@ export const ProjectHeader = ({ project }: { project: Project }) => {
 			}}
 			class="d-flex align-items-center justify-content-between p-2 mb-2"
 		>
-			<h1 class={'mb-0 fw-light'}>{name}</h1>
-			<div class={'fw-light'}>
+			<h1 class={'mb-0 '}>{name}</h1>
+			<div>
 				<ProjectsIcon /> {project.id}
 			</div>
 		</header>

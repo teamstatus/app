@@ -85,7 +85,7 @@ const Status = ({ status }: { status: Status }) => {
 	const { addReaction, deleteReaction } = useStatus()
 	return (
 		<div>
-			<div class="d-flex align-items-center justify-content-between fw-light text-muted">
+			<div class="d-flex align-items-center justify-content-between  text-muted">
 				<small>
 					<UserIcon size={20} /> {status.author}
 				</small>

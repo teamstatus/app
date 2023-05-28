@@ -9,6 +9,8 @@ abbr[title] {
 body {
   font-family: var(--sans-serif-font);
   font-size: 16px;
+  font-variation-settings: "wdth" 80;
+  font-weight: 400;
 }
 
 .lucide + .lucide {
@@ -17,4 +19,14 @@ body {
 
 main {
   padding-bottom: 75px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 200;
 }
