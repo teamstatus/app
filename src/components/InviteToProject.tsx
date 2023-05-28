@@ -68,12 +68,15 @@ export const InviteToProject = ({
 							})}
 							disabled={!isValid}
 							onClick={() => {
-								const res = inviteToProject(id, userId)
-								if ('error' in res) {
-									setError(res.error)
-								} else {
-									route(`/projects`)
-								}
+								inviteToProject(id, userId)
+									.then((res) => {
+										if ('error' in res) {
+											setError(res.error)
+										} else {
+											route(`/projects`)
+										}
+									})
+									.catch(setError)
 							}}
 						>
 							<SubmitIcon />

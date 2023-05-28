@@ -20,17 +20,17 @@ export type ProjectsContext = {
 	addProject: (
 		id: string,
 		name?: string,
-	) => { error: string } | { success: true }
+	) => { error: string } | { success: boolean }
 	inviteToProject: (
 		id: string,
 		user: string,
-	) => { error: string } | { success: true }
+	) => Promise<{ error: string } | { success: boolean }>
 }
 
 export const ProjectsContext = createContext<ProjectsContext>({
 	projects: {},
 	addProject: () => ({ error: 'Not ready.' }),
-	inviteToProject: () => ({ error: 'Not ready.' }),
+	inviteToProject: async () => ({ error: 'Not ready.' }),
 	organizations: [],
 })
 
@@ -125,7 +125,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 					return { success: true }
 				},
 				organizations,
-				inviteToProject: (id, invitedUserId) => {
+				inviteToProject: async (id, invitedUserId) =>
 					fetch(`${API_ENDPOINT}/project/${encodeURIComponent(id)}/member`, {
 						method: 'POST',
 						headers: {
@@ -135,10 +135,9 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						mode: 'cors',
 						credentials: 'include',
 						body: JSON.stringify({ invitedUserId }),
-					}).catch(console.error)
-
-					return { success: true }
-				},
+					})
+						.then(() => ({ success: true }))
+						.catch((error) => ({ error: error.message })),
 			}}
 		>
 			{children}
