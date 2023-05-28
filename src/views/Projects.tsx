@@ -2,6 +2,7 @@ import { useState } from 'preact/hooks'
 import {
 	AddIcon,
 	ColorsIcon,
+	MembersIcon,
 	PersistencePendingIcon,
 	ProjectsIcon,
 } from '../components/Icons.js'
@@ -45,6 +46,12 @@ export const Projects = () => {
 						}}
 					/>
 					{persisted === false && <PersistencePendingIcon />}
+					<a
+						href={`/project/${encodeURIComponent(id)}/invite`}
+						title={'Invite a user'}
+					>
+						<MembersIcon />
+					</a>
 					<br />
 					<small>
 						<ProjectsIcon /> {id}

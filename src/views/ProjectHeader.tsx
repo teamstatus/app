@@ -1,7 +1,7 @@
 import Color from 'color'
+import { ProjectsIcon } from '../components/Icons.js'
 import { type Project } from '../context/Projects.js'
 import { useSettings } from '../context/Settings.js'
-import { ProjectsIcon } from './Icons.js'
 
 export const ProjectHeader = ({ project }: { project: Project }) => {
 	const { getProjectPersonalization } = useSettings()

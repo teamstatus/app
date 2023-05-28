@@ -14,6 +14,7 @@ import {
 	UploadCloud,
 	User,
 	UserCircle2,
+	Users,
 	X,
 	type LucideIcon,
 } from 'lucide-preact'
@@ -59,3 +60,4 @@ export const SignificantIcon = icon(AlertCircle)
 export const QuestionIcon = icon(HelpCircle)
 export const HelpIcon = icon(HelpCircle)
 export const AuthorIcon = icon(UserCircle2)
+export const MembersIcon = icon(Users)

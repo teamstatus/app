@@ -1,5 +1,6 @@
 import Router, { Route } from 'preact-router'
 import { Footer } from './components/Footer.js'
+import { InviteToProject } from './components/InviteToProject.js'
 import { useAuth } from './context/Auth.js'
 import { Provider as ProjectsProvider } from './context/Projects.js'
 import { Provider as SettingsProvider } from './context/Settings.js'
@@ -26,6 +27,7 @@ export const App = () => {
 							<Route path="/project/create" component={CreateProject} />
 							<Route path="/project/:id" component={Project} />
 							<Route path="/project/:id/compose" component={ComposeStatus} />
+							<Route path="/project/:id/invite" component={InviteToProject} />
 							<Route path="/user" component={User} />
 						</Router>
 					</StatusProvider>

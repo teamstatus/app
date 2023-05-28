@@ -11,12 +11,12 @@ import {
 	SubMenuIcon,
 	UserIcon,
 } from '../components/Icons.js'
-import { ProjectHeader } from '../components/ProjectHeader.js'
 import { Reaction, SelectReaction } from '../components/Reactions.js'
 import { useAuth } from '../context/Auth.js'
 import { useProjects } from '../context/Projects.js'
 import { useSettings } from '../context/Settings.js'
 import { useStatus, type Status } from '../context/Status.js'
+import { ProjectHeader } from './ProjectHeader.js'
 
 export const Project = ({
 	id,
