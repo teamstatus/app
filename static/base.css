@@ -14,3 +14,7 @@ body {
 .lucide + .lucide {
   margin-left: 0.25rem;
 }
+
+main {
+  padding-bottom: 75px;
+}

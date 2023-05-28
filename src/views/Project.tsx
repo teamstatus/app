@@ -9,6 +9,7 @@ import {
 	DeleteIcon,
 	PersistencePendingIcon,
 	SubMenuIcon,
+	UserIcon,
 } from '../components/Icons.js'
 import { ProjectHeader } from '../components/ProjectHeader.js'
 import { Reaction, SelectReaction } from '../components/Reactions.js'
@@ -84,8 +85,10 @@ const Status = ({ status }: { status: Status }) => {
 	const { addReaction, deleteReaction } = useStatus()
 	return (
 		<div>
-			<div class="d-flex align-items-center justify-content-between fw-light">
-				<small>{status.author}</small>
+			<div class="d-flex align-items-center justify-content-between fw-light text-muted">
+				<small>
+					<UserIcon size={20} /> {status.author}
+				</small>
 				<small>
 					<Ago date={new Date(decodeTime(status.id))} />
 				</small>
@@ -104,7 +107,6 @@ const Status = ({ status }: { status: Status }) => {
 											deleteReaction(status, reaction)
 										}
 									}}
-									byUser={isAuthor}
 								/>
 							)
 						})}

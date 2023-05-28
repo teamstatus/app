@@ -4,8 +4,11 @@ import { ulid } from 'ulid'
 import { useAuth } from './Auth.js'
 import { useSettings } from './Settings.js'
 
+// Reactions can have special roles
 export enum ReactionRole {
+	// A significant thing happened, makes the status stand out from others in the list of status
 	SIGNIFICANT = 'SIGNIFICANT',
+	// The status needs to be discussed during the next sync meeting, this will collect this status in a separate list of open questions during the next sync meeting
 	QUESTION = 'QUESTION',
 }
 export type Reaction =

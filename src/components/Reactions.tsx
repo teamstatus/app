@@ -1,4 +1,9 @@
-import type { PersistedReaction } from '../context/Status.js'
+import { useAuth } from '../context/Auth.js'
+import {
+	ReactionRole,
+	type PersistedReaction,
+	type Reaction as TReaction,
+} from '../context/Status.js'
 import {
 	AuthorIcon,
 	PersistencePendingIcon,
@@ -6,44 +11,25 @@ import {
 	SignificantIcon,
 } from './Icons.js'
 
-// Reactions can have special roles
-export enum ReactionRole {
-	// A significant thing happened, makes the status stand out from others in the list of status
-	SIGNIFICANT = 'SIGNIFICANT',
-	// The status needs to be discussed during the next sync meeting, this will collect this status in a separate list of open questions during the next sync meeting
-	QUESTION = 'QUESTION',
-}
-
-export type Reaction =
-	| {
-			role: ReactionRole
-			emoji: string
-			description: string
-	  }
-	| {
-			emoji: string
-			description?: string
-	  }
-
-export const bugFix: Reaction = {
+export const bugFix: TReaction = {
 	description: 'A bug was fixed',
 	emoji: '🐞',
 	role: ReactionRole.SIGNIFICANT,
 }
 
-export const newVersionRelease: Reaction = {
+export const newVersionRelease: TReaction = {
 	description: 'A new version was released',
 	emoji: '🚀',
 	role: ReactionRole.SIGNIFICANT,
 }
 
-export const question: Reaction = {
+export const question: TReaction = {
 	description: 'This item needs to be discussed during the next sync meeting',
 	emoji: '🙋',
 	role: ReactionRole.QUESTION,
 }
 
-export const praise: Reaction = {
+export const praise: TReaction = {
 	emoji: '🌟',
 	description: 'This is amazing!',
 }
@@ -52,7 +38,7 @@ export const thumbsUp = {
 	emoji: '👍',
 }
 
-const reactionPresets: Reaction[] = [
+export const reactionPresets: TReaction[] = [
 	newVersionRelease,
 	question,
 	praise,
@@ -62,7 +48,7 @@ const reactionPresets: Reaction[] = [
 export const SelectReaction = ({
 	onReaction,
 }: {
-	onReaction: (reaction: Reaction) => void
+	onReaction: (reaction: TReaction) => void
 }) => (
 	<>
 		{reactionPresets.map((reaction) => (
@@ -74,14 +60,14 @@ export const SelectReaction = ({
 export const Reaction = ({
 	reaction,
 	onClick,
-	byUser,
 }: {
-	reaction: Reaction | PersistedReaction
+	reaction: TReaction | PersistedReaction
 	onClick?: () => void
-	byUser?: boolean
 }) => {
+	const { user } = useAuth()
 	const role = 'role' in reaction ? reaction.role : undefined
 	const { emoji, description } = reaction
+	const byUser = 'author' in reaction && reaction.author === user?.id
 	return (
 		<button
 			type="button"
@@ -89,6 +75,7 @@ export const Reaction = ({
 			style={byUser === true ? { borderColor: 'goldenrod' } : {}}
 			title={description}
 			onClick={() => onClick?.()}
+			disabled={onClick === undefined}
 		>
 			{role !== undefined && <Role role={role} />}
 			<span>{emoji}</span>

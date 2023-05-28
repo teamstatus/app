@@ -1,4 +1,5 @@
 import { Ago } from '../components/Ago.js'
+import { ReactionsHelp } from '../components/ReactionsHelp.js'
 import { useAuth } from '../context/Auth.js'
 
 export const About = () => {
@@ -24,6 +25,7 @@ export const About = () => {
 					</div>
 				</div>
 			</section>
+			<ReactionsHelp />
 		</main>
 	)
 }
