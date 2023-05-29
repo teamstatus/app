@@ -30,3 +30,28 @@ export const parseProjectId = (
 		project: project ?? null,
 	}
 }
+
+const invitationIdRegex = new RegExp(
+	`^(?<organization>\\$${slugPart})(?<project>#${slugPart}):(?<user>@${slugPart})$`,
+	'i',
+) // $teamstatus#invite2:@teamstatus
+export const isInvitationId = (id?: string): id is string =>
+	invitationIdRegex.test(id ?? '')
+
+export const parseInvitationId = (
+	invitationId?: string,
+): {
+	organization: string | null
+	project: string | null
+	projectId: string | null
+	user: string | null
+} => {
+	const { organization, project, user } =
+		invitationIdRegex.exec(invitationId ?? '')?.groups ?? {}
+	return {
+		organization: organization ?? null,
+		project: project ?? null,
+		projectId: `${organization}${project}`,
+		user: user ?? null,
+	}
+}

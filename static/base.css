@@ -9,7 +9,7 @@ abbr[title] {
 body {
   font-family: var(--sans-serif-font);
   font-size: 16px;
-  font-variation-settings: "wdth" 80;
+  font-variation-settings: "wdth" 85;
   font-weight: 400;
 }
 
@@ -27,6 +27,15 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Montserrat", sans-serif;
-  font-weight: 200;
+  font-family: "Nunito", sans-serif;
+  font-weight: 300;
+}
+
+.card-header h1,
+.card-header h2,
+.card-header h3,
+.card-header h4,
+.card-header h5,
+.card-header h6 {
+  margin-bottom: 0;
 }

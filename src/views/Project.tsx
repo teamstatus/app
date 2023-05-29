@@ -11,12 +11,12 @@ import {
 	SubMenuIcon,
 	UserIcon,
 } from '../components/Icons.js'
+import { ProjectHeader } from '../components/ProjectHeader.js'
 import { Reaction, SelectReaction } from '../components/Reactions.js'
 import { useAuth } from '../context/Auth.js'
 import { useProjects } from '../context/Projects.js'
 import { useSettings } from '../context/Settings.js'
 import { useStatus, type Status } from '../context/Status.js'
-import { ProjectHeader } from './ProjectHeader.js'
 
 export const Project = ({
 	id,
@@ -43,17 +43,31 @@ export const Project = ({
 			</main>
 		)
 	}
+	const status = projectStatus(project.id)
 	return (
 		<>
 			<ProjectHeader project={project} />
 			<main class="container" key={project.id}>
 				<section>
-					{projectStatus(project.id).map((status) => (
+					{status.map((status) => (
 						<>
 							<Status status={status} />
 							<hr />
 						</>
 					))}
+					{status.length === 0 && (
+						<div class="row">
+							<div class="col">
+								<p>No status updates, yet.</p>
+								<p>
+									<a href={`/project/${encodeURIComponent(id)}/compose`}>
+										Create
+									</a>{' '}
+									the first one!
+								</p>
+							</div>
+						</div>
+					)}
 				</section>
 				<a
 					href={`/project/${encodeURIComponent(id)}/compose`}

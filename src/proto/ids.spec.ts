@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import { describe, test as it } from 'node:test'
 import { check, objectMatching } from 'tsmatchers'
 import {
+	isInvitationId,
 	isOrganizationId,
 	isProjectId,
 	isUserId,
@@ -64,5 +65,10 @@ describe('identifiers', async () => {
 					}),
 				))
 		})
+	})
+
+	describe('inviation ID', async () => {
+		it('should validate an invitation ID', () =>
+			assert.equal(isInvitationId('$teamstatus#invite2:@teamstatus'), true))
 	})
 })

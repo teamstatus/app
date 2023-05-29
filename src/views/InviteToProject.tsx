@@ -2,7 +2,7 @@ import cx from 'classnames'
 import { route } from 'preact-router'
 import { useState } from 'preact/hooks'
 import { BackIcon, ProjectsIcon, SubmitIcon } from '../components/Icons.js'
-import { useProjects } from '../context/Projects.js'
+import { useProjects, type ProblemDetail } from '../context/Projects.js'
 import { isUserId, slugPart } from '../proto/ids.js'
 
 export const InviteToProject = ({
@@ -12,7 +12,7 @@ export const InviteToProject = ({
 }) => {
 	const { inviteToProject, projects } = useProjects()
 	const [invitee, setInvitee] = useState<string>('')
-	const [error, setError] = useState<string | undefined>()
+	const [error, setError] = useState<ProblemDetail | undefined>()
 
 	const userId = `@${invitee}`
 	const isValid = isUserId(userId)
@@ -32,7 +32,7 @@ export const InviteToProject = ({
 					<div class="card-body">
 						{error !== undefined && (
 							<div class="alert alert-danger" role="alert">
-								An error occured ({error})!
+								An error occured ({error.title})!
 							</div>
 						)}
 						<div class="mb-3 ">

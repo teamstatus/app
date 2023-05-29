@@ -1,4 +1,5 @@
 import { useState } from 'preact/hooks'
+import { AcceptProjectInvitation } from '../components/AcceptProjectInvitation.js'
 import {
 	AddIcon,
 	ColorsIcon,
@@ -21,43 +22,71 @@ export const Projects = () => {
 
 	return (
 		<main class="container">
-			<h1>Projects</h1>
-			{Object.values(projects).map(({ id, name, persisted }) => (
-				<div class="form-check">
-					<input
-						class="form-check-input"
-						type="checkbox"
-						id={id}
-						onClick={() => toggleProject(id)}
-						checked={isVisible(id)}
-						placeholder="a short alias"
-					/>
-					<ProjectAlias
-						currentValue={getProjectPersonalization(id).name ?? ''}
-						onAlias={(alias) => {
-							personalizeProject(id, {
-								name: alias.length > 0 ? alias : name ?? id,
-							})
-						}}
-					/>
-					<Colorpicker
-						onColor={(color) => {
-							return personalizeProject(id, { color })
-						}}
-					/>
-					{persisted === false && <PersistencePendingIcon />}
-					<a
-						href={`/project/${encodeURIComponent(id)}/invite`}
-						title={'Invite a user'}
-					>
-						<MembersIcon />
-					</a>
-					<br />
-					<small>
-						<ProjectsIcon /> {id}
-					</small>
+			<div class="row mt-3">
+				<div class="col">
+					<div class="card">
+						<div class="card-header">
+							<h1>Projects</h1>
+						</div>
+						<div class="card-body">
+							{Object.values(projects).map(({ id, name, persisted }) => (
+								<div class="form-check">
+									<input
+										class="form-check-input"
+										type="checkbox"
+										id={id}
+										onClick={() => toggleProject(id)}
+										checked={isVisible(id)}
+										placeholder="a short alias"
+									/>
+									<ProjectAlias
+										currentValue={getProjectPersonalization(id).name}
+										onAlias={(alias) => {
+											personalizeProject(id, {
+												name: alias.length > 0 ? alias : name ?? id,
+											})
+										}}
+									/>
+									<Colorpicker
+										onColor={(color) => {
+											return personalizeProject(id, { color })
+										}}
+									/>
+									{persisted === false && <PersistencePendingIcon />}
+									<a
+										href={`/project/${encodeURIComponent(id)}/invite`}
+										title={'Invite a user'}
+									>
+										<MembersIcon />
+									</a>
+									<br />
+									<small>
+										<ProjectsIcon /> {id}
+									</small>
+								</div>
+							))}
+							{Object.values(projects).length === 0 && (
+								<div class="row">
+									<div class="col">
+										<p>You have no projects,yet.</p>
+										<p>
+											<a href="/project/create">Create a new project</a>, or ask
+											to be invited to an existing one.
+										</p>
+									</div>
+								</div>
+							)}
+						</div>
+					</div>
 				</div>
-			))}
+			</div>
+
+			<div class="row mt-3">
+				<div class="col">
+					<AcceptProjectInvitation />
+				</div>
+			</div>
+
 			<a
 				href={`/project/create`}
 				style={{

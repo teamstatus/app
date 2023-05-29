@@ -5,7 +5,7 @@ import { useProjects } from './Projects.js'
 
 export type ProjectPersonalization = {
 	name: string
-	color?: string
+	color: string
 }
 
 export const SettingsContext = createContext<{
@@ -25,7 +25,7 @@ export const SettingsContext = createContext<{
 	showProject: () => undefined,
 	toggleProject: () => undefined,
 	isVisible: () => false,
-	getProjectPersonalization: () => ({ name: '' }),
+	getProjectPersonalization: () => ({ name: '', color: 'black' }),
 	personalizeProject: () => undefined,
 })
 
@@ -102,7 +102,10 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 				},
 				isVisible: (id) => visibleProjects.includes(id),
 				getProjectPersonalization: (id) =>
-					projectPersonalizations[id] ?? { name: projects[id]?.name ?? '??' },
+					projectPersonalizations[id] ?? {
+						name: projects[id]?.name ?? id,
+						color: 'grey',
+					},
 				personalizeProject: (id, { name, color }) => {
 					setProjectPersonalizations((personalizations) => ({
 						...personalizations,

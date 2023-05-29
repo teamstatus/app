@@ -60,11 +60,13 @@ export const Footer = () => {
 					)}
 					{settingsVisible && (
 						<>
-							<div class="d-flex flex-column align-items-center">
-								<a href="/projects" class="btn btn-success">
-									<ProjectsIcon />
-								</a>
-							</div>
+							{user.id !== undefined && (
+								<div class="d-flex flex-column align-items-center">
+									<a href="/projects" class="btn btn-success">
+										<ProjectsIcon />
+									</a>
+								</div>
+							)}
 							<div class="d-flex flex-column align-items-center">
 								<a href="/" class="btn btn-secondary">
 									<HelpIcon />
