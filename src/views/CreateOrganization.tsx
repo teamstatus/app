@@ -5,7 +5,7 @@ import { BackIcon, SubmitIcon } from '../components/Icons.js'
 import { useProjects } from '../context/Projects.js'
 import { isOrganizationId, slugPart } from '../proto/ids.js'
 
-export const CreateOrganiztion = () => {
+export const CreateOrganization = () => {
 	const [name, setName] = useState<string>('')
 	const { addOrganization } = useProjects()
 	const [error, setError] = useState<string | undefined>()
