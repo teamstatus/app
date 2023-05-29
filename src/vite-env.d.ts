@@ -4,6 +4,7 @@ declare const VERSION: string
 declare const HOMEPAGE: string
 declare const BUILD_TIME: string
 declare const API_ENDPOINT: string
+declare const WS_ENDPOINT: string
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 interface ImportMeta {

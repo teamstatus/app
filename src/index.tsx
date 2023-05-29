@@ -4,6 +4,7 @@ import { App } from './App.js'
 import { Provider as AuthProvider } from './context/Auth.js'
 
 console.debug('API endpoint', API_ENDPOINT)
+console.debug('WS endpoint', WS_ENDPOINT)
 console.debug('version', VERSION)
 console.debug(
 	'build time',

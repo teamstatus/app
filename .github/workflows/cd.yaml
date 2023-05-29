@@ -39,6 +39,7 @@ jobs:
       - name: Build
         env:
           API_ENDPOINT: ${{ vars.API_ENDPOINT }}
+          WS_ENDPOINT: ${{ vars.WS_ENDPOINT }}
         run: |
           npm run build
           cp -r ./static ./build

@@ -7,6 +7,7 @@ import { useAuth } from './Auth.js'
 export type Organization = {
 	id: string
 	name?: string
+	persisted?: boolean
 }
 
 export type Project = {
@@ -30,11 +31,16 @@ export type ProjectsContext = {
 	acceptProjectInvitation: (
 		invitationId: string,
 	) => Promise<{ error: ProblemDetail } | { success: boolean }>
+	addOrganization: (
+		id: string,
+		name?: string,
+	) => { error: string } | { success: boolean }
 }
 
 export const ProjectsContext = createContext<ProjectsContext>({
 	projects: {},
 	addProject: () => ({ error: 'Not ready.' }),
+	addOrganization: () => ({ error: 'Not ready.' }),
 	inviteToProject: async () => ({
 		error: InternalError('Not ready.'),
 	}),
@@ -170,6 +176,37 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 							return { success: true }
 						})
 						.catch((error) => ({ error: InternalError(error.message) })),
+				addOrganization: (id, name) => {
+					const newOrg: Organization = {
+						id,
+						name,
+						persisted: false,
+					}
+					setOrganizations((organizations) => [...organizations, newOrg])
+
+					fetch(`${API_ENDPOINT}/organizations`, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json; charset=utf-8',
+							Accept: 'application/json; charset=utf-8',
+						},
+						mode: 'cors',
+						credentials: 'include',
+						body: JSON.stringify({ id, name }),
+					})
+						.then(() => {
+							setOrganizations((organizations) => [
+								...organizations.filter(({ id: orgId }) => orgId !== id),
+								{
+									id,
+									name,
+								},
+							])
+						})
+						.catch(console.error)
+
+					return { success: true }
+				},
 			}}
 		>
 			{children}
