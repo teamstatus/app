@@ -69,7 +69,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 
 	useEffect(() => {
 		Promise.all(
-			visibleProjects.map(async (projectId) =>
+			visibleProjects().map(async (projectId) =>
 				fetch(
 					`${API_ENDPOINT}/project/${encodeURIComponent(projectId)}/status`,
 					{

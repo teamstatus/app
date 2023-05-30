@@ -22,9 +22,9 @@ export const Footer = () => {
 				<>
 					{!settingsVisible && (
 						<>
-							{visibleProjects.length > 0 && (
+							{visibleProjects().length > 0 && (
 								<div class="d-flex align-items-center">
-									{visibleProjects.map((id) => {
+									{visibleProjects().map((id) => {
 										const { color, name } = getProjectPersonalization(id)
 										return (
 											<div class="d-flex flex-column align-items-center me-2">

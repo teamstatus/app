@@ -1,6 +1,6 @@
 import { merge } from 'lodash-es'
 import { createContext, type ComponentChildren } from 'preact'
-import { useContext, useEffect, useState } from 'preact/hooks'
+import { useCallback, useContext, useEffect, useState } from 'preact/hooks'
 import { useProjects } from './Projects.js'
 
 export type ProjectPersonalization = {
@@ -9,7 +9,7 @@ export type ProjectPersonalization = {
 }
 
 export const SettingsContext = createContext<{
-	visibleProjects: string[]
+	visibleProjects: () => string[]
 	showProject: (id: string) => void
 	hideProject: (id: string) => void
 	toggleProject: (id: string) => void
@@ -20,7 +20,7 @@ export const SettingsContext = createContext<{
 		personalization: Partial<ProjectPersonalization>,
 	) => void
 }>({
-	visibleProjects: [],
+	visibleProjects: () => [],
 	hideProject: () => undefined,
 	showProject: () => undefined,
 	toggleProject: () => undefined,
@@ -41,12 +41,12 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 	const { projects } = useProjects()
 
 	useEffect(() => {
-		const storedvisibleProjects = localStorage.getItem(
+		const storedVisibleProjects = localStorage.getItem(
 			visibleProjectsStorageKey,
 		)
-		if (storedvisibleProjects === null) return
+		if (storedVisibleProjects === null) return
 		try {
-			setVisibleProjects(JSON.parse(storedvisibleProjects))
+			setVisibleProjects(JSON.parse(storedVisibleProjects))
 		} catch {
 			// Pass
 		}
@@ -76,10 +76,15 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 		)
 	}, [projectPersonalizations])
 
+	const visibleProjectsFn = useCallback(
+		() => visibleProjects.filter((id) => projects[id] !== undefined),
+		[visibleProjects, projects],
+	)
+
 	return (
 		<SettingsContext.Provider
 			value={{
-				visibleProjects,
+				visibleProjects: visibleProjectsFn,
 				showProject: (id) => {
 					setVisibleProjects((visibleProjects) => [
 						...new Set([...visibleProjects, id]),
