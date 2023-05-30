@@ -10,10 +10,16 @@ export type Organization = {
 	persisted?: boolean
 }
 
+export enum Role {
+	OWNER = 'owner',
+	MEMBER = 'member',
+}
+
 export type Project = {
 	id: string
 	name?: string
 	organization: Organization
+	role: Role
 	persisted?: boolean
 }
 
@@ -108,6 +114,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						name,
 						organization,
 						persisted: false,
+						role: Role.OWNER,
 					}
 					setProjects((projects) => ({
 						...projects,

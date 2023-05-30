@@ -5,21 +5,12 @@ import {
 	ColorsIcon,
 	MembersIcon,
 	PersistencePendingIcon,
-	ProjectsIcon,
 } from '../components/Icons.js'
-import { useProjects } from '../context/Projects.js'
+import { Role, useProjects, type Project } from '../context/Projects.js'
 import { useSettings } from '../context/Settings.js'
 
 export const Projects = () => {
-	const {
-		toggleProject,
-		isVisible,
-		personalizeProject,
-		getProjectPersonalization,
-	} = useSettings()
-
 	const { projects } = useProjects()
-
 	return (
 		<main class="container">
 			<div class="row mt-3">
@@ -29,41 +20,8 @@ export const Projects = () => {
 							<h1>Projects</h1>
 						</div>
 						<div class="card-body">
-							{Object.values(projects).map(({ id, name, persisted }) => (
-								<div class="form-check">
-									<input
-										class="form-check-input"
-										type="checkbox"
-										id={id}
-										onClick={() => toggleProject(id)}
-										checked={isVisible(id)}
-										placeholder="a short alias"
-									/>
-									<ProjectAlias
-										currentValue={getProjectPersonalization(id).name}
-										onAlias={(alias) => {
-											personalizeProject(id, {
-												name: alias.length > 0 ? alias : name ?? id,
-											})
-										}}
-									/>
-									<Colorpicker
-										onColor={(color) => {
-											return personalizeProject(id, { color })
-										}}
-									/>
-									{persisted === false && <PersistencePendingIcon />}
-									<a
-										href={`/project/${encodeURIComponent(id)}/invite`}
-										title={'Invite a user'}
-									>
-										<MembersIcon />
-									</a>
-									<br />
-									<small>
-										<ProjectsIcon /> {id}
-									</small>
-								</div>
+							{Object.values(projects).map((project) => (
+								<ProjectInfo project={project} />
 							))}
 							{Object.values(projects).length === 0 && (
 								<div class="row">
@@ -109,6 +67,77 @@ export const Projects = () => {
 	)
 }
 
+const ProjectInfo = ({
+	project: { id, name, persisted, role },
+}: {
+	project: Project
+}) => {
+	const {
+		toggleProject,
+		isVisible,
+		personalizeProject,
+		getProjectPersonalization,
+	} = useSettings()
+
+	const [colorsVisible, setColorsVisible] = useState(false)
+
+	return (
+		<div class="mb-3">
+			<div class="form-check">
+				<label htmlFor={id}>
+					<input
+						class="form-check-input"
+						type="checkbox"
+						id={id}
+						onClick={() => toggleProject(id)}
+						checked={isVisible(id)}
+						placeholder="a short alias"
+					/>{' '}
+					{id}
+				</label>
+			</div>
+			<div class="d-flex align-items-center justify-content-between">
+				{!colorsVisible && (
+					<>
+						<ProjectAlias
+							currentValue={getProjectPersonalization(id).name}
+							onAlias={(alias) => {
+								personalizeProject(id, {
+									name: alias.length > 0 ? alias : name ?? id,
+								})
+							}}
+						/>
+						{persisted === false && <PersistencePendingIcon />}
+						<button
+							type="button"
+							class="btn"
+							onClick={() => setColorsVisible(true)}
+						>
+							<ColorsIcon />
+						</button>
+						{role === Role.OWNER && (
+							<a
+								href={`/project/${encodeURIComponent(id)}/invite`}
+								title={'Invite a user'}
+							>
+								<MembersIcon />
+							</a>
+						)}
+					</>
+				)}
+				{colorsVisible && (
+					<Colorpicker
+						onColor={(color) => {
+							setColorsVisible(false)
+							return personalizeProject(id, { color })
+						}}
+					/>
+				)}
+			</div>
+		</div>
+	)
+}
+
 const ProjectAlias = ({
 	currentValue,
 	onAlias,
@@ -120,6 +149,7 @@ const ProjectAlias = ({
 	return (
 		<input
 			type="text"
+			class="form-control"
 			value={alias}
 			onInput={(e) => {
 				setAlias((e.target as HTMLInputElement).value)
@@ -131,56 +161,78 @@ const ProjectAlias = ({
 	)
 }
 
-const Colorpicker = ({ onColor }: { onColor: (color: string) => void }) => {
-	const [expanded, setExpanded] = useState<boolean>(false)
-	const colors = [
-		'#AD1457',
-		'#F4511E',
-		'#E4C441',
-		'#0B8043',
-		'#3F51B5',
-		'#8E24AA',
-		'#D81B60',
-		'#EF6C00',
-		'#C0CA33',
-		'#009688',
-		'#7986CB',
-		'#795548',
-		'#D50000',
-		'#F09300',
-		'#7CB342',
-		'#039BE5',
-		'#B39DDB',
-		'#616161',
-		'#E67C73',
-		'#F6BF26',
-		'#33B679',
-		'#4285F4',
-		'#9E69AF',
-		'#A79B8E',
-	]
-	return (
-		<>
-			<button type="button" class="btn" onClick={() => setExpanded((x) => !x)}>
-				<ColorsIcon />
-			</button>
-			{expanded && (
-				<ul>
-					{colors
-						.sort((a, b) => parseInt(a.slice(1), 16) - parseInt(b.slice(1), 16))
-						.map((color) => (
-							<button
-								type="button"
-								class="btn px-3 py-3 mx-1 my-1"
-								style={{ backgroundColor: color }}
-								onClick={() => {
-									onColor(color)
-									setExpanded(false)
-								}}
-							></button>
-						))}
-				</ul>
-			)}
-		</>
-	)
-}
+export const colors = [
+	'#6a3d9a',
+	'#666666',
+	'#386cb0',
+	'#984ea3',
+	'#a65628',
+	'#1f78b4',
+	'#e31a1c',
+	'#d53e4f',
+	'#bf5b17',
+	'#7570b3',
+	'#377eb8',
+	'#f0027f',
+	'#a6761d',
+	'#3288bd',
+	'#d95f02',
+	'#33a02c',
+	'#bc80bd',
+	'#f46d43',
+	'#999999',
+	'#4daf4a',
+	'#ff7f00',
+	'#fb8072',
+	'#f781bf',
+	'#80b1d3',
+	'#66c2a5',
+	'#fb9a99',
+	'#e6ab02',
+	'#beaed4',
+	'#7fc97f',
+	'#cab2d6',
+	'#bebada',
+	'#fdae61',
+	'#fdb462',
+	'#fbb4ae',
+	'#8dd3c7',
+	'#a6cee3',
+	'#b3cde3',
+	'#fdbf6f',
+	'#fdc086',
+	'#b3de69',
+	'#abdda4',
+	'#decbe4',
+	'#b2df8a',
+	'#d9d9d9',
+	'#e5d8bd',
+	'#fccde5',
+	'#fed9a6',
+	'#fee08b',
+	'#ccebc5',
+	'#fddaec',
+	'#ffed6f',
+	'#e6f598',
+	'#f2f2f2',
+	'#ffff33',
+	'#ffffb3',
+	'#ffffcc',
+]
+
+const Colorpicker = ({ onColor }: { onColor: (color: string) => void }) => (
+	<ul class="ps-0">
+		{colors
+			.sort((a, b) => parseInt(a.slice(1), 16) - parseInt(b.slice(1), 16))
+			.map((color) => (
+				<button
+					type="button"
+					class="btn px-3 py-3 mx-1 my-1"
+					style={{ backgroundColor: color }}
+					onClick={() => {
+						onColor(color)
+					}}
+				></button>
+			))}
+	</ul>
+)
