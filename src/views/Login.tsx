@@ -1,10 +1,11 @@
 import cx from 'classnames'
 import { useState } from 'preact/hooks'
 import { useAuth } from '../context/Auth.js'
+import { InternalError, type ProblemDetail } from '../context/Projects.js'
 export const Login = () => {
 	const { setUser } = useAuth()
 	const [success, setSuccess] = useState<string | undefined>()
-	const [error, setError] = useState<Error>()
+	const [error, setError] = useState<ProblemDetail>()
 	const [email, setEmail] = useState('')
 	const [pin, setPIN] = useState('')
 
@@ -13,8 +14,8 @@ export const Login = () => {
 
 	return (
 		<main class="container">
-			<div class="row">
-				<section class="col ">
+			<div class="row mt-3">
+				<section class="col-md-6 offset-md-3">
 					<div class="card">
 						<div class="card-header">
 							<h1>Login</h1>
@@ -27,7 +28,7 @@ export const Login = () => {
 							)}
 							{error && (
 								<div class="alert alert-danger" role="alert">
-									An error occured ({error.message})!
+									An error occured ({error.title})!
 								</div>
 							)}
 							<form onSubmit={noop}>
@@ -58,6 +59,9 @@ export const Login = () => {
 											})}
 											disabled={!isEmailValid}
 											onClick={() => {
+												setSuccess(undefined)
+												setError(undefined)
+												setPIN('')
 												fetch(`${API_ENDPOINT}/login/email`, {
 													method: 'POST',
 													body: JSON.stringify({ email }),
@@ -72,12 +76,12 @@ export const Login = () => {
 														if (res.ok) {
 															setSuccess('Please check your mailbox.')
 														} else {
-															console.error(await res.json())
+															setError(await res.json())
 														}
 													})
 													.catch((error) => {
 														console.error(error)
-														setError(error)
+														setError(InternalError(error.message))
 													})
 											}}
 										>
@@ -113,6 +117,7 @@ export const Login = () => {
 											})}
 											onClick={() => {
 												setError(undefined)
+												setSuccess(undefined)
 												fetch(`${API_ENDPOINT}/login/email/pin`, {
 													method: 'POST',
 													body: JSON.stringify({ email, pin }),
@@ -139,12 +144,12 @@ export const Login = () => {
 																	setUser(user)
 																})
 														} else {
-															console.error(await res.json())
+															setError(await res.json())
 														}
 													})
 													.catch((error) => {
 														console.error(error)
-														setError(error)
+														setError(InternalError(error.message))
 													})
 											}}
 										>
