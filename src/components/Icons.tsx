@@ -8,6 +8,7 @@ import {
 	MoreHorizontal,
 	Palette,
 	Plus,
+	ScrollText,
 	Send,
 	SmilePlus,
 	Sprout,
@@ -63,3 +64,4 @@ export const QuestionIcon = icon(HelpCircle)
 export const HelpIcon = icon(HelpCircle)
 export const AuthorIcon = icon(UserCircle2)
 export const MembersIcon = icon(Users)
+export const ReportIcon = icon(ScrollText)

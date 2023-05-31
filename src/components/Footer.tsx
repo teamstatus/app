@@ -7,6 +7,7 @@ import {
 	HelpIcon,
 	LogoutIcon,
 	ProjectsIcon,
+	ReportIcon,
 	SubMenuIcon,
 	UserIcon,
 } from './Icons.js'
@@ -61,11 +62,18 @@ export const Footer = () => {
 					{settingsVisible && (
 						<>
 							{user.id !== undefined && (
-								<div class="d-flex flex-column align-items-center">
-									<a href="/projects" class="btn btn-success">
-										<ProjectsIcon />
-									</a>
-								</div>
+								<>
+									<div class="d-flex flex-column align-items-center">
+										<a href="/projects" class="btn btn-success">
+											<ProjectsIcon />
+										</a>
+									</div>
+									<div class="d-flex flex-column align-items-center">
+										<a href="/report" class="btn btn-primary">
+											<ReportIcon />
+										</a>
+									</div>
+								</>
 							)}
 							<div class="d-flex flex-column align-items-center">
 								<a href="/" class="btn btn-secondary">
