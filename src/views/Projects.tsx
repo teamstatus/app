@@ -92,7 +92,6 @@ const ProjectInfo = ({
 						id={id}
 						onClick={() => toggleProject(id)}
 						checked={isVisible(id)}
-						placeholder="a short alias"
 					/>{' '}
 					{id}
 				</label>

@@ -7,8 +7,8 @@ import {
 	HelpIcon,
 	LogoutIcon,
 	ProjectsIcon,
-	ReportIcon,
 	SubMenuIcon,
+	SyncIcon,
 	UserIcon,
 } from './Icons.js'
 
@@ -69,8 +69,8 @@ export const Footer = () => {
 										</a>
 									</div>
 									<div class="d-flex flex-column align-items-center">
-										<a href="/report" class="btn btn-primary">
-											<ReportIcon />
+										<a href="/sync" class="btn btn-primary">
+											<SyncIcon />
 										</a>
 									</div>
 								</>

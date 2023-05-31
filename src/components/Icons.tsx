@@ -5,10 +5,10 @@ import {
 	ChevronRight,
 	HelpCircle,
 	LogOut,
+	MessagesSquare,
 	MoreHorizontal,
 	Palette,
 	Plus,
-	ScrollText,
 	Send,
 	SmilePlus,
 	Sprout,
@@ -50,6 +50,7 @@ export const CalendarIcon = icon(Calendar)
 export const CloseIcon = icon(X)
 export const BackIcon = icon(ChevronLeft)
 export const CollapseRightIcon = icon(ChevronRight)
+export const NextIcon = icon(ChevronRight)
 export const SubmitIcon = icon(Send)
 export const ColorsIcon = icon(Palette)
 export const AddIcon = icon(Plus)
@@ -64,4 +65,4 @@ export const QuestionIcon = icon(HelpCircle)
 export const HelpIcon = icon(HelpCircle)
 export const AuthorIcon = icon(UserCircle2)
 export const MembersIcon = icon(Users)
-export const ReportIcon = icon(ScrollText)
+export const SyncIcon = icon(MessagesSquare)

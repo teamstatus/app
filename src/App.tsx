@@ -8,10 +8,12 @@ import { About } from './views/About.js'
 import { ComposeStatus } from './views/ComposeStatus.js'
 import { CreateOrganization } from './views/CreateOrganization.js'
 import { CreateProject } from './views/CreateProject.js'
+import { CreateSync } from './views/CreateSync.js'
 import { InviteToProject } from './views/InviteToProject.js'
 import { Login } from './views/Login.js'
 import { Project } from './views/Project.js'
 import { Projects } from './views/Projects.js'
+import { Sync } from './views/Sync.js'
 import { User } from './views/User.js'
 
 export const App = () => {
@@ -25,6 +27,8 @@ export const App = () => {
 						<Router>
 							<Route path="/" component={About} />
 							<Route path="/projects" component={Projects} />
+							<Route path="/sync" component={Sync} />
+							<Route path="/sync/create" component={CreateSync} />
 							<Route path="/project/create" component={CreateProject} />
 							<Route
 								path="/organization/create"

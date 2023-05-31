@@ -48,3 +48,7 @@ h6 strong {
 .card-header h6 {
   margin-bottom: 0;
 }
+
+.markdown p:last-child {
+  margin-bottom: 0;
+}

@@ -105,7 +105,7 @@ const Status = ({ status }: { status: Status }) => {
 	const hasOperations = canDelete
 	return (
 		<div>
-			<div class="mt-2">
+			<div class="mt-2 mb-2">
 				<Markdown markdown={status.message} />
 			</div>
 			<div class="clearfix">
@@ -134,7 +134,7 @@ const Status = ({ status }: { status: Status }) => {
 						<CalendarIcon size={20} class="ms-2" />{' '}
 						<Ago date={new Date(decodeTime(status.id))} />
 					</small>
-					<span>
+					<span class={'text-nowrap'}>
 						{status.persisted === false && (
 							<PersistencePendingIcon class="me-1" />
 						)}
