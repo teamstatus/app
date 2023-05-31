@@ -58,6 +58,7 @@ export const ComposeStatus = ({
 								}
 								autoFocus
 							></textarea>
+							<div class="form-text">Markdown is supported.</div>
 						</div>
 					</div>
 					<div class="card-footer d-flex align-items-center justify-content-between">

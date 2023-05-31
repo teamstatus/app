@@ -11,6 +11,7 @@ import {
 	SubMenuIcon,
 	UserIcon,
 } from '../components/Icons.js'
+import { Markdown } from '../components/Markdown.js'
 import { ProjectHeader } from '../components/ProjectHeader.js'
 import { Reaction, SelectReaction } from '../components/Reactions.js'
 import { useAuth } from '../context/Auth.js'
@@ -107,7 +108,9 @@ const Status = ({ status }: { status: Status }) => {
 					<Ago date={new Date(decodeTime(status.id))} />
 				</small>
 			</div>
-			<div class="mt-2 mb-2">{status.message}</div>
+			<div class="mt-2 mb-2">
+				<Markdown markdown={status.message} />
+			</div>
 			<div class="clearfix">
 				{status.reactions.length > 0 && (
 					<div class="float-start mb-1">

@@ -66,7 +66,6 @@ export const CreateProject = () => {
 									required
 								/>
 							</div>
-
 							<div class="form-text">(required)</div>
 						</div>
 						<div class="mb-3">

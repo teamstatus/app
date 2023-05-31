@@ -83,6 +83,10 @@
     "lucide-preact": "0.229.0",
     "preact": "10.15.1",
     "preact-router": "4.1.1",
+    "rehype-format": "4.0.1",
+    "rehype-stringify": "9.0.3",
+    "remark": "14.0.3",
+    "remark-rehype": "10.1.0",
     "tsx": "3.12.7",
     "ulid": "2.3.0"
   }
