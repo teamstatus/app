@@ -1,5 +1,6 @@
 import {
 	AlertCircle,
+	Calendar,
 	ChevronLeft,
 	ChevronRight,
 	HelpCircle,
@@ -44,6 +45,7 @@ const icon =
 		)
 
 export const UserIcon = icon(User)
+export const CalendarIcon = icon(Calendar)
 export const CloseIcon = icon(X)
 export const BackIcon = icon(ChevronLeft)
 export const CollapseRightIcon = icon(ChevronRight)

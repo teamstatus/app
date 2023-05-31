@@ -5,6 +5,7 @@ import { Ago } from '../components/Ago.js'
 import {
 	AddIcon,
 	AddReactionIcon,
+	CalendarIcon,
 	CollapseRightIcon,
 	DeleteIcon,
 	PersistencePendingIcon,
@@ -94,26 +95,22 @@ export const Project = ({
 }
 
 const Status = ({ status }: { status: Status }) => {
-	const [reactionActionsVisible, showReactionsActions] = useState(false)
+	const [reactionsVisible, showReactions] = useState(false)
+	const [operationsVisible, showOperations] = useState(false)
 	const { user } = useAuth()
 	const userId = user?.id
-	const { addReaction, deleteReaction } = useStatus()
+	const { addReaction, deleteReaction, deleteStatus } = useStatus()
+	const actionsVisible = reactionsVisible || operationsVisible
+	const canDelete = userId === status.author
+	const hasOperations = canDelete
 	return (
 		<div>
-			<div class="d-flex align-items-center justify-content-between  text-muted">
-				<small>
-					<UserIcon size={20} /> {status.author}
-				</small>
-				<small>
-					<Ago date={new Date(decodeTime(status.id))} />
-				</small>
-			</div>
-			<div class="mt-2 mb-2">
+			<div class="mt-2">
 				<Markdown markdown={status.message} />
 			</div>
 			<div class="clearfix">
 				{status.reactions.length > 0 && (
-					<div class="float-start mb-1">
+					<div class="float-start mb-2">
 						{status.reactions.map((reaction) => {
 							const isAuthor = reaction.author === userId
 							return (
@@ -129,71 +126,75 @@ const Status = ({ status }: { status: Status }) => {
 						})}
 					</div>
 				)}
-				<div class="float-end d-flex flex-row align-items-center">
-					{!reactionActionsVisible && (
-						<>
-							{status.persisted === false && (
-								<PersistencePendingIcon class="me-1" />
-							)}
-							<DeleteStatus status={status} key={status.id} />
-							<button
-								type="button"
-								class="btn btn-sm btn-light"
-								onClick={() => showReactionsActions(true)}
-							>
-								<AddReactionIcon />
-							</button>
-						</>
-					)}
-					{reactionActionsVisible && (
-						<>
-							<SelectReaction
-								onReaction={(reaction) => {
-									addReaction(status, reaction)
-								}}
-							/>
-							<button
-								type="button"
-								class="btn btn-sm btn-light"
-								onClick={() => showReactionsActions(false)}
-							>
-								<CollapseRightIcon />
-							</button>
-						</>
-					)}
-				</div>
 			</div>
-		</div>
-	)
-}
-
-const DeleteStatus = ({ status }: { status: Status }) => {
-	const [expanded, setExpanded] = useState(false)
-	const { deleteStatus } = useStatus()
-	const { user } = useAuth()
-	const userId = user?.id
-
-	if (userId === undefined || userId !== status.author) return null
-	return (
-		<>
-			{expanded && (
-				<button
-					type="button"
-					class="btn btn-sm btn-outline-danger me-1"
-					onClick={() => {
-						deleteStatus(status)
-					}}
-				>
-					<DeleteIcon />
-				</button>
+			{!actionsVisible && (
+				<div class="d-flex align-items-center justify-content-between">
+					<small class="text-muted">
+						<UserIcon size={20} /> {status.author}{' '}
+						<CalendarIcon size={20} class="ms-2" />{' '}
+						<Ago date={new Date(decodeTime(status.id))} />
+					</small>
+					<span>
+						{status.persisted === false && (
+							<PersistencePendingIcon class="me-1" />
+						)}
+						{hasOperations && (
+							<button
+								type="button"
+								class="btn btn-sm btn-light me-1"
+								onClick={() => showOperations(true)}
+							>
+								<SubMenuIcon />
+							</button>
+						)}
+						<button
+							type="button"
+							class="btn btn-sm btn-light"
+							onClick={() => showReactions(true)}
+						>
+							<AddReactionIcon />
+						</button>
+					</span>
+				</div>
 			)}
-			<button
-				type="button"
-				class="btn btn-sm btn-light me-1"
-				onClick={() => setExpanded((e) => !e)}
-			>
-				{expanded ? <CollapseRightIcon /> : <SubMenuIcon />}
-			</button>
-		</>
+			{reactionsVisible && (
+				<div class="d-flex align-items-center justify-content-end">
+					<SelectReaction
+						onReaction={(reaction) => {
+							addReaction(status, reaction)
+						}}
+					/>
+					<button
+						type="button"
+						class="btn btn-sm btn-light"
+						onClick={() => showReactions(false)}
+					>
+						<CollapseRightIcon />
+					</button>
+				</div>
+			)}
+			{operationsVisible && (
+				<div class="d-flex align-items-center justify-content-end">
+					{canDelete && (
+						<button
+							type="button"
+							class="btn btn-sm btn-outline-danger me-1"
+							onClick={() => {
+								deleteStatus(status)
+							}}
+						>
+							<DeleteIcon />
+						</button>
+					)}
+					<button
+						type="button"
+						class="btn btn-sm btn-light"
+						onClick={() => showOperations(false)}
+					>
+						<CollapseRightIcon />
+					</button>
+				</div>
+			)}
+		</div>
 	)
 }
