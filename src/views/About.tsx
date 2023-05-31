@@ -1,8 +1,8 @@
 import { Ago } from '../components/Ago.js'
+import { colors } from '../components/Colorpicker.js'
 import { ReactionsHelp } from '../components/ReactionsHelp.js'
 import { SelectID } from '../components/SelectID.js'
 import { useAuth } from '../context/Auth.js'
-import { colors } from './Projects.js'
 
 export const About = () => {
 	const { user } = useAuth()
