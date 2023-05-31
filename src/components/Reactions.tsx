@@ -23,8 +23,14 @@ export const newVersionRelease: TReaction = {
 	role: ReactionRole.SIGNIFICANT,
 }
 
+export const decision: TReaction = {
+	description: 'A decision was made',
+	emoji: '✍️',
+	role: ReactionRole.SIGNIFICANT,
+}
+
 export const question: TReaction = {
-	description: 'This item needs to be discussed during the next sync meeting',
+	description: 'This item needs to be elaborated during the next sync meeting',
 	emoji: '🙋',
 	role: ReactionRole.QUESTION,
 }
@@ -40,6 +46,7 @@ export const thumbsUp = {
 
 export const reactionPresets: TReaction[] = [
 	newVersionRelease,
+	decision,
 	question,
 	praise,
 	thumbsUp,
