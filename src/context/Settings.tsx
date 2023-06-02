@@ -13,6 +13,7 @@ export const SettingsContext = createContext<{
 	showProject: (id: string) => void
 	hideProject: (id: string) => void
 	toggleProject: (id: string) => void
+	bumpProject: (id: string) => void
 	isVisible: (id: string) => boolean
 	getProjectPersonalization: (id: string) => ProjectPersonalization
 	personalizeProject: (
@@ -24,6 +25,7 @@ export const SettingsContext = createContext<{
 	hideProject: () => undefined,
 	showProject: () => undefined,
 	toggleProject: () => undefined,
+	bumpProject: () => undefined,
 	isVisible: () => false,
 	getProjectPersonalization: () => ({ name: '', color: 'black' }),
 	personalizeProject: () => undefined,
@@ -116,6 +118,19 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						...personalizations,
 						[id]: merge(personalizations[id], { name, color }),
 					}))
+				},
+				bumpProject: (id) => {
+					setVisibleProjects((visibleProjects) => {
+						const pos = visibleProjects.indexOf(id)
+						console.log(visibleProjects)
+						const newVis = [
+							...visibleProjects.slice(0, pos - 1),
+							id,
+							...visibleProjects.slice(pos - 1),
+						]
+						console.log(newVis)
+						return [...new Set(newVis)]
+					})
 				},
 			}}
 		>

@@ -1,8 +1,10 @@
 import {
 	AlertCircle,
 	Calendar,
+	ChevronDown,
 	ChevronLeft,
 	ChevronRight,
+	ChevronUp,
 	HelpCircle,
 	LogOut,
 	MessagesSquare,
@@ -66,3 +68,5 @@ export const HelpIcon = icon(HelpCircle)
 export const AuthorIcon = icon(UserCircle2)
 export const MembersIcon = icon(Users)
 export const SyncIcon = icon(MessagesSquare)
+export const UpIcon = icon(ChevronUp)
+export const DownIcon = icon(ChevronDown)

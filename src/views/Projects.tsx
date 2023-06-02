@@ -6,12 +6,14 @@ import {
 	ColorsIcon,
 	MembersIcon,
 	PersistencePendingIcon,
+	UpIcon,
 } from '../components/Icons.js'
 import { Role, useProjects, type Project } from '../context/Projects.js'
 import { useSettings } from '../context/Settings.js'
 
 export const Projects = () => {
 	const { projects } = useProjects()
+	const { visibleProjects } = useSettings()
 	return (
 		<main class="container">
 			<div class="row mt-3">
@@ -21,9 +23,20 @@ export const Projects = () => {
 							<h1>Projects</h1>
 						</div>
 						<div class="card-body">
-							{Object.values(projects).map((project) => (
-								<ProjectInfo project={project} />
-							))}
+							{Object.values(projects)
+								.sort(
+									(p1, p2) =>
+										(visibleProjects().indexOf(p1.id) ??
+											Number.MAX_SAFE_INTEGER) -
+										(visibleProjects().indexOf(p2.id) ??
+											Number.MAX_SAFE_INTEGER),
+								)
+								.sort((_, { id: p2 }) =>
+									visibleProjects().includes(p2) ? 1 : -1,
+								)
+								.map((project) => (
+									<ProjectInfo project={project} />
+								))}
 							{Object.values(projects).length === 0 && (
 								<div class="row">
 									<div class="col">
@@ -78,12 +91,16 @@ const ProjectInfo = ({
 		isVisible,
 		personalizeProject,
 		getProjectPersonalization,
+		visibleProjects,
+		bumpProject,
 	} = useSettings()
 
 	const [colorsVisible, setColorsVisible] = useState(false)
+	const visible = isVisible(id)
+	const pos = visibleProjects().indexOf(id) ?? Number.MAX_SAFE_INTEGER
 
 	return (
-		<div class="mb-3">
+		<div class="mb-2">
 			<div class="form-check">
 				<label htmlFor={id}>
 					<input
@@ -91,7 +108,7 @@ const ProjectInfo = ({
 						type="checkbox"
 						id={id}
 						onClick={() => toggleProject(id)}
-						checked={isVisible(id)}
+						checked={visible}
 					/>{' '}
 					{id}
 				</label>
@@ -122,6 +139,17 @@ const ProjectInfo = ({
 							>
 								<MembersIcon />
 							</a>
+						)}
+						{visible && pos !== 0 && (
+							<button
+								type="button"
+								class="btn"
+								onClick={() => {
+									bumpProject(id)
+								}}
+							>
+								<UpIcon />
+							</button>
 						)}
 					</>
 				)}
