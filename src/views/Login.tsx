@@ -53,7 +53,7 @@ export const Login = () => {
 									<div class="ms-3">
 										<button
 											type="button"
-											class={cx('btn', {
+											class={cx('btn text-nowrap', {
 												'btn-outline-primary': isEmailValid,
 												'btn-outline-secondary': !isEmailValid,
 											})}
@@ -111,7 +111,7 @@ export const Login = () => {
 										<button
 											type="submit"
 											disabled={!isPINValid}
-											class={cx('btn', {
+											class={cx('btn text-nowrap', {
 												'btn-primary': isPINValid,
 												'btn-secondary': !isPINValid,
 											})}
