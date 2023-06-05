@@ -2,6 +2,7 @@ import { decodeTime } from 'ulid'
 import { QuestionIcon } from '../components/Icons.js'
 import { Markdown } from '../components/Markdown.js'
 import { useProjects, type Project } from '../context/Projects.js'
+import { useSettings } from '../context/Settings.js'
 import {
 	ReactionRole,
 	useStatus,
@@ -11,13 +12,20 @@ import {
 
 export const CreateSync = ({ url }: { url: string }) => {
 	const { projects } = useProjects()
+	const { visibleProjects } = useSettings()
 	const projectsQuery =
 		new URLSearchParams(new URL(url, document.baseURI).search)
 			.get('projects')
 			?.split(',') ?? []
-	const selectedProjects = Object.keys(projects).filter((id) =>
-		projectsQuery.includes(id),
-	)
+	const visible = visibleProjects()
+	const selectedProjects = Object.keys(projects)
+		.filter((id) => projectsQuery.includes(id))
+		.sort((a, b) => {
+			return (
+				(visible.indexOf(a) ?? Number.MAX_SAFE_INTEGER) -
+				(visible.indexOf(b) ?? Number.MAX_SAFE_INTEGER)
+			)
+		})
 
 	return (
 		<main class="container">
@@ -101,7 +109,7 @@ const ProjectSync = ({ project }: { project: Project }) => {
 							))}
 						</div>
 					</div>
-					<h3>Remaining updates</h3>
+					{normal.length > 0 && <h3>Remaining updates</h3>}
 				</>
 			)}
 			{normal.map((status) => (
@@ -127,11 +135,18 @@ const StatusSync = ({ status }: { status: Status }) => {
 					<em>{reaction.description ?? 'No description available.'}</em>
 				</div>
 			))}
-			<Markdown markdown={status.message} />
-			<small class="text-muted">
-				{status.author},{' '}
-				<time dateTime={ts.toISOString()}>{ts.toLocaleDateString()}</time>
-			</small>
+			<div class="d-flex align-items-center justify-content-start">
+				<div class="d-flex align-items-center justify-content-start me-2">
+					<small class="float-start me-1 text-muted mt-1 text-nowrap">
+						(
+						<time dateTime={ts.toISOString()}>
+							{ts.toISOString().slice(0, 10)}
+						</time>
+						)
+					</small>
+				</div>
+				<Markdown markdown={status.message} />
+			</div>
 		</div>
 	)
 }
