@@ -122,13 +122,11 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 				bumpProject: (id) => {
 					setVisibleProjects((visibleProjects) => {
 						const pos = visibleProjects.indexOf(id)
-						console.log(visibleProjects)
 						const newVis = [
 							...visibleProjects.slice(0, pos - 1),
 							id,
 							...visibleProjects.slice(pos - 1),
 						]
-						console.log(newVis)
 						return [...new Set(newVis)]
 					})
 				},

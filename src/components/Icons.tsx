@@ -10,6 +10,7 @@ import {
 	MessagesSquare,
 	MoreHorizontal,
 	Palette,
+	Pen,
 	Plus,
 	Send,
 	SmilePlus,
@@ -62,6 +63,7 @@ export const LogoutIcon = icon(LogOut)
 export const SubMenuIcon = icon(MoreHorizontal)
 export const AddReactionIcon = icon(SmilePlus)
 export const DeleteIcon = icon(Trash)
+export const EditIcon = icon(Pen)
 export const SignificantIcon = icon(AlertCircle)
 export const QuestionIcon = icon(HelpCircle)
 export const HelpIcon = icon(HelpCircle)

@@ -8,6 +8,7 @@ import {
 	CalendarIcon,
 	CollapseRightIcon,
 	DeleteIcon,
+	EditIcon,
 	PersistencePendingIcon,
 	SubMenuIcon,
 	UserIcon,
@@ -22,8 +23,8 @@ export const Status = ({ status }: { status: TStatus }) => {
 	const userId = user?.id
 	const { addReaction, deleteReaction, deleteStatus } = useStatus()
 	const actionsVisible = reactionsVisible || operationsVisible
-	const canDelete = userId === status.author
-	const hasOperations = canDelete
+	const canEdit = userId === status.author
+	const hasOperations = canEdit
 	return (
 		<div>
 			<div class="mt-2 mb-2">
@@ -57,6 +58,11 @@ export const Status = ({ status }: { status: TStatus }) => {
 						<span class="text-nowrap d-flex align-items-center">
 							<CalendarIcon size={20} class="me-1" />{' '}
 							<Ago date={new Date(decodeTime(status.id))} />
+							{status.version > 1 && (
+								<>
+									<EditIcon size={20} class={'ms-1'} /> {status.version}
+								</>
+							)}
 						</span>
 					</small>
 					<span class={'text-nowrap'}>
@@ -100,16 +106,24 @@ export const Status = ({ status }: { status: TStatus }) => {
 			)}
 			{operationsVisible && (
 				<div class="d-flex align-items-center justify-content-end">
-					{canDelete && (
-						<button
-							type="button"
-							class="btn btn-sm btn-outline-danger me-1"
-							onClick={() => {
-								deleteStatus(status)
-							}}
-						>
-							<DeleteIcon />
-						</button>
+					{canEdit && (
+						<>
+							<button
+								type="button"
+								class="btn btn-sm btn-outline-danger me-1"
+								onClick={() => {
+									deleteStatus(status)
+								}}
+							>
+								<DeleteIcon />
+							</button>
+							<a
+								class="btn btn-sm btn-outline-secondary me-1"
+								href={`/status/${encodeURIComponent(status.id)}/edit`}
+							>
+								<EditIcon />
+							</a>
+						</>
 					)}
 					<button
 						type="button"

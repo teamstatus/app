@@ -43,12 +43,12 @@ export const ComposeStatus = ({
 							</div>
 						)}
 						<div class="mb-3">
-							<label for="exampleFormControlTextarea1" class="form-label">
+							<label for="statusUpdate" class="form-label">
 								Describe your status update
 							</label>
 							<textarea
 								class="form-control"
-								id="exampleFormControlTextarea1"
+								id="statusUpdate"
 								rows={3}
 								placeholder='e.g. "Implemented the validation for the UI"'
 								minLength={1}

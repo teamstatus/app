@@ -9,6 +9,7 @@ import { ComposeStatus } from './views/ComposeStatus.js'
 import { CreateOrganization } from './views/CreateOrganization.js'
 import { CreateProject } from './views/CreateProject.js'
 import { CreateSync } from './views/CreateSync.js'
+import { EditStatus } from './views/EditStatus.js'
 import { InviteToProject } from './views/InviteToProject.js'
 import { Login } from './views/Login.js'
 import { Project } from './views/Project.js'
@@ -38,6 +39,7 @@ export const App = () => {
 							<Route path="/project/:id/compose" component={ComposeStatus} />
 							<Route path="/project/:id/invite" component={InviteToProject} />
 							<Route path="/user" component={User} />
+							<Route path="/status/:id/edit" component={EditStatus} />
 						</Router>
 					</StatusProvider>
 					<Footer />

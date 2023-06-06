@@ -43,6 +43,10 @@ export type StatusContext = {
 		projectId: string,
 		message: string,
 	) => { error: string } | { id: string }
+	updateStatus: (
+		status: Status,
+		message: string,
+	) => { error: string } | { version: number }
 	deleteStatus: (status: Status) => { error: string } | { success: true }
 	addReaction: (
 		status: Status,
@@ -52,14 +56,17 @@ export type StatusContext = {
 		status: Status,
 		reaction: PersistedReaction,
 	) => { error: string } | { success: true }
+	statusById: (id: string) => Status | undefined
 }
 
 export const StatusContext = createContext<StatusContext>({
 	projectStatus: () => [],
 	addProjectStatus: () => ({ error: 'Not ready.' }),
+	updateStatus: () => ({ error: 'Not ready.' }),
 	deleteStatus: () => ({ error: 'Not ready.' }),
 	addReaction: () => ({ error: 'Not ready.' }),
 	deleteReaction: () => ({ error: 'Not ready.' }),
+	statusById: () => undefined,
 })
 
 export const Provider = ({ children }: { children: ComponentChildren }) => {
@@ -300,6 +307,71 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						).catch(console.error)
 					}
 					return { success: true }
+				},
+				statusById: (id) =>
+					Object.values(status)
+						.flat()
+						.find((status) => status.id === id),
+				updateStatus: (status, message) => {
+					setStatus((allStatus) => {
+						let updatedStatus = (allStatus[status.project] ?? [])?.find(
+							({ id }) => id === status.id,
+						)
+						if (updatedStatus === undefined)
+							updatedStatus = {
+								...status,
+							}
+						updatedStatus.message = message
+						updatedStatus.persisted = false
+						const remainingStatus = (allStatus[status.project] ?? []).filter(
+							({ id }) => id !== status.id,
+						)
+
+						return {
+							...allStatus,
+							[status.project]: [updatedStatus, ...remainingStatus],
+						}
+					})
+					fetch(`${API_ENDPOINT}/status/${status.id}`, {
+						method: 'PATCH',
+						headers: {
+							'Content-Type': 'application/json; charset=utf-8',
+							Accept: 'application/json; charset=utf-8',
+							'if-match': status.version.toString(),
+						},
+						mode: 'cors',
+						credentials: 'include',
+						body: JSON.stringify({ message }),
+					})
+						.then(() => {
+							setStatus((allStatus) => {
+								const projectStatus = allStatus[status.project] ?? []
+								const persistedStatus = projectStatus.find(
+									({ id: statusId }) => status.id === statusId,
+								)
+
+								let updatedStatus = projectStatus.filter(
+									({ id: statusId }) => statusId !== status.id,
+								)
+								if (persistedStatus !== undefined) {
+									updatedStatus = [
+										{
+											...persistedStatus,
+											persisted: true,
+											version: persistedStatus.version + 1,
+										},
+										...updatedStatus,
+									]
+								}
+								return {
+									...allStatus,
+									[status.project]: updatedStatus,
+								}
+							})
+						})
+						.catch(console.error)
+
+					return { version: status.version + 1 }
 				},
 			}}
 		>
