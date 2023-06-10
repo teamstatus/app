@@ -26,7 +26,7 @@ export const Status = ({ status }: { status: TStatus }) => {
 	const canEdit = userId === status.author
 	const hasOperations = canEdit
 	return (
-		<div>
+		<>
 			<div class="mt-2 mb-2">
 				<Markdown markdown={status.message} />
 			</div>
@@ -134,6 +134,6 @@ export const Status = ({ status }: { status: TStatus }) => {
 					</button>
 				</div>
 			)}
-		</div>
+		</>
 	)
 }

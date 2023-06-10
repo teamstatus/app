@@ -38,14 +38,16 @@ export const Project = ({
 			<main class="container" key={project.id}>
 				<section>
 					{status.map((status) => (
-						<>
-							<Status status={status} />
-							<hr />
-						</>
+						<div class="row">
+							<div class="col-12 col-md-6 offset-md-3">
+								<Status status={status} />
+								<hr />
+							</div>
+						</div>
 					))}
 					{status.length === 0 && (
 						<div class="row">
-							<div class="col">
+							<div class="col-12 col-md-6 offset-md-3">
 								<p>No status updates, yet.</p>
 								<p>
 									<a href={`/project/${encodeURIComponent(id)}/compose`}>
