@@ -5,6 +5,8 @@ import {
 	ChevronLeft,
 	ChevronRight,
 	ChevronUp,
+	Eye,
+	EyeOff,
 	HelpCircle,
 	LogOut,
 	MessagesSquare,
@@ -72,3 +74,5 @@ export const MembersIcon = icon(Users)
 export const SyncIcon = icon(MessagesSquare)
 export const UpIcon = icon(ChevronUp)
 export const DownIcon = icon(ChevronDown)
+export const VisibleIcon = icon(Eye)
+export const HiddenIcon = icon(EyeOff)

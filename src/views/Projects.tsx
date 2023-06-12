@@ -1,12 +1,15 @@
+import cx from 'classnames'
 import { useState } from 'preact/hooks'
 import { AcceptProjectInvitation } from '../components/AcceptProjectInvitation.js'
 import { Colorpicker } from '../components/Colorpicker.js'
 import {
 	AddIcon,
 	ColorsIcon,
+	HiddenIcon,
 	MembersIcon,
 	PersistencePendingIcon,
 	UpIcon,
+	VisibleIcon,
 } from '../components/Icons.js'
 import { Role, useProjects, type Project } from '../context/Projects.js'
 import { useSettings } from '../context/Settings.js'
@@ -17,7 +20,7 @@ export const Projects = () => {
 	return (
 		<main class="container">
 			<div class="row mt-3">
-				<div class="col">
+				<div class="col-12 col-md-6 offset-md-3">
 					<div class="card">
 						<div class="card-header">
 							<h1>Projects</h1>
@@ -35,7 +38,7 @@ export const Projects = () => {
 									visibleProjects().includes(p2) ? 1 : -1,
 								)
 								.map((project) => (
-									<ProjectInfo project={project} />
+									<ProjectInfo key={project.id} project={project} />
 								))}
 							{Object.values(projects).length === 0 && (
 								<div class="row">
@@ -54,7 +57,7 @@ export const Projects = () => {
 			</div>
 
 			<div class="row mt-3">
-				<div class="col">
+				<div class="col-12 col-md-6 offset-md-3">
 					<AcceptProjectInvitation />
 				</div>
 			</div>
@@ -101,21 +104,32 @@ const ProjectInfo = ({
 
 	return (
 		<div class="mb-2">
-			<div class="form-check">
-				<label htmlFor={id}>
-					<input
-						class="form-check-input"
-						type="checkbox"
-						id={id}
-						onClick={() => toggleProject(id)}
-						checked={visible}
-					/>{' '}
-					{id}
-				</label>
-			</div>
+			{id}
 			<div class="d-flex align-items-center justify-content-between">
 				{!colorsVisible && (
 					<>
+						<button
+							type="button"
+							class={cx('btn btn-sm me-2', {
+								'btn-outline-danger': !visible,
+								'btn-outline-success': visible,
+							})}
+							onClick={() => toggleProject(id)}
+						>
+							{visible ? <VisibleIcon /> : <HiddenIcon />}
+						</button>
+						{visible && (
+							<button
+								type="button"
+								class="btn btn-sm btn-outline-secondary me-2"
+								disabled={pos === 0}
+								onClick={() => {
+									bumpProject(id)
+								}}
+							>
+								<UpIcon />
+							</button>
+						)}
 						<ProjectAlias
 							currentValue={getProjectPersonalization(id).name}
 							onAlias={(alias) => {
@@ -139,17 +153,6 @@ const ProjectInfo = ({
 							>
 								<MembersIcon />
 							</a>
-						)}
-						{visible && pos !== 0 && (
-							<button
-								type="button"
-								class="btn"
-								onClick={() => {
-									bumpProject(id)
-								}}
-							>
-								<UpIcon />
-							</button>
 						)}
 					</>
 				)}
