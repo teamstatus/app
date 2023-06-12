@@ -11,7 +11,7 @@ export const Sync = () => {
 	return (
 		<main class="container">
 			<div class="row mt-3">
-				<div class="col">
+				<div class="col-12 col-md-6 offset-md-3">
 					<div class="card">
 						<div class="card-header">
 							<h1>Select projects for a sync</h1>
@@ -41,7 +41,7 @@ export const Sync = () => {
 								))}
 							{Object.values(projects).length === 0 && (
 								<div class="row">
-									<div class="col">
+									<div class="col-12 col-md-6 offset-md-3">
 										<p>You have no projects,yet.</p>
 										<p>
 											<a href="/project/create">Create a new project</a>, or ask

@@ -17,6 +17,8 @@ export const Footer = () => {
 	const { getProjectPersonalization, visibleProjects } = useSettings()
 	const [settingsVisible, setSettingsVisible] = useState(false)
 
+	const hideSettings = () => setSettingsVisible(false)
+
 	return (
 		<footer class="fixed-bottom bg-dark text-white container-fluid d-flex align-items-center justify-content-between px-2 py-2">
 			{user && (
@@ -64,24 +66,36 @@ export const Footer = () => {
 							{user.id !== undefined && (
 								<>
 									<div class="d-flex flex-column align-items-center">
-										<a href="/projects" class="btn btn-success">
+										<a
+											href="/projects"
+											class="btn btn-success"
+											onClick={hideSettings}
+										>
 											<ProjectsIcon />
 										</a>
 									</div>
 									<div class="d-flex flex-column align-items-center">
-										<a href="/sync" class="btn btn-primary">
+										<a
+											href="/sync"
+											onClick={hideSettings}
+											class="btn btn-primary"
+										>
 											<SyncIcon />
 										</a>
 									</div>
 								</>
 							)}
 							<div class="d-flex flex-column align-items-center">
-								<a href="/" class="btn btn-secondary">
+								<a href="/" onClick={hideSettings} class="btn btn-secondary">
 									<HelpIcon />
 								</a>
 							</div>
 							<div class="d-flex flex-column align-items-center">
-								<a href="/user" class="btn btn-secondary">
+								<a
+									href="/user"
+									onClick={hideSettings}
+									class="btn btn-secondary"
+								>
 									<UserIcon />
 								</a>
 							</div>

@@ -30,7 +30,7 @@ export const CreateSync = ({ url }: { url: string }) => {
 	return (
 		<main class="container">
 			<header class="row mt-3">
-				<div class="col">
+				<div class="col-12 col-md-6 offset-md-3">
 					<h1>Teamstatus Sync</h1>
 					<p>
 						<small>
@@ -43,7 +43,7 @@ export const CreateSync = ({ url }: { url: string }) => {
 				</div>
 			</header>
 			<div class="row mt-3">
-				<div class="col">
+				<div class="col-12 col-md-6 offset-md-3">
 					{selectedProjects.map((id) => (
 						<ProjectSync project={projects[id] as Project} />
 					))}

@@ -8,13 +8,13 @@ export const ReactionsHelp = () => {
 	return (
 		<section>
 			<div class="row mt-3">
-				<div class="col">
+				<div class="col-12 col-md-6 offset-md-3">
 					<h2>Reactions</h2>
 				</div>
 			</div>
 
 			<div class="row mt-1">
-				<div class="col">
+				<div class="col-12 col-md-6 offset-md-3">
 					A user icon marks reactions given by you:{' '}
 					<Reaction
 						reaction={{
