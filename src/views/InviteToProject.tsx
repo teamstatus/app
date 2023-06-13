@@ -2,7 +2,8 @@ import cx from 'classnames'
 import { route } from 'preact-router'
 import { useState } from 'preact/hooks'
 import { BackIcon, ProjectsIcon, SubmitIcon } from '../components/Icons.js'
-import { useProjects, type ProblemDetail } from '../context/Projects.js'
+import { type ProblemDetail } from '../context/ProblemDetail.js'
+import { useProjects } from '../context/Projects.js'
 import { isUserId, slugPart } from '../proto/ids.js'
 
 export const InviteToProject = ({

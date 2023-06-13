@@ -1,6 +1,7 @@
 import {
 	AlertCircle,
 	Calendar,
+	Check,
 	ChevronDown,
 	ChevronLeft,
 	ChevronRight,
@@ -76,3 +77,4 @@ export const UpIcon = icon(ChevronUp)
 export const DownIcon = icon(ChevronDown)
 export const VisibleIcon = icon(Eye)
 export const HiddenIcon = icon(EyeOff)
+export const ApplyIcon = icon(Check)

@@ -76,7 +76,7 @@ export const Footer = () => {
 									</div>
 									<div class="d-flex flex-column align-items-center">
 										<a
-											href="/sync"
+											href="/sync/create"
 											onClick={hideSettings}
 											class="btn btn-primary"
 										>

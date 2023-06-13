@@ -2,7 +2,10 @@ import { createContext, type ComponentChildren } from 'preact'
 import { useContext, useEffect, useState } from 'preact/hooks'
 import { ulid } from 'ulid'
 import { useAuth } from './Auth.js'
+import { InternalError } from './InternalError.js'
+import { type ProblemDetail } from './ProblemDetail.js'
 import { useSettings } from './Settings.js'
+import { handleResponse } from './handleResponse.js'
 
 // Reactions can have special roles
 export enum ReactionRole {
@@ -39,6 +42,10 @@ export type Status = {
 
 export type StatusContext = {
 	projectStatus: (projectId: string) => Status[]
+	fetchProjectStatus: (
+		projectId: string,
+		startDate?: Date,
+	) => Promise<{ status: Status[] } | { error: ProblemDetail }>
 	addProjectStatus: (
 		projectId: string,
 		message: string,
@@ -67,6 +74,8 @@ export const StatusContext = createContext<StatusContext>({
 	addReaction: () => ({ error: 'Not ready.' }),
 	deleteReaction: () => ({ error: 'Not ready.' }),
 	statusById: () => undefined,
+	fetchProjectStatus: async () =>
+		Promise.resolve({ error: InternalError('Not ready.') }),
 })
 
 export const Provider = ({ children }: { children: ComponentChildren }) => {
@@ -192,7 +201,6 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 
 					return { success: true }
 				},
-
 				addReaction: (status, reaction) => {
 					const author = user?.id
 					if (author === undefined) return { error: 'Not authorized!' }
@@ -372,6 +380,31 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						.catch(console.error)
 
 					return { version: status.version + 1 }
+				},
+				fetchProjectStatus: async (id, startDate) => {
+					let url = `${API_ENDPOINT}/project/${encodeURIComponent(id)}/status`
+					if (startDate !== undefined) {
+						url += `?${new URLSearchParams({
+							inclusiveStartDate: startDate?.toISOString(),
+						}).toString()}`
+					}
+					return fetch(url, {
+						method: 'GET',
+						headers: {
+							'Content-Type': 'application/json; charset=utf-8',
+							Accept: 'application/json; charset=utf-8',
+						},
+						mode: 'cors',
+						credentials: 'include',
+					})
+						.then(async (res) => handleResponse(res))
+						.then(async (res) => {
+							if ('error' in res) return res
+							if (res.result === null)
+								return { error: InternalError('No response..') }
+							return { status: res.result.status as Status[] }
+						})
+						.catch((error) => ({ error: InternalError(error.message) }))
 				},
 			}}
 		>

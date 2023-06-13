@@ -1,7 +1,8 @@
 import cx from 'classnames'
 import { useState } from 'preact/hooks'
 import { useAuth } from '../context/Auth.js'
-import { InternalError, type ProblemDetail } from '../context/Projects.js'
+import { InternalError } from '../context/InternalError.js'
+import { type ProblemDetail } from '../context/ProblemDetail.js'
 export const Login = () => {
 	const { setUser } = useAuth()
 	const [success, setSuccess] = useState<string | undefined>()

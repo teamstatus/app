@@ -3,6 +3,9 @@ import { useContext, useEffect, useState } from 'preact/hooks'
 import { ulid } from 'ulid'
 import { parseInvitationId, parseProjectId } from '../proto/ids.js'
 import { useAuth } from './Auth.js'
+import { InternalError } from './InternalError.js'
+import { type ProblemDetail } from './ProblemDetail.js'
+import { handleResponse } from './handleResponse.js'
 
 export type Organization = {
 	id: string
@@ -224,40 +227,3 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 export const Consumer = ProjectsContext.Consumer
 
 export const useProjects = () => useContext(ProjectsContext)
-
-const handleResponse = async <Result extends Record<string, any>>(
-	res: Response,
-): Promise<{ error: ProblemDetail } | { result: Result | null }> => {
-	if (
-		res.headers.get('content-type')?.includes('application/problem+json') ??
-		false
-	) {
-		const problem = await res.json()
-		return { error: problem }
-	}
-	if (
-		(res.headers.get('content-type')?.includes('application/json') ?? false) &&
-		parseInt(res.headers.get('content-length') ?? '0', 10) > 0
-	) {
-		return { result: (await res.json()) as Result }
-	}
-	return { result: null }
-}
-
-/**
- * Problem Details Object
- *
- * @see https://datatracker.ietf.org/doc/draft-ietf-httpapi-rfc7807bis/
- */
-export type ProblemDetail = {
-	type: URL
-	status: number
-	title: string
-	detail?: string
-}
-
-export const InternalError = (message?: string): ProblemDetail => ({
-	type: new URL(`https://teamstatus.space/error/InternalError`),
-	status: 500,
-	title: message ?? 'An internal error occurred.',
-})

@@ -1,8 +1,9 @@
+import { useEffect, useState } from 'preact/hooks'
 import { decodeTime } from 'ulid'
 import { QuestionIcon } from '../components/Icons.js'
 import { Markdown } from '../components/Markdown.js'
+import { SyncSettings } from '../components/SyncSettings.js'
 import { useProjects, type Project } from '../context/Projects.js'
-import { useSettings } from '../context/Settings.js'
 import {
 	ReactionRole,
 	useStatus,
@@ -10,42 +11,46 @@ import {
 	type Status,
 } from '../context/Status.js'
 
-export const CreateSync = ({ url }: { url: string }) => {
+export const CreateSync = () => {
 	const { projects } = useProjects()
-	const { visibleProjects } = useSettings()
-	const projectsQuery =
-		new URLSearchParams(new URL(url, document.baseURI).search)
-			.get('projects')
-			?.split(',') ?? []
-	const visible = visibleProjects()
-	const selectedProjects = Object.keys(projects)
-		.filter((id) => projectsQuery.includes(id))
-		.sort((a, b) => {
-			return (
-				(visible.indexOf(a) ?? Number.MAX_SAFE_INTEGER) -
-				(visible.indexOf(b) ?? Number.MAX_SAFE_INTEGER)
-			)
-		})
+	const [selectedProjects, setSelectedProjects] = useState<string[]>([])
+	const [startDate, setStartDate] = useState<Date>()
 
 	return (
 		<main class="container">
-			<header class="row mt-3">
-				<div class="col-12 col-md-6 offset-md-3">
-					<h1>Teamstatus Sync</h1>
-					<p>
-						<small>
-							<time dateTime={new Date().toISOString()}>
-								{new Date().toLocaleString()}
-							</time>
-						</small>
-					</p>
-					<hr />
+			<header class="mt-3">
+				<div class="row">
+					<div class="col-12 col-md-6 offset-md-3">
+						<h1>Teamstatus Sync</h1>
+						<p>
+							<small>
+								<time dateTime={new Date().toISOString()}>
+									{new Date().toLocaleString()}
+								</time>
+							</small>
+						</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12 col-md-6 offset-md-3">
+						<SyncSettings
+							projects={Object.values(projects)}
+							onUpdate={(selectedProjects, startDate) => {
+								setSelectedProjects(selectedProjects)
+								setStartDate(startDate)
+							}}
+						/>
+					</div>
 				</div>
 			</header>
 			<div class="row mt-3">
 				<div class="col-12 col-md-6 offset-md-3">
 					{selectedProjects.map((id) => (
-						<ProjectSync project={projects[id] as Project} />
+						<ProjectSync
+							key={id}
+							project={projects[id] as Project}
+							startDate={startDate}
+						/>
 					))}
 				</div>
 			</div>
@@ -59,12 +64,33 @@ const isRole = (role: ReactionRole) => (reaction: Reaction) =>
 const filterByRole = (role: ReactionRole) => (status: Status) =>
 	status.reactions.find(isRole(role)) !== undefined
 
-const ProjectSync = ({ project }: { project: Project }) => {
-	const { projectStatus } = useStatus()
-	const status = projectStatus(project.id)
+const ProjectSync = ({
+	project,
+	startDate,
+}: {
+	project: Project
+	startDate?: Date
+}) => {
+	const { fetchProjectStatus } = useStatus()
+	const [status, setStatus] = useState<Status[]>([])
+
 	const significant = status.filter(filterByRole(ReactionRole.SIGNIFICANT))
 	const normal = status.filter((status) => !significant.includes(status))
 	const questions = status.filter(filterByRole(ReactionRole.QUESTION))
+
+	useEffect(() => {
+		fetchProjectStatus(project.id, startDate)
+			.then((res) => {
+				if ('status' in res) {
+					setStatus(res.status)
+				}
+				if ('error' in res) {
+					console.error(res.error)
+				}
+			})
+			.catch(console.error)
+	}, [project, startDate])
+
 	return (
 		<section>
 			<h2 class="mt-4">{project.name ?? project.id}</h2>
