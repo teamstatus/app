@@ -94,6 +94,20 @@ const ProjectSync = ({
 	return (
 		<section>
 			<h2 class="mt-4">{project.name ?? project.id}</h2>
+			{status.length === 0 && (
+				<p>
+					{startDate === undefined && <em>No updates.</em>}
+					{startDate !== undefined && (
+						<em>
+							No updates since{' '}
+							<time dateTime={startDate.toISOString()}>
+								{startDate.toLocaleDateString()}
+							</time>
+							.
+						</em>
+					)}
+				</p>
+			)}
 			{questions.length > 0 && (
 				<>
 					<div class={'card'}>
@@ -162,7 +176,7 @@ const StatusSync = ({ status }: { status: Status }) => {
 				</div>
 			))}
 			<div class="d-flex align-items-center justify-content-start">
-				<div class="d-flex align-items-center justify-content-start me-2">
+				<div class="d-flex align-items-center justify-content-start me-2 flex-column">
 					<small class="float-start me-1 text-muted mt-1 text-nowrap">
 						(
 						<time dateTime={ts.toISOString()}>
