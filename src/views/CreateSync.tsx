@@ -4,6 +4,7 @@ import { QuestionIcon } from '../components/Icons.js'
 import { Markdown } from '../components/Markdown.js'
 import { SyncSettings } from '../components/SyncSettings.js'
 import { useProjects, type Project } from '../context/Projects.js'
+import { useSettings } from '../context/Settings.js'
 import {
 	ReactionRole,
 	useStatus,
@@ -15,6 +16,16 @@ export const CreateSync = () => {
 	const { projects } = useProjects()
 	const [selectedProjects, setSelectedProjects] = useState<string[]>([])
 	const [startDate, setStartDate] = useState<Date>()
+	const { visibleProjects } = useSettings()
+
+	const visible = visibleProjects()
+	const sortedProjects = Object.values(projects).sort((p1, p2) => {
+		const i1 = visible.indexOf(p1.id)
+		const i2 = visible.indexOf(p2.id)
+		if (i1 === -1) return 1
+		if (i2 === -1) return 1
+		return i1 > i2 ? 1 : -1
+	})
 
 	return (
 		<main class="container">
@@ -34,7 +45,7 @@ export const CreateSync = () => {
 				<div class="row">
 					<div class="col-12 col-md-6 offset-md-3">
 						<SyncSettings
-							projects={Object.values(projects)}
+							projects={sortedProjects}
 							onUpdate={(selectedProjects, startDate) => {
 								setSelectedProjects(selectedProjects)
 								setStartDate(startDate)
@@ -64,6 +75,9 @@ const isRole = (role: ReactionRole) => (reaction: Reaction) =>
 const filterByRole = (role: ReactionRole) => (status: Status) =>
 	status.reactions.find(isRole(role)) !== undefined
 
+const byTimeAsc = (s1: Status, s2: Status): number =>
+	decodeTime(s1.id) - decodeTime(s2.id)
+
 const ProjectSync = ({
 	project,
 	startDate,
@@ -74,9 +88,15 @@ const ProjectSync = ({
 	const { fetchProjectStatus } = useStatus()
 	const [status, setStatus] = useState<Status[]>([])
 
-	const significant = status.filter(filterByRole(ReactionRole.SIGNIFICANT))
-	const normal = status.filter((status) => !significant.includes(status))
-	const questions = status.filter(filterByRole(ReactionRole.QUESTION))
+	const significant = status
+		.sort(byTimeAsc)
+		.filter(filterByRole(ReactionRole.SIGNIFICANT))
+	const normal = status
+		.sort(byTimeAsc)
+		.filter((status) => !significant.includes(status))
+	const questions = status
+		.sort(byTimeAsc)
+		.filter(filterByRole(ReactionRole.QUESTION))
 
 	useEffect(() => {
 		fetchProjectStatus(project.id, startDate)

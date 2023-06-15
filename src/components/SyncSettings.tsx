@@ -24,28 +24,26 @@ export const SyncSettings = ({
 				<h2>Projects in the sync</h2>
 			</div>
 			<div class="card-body">
-				{[...projects]
-					.sort((a, b) => a.id.localeCompare(b.id))
-					.map((project) => (
-						<div class="form-check">
-							<label htmlFor={project.id}>
-								<input
-									class="form-check-input"
-									type="checkbox"
-									id={project.id}
-									onClick={() => {
-										setSelectedProjects((selectedProjects) =>
-											selectedProjects.includes(project.id)
-												? selectedProjects.filter((id) => id !== project.id)
-												: [...selectedProjects, project.id],
-										)
-									}}
-									checked={selectedProjects.includes(project.id)}
-								/>
-								{project.id}
-							</label>
-						</div>
-					))}
+				{projects.map((project) => (
+					<div class="form-check">
+						<label htmlFor={project.id}>
+							<input
+								class="form-check-input"
+								type="checkbox"
+								id={project.id}
+								onClick={() => {
+									setSelectedProjects((selectedProjects) =>
+										selectedProjects.includes(project.id)
+											? selectedProjects.filter((id) => id !== project.id)
+											: [...selectedProjects, project.id],
+									)
+								}}
+								checked={selectedProjects.includes(project.id)}
+							/>
+							{project.id}
+						</label>
+					</div>
+				))}
 				{Object.values(projects).length === 0 && (
 					<div class="row">
 						<div class="col-12 col-md-6 offset-md-3">
