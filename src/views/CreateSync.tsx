@@ -16,6 +16,7 @@ export const CreateSync = () => {
 	const { projects } = useProjects()
 	const [selectedProjects, setSelectedProjects] = useState<string[]>([])
 	const [startDate, setStartDate] = useState<Date>()
+	const [endDate, setendDate] = useState<Date>()
 	const { visibleProjects } = useSettings()
 
 	const visible = visibleProjects()
@@ -46,9 +47,10 @@ export const CreateSync = () => {
 					<div class="col-12 col-md-6 offset-md-3">
 						<SyncSettings
 							projects={sortedProjects}
-							onUpdate={(selectedProjects, startDate) => {
+							onUpdate={(selectedProjects, startDate, endDate) => {
 								setSelectedProjects(selectedProjects)
 								setStartDate(startDate)
+								setendDate(endDate)
 							}}
 						/>
 					</div>
@@ -61,6 +63,7 @@ export const CreateSync = () => {
 							key={id}
 							project={projects[id] as Project}
 							startDate={startDate}
+							endDate={endDate}
 						/>
 					))}
 				</div>
@@ -81,9 +84,11 @@ const byTimeAsc = (s1: Status, s2: Status): number =>
 const ProjectSync = ({
 	project,
 	startDate,
+	endDate,
 }: {
 	project: Project
 	startDate?: Date
+	endDate?: Date
 }) => {
 	const { fetchProjectStatus } = useStatus()
 	const [status, setStatus] = useState<Status[]>([])
@@ -99,7 +104,7 @@ const ProjectSync = ({
 		.filter(filterByRole(ReactionRole.QUESTION))
 
 	useEffect(() => {
-		fetchProjectStatus(project.id, startDate)
+		fetchProjectStatus(project.id, startDate, endDate)
 			.then((res) => {
 				if ('status' in res) {
 					setStatus(res.status)
@@ -109,7 +114,7 @@ const ProjectSync = ({
 				}
 			})
 			.catch(console.error)
-	}, [project, startDate])
+	}, [project, startDate, endDate])
 
 	return (
 		<section>

@@ -45,6 +45,7 @@ export type StatusContext = {
 	fetchProjectStatus: (
 		projectId: string,
 		startDate?: Date,
+		endDate?: Date,
 	) => Promise<{ status: Status[] } | { error: ProblemDetail }>
 	addProjectStatus: (
 		projectId: string,
@@ -381,14 +382,16 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 
 					return { version: status.version + 1 }
 				},
-				fetchProjectStatus: async (id, startDate) => {
-					let url = `${API_ENDPOINT}/project/${encodeURIComponent(id)}/status`
+				fetchProjectStatus: async (id, startDate, endDate) => {
+					const url = `${API_ENDPOINT}/project/${encodeURIComponent(id)}/status`
+					const params = new URLSearchParams()
 					if (startDate !== undefined) {
-						url += `?${new URLSearchParams({
-							inclusiveStartDate: startDate?.toISOString(),
-						}).toString()}`
+						params.set('inclusiveStartDate', startDate.toISOString())
 					}
-					return fetch(url, {
+					if (endDate !== undefined) {
+						params.set('inclusiveEndDate', endDate.toISOString())
+					}
+					return fetch(`${url}?${params.toString()}`, {
 						method: 'GET',
 						headers: {
 							'Content-Type': 'application/json; charset=utf-8',
