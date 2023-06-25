@@ -1,10 +1,10 @@
 import { createContext, type ComponentChildren } from 'preact'
-import { useContext, useState } from 'preact/hooks'
+import { useContext, useEffect, useState } from 'preact/hooks'
 import { ulid } from 'ulid'
 
 export type Sync = {
 	id: string
-	projectIds: string[]
+	syncIds: string[]
 	title?: string
 	inclusiveStartDate?: Date
 	inclusiveEndDate?: Date
@@ -13,7 +13,7 @@ export type Sync = {
 
 export type SyncsContext = {
 	addSync: (
-		projectIds: string[],
+		syncIds: string[],
 		title?: string,
 		inclusiveStartDate?: Date,
 		inclusiveEndDate?: Date,
@@ -28,14 +28,48 @@ export const SyncsContext = createContext<SyncsContext>({
 
 export const Provider = ({ children }: { children: ComponentChildren }) => {
 	const [syncs, setSyncs] = useState<Record<string, Sync>>({})
+
+	useEffect(() => {
+		fetch(`${API_ENDPOINT}/syncs`, {
+			headers: {
+				Accept: 'application/json; charset=utf-8',
+			},
+			mode: 'cors',
+			credentials: 'include',
+		})
+			.then<{ syncs: Sync[] }>(async (res) => res.json())
+			.then(({ syncs }) => {
+				setSyncs(
+					syncs.reduce(
+						(syncs, sync) => ({
+							...syncs,
+							[sync.id]: {
+								...sync,
+								inclusiveStartDate:
+									sync.inclusiveStartDate !== undefined
+										? new Date(sync.inclusiveStartDate)
+										: undefined,
+								inclusiveEndDate:
+									sync.inclusiveEndDate !== undefined
+										? new Date(sync.inclusiveEndDate)
+										: undefined,
+							},
+						}),
+						{},
+					),
+				)
+			})
+			.catch(console.error)
+	}, [])
+
 	return (
 		<SyncsContext.Provider
 			value={{
-				addSync: (projectIds, title, inclusiveStartDate, inclusiveEndDate) => {
+				addSync: (syncIds, title, inclusiveStartDate, inclusiveEndDate) => {
 					const id = ulid()
 					const newSync: Sync = {
 						id,
-						projectIds,
+						syncIds,
 						title,
 						inclusiveStartDate,
 						inclusiveEndDate,

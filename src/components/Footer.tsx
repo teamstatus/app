@@ -9,6 +9,7 @@ import {
 	ProjectsIcon,
 	SubMenuIcon,
 	SyncIcon,
+	SyncsIcon,
 	UserIcon,
 } from './Icons.js'
 
@@ -65,50 +66,53 @@ export const Footer = () => {
 						<>
 							{user.id !== undefined && (
 								<>
-									<div class="d-flex flex-column align-items-center">
+									<div class="d-flex flex-row align-items-center">
 										<a
 											href="/projects"
-											class="btn btn-success"
+											class="btn btn-success me-2"
 											onClick={hideSettings}
 										>
 											<ProjectsIcon />
 										</a>
-									</div>
-									<div class="d-flex flex-column align-items-center">
 										<a
 											href="/sync/create"
 											onClick={hideSettings}
-											class="btn btn-primary"
+											class="btn btn-primary me-2"
 										>
 											<SyncIcon />
+										</a>
+										<a
+											href="/syncs"
+											onClick={hideSettings}
+											class="btn btn-secondary"
+										>
+											<SyncsIcon />
 										</a>
 									</div>
 								</>
 							)}
-							<div class="d-flex flex-column align-items-center">
-								<a href="/" onClick={hideSettings} class="btn btn-secondary">
+							<div class="d-flex flex-row align-items-center">
+								<a
+									href="/"
+									onClick={hideSettings}
+									class="btn btn-secondary me-2"
+								>
 									<HelpIcon />
 								</a>
-							</div>
-							<div class="d-flex flex-column align-items-center">
 								<a
 									href="/user"
 									onClick={hideSettings}
-									class="btn btn-secondary"
+									class="btn btn-secondary me-2"
 								>
 									<UserIcon />
 								</a>
-							</div>
-							<div class="d-flex flex-column align-items-center">
 								<button
 									type="button"
-									class="btn btn-outline-danger"
+									class="btn btn-outline-danger me-2"
 									onClick={() => logout()}
 								>
 									<LogoutIcon />
 								</button>
-							</div>
-							<div class="d-flex flex-column align-items-center">
 								<button
 									type="button"
 									class="btn btn-outline-light"

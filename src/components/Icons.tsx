@@ -1,5 +1,7 @@
 import {
 	AlertCircle,
+	ArrowLeftFromLine,
+	ArrowRightFromLine,
 	Calendar,
 	Check,
 	ChevronDown,
@@ -8,13 +10,14 @@ import {
 	ChevronUp,
 	Eye,
 	EyeOff,
+	FolderSync,
 	HelpCircle,
 	LogOut,
-	MessagesSquare,
 	MoreHorizontal,
 	Palette,
 	Pen,
 	Plus,
+	RefreshCw,
 	Send,
 	SmilePlus,
 	Sprout,
@@ -72,9 +75,12 @@ export const QuestionIcon = icon(HelpCircle)
 export const HelpIcon = icon(HelpCircle)
 export const AuthorIcon = icon(UserCircle2)
 export const MembersIcon = icon(Users)
-export const SyncIcon = icon(MessagesSquare)
+export const SyncIcon = icon(RefreshCw)
+export const SyncsIcon = icon(FolderSync)
 export const UpIcon = icon(ChevronUp)
 export const DownIcon = icon(ChevronDown)
 export const VisibleIcon = icon(Eye)
 export const HiddenIcon = icon(EyeOff)
 export const ApplyIcon = icon(Check)
+export const StartDate = icon(ArrowRightFromLine)
+export const EndDate = icon(ArrowLeftFromLine)

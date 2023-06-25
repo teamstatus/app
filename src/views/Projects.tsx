@@ -41,15 +41,13 @@ export const Projects = () => {
 									<ProjectInfo key={project.id} project={project} />
 								))}
 							{Object.values(projects).length === 0 && (
-								<div class="row">
-									<div class="col-12 col-md-6 offset-md-3">
-										<p>You have no projects,yet.</p>
-										<p>
-											<a href="/project/create">Create a new project</a>, or ask
-											to be invited to an existing one.
-										</p>
-									</div>
-								</div>
+								<>
+									<p>You have no projects,yet.</p>
+									<p>
+										<a href="/project/create">Create a new project</a>, or ask
+										to be invited to an existing one.
+									</p>
+								</>
 							)}
 						</div>
 					</div>
