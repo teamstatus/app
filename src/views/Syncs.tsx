@@ -1,4 +1,5 @@
-import { AddIcon, EndDate, StartDate } from '../components/Icons.js'
+import { decodeTime } from 'ulid'
+import { AddIcon } from '../components/Icons.js'
 import { useSyncs } from '../context/Syncs.js'
 
 export const Syncs = () => {
@@ -8,7 +9,7 @@ export const Syncs = () => {
 	return (
 		<main class="container">
 			<div class="row mt-3">
-				<div class="col-12 col-md-6 offset-md-3">
+				<div class="col-md-8 offset-md-2">
 					<div class="card">
 						<div class="card-header">
 							<h1>Syncs</h1>
@@ -25,25 +26,21 @@ export const Syncs = () => {
 						)}
 						{syncItems.length > 0 && (
 							<ul class="list-group list-group-flush">
-								{syncItems.map((sync) => (
-									<li class="list-group-item">
-										<a href={`/sync/${sync.id}`}>
-											{sync.title}
-											{sync.inclusiveStartDate !== undefined && (
-												<time dateTime={sync.inclusiveStartDate.toISOString()}>
-													<StartDate />
-													{sync.inclusiveStartDate.toISOString()}
+								{syncItems.map((sync) => {
+									const ts = new Date(decodeTime(sync.id))
+									return (
+										<li class="list-group-item">
+											<a href={`/sync/${sync.id}`}>{sync.title}</a>
+											<small class="me-1 text-muted ms-1 text-nowrap">
+												(
+												<time dateTime={ts.toISOString()}>
+													{ts.toISOString().slice(0, 10)}
 												</time>
-											)}
-											{sync.inclusiveEndDate !== undefined && (
-												<time dateTime={sync.inclusiveEndDate.toISOString()}>
-													<EndDate />
-													{sync.inclusiveEndDate.toISOString()}
-												</time>
-											)}
-										</a>
-									</li>
-								))}
+												)
+											</small>
+										</li>
+									)
+								})}
 							</ul>
 						)}
 					</div>

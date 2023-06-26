@@ -9,7 +9,7 @@ export const User = () => {
 			<LogoHeader />
 			<main class="container">
 				<div class="row mt-3">
-					<div class="col-12 col-md-6 offset-md-3">
+					<div class="col-md-8 offset-md-2">
 						<h1>User</h1>
 						<dl>
 							<dt>Email</dt>

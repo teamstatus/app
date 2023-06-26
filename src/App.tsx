@@ -15,6 +15,7 @@ import { InviteToProject } from './views/InviteToProject.js'
 import { Login } from './views/Login.js'
 import { Project } from './views/Project.js'
 import { Projects } from './views/Projects.js'
+import { Sync } from './views/Sync.js'
 import { Syncs } from './views/Syncs.js'
 import { User } from './views/User.js'
 
@@ -31,6 +32,7 @@ export const App = () => {
 								<Route path="/" component={About} />
 								<Route path="/projects" component={Projects} />
 								<Route path="/sync/create" component={CreateSync} />
+								<Route path="/sync/:id" component={Sync} />
 								<Route path="/syncs" component={Syncs} />
 								<Route path="/project/create" component={CreateProject} />
 								<Route

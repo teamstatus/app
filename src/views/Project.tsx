@@ -39,7 +39,7 @@ export const Project = ({
 				<section>
 					{status.map((status) => (
 						<div class="row">
-							<div class="col-12 col-md-6 offset-md-3">
+							<div class="col-md-8 offset-md-2">
 								<Status status={status} />
 								<hr />
 							</div>
@@ -47,7 +47,7 @@ export const Project = ({
 					))}
 					{status.length === 0 && (
 						<div class="row">
-							<div class="col-12 col-md-6 offset-md-3">
+							<div class="col-md-8 offset-md-2">
 								<p>No status updates, yet.</p>
 								<p>
 									<a href={`/project/${encodeURIComponent(id)}/compose`}>

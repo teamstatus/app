@@ -8,6 +8,7 @@ import {
 	ChevronLeft,
 	ChevronRight,
 	ChevronUp,
+	Clock,
 	Eye,
 	EyeOff,
 	FolderSync,
@@ -82,5 +83,6 @@ export const DownIcon = icon(ChevronDown)
 export const VisibleIcon = icon(Eye)
 export const HiddenIcon = icon(EyeOff)
 export const ApplyIcon = icon(Check)
-export const StartDate = icon(ArrowRightFromLine)
-export const EndDate = icon(ArrowLeftFromLine)
+export const StartDateIcon = icon(ArrowRightFromLine)
+export const EndDateIcon = icon(ArrowLeftFromLine)
+export const ClockIcon = icon(Clock)

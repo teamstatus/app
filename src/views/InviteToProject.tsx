@@ -21,7 +21,7 @@ export const InviteToProject = ({
 	return (
 		<>
 			<main class="container">
-				<div class="card col-md-6 offset-md-3 mt-4">
+				<div class="card col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-4">
 					<div class="card-header">
 						<h1>Invite a member</h1>
 						<p>

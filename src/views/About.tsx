@@ -13,7 +13,7 @@ export const About = () => {
 			<main class="container">
 				<section>
 					<div class="row mt-3">
-						<div class="col-12 col-md-6 offset-md-3">
+						<div class="col-md-8 offset-md-2">
 							<p>Welcome {user?.id ?? user?.email ?? 'anonymous'}!</p>
 						</div>
 					</div>
@@ -21,7 +21,7 @@ export const About = () => {
 				{user?.id !== undefined && <ReactionsHelp />}
 				{user?.id === undefined && <SelectID />}
 				<div class="row">
-					<div class="col-12 col-md-6 offset-md-3">
+					<div class="col-md-8 offset-md-2">
 						<aside class="clearfix mt-3">
 							<h2>Colors</h2>
 							{colors.map((color) => (
@@ -42,7 +42,7 @@ export const About = () => {
 				</div>
 
 				<aside class="row mt-3">
-					<div class="col-12 col-md-6 offset-md-3">
+					<div class="col-md-8 offset-md-2">
 						<h2>About</h2>
 						<dl>
 							<dt>Version</dt>

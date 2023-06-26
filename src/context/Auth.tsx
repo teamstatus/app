@@ -6,19 +6,25 @@ export type UserContext = {
 	id?: string
 }
 
+type AutoLoginState = 'in_progress' | 'failed' | 'success'
+
 export const AuthContext = createContext<{
 	logout: () => void
 	setUser: (user: UserContext) => void
 	loggedIn: boolean
 	user?: UserContext
+	autoLoginState: AutoLoginState
 }>({
 	logout: () => undefined,
 	setUser: () => undefined,
 	loggedIn: false,
+	autoLoginState: 'in_progress',
 })
 
 export const Provider = ({ children }: { children: ComponentChildren }) => {
 	const [user, setUser] = useState<UserContext>()
+	const [autoLoginState, setAutoLoginState] =
+		useState<AutoLoginState>('in_progress')
 
 	useEffect(() => {
 		fetch(`${API_ENDPOINT}/me`, {
@@ -29,8 +35,14 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 			credentials: 'include',
 		})
 			.then(async (res) => res.json())
-			.then(setUser)
-			.catch(console.error)
+			.then((user) => {
+				setUser(user)
+				setAutoLoginState('success')
+			})
+			.catch((err) => {
+				console.error(err)
+				setAutoLoginState('failed')
+			})
 	}, [])
 
 	return (
@@ -43,6 +55,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 					setUser(undefined)
 				},
 				user,
+				autoLoginState,
 			}}
 		>
 			{children}

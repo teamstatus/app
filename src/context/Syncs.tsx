@@ -4,7 +4,7 @@ import { ulid } from 'ulid'
 
 export type Sync = {
 	id: string
-	syncIds: string[]
+	projectIds: string[]
 	title?: string
 	inclusiveStartDate?: Date
 	inclusiveEndDate?: Date
@@ -13,7 +13,7 @@ export type Sync = {
 
 export type SyncsContext = {
 	addSync: (
-		syncIds: string[],
+		projectIds: string[],
 		title?: string,
 		inclusiveStartDate?: Date,
 		inclusiveEndDate?: Date,
@@ -65,11 +65,11 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 	return (
 		<SyncsContext.Provider
 			value={{
-				addSync: (syncIds, title, inclusiveStartDate, inclusiveEndDate) => {
+				addSync: (projectIds, title, inclusiveStartDate, inclusiveEndDate) => {
 					const id = ulid()
 					const newSync: Sync = {
 						id,
-						syncIds,
+						projectIds,
 						title,
 						inclusiveStartDate,
 						inclusiveEndDate,

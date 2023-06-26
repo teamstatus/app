@@ -20,7 +20,7 @@ export const Projects = () => {
 	return (
 		<main class="container">
 			<div class="row mt-3">
-				<div class="col-12 col-md-6 offset-md-3">
+				<div class="col-md-8 offset-md-2">
 					<div class="card">
 						<div class="card-header">
 							<h1>Projects</h1>
@@ -55,7 +55,7 @@ export const Projects = () => {
 			</div>
 
 			<div class="row mt-3">
-				<div class="col-12 col-md-6 offset-md-3">
+				<div class="col-md-8 offset-md-2">
 					<AcceptProjectInvitation />
 				</div>
 			</div>

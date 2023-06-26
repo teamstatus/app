@@ -53,7 +53,7 @@ const EditStatusForm = ({ status }: { status: Status }) => {
 	const isValid = message.length > 0
 	return (
 		<main class="container">
-			<div class="card col-md-6 offset-md-3 mt-3">
+			<div class="card col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-3">
 				<div class="card-header">
 					<h1>Edit status</h1>
 				</div>
