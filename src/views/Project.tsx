@@ -41,7 +41,7 @@ export const Project = ({
 						<div class="row">
 							<div class="col-md-8 offset-md-2">
 								<Status status={status} />
-								<hr />
+								<hr class="mt-1 mb-2" />
 							</div>
 						</div>
 					))}

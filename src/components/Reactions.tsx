@@ -78,7 +78,7 @@ export const Reaction = ({
 	return (
 		<button
 			type="button"
-			class={'btn btn-sm me-1 text-nowrap btn-light'}
+			class={'btn btn-sm me-1 mb-1 text-nowrap btn-light'}
 			style={byUser === true ? { borderColor: 'goldenrod' } : {}}
 			title={description}
 			onClick={() => onClick?.()}

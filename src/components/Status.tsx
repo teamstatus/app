@@ -22,36 +22,14 @@ export const Status = ({ status }: { status: TStatus }) => {
 	const { user } = useAuth()
 	const userId = user?.id
 	const { addReaction, deleteReaction, deleteStatus } = useStatus()
-	const actionsVisible = reactionsVisible || operationsVisible
 	const canEdit = userId === status.author
 	const hasOperations = canEdit
 	return (
 		<>
-			<div class="mt-2 mb-2">
-				<Markdown markdown={status.message} />
-			</div>
-			<div class="clearfix">
-				{status.reactions.length > 0 && (
-					<div class="float-start mb-2">
-						{status.reactions.map((reaction) => {
-							const isAuthor = reaction.author === userId
-							return (
-								<Reaction
-									reaction={reaction}
-									onClick={() => {
-										if (isAuthor) {
-											deleteReaction(status, reaction)
-										}
-									}}
-								/>
-							)
-						})}
-					</div>
-				)}
-			</div>
-			{!actionsVisible && (
-				<div class="d-flex align-items-center justify-content-between">
-					<small class="text-muted d-flex flex-wrap">
+			<Markdown markdown={status.message} />
+			{!reactionsVisible && (
+				<div class="d-flex align-items-center justify-content-between mb-1">
+					<small class="text-muted d-flex me-2">
 						<span class="text-nowrap me-2 d-flex align-items-center">
 							<UserIcon size={20} class="me-1" /> {status.author}
 						</span>
@@ -65,27 +43,59 @@ export const Status = ({ status }: { status: TStatus }) => {
 							)}
 						</span>
 					</small>
-					<span class={'text-nowrap'}>
+					<div>
 						{status.persisted === false && (
 							<PersistencePendingIcon class="me-1" />
 						)}
-						{hasOperations && (
+						{hasOperations && !operationsVisible && (
 							<button
 								type="button"
 								class="btn btn-sm btn-light me-1"
 								onClick={() => showOperations(true)}
 							>
-								<SubMenuIcon />
+								<SubMenuIcon size={18} />
 							</button>
 						)}
-						<button
-							type="button"
-							class="btn btn-sm btn-light"
-							onClick={() => showReactions(true)}
-						>
-							<AddReactionIcon />
-						</button>
-					</span>
+						{operationsVisible && (
+							<>
+								{canEdit && (
+									<>
+										<button
+											type="button"
+											class="btn btn-sm btn-outline-danger me-1"
+											onClick={() => {
+												deleteStatus(status)
+											}}
+										>
+											<DeleteIcon size={18} />
+										</button>
+										<a
+											class="btn btn-sm btn-outline-secondary me-1"
+											href={`/status/${encodeURIComponent(status.id)}/edit`}
+										>
+											<EditIcon size={18} />
+										</a>
+									</>
+								)}
+								<button
+									type="button"
+									class="btn btn-sm btn-light"
+									onClick={() => showOperations(false)}
+								>
+									<CollapseRightIcon size={18} />
+								</button>
+							</>
+						)}
+						{!reactionsVisible && !operationsVisible && (
+							<button
+								type="button"
+								class="btn btn-sm btn-light"
+								onClick={() => showReactions(true)}
+							>
+								<AddReactionIcon size={18} />
+							</button>
+						)}
+					</div>
 				</div>
 			)}
 			{reactionsVisible && (
@@ -97,41 +107,28 @@ export const Status = ({ status }: { status: TStatus }) => {
 					/>
 					<button
 						type="button"
-						class="btn btn-sm btn-light"
+						class="btn btn-sm btn-light mb-1"
 						onClick={() => showReactions(false)}
 					>
-						<CollapseRightIcon />
+						<CollapseRightIcon size={18} />
 					</button>
 				</div>
 			)}
-			{operationsVisible && (
-				<div class="d-flex align-items-center justify-content-end">
-					{canEdit && (
-						<>
-							<button
-								type="button"
-								class="btn btn-sm btn-outline-danger me-1"
+			{status.reactions.length > 0 && (
+				<div>
+					{status.reactions.map((reaction) => {
+						const isAuthor = reaction.author === userId
+						return (
+							<Reaction
+								reaction={reaction}
 								onClick={() => {
-									deleteStatus(status)
+									if (isAuthor) {
+										deleteReaction(status, reaction)
+									}
 								}}
-							>
-								<DeleteIcon />
-							</button>
-							<a
-								class="btn btn-sm btn-outline-secondary me-1"
-								href={`/status/${encodeURIComponent(status.id)}/edit`}
-							>
-								<EditIcon />
-							</a>
-						</>
-					)}
-					<button
-						type="button"
-						class="btn btn-sm btn-light"
-						onClick={() => showOperations(false)}
-					>
-						<CollapseRightIcon />
-					</button>
+							/>
+						)
+					})}
 				</div>
 			)}
 		</>
