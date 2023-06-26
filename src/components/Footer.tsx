@@ -21,7 +21,13 @@ export const Footer = () => {
 	const hideSettings = () => setSettingsVisible(false)
 
 	return (
-		<footer class="fixed-bottom bg-dark text-white container-fluid d-flex align-items-center justify-content-between px-2 py-2">
+		<footer
+			class="fixed-bottom bg-dark text-white container-fluid d-flex align-items-center justify-content-between px-2 py-2"
+			style={{
+				overflowY: 'hidden',
+				overflowX: 'scroll',
+			}}
+		>
 			{user && (
 				<>
 					{!settingsVisible && (
