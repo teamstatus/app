@@ -18,17 +18,15 @@ export const StatusSync = ({ status }: { status: Status }) => {
 					<em>{reaction.description ?? 'No description available.'}</em>
 				</div>
 			))}
-			<div class="d-flex align-items-center justify-content-start">
+			<div class="d-flex align-items-start justify-content-between">
+				<Markdown markdown={status.message} />
 				<div class="d-flex align-items-center justify-content-start me-2 flex-column">
-					<small class="float-start me-1 text-muted mt-1 text-nowrap">
-						(
+					<small class="me-1 text-muted mt-1 text-nowrap">
 						<time dateTime={ts.toISOString()}>
 							{ts.toISOString().slice(0, 10)}
 						</time>
-						)
 					</small>
 				</div>
-				<Markdown markdown={status.message} />
 			</div>
 		</div>
 	)
