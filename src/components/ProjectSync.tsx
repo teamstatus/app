@@ -55,21 +55,24 @@ export const ProjectSync = ({
 	}, [project, startDate, endDate])
 
 	return (
-		<section>
+		<section class="pt-4">
 			<h2 class="mt-4">{project.name ?? project.id}</h2>
 			{status.length === 0 && (
-				<p>
-					{startDate === undefined && <em>No updates.</em>}
-					{startDate !== undefined && (
-						<em>
-							No updates since{' '}
-							<time dateTime={startDate.toISOString()}>
-								{startDate.toLocaleDateString()}
-							</time>
-							.
-						</em>
-					)}
-				</p>
+				<>
+					<p>
+						{startDate === undefined && <em>No updates.</em>}
+						{startDate !== undefined && (
+							<em>
+								No updates since{' '}
+								<time dateTime={startDate.toISOString()}>
+									{startDate.toLocaleDateString()}
+								</time>
+								.
+							</em>
+						)}
+					</p>
+					<hr />
+				</>
 			)}
 			{questions.length > 0 && (
 				<>

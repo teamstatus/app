@@ -20,14 +20,16 @@ export const StatusSync = ({ status }: { status: Status }) => {
 			))}
 			<div class="d-flex align-items-start justify-content-between">
 				<Markdown markdown={status.message} />
-				<div class="d-flex align-items-center justify-content-start me-2 flex-column">
-					<small class="me-1 text-muted mt-1 text-nowrap">
+				<div class="d-flex align-items-end justify-content-start me-2 flex-column text-muted">
+					<small class="text-nowrap">
 						<time dateTime={ts.toISOString()}>
 							{ts.toISOString().slice(0, 10)}
 						</time>
 					</small>
+					<small>{status.author}</small>
 				</div>
 			</div>
+			<hr />
 		</div>
 	)
 }
