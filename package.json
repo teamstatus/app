@@ -27,7 +27,7 @@
   "license": "MIT",
   "devDependencies": {
     "@nordicsemiconductor/asset-tracker-cloud-code-style": "12.0.51",
-    "@nordicsemiconductor/eslint-config-asset-tracker-cloud-typescript": "15.0.12",
+    "@nordicsemiconductor/eslint-config-asset-tracker-cloud-typescript": "15.0.14",
     "@nordicsemiconductor/from-env": "2.0.0",
     "@preact/preset-vite": "2.5.0",
     "@types/color": "^3.0.3",
