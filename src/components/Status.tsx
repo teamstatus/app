@@ -28,7 +28,7 @@ export const Status = ({ status }: { status: TStatus }) => {
 		<>
 			<Markdown markdown={status.message} />
 			{!reactionsVisible && (
-				<div class="d-flex align-items-center justify-content-between mb-1">
+				<div class="d-flex align-items-center justify-content-between mb-1 flex-wrap">
 					<small class="text-muted d-flex me-2">
 						<span class="text-nowrap me-2 d-flex align-items-center">
 							<UserIcon size={20} class="me-1" /> {status.author}
@@ -43,7 +43,7 @@ export const Status = ({ status }: { status: TStatus }) => {
 							)}
 						</span>
 					</small>
-					<div>
+					<div class="text-nowrap">
 						{status.persisted === false && (
 							<PersistencePendingIcon class="me-1" />
 						)}
