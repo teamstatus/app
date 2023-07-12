@@ -5,6 +5,7 @@ import { BackIcon, ProjectsIcon, SubmitIcon } from '../components/Icons.js'
 import { type ProblemDetail } from '../context/ProblemDetail.js'
 import { useProjects } from '../context/Projects.js'
 import { isUserId, slugPart } from '../proto/ids.js'
+import { ProjectHeader } from '../components/ProjectHeader.js'
 
 export const InviteToProject = ({
 	id,
@@ -17,9 +18,11 @@ export const InviteToProject = ({
 
 	const userId = `@${invitee}`
 	const isValid = isUserId(userId)
+	const project = projects[id]
 
 	return (
 		<>
+			{project !== undefined && <ProjectHeader project={project} />}
 			<main class="container">
 				<div class="card col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-4">
 					<div class="card-header">

@@ -3,6 +3,7 @@ import { ProjectSync } from '../components/ProjectSync.js'
 import { SyncSettings } from '../components/SyncSettings.js'
 import { useProjects, type Project } from '../context/Projects.js'
 import { useSettings } from '../context/Settings.js'
+import { LogoHeader } from './LogoHeader.js'
 
 export const CreateSync = () => {
 	const { projects } = useProjects()
@@ -21,45 +22,48 @@ export const CreateSync = () => {
 	})
 
 	return (
-		<main class="container">
-			<header class="mt-3">
-				<div class="row">
+		<>
+			<LogoHeader />
+			<main class="container">
+				<header class="mt-3">
+					<div class="row">
+						<div class="col-md-8 offset-md-2">
+							<h1>Teamstatus Sync</h1>
+							<p>
+								<small>
+									<time dateTime={new Date().toISOString()}>
+										{new Date().toLocaleString()}
+									</time>
+								</small>
+							</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-8 offset-md-2">
+							<SyncSettings
+								projects={sortedProjects}
+								onUpdate={(selectedProjects, startDate, endDate) => {
+									setSelectedProjects(selectedProjects)
+									setStartDate(startDate)
+									setendDate(endDate)
+								}}
+							/>
+						</div>
+					</div>
+				</header>
+				<div class="row mt-3">
 					<div class="col-md-8 offset-md-2">
-						<h1>Teamstatus Sync</h1>
-						<p>
-							<small>
-								<time dateTime={new Date().toISOString()}>
-									{new Date().toLocaleString()}
-								</time>
-							</small>
-						</p>
+						{selectedProjects.map((id) => (
+							<ProjectSync
+								key={id}
+								project={projects[id] as Project}
+								startDate={startDate}
+								endDate={endDate}
+							/>
+						))}
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-md-8 offset-md-2">
-						<SyncSettings
-							projects={sortedProjects}
-							onUpdate={(selectedProjects, startDate, endDate) => {
-								setSelectedProjects(selectedProjects)
-								setStartDate(startDate)
-								setendDate(endDate)
-							}}
-						/>
-					</div>
-				</div>
-			</header>
-			<div class="row mt-3">
-				<div class="col-md-8 offset-md-2">
-					{selectedProjects.map((id) => (
-						<ProjectSync
-							key={id}
-							project={projects[id] as Project}
-							startDate={startDate}
-							endDate={endDate}
-						/>
-					))}
-				</div>
-			</div>
-		</main>
+			</main>
+		</>
 	)
 }

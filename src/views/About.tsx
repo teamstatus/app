@@ -1,12 +1,21 @@
+import { useEffect } from 'preact/hooks'
 import { Ago } from '../components/Ago.js'
 import { colors } from '../components/Colorpicker.js'
 import { ReactionsHelp } from '../components/ReactionsHelp.js'
 import { SelectID } from '../components/SelectID.js'
 import { useAuth } from '../context/Auth.js'
 import { LogoHeader } from './LogoHeader.js'
+import { route } from 'preact-router'
 
-export const About = () => {
+export const About = ({ redirect }: { redirect?: string }) => {
 	const { user } = useAuth()
+
+	useEffect(() => {
+		if (redirect === undefined) return
+		console.debug(`Redirecting to`, redirect)
+		route(redirect)
+	}, [redirect])
+
 	return (
 		<>
 			<LogoHeader />

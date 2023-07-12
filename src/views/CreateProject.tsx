@@ -4,6 +4,7 @@ import { useState } from 'preact/hooks'
 import { BackIcon, SubmitIcon } from '../components/Icons.js'
 import { useProjects } from '../context/Projects.js'
 import { isProjectId, slugPart } from '../proto/ids.js'
+import { LogoHeader } from './LogoHeader.js'
 
 export const CreateProject = () => {
 	const [name, setName] = useState<string>('')
@@ -18,6 +19,7 @@ export const CreateProject = () => {
 	const isValid = isProjectId(projectId)
 	return (
 		<>
+			<LogoHeader />
 			<main class="container">
 				<div class="card col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-4">
 					<div class="card-header">

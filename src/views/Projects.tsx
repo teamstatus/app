@@ -13,72 +13,76 @@ import {
 } from '../components/Icons.js'
 import { Role, useProjects, type Project } from '../context/Projects.js'
 import { useSettings } from '../context/Settings.js'
+import { LogoHeader } from './LogoHeader.js'
 
 export const Projects = () => {
 	const { projects } = useProjects()
 	const { visibleProjects } = useSettings()
 	return (
-		<main class="container">
-			<div class="row mt-3">
-				<div class="col-md-8 offset-md-2">
-					<div class="card">
-						<div class="card-header">
-							<h1>Projects</h1>
-						</div>
-						<div class="card-body">
-							{Object.values(projects)
-								.sort(
-									(p1, p2) =>
-										(visibleProjects().indexOf(p1.id) ??
-											Number.MAX_SAFE_INTEGER) -
-										(visibleProjects().indexOf(p2.id) ??
-											Number.MAX_SAFE_INTEGER),
-								)
-								.sort((_, { id: p2 }) =>
-									visibleProjects().includes(p2) ? 1 : -1,
-								)
-								.map((project) => (
-									<ProjectInfo key={project.id} project={project} />
-								))}
-							{Object.values(projects).length === 0 && (
-								<>
-									<p>You have no projects,yet.</p>
-									<p>
-										<a href="/project/create">Create a new project</a>, or ask
-										to be invited to an existing one.
-									</p>
-								</>
-							)}
+		<>
+			<LogoHeader />
+			<main class="container">
+				<div class="row mt-3">
+					<div class="col-md-8 offset-md-2">
+						<div class="card">
+							<div class="card-header">
+								<h1>Projects</h1>
+							</div>
+							<div class="card-body">
+								{Object.values(projects)
+									.sort(
+										(p1, p2) =>
+											(visibleProjects().indexOf(p1.id) ??
+												Number.MAX_SAFE_INTEGER) -
+											(visibleProjects().indexOf(p2.id) ??
+												Number.MAX_SAFE_INTEGER),
+									)
+									.sort((_, { id: p2 }) =>
+										visibleProjects().includes(p2) ? 1 : -1,
+									)
+									.map((project) => (
+										<ProjectInfo key={project.id} project={project} />
+									))}
+								{Object.values(projects).length === 0 && (
+									<>
+										<p>You have no projects,yet.</p>
+										<p>
+											<a href="/project/create">Create a new project</a>, or ask
+											to be invited to an existing one.
+										</p>
+									</>
+								)}
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 
-			<div class="row mt-3">
-				<div class="col-md-8 offset-md-2">
-					<AcceptProjectInvitation />
+				<div class="row mt-3">
+					<div class="col-md-8 offset-md-2">
+						<AcceptProjectInvitation />
+					</div>
 				</div>
-			</div>
 
-			<a
-				href={`/project/create`}
-				style={{
-					borderRadius: '100%',
-					color: 'white',
-					backgroundColor: '#198754',
-					display: 'block',
-					height: '48px',
-					width: '48px',
-					boxShadow: '0 0 8px 0 #00000075',
-					position: 'fixed',
-					right: '10px',
-					bottom: '70px',
-				}}
-				class="d-flex align-items-center justify-content-center"
-			>
-				<AddIcon />
-			</a>
-		</main>
+				<a
+					href={`/project/create`}
+					style={{
+						borderRadius: '100%',
+						color: 'white',
+						backgroundColor: '#198754',
+						display: 'block',
+						height: '48px',
+						width: '48px',
+						boxShadow: '0 0 8px 0 #00000075',
+						position: 'fixed',
+						right: '10px',
+						bottom: '70px',
+					}}
+					class="d-flex align-items-center justify-content-center"
+				>
+					<AddIcon />
+				</a>
+			</main>
+		</>
 	)
 }
 

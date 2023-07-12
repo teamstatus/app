@@ -12,6 +12,7 @@ import {
 	SyncsIcon,
 	UserIcon,
 } from './Icons.js'
+import { LogInIcon } from 'lucide-preact'
 
 export const Footer = () => {
 	const { user, logout } = useAuth()
@@ -129,6 +130,17 @@ export const Footer = () => {
 							</div>
 						</>
 					)}
+				</>
+			)}
+			{!user && (
+				<>
+					<div />
+					<div>
+						<a href="/login" class="btn btn-primary me-2">
+							<LogInIcon />
+							<span class="ms-2">Log in</span>
+						</a>
+					</div>
 				</>
 			)}
 		</footer>

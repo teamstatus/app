@@ -18,6 +18,7 @@ import { Projects } from './views/Projects.js'
 import { Sync } from './views/Sync.js'
 import { Syncs } from './views/Syncs.js'
 import { User } from './views/User.js'
+import { PublicSync } from './views/PublicSync.js'
 
 export const App = () => {
 	const { loggedIn } = useAuth()
@@ -51,5 +52,14 @@ export const App = () => {
 				</SettingsProvider>
 			</ProjectsProvider>
 		)
-	return <Login />
+	return (
+		<>
+			<Router>
+				<Route path="/" component={Login} />
+				<Route path="/login" component={Login} />
+				<Route path="/sync/:id" component={PublicSync} />
+			</Router>
+			<Footer />
+		</>
+	)
 }

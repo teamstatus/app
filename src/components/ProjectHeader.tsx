@@ -18,7 +18,7 @@ export const ProjectHeader = ({ project }: { project: Project }) => {
 			<div class="container">
 				<div class="row">
 					<div class="col d-flex align-items-center justify-content-between">
-						<h1 class="pt-2 pb-2 fs-5 mb-0">
+						<h1 class="pt-2 pb-2 pt-md-4 pb-md-4 fs-5 mb-0">
 							<span style={{ opacity: 0.75 }}>{organization}</span>&#8203;
 							<strong class="nowrap">{projectId}</strong>
 						</h1>
