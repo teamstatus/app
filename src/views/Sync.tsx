@@ -11,6 +11,7 @@ export const Sync = ({ id }: { id: string }) => {
 	const { syncs } = useSyncs()
 	const { projects } = useProjects()
 	const [problem, setProblem] = useState<ProblemDetail>()
+	const [sync, setSync] = useState<TSync | undefined>(syncs[id])
 
 	useEffect(() => {
 		fetch(`${API_ENDPOINT}/sync/${encodeURIComponent(id)}`, {
@@ -20,10 +21,23 @@ export const Sync = ({ id }: { id: string }) => {
 			mode: 'cors',
 			credentials: 'include',
 		})
-			.then(handleResponse<TSync>)
+			.then(handleResponse<{ sync: TSync }>)
 			.then((maybeSync) => {
 				if ('error' in maybeSync) {
 					setProblem(maybeSync.error)
+				} else if (maybeSync.result !== null) {
+					console.log(maybeSync.result.sync)
+					setSync({
+						...maybeSync.result.sync,
+						inclusiveStartDate:
+							maybeSync.result.sync.inclusiveStartDate !== undefined
+								? new Date(maybeSync.result.sync.inclusiveStartDate)
+								: undefined,
+						inclusiveEndDate:
+							maybeSync.result.sync.inclusiveEndDate !== undefined
+								? new Date(maybeSync.result.sync.inclusiveEndDate)
+								: undefined,
+					})
 				}
 			})
 			.catch(console.error)
@@ -52,7 +66,6 @@ export const Sync = ({ id }: { id: string }) => {
 		)
 	}
 
-	const sync = syncs[id]
 	if (sync === undefined) {
 		return (
 			<>
