@@ -1,12 +1,6 @@
-import { useEffect, useState } from 'preact/hooks'
 import { decodeTime } from 'ulid'
 import { type Project } from '../context/Projects.js'
-import {
-	ReactionRole,
-	useStatus,
-	type Reaction,
-	type Status,
-} from '../context/Status.js'
+import { ReactionRole, type Reaction, type Status } from '../context/Status.js'
 import { QuestionIcon } from './Icons.js'
 import { StatusSync } from './StatusSync.js'
 
@@ -21,16 +15,13 @@ const byTimeAsc = (s1: Status, s2: Status): number =>
 
 export const ProjectSync = ({
 	project,
+	status,
 	startDate,
-	endDate,
 }: {
-	project: Project
 	startDate?: Date
-	endDate?: Date
+	project: Project
+	status: Status[]
 }) => {
-	const { fetchProjectStatus } = useStatus()
-	const [status, setStatus] = useState<Status[]>([])
-
 	const significant = status
 		.sort(byTimeAsc)
 		.filter(filterByRole(ReactionRole.SIGNIFICANT))
@@ -40,19 +31,6 @@ export const ProjectSync = ({
 	const questions = status
 		.sort(byTimeAsc)
 		.filter(filterByRole(ReactionRole.QUESTION))
-
-	useEffect(() => {
-		fetchProjectStatus(project.id, startDate, endDate)
-			.then((res) => {
-				if ('status' in res) {
-					setStatus(res.status)
-				}
-				if ('error' in res) {
-					console.error(res.error)
-				}
-			})
-			.catch(console.error)
-	}, [project, startDate, endDate])
 
 	return (
 		<section class="pt-4">

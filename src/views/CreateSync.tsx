@@ -1,16 +1,21 @@
-import { useState } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
 import { ProjectSync } from '../components/ProjectSync.js'
 import { SyncSettings } from '../components/SyncSettings.js'
 import { useProjects, type Project } from '../context/Projects.js'
 import { useSettings } from '../context/Settings.js'
 import { LogoHeader } from './LogoHeader.js'
+import { useStatus, type Status } from '../context/Status.js'
 
 export const CreateSync = () => {
+	const { fetchProjectStatus } = useStatus()
 	const { projects } = useProjects()
 	const [selectedProjects, setSelectedProjects] = useState<string[]>([])
 	const [startDate, setStartDate] = useState<Date>()
 	const [endDate, setEndDate] = useState<Date>()
 	const { visibleProjects } = useSettings()
+	const [projectStatus, setProjectStatus] = useState<Record<string, Status[]>>(
+		{},
+	)
 
 	const visible = visibleProjects()
 	const sortedProjects = Object.values(projects).sort((p1, p2) => {
@@ -20,6 +25,23 @@ export const CreateSync = () => {
 		if (i2 === -1) return 1
 		return i1 > i2 ? 1 : -1
 	})
+
+	useEffect(() => {
+		Promise.all(
+			selectedProjects.map(async (projectId) =>
+				fetchProjectStatus(projectId, startDate, endDate).then((res) => {
+					if ('error' in res) {
+						console.error(res.error)
+					} else {
+						setProjectStatus((status) => ({
+							...status,
+							[projectId]: res.status,
+						}))
+					}
+				}),
+			),
+		).catch(console.error)
+	}, [selectedProjects, startDate, endDate])
 
 	return (
 		<>
@@ -58,7 +80,7 @@ export const CreateSync = () => {
 								key={id}
 								project={projects[id] as Project}
 								startDate={startDate}
-								endDate={endDate}
+								status={projectStatus[id] ?? []}
 							/>
 						))}
 					</div>

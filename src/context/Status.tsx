@@ -390,7 +390,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 
 					return { version: status.version + 1 }
 				},
-				fetchProjectStatus: async (id, startDate, endDate) => {
+				fetchProjectStatus: throttle(async (id, startDate, endDate) => {
 					const url = `${API_ENDPOINT}/project/${encodeURIComponent(id)}/status`
 					const params = new URLSearchParams()
 					if (startDate !== undefined) {
@@ -416,7 +416,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 							return { status: res.result.status as Status[] }
 						})
 						.catch((error) => ({ error: InternalError(error.message) }))
-				},
+				}),
 			}}
 		>
 			{children}

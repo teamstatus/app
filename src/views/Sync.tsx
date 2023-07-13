@@ -6,14 +6,17 @@ import { useSyncs, type Sync as TSync } from '../context/Syncs.js'
 import { LogoHeader } from './LogoHeader.js'
 import { handleResponse } from '../context/handleResponse.js'
 import { type ProblemDetail } from '../context/ProblemDetail.js'
+import type { Status } from '../context/Status.js'
 
 export const Sync = ({ id }: { id: string }) => {
 	const { syncs } = useSyncs()
 	const { projects } = useProjects()
 	const [problem, setProblem] = useState<ProblemDetail>()
 	const [sync, setSync] = useState<TSync | undefined>(syncs[id])
+	const [status, setStatus] = useState<Record<string, Status[]>>({})
 
 	useEffect(() => {
+		if (sync !== undefined) return
 		fetch(`${API_ENDPOINT}/sync/${encodeURIComponent(id)}`, {
 			headers: {
 				Accept: 'application/json; charset=utf-8',
@@ -42,6 +45,37 @@ export const Sync = ({ id }: { id: string }) => {
 			})
 			.catch(console.error)
 	}, [id])
+
+	useEffect(() => {
+		if (sync === undefined) return
+		fetch(`${API_ENDPOINT}/sync/${encodeURIComponent(id)}/status`, {
+			headers: {
+				Accept: 'application/json; charset=utf-8',
+			},
+			mode: 'cors',
+			credentials: 'include',
+		})
+			.then(handleResponse<{ status: Status[] }>)
+			.then((res) => {
+				if ('error' in res) {
+					console.error(res)
+					return
+				}
+				setStatus(
+					res.result?.status?.reduce<Record<string, Status[]>>(
+						(projectStatus, status) => ({
+							...projectStatus,
+							[status.project]: [
+								...(projectStatus[status.project] ?? []),
+								status,
+							],
+						}),
+						{},
+					) ?? {},
+				)
+			})
+			.catch(console.error)
+	}, [sync])
 
 	if (problem !== undefined) {
 		return (
@@ -104,8 +138,8 @@ export const Sync = ({ id }: { id: string }) => {
 							<ProjectSync
 								key={project.id}
 								project={project}
+								status={status[project.id] ?? []}
 								startDate={sync.inclusiveStartDate}
-								endDate={sync.inclusiveEndDate}
 							/>
 						))}
 					</div>
