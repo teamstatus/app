@@ -18,7 +18,7 @@ export const About = ({ redirect }: { redirect?: string }) => {
 
 	return (
 		<>
-			<LogoHeader />
+			<LogoHeader animated />
 			<main class="container">
 				<section>
 					<div class="row mt-3">

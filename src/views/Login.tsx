@@ -19,7 +19,7 @@ export const Login = () => {
 
 	return (
 		<>
-			<LogoHeader />
+			<LogoHeader animated />
 			<main class="container">
 				<div class="row mt-3">
 					<section class="col-md-8 offset-md-2 col-lg-6 offset-lg-3">
