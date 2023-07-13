@@ -5,13 +5,11 @@ import { useStatus, type Status as TStatus } from '../context/Status.js'
 import { Ago } from './Ago.js'
 import {
 	AddReactionIcon,
-	CalendarIcon,
 	CollapseRightIcon,
 	DeleteIcon,
 	EditIcon,
 	PersistencePendingIcon,
 	SubMenuIcon,
-	UserIcon,
 } from './Icons.js'
 import { Markdown } from './Markdown.js'
 import { Reaction, SelectReaction } from './Reactions.js'
@@ -30,12 +28,17 @@ export const Status = ({ status }: { status: TStatus }) => {
 			{!reactionsVisible && (
 				<div class="d-flex align-items-center justify-content-between mb-1 flex-wrap">
 					<small class="text-muted d-flex me-2">
-						<span class="text-nowrap me-2 d-flex align-items-center">
-							<UserIcon size={20} class="me-1" /> {status.author}
+						<span class="text-nowrap me-1 d-flex align-items-center">
+							{status.author}
 						</span>
-						<span class="text-nowrap d-flex align-items-center">
-							<CalendarIcon size={20} class="me-1" />{' '}
-							<Ago date={new Date(decodeTime(status.id))} />
+						<span>&middot;</span>
+						<span class="ms-1 text-nowrap d-flex align-items-center">
+							<a
+								href={`/status/${encodeURIComponent(status.id)}`}
+								class="text-muted"
+							>
+								<Ago date={new Date(decodeTime(status.id))} />
+							</a>
 							{status.version > 1 && (
 								<>
 									<EditIcon size={20} class={'ms-1'} /> {status.version}

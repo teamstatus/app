@@ -43,7 +43,7 @@ export const ProjectSync = ({
 							<em>
 								No updates since{' '}
 								<time dateTime={startDate.toISOString()}>
-									{startDate.toLocaleDateString()}
+									{startDate.toISOString().slice(0, 10)}
 								</time>
 								.
 							</em>
@@ -59,7 +59,7 @@ export const ProjectSync = ({
 							<h3>Questions ({questions.length})</h3>
 						</div>
 						<div class="list-group list-group-flush">
-							{questions.map((status) => {
+							{questions.map((status, i) => {
 								const users = status.reactions
 									.filter(isRole(ReactionRole.QUESTION))
 									.map(({ author }) => author)
@@ -72,6 +72,7 @@ export const ProjectSync = ({
 											))}
 										</div>
 										<StatusSync status={status} />
+										{i < questions.length - 1 && <hr />}
 									</div>
 								)
 							})}
@@ -86,9 +87,10 @@ export const ProjectSync = ({
 							<h3>Significant updates</h3>
 						</div>
 						<div class="list-group list-group-flush">
-							{significant.map((status) => (
+							{significant.map((status, i) => (
 								<div class="list-group-item">
 									<StatusSync status={status} />
+									{i < significant.length - 1 && <hr />}
 								</div>
 							))}
 						</div>
@@ -96,8 +98,11 @@ export const ProjectSync = ({
 					{normal.length > 0 && <h3>Remaining updates</h3>}
 				</>
 			)}
-			{normal.map((status) => (
-				<StatusSync status={status} />
+			{normal.map((status, i) => (
+				<>
+					<StatusSync status={status} />
+					{i < normal.length - 1 && <hr />}
+				</>
 			))}
 		</section>
 	)
