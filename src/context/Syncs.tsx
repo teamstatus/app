@@ -75,8 +75,8 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						inclusiveEndDate,
 					}
 					setSyncs((syncs) => ({
-						...syncs,
 						[newSync.id]: newSync,
+						...syncs,
 					}))
 
 					fetch(`${API_ENDPOINT}/sync`, {

@@ -9,7 +9,7 @@ export const CreateSync = () => {
 	const { projects } = useProjects()
 	const [selectedProjects, setSelectedProjects] = useState<string[]>([])
 	const [startDate, setStartDate] = useState<Date>()
-	const [endDate, setendDate] = useState<Date>()
+	const [endDate, setEndDate] = useState<Date>()
 	const { visibleProjects } = useSettings()
 
 	const visible = visibleProjects()
@@ -45,7 +45,7 @@ export const CreateSync = () => {
 								onUpdate={(selectedProjects, startDate, endDate) => {
 									setSelectedProjects(selectedProjects)
 									setStartDate(startDate)
-									setendDate(endDate)
+									setEndDate(endDate)
 								}}
 							/>
 						</div>
