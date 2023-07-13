@@ -6,6 +6,12 @@ import { InternalError } from './InternalError.js'
 import { type ProblemDetail } from './ProblemDetail.js'
 import { useSettings } from './Settings.js'
 import { handleResponse } from './handleResponse.js'
+import pThrottle from 'p-throttle'
+
+const throttle = pThrottle({
+	limit: 2,
+	interval: 250,
+})
 
 // Reactions can have special roles
 export enum ReactionRole {
@@ -86,19 +92,21 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 
 	useEffect(() => {
 		Promise.all(
-			visibleProjects().map(async (projectId) =>
-				fetch(
-					`${API_ENDPOINT}/project/${encodeURIComponent(projectId)}/status`,
-					{
-						headers: {
-							Accept: 'application/json; charset=utf-8',
+			visibleProjects().map(
+				throttle(async (projectId) =>
+					fetch(
+						`${API_ENDPOINT}/project/${encodeURIComponent(projectId)}/status`,
+						{
+							headers: {
+								Accept: 'application/json; charset=utf-8',
+							},
+							mode: 'cors',
+							credentials: 'include',
 						},
-						mode: 'cors',
-						credentials: 'include',
-					},
-				)
-					.then<{ status: Status[] }>(async (res) => res.json())
-					.then(({ status }) => ({ projectId, status })),
+					)
+						.then<{ status: Status[] }>(async (res) => res.json())
+						.then(({ status }) => ({ projectId, status })),
+				),
 			),
 		)
 			.then((projectStatus) =>
