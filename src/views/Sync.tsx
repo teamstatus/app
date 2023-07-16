@@ -3,10 +3,11 @@ import { ProjectSync } from '../components/ProjectSync.js'
 import { SyncTitle } from '../components/SyncTitle.js'
 import { useProjects } from '../context/Projects.js'
 import { useSyncs, type Sync as TSync } from '../context/Syncs.js'
-import { LogoHeader } from './LogoHeader.js'
+import { LogoHeader } from '../components/LogoHeader.js'
 import { handleResponse } from '../context/handleResponse.js'
 import { type ProblemDetail } from '../context/ProblemDetail.js'
 import type { Status } from '../context/Status.js'
+import { ProjectMenu } from '../components/ProjectMenu.js'
 
 export const Sync = ({ id }: { id: string }) => {
 	const { syncs } = useSyncs()
@@ -145,6 +146,7 @@ export const Sync = ({ id }: { id: string }) => {
 					</div>
 				</div>
 			</main>
+			<ProjectMenu />
 		</>
 	)
 }

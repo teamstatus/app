@@ -3,7 +3,7 @@ import { useState } from 'preact/hooks'
 import { useAuth } from '../context/Auth.js'
 import { InternalError } from '../context/InternalError.js'
 import { type ProblemDetail } from '../context/ProblemDetail.js'
-import { LogoHeader } from './LogoHeader.js'
+import { LogoHeader } from '../components/LogoHeader.js'
 import { ProgressBar } from '../components/ProgressBar.js'
 
 export const Login = () => {

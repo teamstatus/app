@@ -3,7 +3,6 @@ import { useState } from 'preact/hooks'
 import { AcceptProjectInvitation } from '../components/AcceptProjectInvitation.js'
 import { Colorpicker } from '../components/Colorpicker.js'
 import {
-	AddIcon,
 	ColorsIcon,
 	HiddenIcon,
 	MembersIcon,
@@ -13,7 +12,8 @@ import {
 } from '../components/Icons.js'
 import { Role, useProjects, type Project } from '../context/Projects.js'
 import { useSettings } from '../context/Settings.js'
-import { LogoHeader } from './LogoHeader.js'
+import { LogoHeader } from '../components/LogoHeader.js'
+import { ProjectMenu } from '../components/ProjectMenu.js'
 
 export const Projects = () => {
 	const { projects } = useProjects()
@@ -56,32 +56,17 @@ export const Projects = () => {
 						</div>
 					</div>
 				</div>
-
 				<div class="row mt-3">
 					<div class="col-md-8 offset-md-2">
 						<AcceptProjectInvitation />
 					</div>
 				</div>
-
-				<a
-					href={`/project/create`}
-					style={{
-						borderRadius: '100%',
-						color: 'white',
-						backgroundColor: '#198754',
-						display: 'block',
-						height: '48px',
-						width: '48px',
-						boxShadow: '0 0 8px 0 #00000075',
-						position: 'fixed',
-						right: '10px',
-						bottom: '70px',
-					}}
-					class="d-flex align-items-center justify-content-center"
-				>
-					<AddIcon />
-				</a>
 			</main>
+			<ProjectMenu
+				action={{
+					href: '/project/create',
+				}}
+			/>
 		</>
 	)
 }
@@ -103,6 +88,7 @@ const ProjectInfo = ({
 	const [colorsVisible, setColorsVisible] = useState(false)
 	const visible = isVisible(id)
 	const pos = visibleProjects().indexOf(id) ?? Number.MAX_SAFE_INTEGER
+	const { name: alias, icon } = getProjectPersonalization(id)
 
 	return (
 		<div class="mb-2">
@@ -132,9 +118,26 @@ const ProjectInfo = ({
 								<UpIcon />
 							</button>
 						)}
-						<ProjectAlias
-							currentValue={getProjectPersonalization(id).name}
-							onAlias={(alias) => {
+						<input
+							type="text"
+							class="form-control me-1"
+							value={icon ?? ''}
+							onInput={(e) => {
+								const icon = (e.target as HTMLInputElement).value
+								personalizeProject(id, {
+									icon: icon.length > 0 ? icon : '',
+								})
+							}}
+							size={1}
+							style={{ width: '50px' }}
+						/>
+
+						<input
+							type="text"
+							class="form-control"
+							value={alias}
+							onInput={(e) => {
+								const alias = (e.target as HTMLInputElement).value
 								personalizeProject(id, {
 									name: alias.length > 0 ? alias : name ?? id,
 								})
@@ -169,28 +172,5 @@ const ProjectInfo = ({
 				)}
 			</div>
 		</div>
-	)
-}
-
-const ProjectAlias = ({
-	currentValue,
-	onAlias,
-}: {
-	currentValue: string
-	onAlias: (alias: string) => void
-}) => {
-	const [alias, setAlias] = useState(currentValue)
-	return (
-		<input
-			type="text"
-			class="form-control"
-			value={alias}
-			onInput={(e) => {
-				setAlias((e.target as HTMLInputElement).value)
-			}}
-			onBlur={() => {
-				onAlias(alias)
-			}}
-		/>
 	)
 }

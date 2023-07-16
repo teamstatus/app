@@ -4,6 +4,7 @@ import { useCallback, useContext, useEffect, useState } from 'preact/hooks'
 import { useProjects } from './Projects.js'
 
 export type ProjectPersonalization = {
+	icon?: string
 	name: string
 	color: string
 }
@@ -58,6 +59,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 		)
 		if (storedProjectPersonalizations === null) return
 		try {
+			console.log(JSON.parse(storedProjectPersonalizations))
 			setProjectPersonalizations(JSON.parse(storedProjectPersonalizations))
 		} catch {
 			// Pass
@@ -111,12 +113,12 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 				getProjectPersonalization: (id) =>
 					projectPersonalizations[id] ?? {
 						name: projects[id]?.name ?? id,
-						color: 'grey',
+						color: '#9eec79',
 					},
-				personalizeProject: (id, { name, color }) => {
+				personalizeProject: (id, { name, color, icon }) => {
 					setProjectPersonalizations((personalizations) => ({
 						...personalizations,
-						[id]: merge(personalizations[id], { name, color }),
+						[id]: merge(personalizations[id], { name, color, icon }),
 					}))
 				},
 				bumpProject: (id) => {

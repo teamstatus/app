@@ -4,8 +4,9 @@ import { colors } from '../components/Colorpicker.js'
 import { ReactionsHelp } from '../components/ReactionsHelp.js'
 import { SelectID } from '../components/SelectID.js'
 import { useAuth } from '../context/Auth.js'
-import { LogoHeader } from './LogoHeader.js'
+import { LogoHeader } from '../components/LogoHeader.js'
 import { route } from 'preact-router'
+import { ProjectMenu } from '../components/ProjectMenu.js'
 
 export const About = ({ redirect }: { redirect?: string }) => {
 	const { user } = useAuth()
@@ -66,6 +67,7 @@ export const About = ({ redirect }: { redirect?: string }) => {
 					</div>
 				</aside>
 			</main>
+			<ProjectMenu />
 		</>
 	)
 }

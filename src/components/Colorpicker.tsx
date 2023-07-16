@@ -13,17 +13,23 @@ export const logoColors = [
 	'#00c0ff',
 ]
 
-export const colors = logoColors
-	.map((color) => [
-		new Color(color).darken(0.45).hex(),
-		new Color(color).darken(0.3).hex(),
-		new Color(color).darken(0.15).hex(),
-		color,
-		new Color(color).lighten(0.15).hex(),
-		new Color(color).lighten(0.3).hex(),
-		new Color(color).lighten(0.45).hex(),
-	])
-	.flat()
+export const colors = [
+	...logoColors
+		.map((color) => [
+			new Color(color).darken(0.45).hex(),
+			new Color(color).darken(0.3).hex(),
+			new Color(color).darken(0.15).hex(),
+			color,
+			new Color(color).lighten(0.15).hex(),
+			new Color(color).lighten(0.3).hex(),
+			new Color(color).lighten(0.45).hex(),
+		])
+		.flat(),
+	'#333',
+	'#666',
+	'#999',
+	'#ccc',
+]
 export const Colorpicker = ({
 	onColor,
 	color,

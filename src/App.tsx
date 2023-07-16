@@ -1,5 +1,4 @@
 import Router, { Route } from 'preact-router'
-import { Footer } from './components/Footer.js'
 import { useAuth } from './context/Auth.js'
 import { Provider as ProjectsProvider } from './context/Projects.js'
 import { Provider as SettingsProvider } from './context/Settings.js'
@@ -48,7 +47,6 @@ export const App = () => {
 							</Router>
 						</SyncsProvider>
 					</StatusProvider>
-					<Footer />
 				</SettingsProvider>
 			</ProjectsProvider>
 		)
@@ -59,7 +57,6 @@ export const App = () => {
 				<Route path="/login" component={Login} />
 				<Route path="/sync/:id" component={PublicSync} />
 			</Router>
-			<Footer />
 		</>
 	)
 }

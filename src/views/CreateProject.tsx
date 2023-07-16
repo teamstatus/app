@@ -4,7 +4,7 @@ import { useState } from 'preact/hooks'
 import { BackIcon, SubmitIcon } from '../components/Icons.js'
 import { useProjects } from '../context/Projects.js'
 import { isProjectId, slugPart } from '../proto/ids.js'
-import { LogoHeader } from './LogoHeader.js'
+import { LogoHeader } from '../components/LogoHeader.js'
 
 export const CreateProject = () => {
 	const [name, setName] = useState<string>('')

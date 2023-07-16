@@ -21,6 +21,7 @@ export enum Role {
 export type Project = {
 	id: string
 	name?: string
+	icon?: string
 	organization: Organization
 	role: Role
 	persisted?: boolean

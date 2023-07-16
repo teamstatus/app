@@ -1,7 +1,7 @@
 import { decodeTime } from 'ulid'
-import { AddIcon } from '../components/Icons.js'
 import { useSyncs } from '../context/Syncs.js'
-import { LogoHeader } from './LogoHeader.js'
+import { LogoHeader } from '../components/LogoHeader.js'
+import { ProjectMenu } from '../components/ProjectMenu.js'
 
 export const Syncs = () => {
 	const { syncs } = useSyncs()
@@ -49,26 +49,8 @@ export const Syncs = () => {
 						</div>
 					</div>
 				</div>
-
-				<a
-					href={`/sync/create`}
-					style={{
-						borderRadius: '100%',
-						color: 'white',
-						backgroundColor: '#198754',
-						display: 'block',
-						height: '48px',
-						width: '48px',
-						boxShadow: '0 0 8px 0 #00000075',
-						position: 'fixed',
-						right: '10px',
-						bottom: '70px',
-					}}
-					class="d-flex align-items-center justify-content-center"
-				>
-					<AddIcon />
-				</a>
 			</main>
+			<ProjectMenu action={{ href: '/sync/create' }} />
 		</>
 	)
 }

@@ -29,6 +29,9 @@ import {
 	Users,
 	X,
 	type LucideIcon,
+	Menu,
+	LogIn,
+	Settings,
 } from 'lucide-preact'
 
 const strokeWidth = 1
@@ -45,15 +48,14 @@ const icon =
 		color?: string
 		size?: number
 		strokeWidth?: number
-	}) =>
-		(
-			<Icon
-				strokeWidth={sw ?? strokeWidth}
-				class={c}
-				size={s ?? size}
-				color={col}
-			/>
-		)
+	}) => (
+		<Icon
+			strokeWidth={sw ?? strokeWidth}
+			class={c}
+			size={s ?? size}
+			color={col}
+		/>
+	)
 
 export const UserIcon = icon(User)
 export const CalendarIcon = icon(Calendar)
@@ -67,6 +69,7 @@ export const AddIcon = icon(Plus)
 export const ProjectsIcon = icon(Sprout)
 export const PersistencePendingIcon = icon(UploadCloud)
 export const LogoutIcon = icon(LogOut)
+export const LogInIcon = icon(LogIn)
 export const SubMenuIcon = icon(MoreHorizontal)
 export const AddReactionIcon = icon(SmilePlus)
 export const DeleteIcon = icon(Trash)
@@ -86,3 +89,5 @@ export const ApplyIcon = icon(Check)
 export const StartDateIcon = icon(ArrowRightFromLine)
 export const EndDateIcon = icon(ArrowLeftFromLine)
 export const ClockIcon = icon(Clock)
+export const MenuIcon = icon(Menu)
+export const SettingsIcon = icon(Settings)

@@ -1,5 +1,6 @@
 import { useAuth } from '../context/Auth.js'
-import { LogoHeader } from './LogoHeader.js'
+import { LogoHeader } from '../components/LogoHeader.js'
+import { ProjectMenu } from '../components/ProjectMenu.js'
 
 export const User = () => {
 	const { user } = useAuth()
@@ -20,6 +21,7 @@ export const User = () => {
 					</div>
 				</div>
 			</main>
+			<ProjectMenu />
 		</>
 	)
 }

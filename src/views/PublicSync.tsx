@@ -1,4 +1,4 @@
-import { LogoHeader } from './LogoHeader.js'
+import { LogoHeader } from '../components/LogoHeader.js'
 
 export const PublicSync = ({ id }: { id: string }) => {
 	return (

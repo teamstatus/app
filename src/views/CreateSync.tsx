@@ -3,7 +3,7 @@ import { ProjectSync } from '../components/ProjectSync.js'
 import { SyncSettings } from '../components/SyncSettings.js'
 import { useProjects, type Project } from '../context/Projects.js'
 import { useSettings } from '../context/Settings.js'
-import { LogoHeader } from './LogoHeader.js'
+import { LogoHeader } from '../components/LogoHeader.js'
 import { useStatus, type Status } from '../context/Status.js'
 
 export const CreateSync = () => {
