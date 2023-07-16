@@ -16,8 +16,11 @@ export const ProjectHeader = ({ project }: { project: Project }) => {
 			<header
 				class="mb-3"
 				style={{
-					color: new Color(color).luminosity() > 0.5 ? 'black' : 'white',
-					backgroundColor: color,
+					color:
+						new Color(color ?? '#212529').luminosity() > 0.5
+							? 'black'
+							: 'white',
+					backgroundColor: color ?? '#212529',
 				}}
 			>
 				<div class="container">

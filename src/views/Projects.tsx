@@ -170,7 +170,11 @@ const ProjectInfo = ({
 					<Colorpicker
 						onColor={(color) => {
 							setColorsVisible(false)
-							return personalizeProject(id, { color })
+							return personalizeProject(id, {
+								color,
+								icon: (icon?.length ?? 0) > 0 ? icon : undefined,
+								alias: (alias?.length ?? 0) > 0 ? alias : undefined,
+							})
 						}}
 						color={getProjectPersonalization(id).color ?? '#212529'}
 					/>

@@ -1,11 +1,12 @@
 import cx from 'classnames'
 import { route } from 'preact-router'
 import { useState } from 'preact/hooks'
-import { BackIcon, ProjectsIcon, SubmitIcon } from '../components/Icons.js'
+import { BackIcon, SubmitIcon } from '../components/Icons.js'
 import { type ProblemDetail } from '../context/ProblemDetail.js'
 import { useProjects } from '../context/Projects.js'
 import { isUserId, slugPart } from '../proto/ids.js'
 import { ProjectHeader } from '../components/ProjectHeader.js'
+import { ProjectMenu } from '../components/ProjectMenu.js'
 
 export const InviteToProject = ({
 	id,
@@ -27,11 +28,6 @@ export const InviteToProject = ({
 				<div class="card col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-4">
 					<div class="card-header">
 						<h1>Invite a member</h1>
-						<p>
-							<small>
-								<ProjectsIcon /> {projects[id]?.id}
-							</small>
-						</p>
 					</div>
 					<div class="card-body">
 						{error !== undefined && (
@@ -88,6 +84,7 @@ export const InviteToProject = ({
 					</div>
 				</div>
 			</main>
+			<ProjectMenu />
 		</>
 	)
 }
