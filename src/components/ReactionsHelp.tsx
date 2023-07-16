@@ -9,7 +9,7 @@ export const ReactionsHelp = () => {
 	return (
 		<section>
 			<div class="row mt-3">
-				<div class="col-md-8 offset-md-2">
+				<div class="col-12 col-md-8 offset-md-2">
 					<h2>Reactions</h2>
 					<p>
 						Reactions are a way to add annotations to a status. Besides simple
@@ -31,7 +31,7 @@ export const ReactionsHelp = () => {
 			</div>
 
 			<div class="row mt-1">
-				<div class="col-md-8 offset-md-2">
+				<div class="col-12 col-md-8 offset-md-2">
 					A user icon marks reactions given by you:{' '}
 					<Reaction
 						reaction={{
@@ -43,7 +43,7 @@ export const ReactionsHelp = () => {
 			</div>
 
 			<div class="row mt-3">
-				<div class="col-md-8 offset-md-2">
+				<div class="col-12 col-md-8 offset-md-2">
 					<h3>Available reactions</h3>
 					<p>
 						<InfoIcon strokeWidth={1} size={20} class="me-1" />
@@ -54,7 +54,7 @@ export const ReactionsHelp = () => {
 
 			{reactionPresets.map((reaction) => (
 				<div class="row mb-1">
-					<div class="col-12 d-flex align-items-center justify-content-star">
+					<div class="col-12 col-md-8 offset-md-2 d-flex align-items-center justify-content-star">
 						<Reaction reaction={reaction} />
 						<span>
 							{reaction.description ?? 'N/A'} <br />
