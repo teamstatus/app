@@ -59,7 +59,6 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 		)
 		if (storedProjectPersonalizations === null) return
 		try {
-			console.log(JSON.parse(storedProjectPersonalizations))
 			setProjectPersonalizations(JSON.parse(storedProjectPersonalizations))
 		} catch {
 			// Pass

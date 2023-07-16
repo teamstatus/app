@@ -30,7 +30,6 @@ export const Sync = ({ id }: { id: string }) => {
 				if ('error' in maybeSync) {
 					setProblem(maybeSync.error)
 				} else if (maybeSync.result !== null) {
-					console.log(maybeSync.result.sync)
 					setSync({
 						...maybeSync.result.sync,
 						inclusiveStartDate:

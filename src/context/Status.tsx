@@ -229,8 +229,6 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						)
 						if (statusToUpdate === undefined) return s
 
-						console.log(statusToUpdate.reactions)
-
 						const reactionHashs = statusToUpdate.reactions.map(reactionHash)
 						if (reactionHashs.includes(reactionHash(newReaction))) return s
 						added = true
