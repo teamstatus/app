@@ -1,12 +1,11 @@
-import { merge } from 'lodash-es'
 import { createContext, type ComponentChildren } from 'preact'
 import { useCallback, useContext, useEffect, useState } from 'preact/hooks'
 import { useProjects } from './Projects.js'
 
 export type ProjectPersonalization = {
 	icon?: string
-	name: string
-	color: string
+	alias?: string
+	color?: string
 }
 
 export const SettingsContext = createContext<{
@@ -19,7 +18,7 @@ export const SettingsContext = createContext<{
 	getProjectPersonalization: (id: string) => ProjectPersonalization
 	personalizeProject: (
 		id: string,
-		personalization: Partial<ProjectPersonalization>,
+		personalization: ProjectPersonalization,
 	) => void
 }>({
 	visibleProjects: () => [],
@@ -28,7 +27,7 @@ export const SettingsContext = createContext<{
 	toggleProject: () => undefined,
 	bumpProject: () => undefined,
 	isVisible: () => false,
-	getProjectPersonalization: () => ({ name: '', color: 'black' }),
+	getProjectPersonalization: () => ({}),
 	personalizeProject: () => undefined,
 })
 
@@ -111,13 +110,13 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 				isVisible: (id) => visibleProjects.includes(id),
 				getProjectPersonalization: (id) =>
 					projectPersonalizations[id] ?? {
-						name: projects[id]?.name ?? id,
+						alias: projects[id]?.name ?? id,
 						color: '#9eec79',
 					},
-				personalizeProject: (id, { name, color, icon }) => {
+				personalizeProject: (id, { alias, color, icon }) => {
 					setProjectPersonalizations((personalizations) => ({
 						...personalizations,
-						[id]: merge(personalizations[id], { name, color, icon }),
+						[id]: { alias, color, icon },
 					}))
 				},
 				bumpProject: (id) => {

@@ -14,6 +14,7 @@ import { Role, useProjects, type Project } from '../context/Projects.js'
 import { useSettings } from '../context/Settings.js'
 import { LogoHeader } from '../components/LogoHeader.js'
 import { ProjectMenu } from '../components/ProjectMenu.js'
+import { parseProjectId } from '../proto/ids.js'
 
 export const Projects = () => {
 	const { projects } = useProjects()
@@ -88,11 +89,14 @@ const ProjectInfo = ({
 	const [colorsVisible, setColorsVisible] = useState(false)
 	const visible = isVisible(id)
 	const pos = visibleProjects().indexOf(id) ?? Number.MAX_SAFE_INTEGER
-	const { name: alias, icon } = getProjectPersonalization(id)
+	const { alias, icon } = getProjectPersonalization(id)
+	const { organization, project: projectId } = parseProjectId(id)
 
 	return (
 		<div class="mb-2">
-			{id}
+			<span style={{ opacity: 0.75 }}>{organization}</span>&#8203;
+			<strong class="nowrap">{projectId}</strong>
+			{name !== undefined && <span class="ms-1">({name})</span>}
 			<div class="d-flex align-items-center justify-content-between">
 				{!colorsVisible && (
 					<>
@@ -125,21 +129,22 @@ const ProjectInfo = ({
 							onInput={(e) => {
 								const icon = (e.target as HTMLInputElement).value
 								personalizeProject(id, {
-									icon: icon.length > 0 ? icon : '',
+									alias: (alias?.length ?? 0) > 0 ? alias : undefined,
+									icon: icon.length > 0 ? icon : undefined,
 								})
 							}}
 							size={1}
 							style={{ width: '50px' }}
 						/>
-
 						<input
 							type="text"
 							class="form-control"
-							value={alias}
+							value={alias ?? ''}
 							onInput={(e) => {
 								const alias = (e.target as HTMLInputElement).value
 								personalizeProject(id, {
-									name: alias.length > 0 ? alias : name ?? id,
+									alias: alias.length > 0 ? alias : undefined,
+									icon: (icon?.length ?? 0) > 0 ? icon : undefined,
 								})
 							}}
 						/>
@@ -167,7 +172,7 @@ const ProjectInfo = ({
 							setColorsVisible(false)
 							return personalizeProject(id, { color })
 						}}
-						color={getProjectPersonalization(id).color}
+						color={getProjectPersonalization(id).color ?? '#212529'}
 					/>
 				)}
 			</div>

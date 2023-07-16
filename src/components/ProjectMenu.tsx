@@ -2,6 +2,7 @@ import Color from 'color'
 import { useSettings } from '../context/Settings.js'
 import { useState } from 'preact/hooks'
 import { CloseIcon, ProjectsIcon, AddIcon } from './Icons.js'
+import { useProjects } from '../context/Projects.js'
 
 export const ProjectMenu = ({
 	action,
@@ -11,6 +12,7 @@ export const ProjectMenu = ({
 		color?: string
 	}
 }) => {
+	const { projects } = useProjects()
 	const { getProjectPersonalization, visibleProjects } = useSettings()
 	const [projectsVisible, showProjects] = useState<boolean>(false)
 
@@ -44,7 +46,8 @@ export const ProjectMenu = ({
 			{projectsVisible &&
 				visibleProjects().length > 0 &&
 				visibleProjects().map((id) => {
-					const { color, icon, name } = getProjectPersonalization(id)
+					const project = projects[id]
+					const { color, icon, alias } = getProjectPersonalization(id)
 					return (
 						<div class="d-flex flex-column align-items-center">
 							<a
@@ -59,13 +62,17 @@ export const ProjectMenu = ({
 									}}
 									class="px-2 py-1 me-2"
 								>
-									{name}
+									{alias ?? project?.name ?? id}
 								</span>
 								{icon === undefined && (
 									<span
 										class="d-flex align-items-center justify-content-center"
 										style={{
-											backgroundColor: color,
+											color:
+												new Color(color ?? '#212529').luminosity() > 0.5
+													? 'black'
+													: 'white',
+											backgroundColor: color ?? '#212529',
 											borderRadius: '100%',
 											display: 'block',
 											height: '48px',
@@ -87,8 +94,10 @@ export const ProjectMenu = ({
 										style={{
 											borderRadius: '100%',
 											color:
-												new Color(color).luminosity() > 0.5 ? 'black' : 'white',
-											backgroundColor: color,
+												new Color(color ?? '#212529').luminosity() > 0.5
+													? 'black'
+													: 'white',
+											backgroundColor: color ?? '#212529',
 											display: 'block',
 											height: '48px',
 											width: '48px',
