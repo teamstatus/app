@@ -5,6 +5,7 @@ import { InternalError } from '../context/InternalError.js'
 import { type ProblemDetail } from '../context/ProblemDetail.js'
 import { LogoHeader } from '../components/LogoHeader.js'
 import { ProgressBar } from '../components/ProgressBar.js'
+import { Intro } from '../components/Intro.js'
 
 export const Login = () => {
 	const { setUser, autoLoginState } = useAuth()
@@ -21,8 +22,11 @@ export const Login = () => {
 		<>
 			<LogoHeader animated />
 			<main class="container">
-				<div class="row mt-3">
-					<section class="col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+				<div class="row mt-4">
+					<section class="col-12 col-lg-6">
+						<Intro />
+					</section>
+					<section class="col-12 col-lg-6">
 						<div class="card">
 							<div class="card-header">
 								<h1>Login</h1>

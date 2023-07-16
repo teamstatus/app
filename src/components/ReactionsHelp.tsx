@@ -1,7 +1,8 @@
+import { InfoIcon } from 'lucide-preact'
 import { useAuth } from '../context/Auth.js'
 import type { Reaction as TReaction } from '../context/Status.js'
 import { ReactionRole } from '../context/Status.js'
-import { Reaction, reactionPresets } from './Reactions.js'
+import { Reaction, Role, reactionPresets } from './Reactions.js'
 
 export const ReactionsHelp = () => {
 	const { user } = useAuth()
@@ -10,6 +11,22 @@ export const ReactionsHelp = () => {
 			<div class="row mt-3">
 				<div class="col-md-8 offset-md-2">
 					<h2>Reactions</h2>
+					<p>
+						Reactions are a way to add annotations to a status. Besides simple
+						reactions, for example a 👍 to indicate that you like a status,
+						reactions can have two special roles:
+					</p>
+					<ol>
+						<li>
+							<Role role={ReactionRole.SIGNIFICANT} />
+							Significant: this makes the status stand out, and in syncs will
+							highlight the status to make it stand out from regular status.
+						</li>
+						<li>
+							<Role role={ReactionRole.QUESTION} /> Question: signals that this
+							status should be discussed during the sync meeting.
+						</li>
+					</ol>
 				</div>
 			</div>
 
@@ -26,28 +43,26 @@ export const ReactionsHelp = () => {
 			</div>
 
 			<div class="row mt-3">
-				{reactionPresets.map((reaction) => (
-					<div class="col-12 col-md-3 mb-3">
-						<div class="card">
-							<div class="card-header">
-								<h3>
-									<Reaction reaction={reaction} />
-								</h3>
-							</div>
-							<div class="card-body">
-								<dl>
-									<dt>Description</dt>
-									<dd>{reaction.description ?? 'N/A'}</dd>
-									<dt>Role</dt>
-									<dd>
-										<ExplainRole reaction={reaction} />
-									</dd>
-								</dl>
-							</div>
-						</div>
-					</div>
-				))}
+				<div class="col-md-8 offset-md-2">
+					<h3>Available reactions</h3>
+					<p>
+						<InfoIcon strokeWidth={1} size={20} class="me-1" />
+						You can customize your reactions <a href="/reactions">here</a>.
+					</p>
+				</div>
 			</div>
+
+			{reactionPresets.map((reaction) => (
+				<div class="row mb-1">
+					<div class="col-12 d-flex align-items-center justify-content-star">
+						<Reaction reaction={reaction} />
+						<span>
+							{reaction.description ?? 'N/A'} <br />
+							<ExplainRole reaction={reaction} />
+						</span>
+					</div>
+				</div>
+			))}
 		</section>
 	)
 }

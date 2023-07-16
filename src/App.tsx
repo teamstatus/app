@@ -18,6 +18,7 @@ import { Sync } from './views/Sync.js'
 import { Syncs } from './views/Syncs.js'
 import { User } from './views/User.js'
 import { PublicSync } from './views/PublicSync.js'
+import { Footer } from './components/Footer.js'
 
 export const App = () => {
 	const { loggedIn } = useAuth()
@@ -45,6 +46,7 @@ export const App = () => {
 								<Route path="/user" component={User} />
 								<Route path="/status/:id/edit" component={EditStatus} />
 							</Router>
+							<Footer />
 						</SyncsProvider>
 					</StatusProvider>
 				</SettingsProvider>
@@ -57,6 +59,7 @@ export const App = () => {
 				<Route path="/login" component={Login} />
 				<Route path="/sync/:id" component={PublicSync} />
 			</Router>
+			<Footer />
 		</>
 	)
 }
