@@ -69,6 +69,6 @@ describe('identifiers', async () => {
 
 	describe('inviation ID', async () => {
 		it('should validate an invitation ID', () =>
-			assert.equal(isInvitationId('$teamstatus#invite2:@teamstatus'), true))
+			assert.equal(isInvitationId('$teamstatus#invite2@teamstatus'), true))
 	})
 })

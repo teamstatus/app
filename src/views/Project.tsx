@@ -1,6 +1,6 @@
 import { ProjectHeader } from '../components/ProjectHeader.js'
 import { Status } from '../components/Status.js'
-import { useProjects } from '../context/Projects.js'
+import { canCreateStatus, useProjects } from '../context/Projects.js'
 import { useSettings } from '../context/Settings.js'
 import { useStatus } from '../context/Status.js'
 import { ProjectMenu } from '../components/ProjectMenu.js'
@@ -63,6 +63,7 @@ export const Project = ({
 				action={{
 					href: `/project/${encodeURIComponent(id)}/compose`,
 					color,
+					disabled: !canCreateStatus(project.role),
 				}}
 			/>
 		</>

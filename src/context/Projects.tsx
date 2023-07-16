@@ -6,6 +6,7 @@ import { useAuth } from './Auth.js'
 import { InternalError } from './InternalError.js'
 import { type ProblemDetail } from './ProblemDetail.js'
 import { handleResponse } from './handleResponse.js'
+import { throttle } from '../api/throttle.js'
 
 export type Organization = {
 	id: string
@@ -16,6 +17,7 @@ export type Organization = {
 export enum Role {
 	OWNER = 'owner',
 	MEMBER = 'member',
+	WATCHER = 'watcher',
 }
 
 export type Project = {
@@ -25,6 +27,12 @@ export type Project = {
 	organization: Organization
 	role: Role
 	persisted?: boolean
+}
+
+export type Invitation = {
+	id: string
+	inviter: string
+	role: Role
 }
 
 export type ProjectsContext = {
@@ -37,6 +45,7 @@ export type ProjectsContext = {
 	inviteToProject: (
 		id: string,
 		user: string,
+		role: Role,
 	) => Promise<{ error: ProblemDetail } | { success: boolean }>
 	acceptProjectInvitation: (
 		invitationId: string,
@@ -45,6 +54,7 @@ export type ProjectsContext = {
 		id: string,
 		name?: string,
 	) => { error: string } | { success: boolean }
+	invitations: Invitation[]
 }
 
 export const ProjectsContext = createContext<ProjectsContext>({
@@ -58,51 +68,86 @@ export const ProjectsContext = createContext<ProjectsContext>({
 		error: InternalError('Not ready.'),
 	}),
 	organizations: [],
+	invitations: [],
 })
 
 export const Provider = ({ children }: { children: ComponentChildren }) => {
 	const [projects, setProjects] = useState<Record<string, Project>>({})
 	const [organizations, setOrganizations] = useState<Organization[]>([])
 	const { user } = useAuth()
-	const [projectsListId, setProjectsListId] = useState(ulid())
+	const [projectsListFetchId, setProjectsListId] = useState(ulid())
+	const [invitations, setInvitations] = useState<Invitation[]>([])
+
+	const refreshProjects = () => {
+		setProjectsListId(ulid())
+	}
 
 	useEffect(() => {
 		if (user?.id === undefined) return
-		fetch(`${API_ENDPOINT}/organizations`, {
-			headers: {
-				Accept: 'application/json; charset=utf-8',
-			},
-			mode: 'cors',
-			credentials: 'include',
-		})
-			.then<{ organizations: Organization[] }>(async (res) => res.json())
-			.then(async ({ organizations }) => setOrganizations(organizations))
-			.catch(console.error)
+		throttle(async () =>
+			fetch(`${API_ENDPOINT}/organizations`, {
+				headers: {
+					Accept: 'application/json; charset=utf-8',
+				},
+				mode: 'cors',
+				credentials: 'include',
+			})
+				.then(handleResponse<{ organizations: Organization[] }>)
+				.then(async (res) => {
+					if ('error' in res) {
+						console.error(res)
+					} else {
+						setOrganizations(res.result?.organizations ?? [])
+					}
+				}),
+		)().catch(console.error)
 	}, [])
 
 	useEffect(() => {
 		if (user?.id === undefined) return
-		fetch(`${API_ENDPOINT}/projects`, {
-			headers: {
-				Accept: 'application/json; charset=utf-8',
-			},
-			mode: 'cors',
-			credentials: 'include',
-		})
-			.then<{ projects: Project[] }>(async (res) => res.json())
-			.then(({ projects }) => {
-				setProjects(
-					projects.reduce(
-						(projects, project) => ({
-							...projects,
-							[project.id]: project,
-						}),
-						{},
-					),
-				)
+		throttle(async () =>
+			fetch(`${API_ENDPOINT}/projects`, {
+				headers: {
+					Accept: 'application/json; charset=utf-8',
+				},
+				mode: 'cors',
+				credentials: 'include',
 			})
-			.catch(console.error)
-	}, [projectsListId])
+				.then<{ projects: Project[] }>(async (res) => res.json())
+				.then(({ projects }) => {
+					setProjects(
+						projects.reduce(
+							(projects, project) => ({
+								...projects,
+								[project.id]: project,
+							}),
+							{},
+						),
+					)
+				}),
+		)().catch(console.error)
+	}, [projectsListFetchId])
+
+	// Fetch invites
+	useEffect(() => {
+		throttle(async () =>
+			fetch(`${API_ENDPOINT}/invitations`, {
+				headers: {
+					Accept: 'application/json; charset=utf-8',
+				},
+				mode: 'cors',
+				credentials: 'include',
+			})
+				.then(handleResponse<{ invitations: Invitation[] }>)
+				.then(async (res) => {
+					if ('error' in res) {
+						console.error(res)
+					} else {
+						setInvitations(res.result?.invitations ?? [])
+					}
+				}),
+		)().catch(console.error)
+	}, [projectsListFetchId])
 
 	return (
 		<ProjectsContext.Provider
@@ -124,7 +169,6 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						...projects,
 						[newProject.id]: newProject,
 					}))
-
 					fetch(`${API_ENDPOINT}/projects`, {
 						method: 'POST',
 						headers: {
@@ -149,7 +193,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 					return { success: true }
 				},
 				organizations,
-				inviteToProject: async (id, invitedUserId) =>
+				inviteToProject: async (id, invitedUserId, role) =>
 					fetch(`${API_ENDPOINT}/project/${encodeURIComponent(id)}/member`, {
 						method: 'POST',
 						headers: {
@@ -158,7 +202,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						},
 						mode: 'cors',
 						credentials: 'include',
-						body: JSON.stringify({ invitedUserId }),
+						body: JSON.stringify({ invitedUserId, role }),
 					})
 						.then(async (res) => handleResponse(res))
 						.then(async (res) => {
@@ -183,7 +227,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						.then(async (res) => handleResponse(res))
 						.then(async (res) => {
 							if ('error' in res) return res
-							setProjectsListId(ulid())
+							refreshProjects()
 							return { success: true }
 						})
 						.catch((error) => ({ error: InternalError(error.message) })),
@@ -218,6 +262,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 
 					return { success: true }
 				},
+				invitations,
 			}}
 		>
 			{children}
@@ -228,3 +273,8 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 export const Consumer = ProjectsContext.Consumer
 
 export const useProjects = () => useContext(ProjectsContext)
+
+export const canCreateStatus = (role: Role) => {
+	console.log(role)
+	return [Role.OWNER, Role.MEMBER].includes(role)
+}

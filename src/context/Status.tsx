@@ -6,12 +6,7 @@ import { InternalError } from './InternalError.js'
 import { type ProblemDetail } from './ProblemDetail.js'
 import { useSettings } from './Settings.js'
 import { handleResponse } from './handleResponse.js'
-import pThrottle from 'p-throttle'
-
-const throttle = pThrottle({
-	limit: 2,
-	interval: 250,
-})
+import { throttle } from '../api/throttle.js'
 
 // Reactions can have special roles
 export enum ReactionRole {
@@ -406,7 +401,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						mode: 'cors',
 						credentials: 'include',
 					})
-						.then(async (res) => handleResponse(res))
+						.then(handleResponse)
 						.then(async (res) => {
 							if ('error' in res) return res
 							if (res.result === null)

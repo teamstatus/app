@@ -1,7 +1,6 @@
 import cx from 'classnames'
 import { route } from 'preact-router'
 import { useState } from 'preact/hooks'
-import { useAuth } from '../context/Auth.js'
 import { type ProblemDetail } from '../context/ProblemDetail.js'
 import { useProjects } from '../context/Projects.js'
 import { isInvitationId, slugPart } from '../proto/ids.js'
@@ -11,9 +10,7 @@ export const AcceptProjectInvitation = () => {
 	const [invitationId, setInvitationId] = useState('')
 	const [error, setError] = useState<ProblemDetail | undefined>()
 	const isValid = isInvitationId(invitationId)
-	const { user } = useAuth()
 	const { acceptProjectInvitation } = useProjects()
-	if (user === undefined) return null
 	return (
 		<div class="card">
 			<div class="card-header">
@@ -37,7 +34,7 @@ export const AcceptProjectInvitation = () => {
 							setInvitationId((e.target as HTMLInputElement).value)
 						}
 						value={invitationId}
-						placeholder={`e.g. "$team#project:${user.id}"`}
+						placeholder={`e.g. "$team#project@userid"`}
 						pattern={`^${slugPart}$`}
 						required
 					/>

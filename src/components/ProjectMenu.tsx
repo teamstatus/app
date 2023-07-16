@@ -10,6 +10,7 @@ export const ProjectMenu = ({
 	action?: {
 		href: string
 		color?: string
+		disabled?: boolean
 	}
 }) => {
 	const { projects } = useProjects()
@@ -113,7 +114,7 @@ export const ProjectMenu = ({
 				})}
 			{!projectsVisible && (
 				<>
-					{action !== undefined && (
+					{action !== undefined && (action.disabled ?? false) === false && (
 						<a
 							href={action.href}
 							style={{
@@ -132,6 +133,24 @@ export const ProjectMenu = ({
 						>
 							<AddIcon />
 						</a>
+					)}
+					{action !== undefined && (action.disabled ?? false) === true && (
+						<button
+							disabled
+							class="btn d-flex align-items-center justify-content-center mb-2"
+							style={{
+								border: 0,
+								borderRadius: '100%',
+								color: 'black',
+								backgroundColor: '#999',
+								display: 'block',
+								height: '48px',
+								width: '48px',
+								boxShadow: '0 0 8px 0 #00000075',
+							}}
+						>
+							<AddIcon />
+						</button>
 					)}
 					<button
 						onClick={() => showProjects((s) => !s)}

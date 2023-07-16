@@ -1,15 +1,14 @@
 import Color from 'color'
 import { type Project } from '../context/Projects.js'
 import { useSettings } from '../context/Settings.js'
-import { parseProjectId } from '../proto/ids.js'
 import { MenuIcon } from './Icons.js'
 import { useState } from 'preact/hooks'
 import { OffsetMenu } from '../navigation/OffsetMenu.js'
+import { ProjectId } from './ProjectId.js'
 
 export const ProjectHeader = ({ project }: { project: Project }) => {
 	const { getProjectPersonalization } = useSettings()
 	const { color } = getProjectPersonalization(project.id)
-	const { organization, project: projectId } = parseProjectId(project.id)
 	const [collapsed, setCollapsed] = useState(true)
 	return (
 		<>
@@ -27,8 +26,7 @@ export const ProjectHeader = ({ project }: { project: Project }) => {
 					<div class="row">
 						<div class="col d-flex align-items-center justify-content-between">
 							<h1 class="pt-2 pb-2 pt-md-4 pb-md-4 fs-5 mb-0">
-								<span style={{ opacity: 0.75 }}>{organization}</span>&#8203;
-								<strong class="nowrap">{projectId}</strong>
+								<ProjectId id={project.id} />
 							</h1>
 							<button
 								type="button"

@@ -14,7 +14,9 @@ import { Role, useProjects, type Project } from '../context/Projects.js'
 import { useSettings } from '../context/Settings.js'
 import { LogoHeader } from '../components/LogoHeader.js'
 import { ProjectMenu } from '../components/ProjectMenu.js'
-import { parseProjectId } from '../proto/ids.js'
+import { Invitations } from '../components/Invitations.js'
+import { ProjectId } from '../components/ProjectId.js'
+import { RolePill } from './RolePill.js'
 
 export const Projects = () => {
 	const { projects } = useProjects()
@@ -62,6 +64,11 @@ export const Projects = () => {
 						<AcceptProjectInvitation />
 					</div>
 				</div>
+				<div class="row mt-3">
+					<div class="col-md-8 offset-md-2">
+						<Invitations />
+					</div>
+				</div>
 			</main>
 			<ProjectMenu
 				action={{
@@ -90,13 +97,19 @@ const ProjectInfo = ({
 	const visible = isVisible(id)
 	const pos = visibleProjects().indexOf(id) ?? Number.MAX_SAFE_INTEGER
 	const { alias, icon } = getProjectPersonalization(id)
-	const { organization, project: projectId } = parseProjectId(id)
 
 	return (
-		<div class="mb-2">
-			<span style={{ opacity: 0.75 }}>{organization}</span>&#8203;
-			<strong class="nowrap">{projectId}</strong>
-			{name !== undefined && <span class="ms-1">({name})</span>}
+		<div class="mb-3">
+			<div class="d-flex align-items-center justify-content-between mb-1">
+				<div>
+					{name !== undefined && <span class="me-2">{name}</span>}
+
+					<span class="badge rounded-pill bg-secondary me-2">
+						<ProjectId id={id} />
+					</span>
+				</div>
+				<RolePill role={role} />
+			</div>
 			<div class="d-flex align-items-center justify-content-between">
 				{!colorsVisible && (
 					<>

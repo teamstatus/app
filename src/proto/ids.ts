@@ -32,7 +32,7 @@ export const parseProjectId = (
 }
 
 const invitationIdRegex = new RegExp(
-	`^(?<organization>\\$${slugPart})(?<project>#${slugPart}):(?<user>@${slugPart})$`,
+	`^(?<organization>\\$${slugPart})(?<project>#${slugPart})(?<user>@${slugPart})$`,
 	'i',
 ) // $teamstatus#invite2:@teamstatus
 export const isInvitationId = (id?: string): id is string =>

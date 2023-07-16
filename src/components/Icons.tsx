@@ -32,6 +32,9 @@ import {
 	Menu,
 	LogIn,
 	Settings,
+	Crown,
+	EyeIcon,
+	UserCheck,
 } from 'lucide-preact'
 
 const strokeWidth = 1
@@ -91,3 +94,6 @@ export const EndDateIcon = icon(ArrowLeftFromLine)
 export const ClockIcon = icon(Clock)
 export const MenuIcon = icon(Menu)
 export const SettingsIcon = icon(Settings)
+export const OwnerIcon = icon(Crown)
+export const WatcherIcon = icon(EyeIcon)
+export const AcceptInvitationIcon = icon(UserCheck)
