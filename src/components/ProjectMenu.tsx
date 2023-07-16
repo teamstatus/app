@@ -8,6 +8,7 @@ export const ProjectMenu = ({
 }: {
 	action?: {
 		href: string
+		color?: string
 	}
 }) => {
 	const { getProjectPersonalization, visibleProjects } = useSettings()
@@ -108,8 +109,11 @@ export const ProjectMenu = ({
 							href={action.href}
 							style={{
 								borderRadius: '100%',
-								color: 'white',
-								backgroundColor: '#198754',
+								color:
+									new Color(action.color ?? '#198754').luminosity() > 0.5
+										? 'black'
+										: 'white',
+								backgroundColor: action.color ?? '#198754',
 								display: 'block',
 								height: '48px',
 								width: '48px',

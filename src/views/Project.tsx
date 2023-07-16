@@ -1,10 +1,9 @@
-import Color from 'color'
-import { AddIcon } from '../components/Icons.js'
 import { ProjectHeader } from '../components/ProjectHeader.js'
 import { Status } from '../components/Status.js'
 import { useProjects } from '../context/Projects.js'
 import { useSettings } from '../context/Settings.js'
 import { useStatus } from '../context/Status.js'
+import { ProjectMenu } from '../components/ProjectMenu.js'
 
 export const Project = ({
 	id,
@@ -59,25 +58,13 @@ export const Project = ({
 						</div>
 					)}
 				</section>
-				<a
-					href={`/project/${encodeURIComponent(id)}/compose`}
-					style={{
-						borderRadius: '100%',
-						color: new Color(color).luminosity() > 0.5 ? 'black' : 'white',
-						backgroundColor: color,
-						display: 'block',
-						height: '48px',
-						width: '48px',
-						boxShadow: '0 0 8px 0 #00000075',
-						position: 'fixed',
-						right: '10px',
-						bottom: '70px',
-					}}
-					class="d-flex align-items-center justify-content-center"
-				>
-					<AddIcon />
-				</a>
 			</main>
+			<ProjectMenu
+				action={{
+					href: `/project/${encodeURIComponent(id)}/compose`,
+					color,
+				}}
+			/>
 		</>
 	)
 }
