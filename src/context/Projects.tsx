@@ -274,7 +274,5 @@ export const Consumer = ProjectsContext.Consumer
 
 export const useProjects = () => useContext(ProjectsContext)
 
-export const canCreateStatus = (role: Role) => {
-	console.log(role)
-	return [Role.OWNER, Role.MEMBER].includes(role)
-}
+export const canCreateStatus = (role: Role) =>
+	[Role.OWNER, Role.MEMBER].includes(role)

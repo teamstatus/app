@@ -5,6 +5,8 @@ import { BackIcon, SubmitIcon } from '../components/Icons.js'
 import { useProjects } from '../context/Projects.js'
 import { isOrganizationId, slugPart } from '../proto/ids.js'
 import { LogoHeader } from '../components/LogoHeader.js'
+import { Main } from '../components/Main.js'
+import { ProjectMenu } from '../components/ProjectMenu.js'
 
 export const CreateOrganization = () => {
 	const [name, setName] = useState<string>('')
@@ -17,7 +19,7 @@ export const CreateOrganization = () => {
 	return (
 		<>
 			<LogoHeader />
-			<main class="container">
+			<Main class="container">
 				<div class="card col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-4">
 					<div class="card-header">
 						<h1>Create a new organization</h1>
@@ -88,7 +90,8 @@ export const CreateOrganization = () => {
 						</button>
 					</div>
 				</div>
-			</main>
+			</Main>
+			<ProjectMenu />
 		</>
 	)
 }

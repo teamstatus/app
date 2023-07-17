@@ -1,5 +1,5 @@
 import Router, { Route } from 'preact-router'
-import { useAuth } from './context/Auth.js'
+import { Provider as AuthProvider, useAuth } from './context/Auth.js'
 import { Provider as ProjectsProvider } from './context/Projects.js'
 import { Provider as SettingsProvider } from './context/Settings.js'
 import { Provider as StatusProvider } from './context/Status.js'
@@ -19,6 +19,7 @@ import { Syncs } from './views/Syncs.js'
 import { User } from './views/User.js'
 import { PublicSync } from './views/PublicSync.js'
 import { Footer } from './components/Footer.js'
+import { Provider as UIProvider } from './context/UI.js'
 
 export const App = () => {
 	const { loggedIn } = useAuth()
@@ -29,24 +30,34 @@ export const App = () => {
 				<SettingsProvider>
 					<StatusProvider>
 						<SyncsProvider>
-							<Router>
-								<Route path="/" component={About} />
-								<Route path="/projects" component={Projects} />
-								<Route path="/sync/create" component={CreateSync} />
-								<Route path="/sync/:id" component={Sync} />
-								<Route path="/syncs" component={Syncs} />
-								<Route path="/project/create" component={CreateProject} />
-								<Route
-									path="/organization/create"
-									component={CreateOrganization}
-								/>
-								<Route path="/project/:id" component={Project} />
-								<Route path="/project/:id/compose" component={ComposeStatus} />
-								<Route path="/project/:id/invite" component={InviteToProject} />
-								<Route path="/user" component={User} />
-								<Route path="/status/:id/edit" component={EditStatus} />
-							</Router>
-							<Footer />
+							<UIProvider>
+								<AuthProvider>
+									<Router>
+										<Route path="/" component={About} />
+										<Route path="/projects" component={Projects} />
+										<Route path="/sync/create" component={CreateSync} />
+										<Route path="/sync/:id" component={Sync} />
+										<Route path="/syncs" component={Syncs} />
+										<Route path="/project/create" component={CreateProject} />
+										<Route
+											path="/organization/create"
+											component={CreateOrganization}
+										/>
+										<Route path="/project/:id" component={Project} />
+										<Route
+											path="/project/:id/compose"
+											component={ComposeStatus}
+										/>
+										<Route
+											path="/project/:id/invite"
+											component={InviteToProject}
+										/>
+										<Route path="/user" component={User} />
+										<Route path="/status/:id/edit" component={EditStatus} />
+									</Router>
+									<Footer />
+								</AuthProvider>
+							</UIProvider>
 						</SyncsProvider>
 					</StatusProvider>
 				</SettingsProvider>

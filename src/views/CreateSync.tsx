@@ -5,6 +5,8 @@ import { useProjects, type Project } from '../context/Projects.js'
 import { useSettings } from '../context/Settings.js'
 import { LogoHeader } from '../components/LogoHeader.js'
 import { useStatus, type Status } from '../context/Status.js'
+import { Main } from '../components/Main.js'
+import { ProjectMenu } from '../components/ProjectMenu.js'
 
 export const CreateSync = () => {
 	const { fetchProjectStatus } = useStatus()
@@ -46,7 +48,7 @@ export const CreateSync = () => {
 	return (
 		<>
 			<LogoHeader />
-			<main class="container">
+			<Main class="container">
 				<header class="mt-3">
 					<div class="row">
 						<div class="col-md-8 offset-md-2">
@@ -85,7 +87,8 @@ export const CreateSync = () => {
 						))}
 					</div>
 				</div>
-			</main>
+			</Main>
+			<ProjectMenu />
 		</>
 	)
 }

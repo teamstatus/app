@@ -5,6 +5,8 @@ import { BackIcon, SubmitIcon } from '../components/Icons.js'
 import { ProjectHeader } from '../components/ProjectHeader.js'
 import { useProjects } from '../context/Projects.js'
 import { useStatus } from '../context/Status.js'
+import { Main } from '../components/Main.js'
+import { ProjectMenu } from '../components/ProjectMenu.js'
 
 export const ComposeStatus = ({
 	id,
@@ -19,11 +21,14 @@ export const ComposeStatus = ({
 	const project = projects[id]
 	if (project === undefined) {
 		return (
-			<main class="container">
-				<div class="alert alert-danger" role="alert">
-					Project not found: {id}
-				</div>
-			</main>
+			<>
+				<Main class="container">
+					<div class="alert alert-danger" role="alert">
+						Project not found: {id}
+					</div>
+				</Main>
+				<ProjectMenu />
+			</>
 		)
 	}
 
@@ -31,7 +36,7 @@ export const ComposeStatus = ({
 	return (
 		<>
 			<ProjectHeader project={project} />
-			<main class="container">
+			<Main class="container">
 				<div class="card col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-3">
 					<div class="card-header">
 						<h1>Compose a new status</h1>
@@ -91,7 +96,8 @@ export const ComposeStatus = ({
 						</button>
 					</div>
 				</div>
-			</main>
+			</Main>
+			<ProjectMenu />
 		</>
 	)
 }

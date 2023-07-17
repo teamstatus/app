@@ -8,6 +8,7 @@ import { handleResponse } from '../context/handleResponse.js'
 import { type ProblemDetail } from '../context/ProblemDetail.js'
 import type { Status } from '../context/Status.js'
 import { ProjectMenu } from '../components/ProjectMenu.js'
+import { Main } from '../components/Main.js'
 
 export const Sync = ({ id }: { id: string }) => {
 	const { syncs } = useSyncs()
@@ -81,7 +82,7 @@ export const Sync = ({ id }: { id: string }) => {
 		return (
 			<>
 				<LogoHeader />
-				<main class="container">
+				<Main class="container">
 					<div class="row mt-3">
 						<div class="col">
 							<div class="alert alert-danger" role="alert">
@@ -95,7 +96,8 @@ export const Sync = ({ id }: { id: string }) => {
 							</div>
 						</div>
 					</div>
-				</main>
+				</Main>
+				<ProjectMenu />
 			</>
 		)
 	}
@@ -104,7 +106,7 @@ export const Sync = ({ id }: { id: string }) => {
 		return (
 			<>
 				<LogoHeader />
-				<main class="container">
+				<Main class="container">
 					<div class="row mt-3">
 						<div class="col">
 							<div class="alert alert-danger" role="alert">
@@ -112,7 +114,8 @@ export const Sync = ({ id }: { id: string }) => {
 							</div>
 						</div>
 					</div>
-				</main>
+				</Main>
+				<ProjectMenu />
 			</>
 		)
 	}
@@ -124,7 +127,7 @@ export const Sync = ({ id }: { id: string }) => {
 	return (
 		<>
 			<LogoHeader />
-			<main class="container">
+			<Main class="container">
 				<header class="mt-3">
 					<div class="row">
 						<div class="col-md-8 offset-md-2">
@@ -144,7 +147,7 @@ export const Sync = ({ id }: { id: string }) => {
 						))}
 					</div>
 				</div>
-			</main>
+			</Main>
 			<ProjectMenu />
 		</>
 	)

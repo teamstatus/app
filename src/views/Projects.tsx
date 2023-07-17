@@ -17,6 +17,7 @@ import { ProjectMenu } from '../components/ProjectMenu.js'
 import { Invitations } from '../components/Invitations.js'
 import { ProjectId } from '../components/ProjectId.js'
 import { RolePill } from './RolePill.js'
+import { Main } from '../components/Main.js'
 
 export const Projects = () => {
 	const { projects } = useProjects()
@@ -24,7 +25,7 @@ export const Projects = () => {
 	return (
 		<>
 			<LogoHeader />
-			<main class="container">
+			<Main class="container">
 				<div class="row mt-3">
 					<div class="col-md-8 offset-md-2">
 						<div class="card">
@@ -69,7 +70,7 @@ export const Projects = () => {
 						<Invitations />
 					</div>
 				</div>
-			</main>
+			</Main>
 			<ProjectMenu
 				action={{
 					href: '/project/create',
@@ -96,45 +97,59 @@ const ProjectInfo = ({
 	const [colorsVisible, setColorsVisible] = useState(false)
 	const visible = isVisible(id)
 	const pos = visibleProjects().indexOf(id) ?? Number.MAX_SAFE_INTEGER
-	const { alias, icon } = getProjectPersonalization(id)
+	const { alias, icon, color } = getProjectPersonalization(id)
 
 	return (
 		<div class="mb-3">
 			<div class="d-flex align-items-center justify-content-between mb-1">
 				<div>
-					{name !== undefined && <span class="me-2">{name}</span>}
+					<ProjectId id={id} />
 
-					<span class="badge rounded-pill bg-secondary me-2">
-						<ProjectId id={id} />
-					</span>
+					{name !== undefined && (
+						<>
+							<br />
+							<small class="text-muted">{name}</small>
+						</>
+					)}
 				</div>
-				<RolePill role={role} />
+				<div class={'flex-shrink-0'}>
+					<RolePill role={role} class="me-2" />
+					<button
+						type="button"
+						class={cx('btn btn-sm me-2', {
+							'btn-outline-danger': !visible,
+							'btn-outline-success': visible,
+						})}
+						onClick={() => toggleProject(id)}
+					>
+						{visible ? <VisibleIcon /> : <HiddenIcon />}
+					</button>
+					{visible && (
+						<button
+							type="button"
+							class="btn btn-sm btn-outline-secondary"
+							disabled={pos === 0}
+							onClick={() => {
+								bumpProject(id)
+							}}
+						>
+							<UpIcon />
+						</button>
+					)}
+					{role === Role.OWNER && (
+						<a
+							href={`/project/${encodeURIComponent(id)}/invite`}
+							title={'Invite a user'}
+							class={'ms-2 btn btn-outline-secondary btn-sm'}
+						>
+							<MembersIcon />
+						</a>
+					)}
+				</div>
 			</div>
 			<div class="d-flex align-items-center justify-content-between">
 				{!colorsVisible && (
 					<>
-						<button
-							type="button"
-							class={cx('btn btn-sm me-2', {
-								'btn-outline-danger': !visible,
-								'btn-outline-success': visible,
-							})}
-							onClick={() => toggleProject(id)}
-						>
-							{visible ? <VisibleIcon /> : <HiddenIcon />}
-						</button>
-						{visible && (
-							<button
-								type="button"
-								class="btn btn-sm btn-outline-secondary me-2"
-								disabled={pos === 0}
-								onClick={() => {
-									bumpProject(id)
-								}}
-							>
-								<UpIcon />
-							</button>
-						)}
 						<input
 							type="text"
 							class="form-control me-1"
@@ -143,6 +158,7 @@ const ProjectInfo = ({
 								const icon = (e.target as HTMLInputElement).value
 								personalizeProject(id, {
 									alias: (alias?.length ?? 0) > 0 ? alias : undefined,
+									color: (color?.length ?? 0) > 0 ? color : undefined,
 									icon: icon.length > 0 ? icon : undefined,
 								})
 							}}
@@ -157,6 +173,7 @@ const ProjectInfo = ({
 								const alias = (e.target as HTMLInputElement).value
 								personalizeProject(id, {
 									alias: alias.length > 0 ? alias : undefined,
+									color: (color?.length ?? 0) > 0 ? color : undefined,
 									icon: (icon?.length ?? 0) > 0 ? icon : undefined,
 								})
 							}}
@@ -169,14 +186,6 @@ const ProjectInfo = ({
 						>
 							<ColorsIcon />
 						</button>
-						{role === Role.OWNER && (
-							<a
-								href={`/project/${encodeURIComponent(id)}/invite`}
-								title={'Invite a user'}
-							>
-								<MembersIcon />
-							</a>
-						)}
 					</>
 				)}
 				{colorsVisible && (

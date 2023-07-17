@@ -1,8 +1,14 @@
 import Color from 'color'
 import { useSettings } from '../context/Settings.js'
-import { useState } from 'preact/hooks'
 import { CloseIcon, ProjectsIcon, AddIcon } from './Icons.js'
 import { useProjects } from '../context/Projects.js'
+import { useUI } from '../context/UI.js'
+import { SettingsIcon } from 'lucide-preact'
+
+const colorStyle = (color?: string) => ({
+	color: new Color(color ?? '#212529').luminosity() > 0.5 ? 'black' : 'white',
+	backgroundColor: color ?? '#212529',
+})
 
 export const ProjectMenu = ({
 	action,
@@ -15,7 +21,7 @@ export const ProjectMenu = ({
 }) => {
 	const { projects } = useProjects()
 	const { getProjectPersonalization, visibleProjects } = useSettings()
-	const [projectsVisible, showProjects] = useState<boolean>(false)
+	const { projectsMenuVisible, showProjectsMenu } = useUI()
 
 	return (
 		<nav
@@ -26,25 +32,7 @@ export const ProjectMenu = ({
 				right: '1rem',
 			}}
 		>
-			{projectsVisible && (
-				<a
-					href={`/projects`}
-					style={{
-						borderRadius: '100%',
-						color: 'white',
-						backgroundColor: '#212529',
-						display: 'block',
-						height: '48px',
-						width: '48px',
-						boxShadow: '0 0 8px 0 #00000075',
-					}}
-					class="d-flex align-items-center justify-content-center mb-2"
-					onClick={() => showProjects((s) => !s)}
-				>
-					<ProjectsIcon />
-				</a>
-			)}
-			{projectsVisible &&
+			{projectsMenuVisible &&
 				visibleProjects().length > 0 &&
 				visibleProjects().map((id) => {
 					const project = projects[id]
@@ -54,14 +42,15 @@ export const ProjectMenu = ({
 							<a
 								href={`/project/${encodeURIComponent(id)}`}
 								class="mb-2 d-flex align-items-center text-decoration-none text-dark"
+								onClick={() => showProjectsMenu(false)}
 							>
 								<span
 									style={{
-										background: '#fff',
+										...colorStyle(color),
 										boxShadow: '0 0 8px 0 #00000075',
-										borderRadius: '10px',
+										borderRadius: '15px',
 									}}
-									class="px-2 py-1 me-2"
+									class="px-3 py-1 me-2"
 								>
 									{alias ?? project?.name ?? id}
 								</span>
@@ -69,11 +58,7 @@ export const ProjectMenu = ({
 									<span
 										class="d-flex align-items-center justify-content-center"
 										style={{
-											color:
-												new Color(color ?? '#212529').luminosity() > 0.5
-													? 'black'
-													: 'white',
-											backgroundColor: color ?? '#212529',
+											...colorStyle(color),
 											borderRadius: '100%',
 											display: 'block',
 											height: '48px',
@@ -94,11 +79,7 @@ export const ProjectMenu = ({
 										class="d-flex align-items-center justify-content-center"
 										style={{
 											borderRadius: '100%',
-											color:
-												new Color(color ?? '#212529').luminosity() > 0.5
-													? 'black'
-													: 'white',
-											backgroundColor: color ?? '#212529',
+											...colorStyle(color),
 											display: 'block',
 											height: '48px',
 											width: '48px',
@@ -112,18 +93,15 @@ export const ProjectMenu = ({
 						</div>
 					)
 				})}
-			{!projectsVisible && (
+			{!projectsMenuVisible && (
 				<>
 					{action !== undefined && (action.disabled ?? false) === false && (
 						<a
 							href={action.href}
+							onClick={() => showProjectsMenu(false)}
 							style={{
 								borderRadius: '100%',
-								color:
-									new Color(action.color ?? '#198754').luminosity() > 0.5
-										? 'black'
-										: 'white',
-								backgroundColor: action.color ?? '#198754',
+								...colorStyle(action.color),
 								display: 'block',
 								height: '48px',
 								width: '48px',
@@ -153,7 +131,7 @@ export const ProjectMenu = ({
 						</button>
 					)}
 					<button
-						onClick={() => showProjects((s) => !s)}
+						onClick={() => showProjectsMenu(true)}
 						style={{
 							borderRadius: '100%',
 							color: 'white',
@@ -170,23 +148,41 @@ export const ProjectMenu = ({
 					</button>
 				</>
 			)}
-			{projectsVisible && (
-				<button
-					onClick={() => showProjects((s) => !s)}
-					style={{
-						borderRadius: '100%',
-						color: 'white',
-						backgroundColor: '#999',
-						display: 'block',
-						height: '48px',
-						width: '48px',
-						boxShadow: '0 0 8px 0 #00000075',
-						border: '0',
-					}}
-					class="d-flex align-items-center justify-content-center"
-				>
-					<CloseIcon />
-				</button>
+			{projectsMenuVisible && (
+				<div class="d-flex">
+					<a
+						href={`/projects`}
+						style={{
+							borderRadius: '100%',
+							color: 'black',
+							backgroundColor: '#ffc107',
+							display: 'block',
+							height: '48px',
+							width: '48px',
+							boxShadow: '0 0 8px 0 #00000075',
+						}}
+						class="d-flex align-items-center justify-content-center me-2"
+						onClick={() => showProjectsMenu(false)}
+					>
+						<SettingsIcon strokeWidth={1} />
+					</a>
+					<button
+						onClick={() => showProjectsMenu(false)}
+						style={{
+							borderRadius: '100%',
+							color: 'white',
+							backgroundColor: '#999',
+							display: 'block',
+							height: '48px',
+							width: '48px',
+							boxShadow: '0 0 8px 0 #00000075',
+							border: '0',
+						}}
+						class="d-flex align-items-center justify-content-center"
+					>
+						<CloseIcon />
+					</button>
+				</div>
 			)}
 		</nav>
 	)

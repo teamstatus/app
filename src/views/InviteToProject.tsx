@@ -7,6 +7,7 @@ import { isUserId, slugPart } from '../proto/ids.js'
 import { ProjectHeader } from '../components/ProjectHeader.js'
 import { ProjectMenu } from '../components/ProjectMenu.js'
 import { ProgressBar } from '../components/ProgressBar.js'
+import { Main } from '../components/Main.js'
 
 export const InviteToProject = ({
 	id,
@@ -28,7 +29,7 @@ export const InviteToProject = ({
 	return (
 		<>
 			{project !== undefined && <ProjectHeader project={project} />}
-			<main class="container">
+			<Main class="container">
 				<div class="card col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-4">
 					<div class="card-header">
 						<h1>Invite a member</h1>
@@ -127,7 +128,7 @@ export const InviteToProject = ({
 						</button>
 					</div>
 				</div>
-			</main>
+			</Main>
 			<ProjectMenu />
 		</>
 	)

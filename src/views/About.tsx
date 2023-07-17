@@ -5,6 +5,7 @@ import { useAuth } from '../context/Auth.js'
 import { LogoHeader } from '../components/LogoHeader.js'
 import { route } from 'preact-router'
 import { ProjectMenu } from '../components/ProjectMenu.js'
+import { Main } from '../components/Main.js'
 
 export const About = ({ redirect }: { redirect?: string }) => {
 	const { user } = useAuth()
@@ -18,7 +19,7 @@ export const About = ({ redirect }: { redirect?: string }) => {
 	return (
 		<>
 			<LogoHeader animated />
-			<main class="container">
+			<Main class="container">
 				{user?.id === undefined && <SelectID />}
 				<section>
 					<div class="row mt-3">
@@ -51,13 +52,13 @@ export const About = ({ redirect }: { redirect?: string }) => {
 							<p>
 								So, in order to share your first status, let's create an
 								organization for you. Head over to{' '}
-								<a href="/organizations">organizations</a> to get started.
+								<a href="/organization/create">organizations</a> to get started.
 							</p>
 						</div>
 					</div>
 				</section>
 				<ReactionsHelp />
-			</main>
+			</Main>
 			<ProjectMenu />
 		</>
 	)

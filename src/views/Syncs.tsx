@@ -2,6 +2,7 @@ import { decodeTime } from 'ulid'
 import { useSyncs } from '../context/Syncs.js'
 import { LogoHeader } from '../components/LogoHeader.js'
 import { ProjectMenu } from '../components/ProjectMenu.js'
+import { Main } from '../components/Main.js'
 
 export const Syncs = () => {
 	const { syncs } = useSyncs()
@@ -10,7 +11,7 @@ export const Syncs = () => {
 	return (
 		<>
 			<LogoHeader />
-			<main class="container">
+			<Main class="container">
 				<div class="row mt-3">
 					<div class="col-md-8 offset-md-2">
 						<div class="card">
@@ -49,7 +50,7 @@ export const Syncs = () => {
 						</div>
 					</div>
 				</div>
-			</main>
+			</Main>
 			<ProjectMenu action={{ href: '/sync/create' }} />
 		</>
 	)
