@@ -51,7 +51,16 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 				setUser,
 				loggedIn: user !== undefined,
 				logout: () => {
-					// FIXME: clear cookie
+					fetch(`${API_ENDPOINT}/logout`, {
+						headers: {
+							Accept: 'application/json; charset=utf-8',
+						},
+						mode: 'cors',
+						credentials: 'include',
+					}).catch((err) => {
+						console.error(`Server-side logout failed.`)
+						console.error(err)
+					})
 					setUser(undefined)
 				},
 				user,
