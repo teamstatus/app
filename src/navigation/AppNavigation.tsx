@@ -6,6 +6,8 @@ import {
 	SyncsIcon,
 	LogInIcon,
 	UserIcon,
+	HomeIcon,
+	OrganizationIcon,
 } from '../components/Icons.js'
 
 export const AppNavigation = ({ onClick }: { onClick?: () => unknown }) => {
@@ -31,16 +33,19 @@ export const AppNavigation = ({ onClick }: { onClick?: () => unknown }) => {
 							>
 								<SyncsIcon /> <span class="ms-2">Syncs</span>
 							</a>
+							<a
+								href="/organizations"
+								class="btn btn-link text-body text-decoration-none"
+								onClick={onClick}
+							>
+								<OrganizationIcon /> <span class="ms-2">Organizations</span>
+							</a>
 						</>
 					)}
-					<a
-						href="/"
-						class="btn btn-link text-body text-decoration-none"
-						onClick={onClick}
-					>
-						<HelpIcon />
-						<span class="ms-2">Help</span>
-					</a>
+					<hr class={'w-100'} />
+					<Home onClick={onClick} />
+					<Help onClick={onClick} />
+					<hr class={'w-100'} />
 					<a
 						href="/user"
 						class="btn btn-link text-body text-decoration-none"
@@ -49,7 +54,6 @@ export const AppNavigation = ({ onClick }: { onClick?: () => unknown }) => {
 						<UserIcon />
 						<span class="ms-2">Profile</span>
 					</a>
-					<hr class={'w-100'} />
 					<button
 						type="button"
 						onClick={() => {
@@ -73,8 +77,33 @@ export const AppNavigation = ({ onClick }: { onClick?: () => unknown }) => {
 						<LogInIcon />
 						<span class="ms-2">Log in</span>
 					</a>
+					<hr class={'w-100'} />
+					<Home onClick={onClick} />
+					<Help onClick={onClick} />
 				</>
 			)}
 		</nav>
 	)
 }
+
+const Home = ({ onClick }: { onClick?: () => unknown }) => (
+	<a
+		href="/"
+		class="btn btn-link text-body text-decoration-none"
+		onClick={onClick}
+	>
+		<HomeIcon />
+		<span class="ms-2">Home</span>
+	</a>
+)
+
+const Help = ({ onClick }: { onClick?: () => unknown }) => (
+	<a
+		href="/help"
+		class="btn btn-link text-body text-decoration-none"
+		onClick={onClick}
+	>
+		<HelpIcon />
+		<span class="ms-2">Help</span>
+	</a>
+)

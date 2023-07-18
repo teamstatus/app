@@ -19,18 +19,9 @@ export const CreateSync = () => {
 		{},
 	)
 
-	const visible = visibleProjects()
-	const sortedProjects = Object.values(projects).sort((p1, p2) => {
-		const i1 = visible.indexOf(p1.id)
-		const i2 = visible.indexOf(p2.id)
-		if (i1 === -1) return 1
-		if (i2 === -1) return 1
-		return i1 > i2 ? 1 : -1
-	})
-
 	useEffect(() => {
 		Promise.all(
-			selectedProjects.map(async (projectId) =>
+			visibleProjects.map(async ({ project: { id: projectId } }) =>
 				fetchProjectStatus(projectId, startDate, endDate).then((res) => {
 					if ('error' in res) {
 						console.error(res.error)
@@ -65,7 +56,7 @@ export const CreateSync = () => {
 					<div class="row">
 						<div class="col-md-8 offset-md-2">
 							<SyncSettings
-								projects={sortedProjects}
+								projects={visibleProjects.map(({ project }) => project)}
 								onUpdate={(selectedProjects, startDate, endDate) => {
 									setSelectedProjects(selectedProjects)
 									setStartDate(startDate)

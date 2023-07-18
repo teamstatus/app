@@ -1,7 +1,6 @@
 import { formatDistanceToNow } from 'date-fns'
 import { render } from 'preact'
 import { App } from './App.js'
-import { Provider as AuthProvider } from './context/Auth.js'
 
 console.debug('API endpoint', API_ENDPOINT)
 console.debug('WS endpoint', WS_ENDPOINT)
@@ -19,10 +18,5 @@ const root = document.getElementById('root')
 if (root === null) {
 	console.error(`Could not find root element!`)
 } else {
-	render(
-		<AuthProvider>
-			<App />
-		</AuthProvider>,
-		root,
-	)
+	render(<App />, root)
 }

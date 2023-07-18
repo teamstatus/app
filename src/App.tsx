@@ -4,70 +4,79 @@ import { Provider as ProjectsProvider } from './context/Projects.js'
 import { Provider as SettingsProvider } from './context/Settings.js'
 import { Provider as StatusProvider } from './context/Status.js'
 import { Provider as SyncsProvider } from './context/Syncs.js'
-import { About } from './views/About.js'
+import { Dashboard } from './views/Dashboard.js'
 import { ComposeStatus } from './views/ComposeStatus.js'
 import { CreateOrganization } from './views/CreateOrganization.js'
 import { CreateProject } from './views/CreateProject.js'
 import { CreateSync } from './views/CreateSync.js'
 import { EditStatus } from './views/EditStatus.js'
 import { InviteToProject } from './views/InviteToProject.js'
-import { Login } from './views/Login.js'
 import { Project } from './views/Project.js'
 import { Projects } from './views/Projects.js'
 import { Sync } from './views/Sync.js'
 import { Syncs } from './views/Syncs.js'
 import { User } from './views/User.js'
-import { PublicSync } from './views/PublicSync.js'
+import { Sync as PublicSync } from './views/public/Sync.js'
 import { Footer } from './components/Footer.js'
 import { Provider as UIProvider } from './context/UI.js'
+import { Help } from './views/public/Help.js'
+import { Home } from './views/public/Home.js'
+import { Login } from './views/public/Login.js'
+import { LoginRedirect } from './views/LoginRedirect.js'
+import { Reactions } from './views/Reactions.js'
+import { Organizations } from './views/Organizations.js'
 
-export const App = () => {
-	const { loggedIn } = useAuth()
+export const App = () => (
+	<AuthProvider>
+		<ProjectsProvider>
+			<SettingsProvider>
+				<StatusProvider>
+					<SyncsProvider>
+						<UIProvider>
+							<Routing />
+						</UIProvider>
+					</SyncsProvider>
+				</StatusProvider>
+			</SettingsProvider>
+		</ProjectsProvider>
+	</AuthProvider>
+)
 
-	if (loggedIn)
+export const Routing = () => {
+	const { user } = useAuth()
+
+	if (user !== undefined) {
 		return (
-			<ProjectsProvider>
-				<SettingsProvider>
-					<StatusProvider>
-						<SyncsProvider>
-							<UIProvider>
-								<AuthProvider>
-									<Router>
-										<Route path="/" component={About} />
-										<Route path="/projects" component={Projects} />
-										<Route path="/sync/create" component={CreateSync} />
-										<Route path="/sync/:id" component={Sync} />
-										<Route path="/syncs" component={Syncs} />
-										<Route path="/project/create" component={CreateProject} />
-										<Route
-											path="/organization/create"
-											component={CreateOrganization}
-										/>
-										<Route path="/project/:id" component={Project} />
-										<Route
-											path="/project/:id/compose"
-											component={ComposeStatus}
-										/>
-										<Route
-											path="/project/:id/invite"
-											component={InviteToProject}
-										/>
-										<Route path="/user" component={User} />
-										<Route path="/status/:id/edit" component={EditStatus} />
-									</Router>
-									<Footer />
-								</AuthProvider>
-							</UIProvider>
-						</SyncsProvider>
-					</StatusProvider>
-				</SettingsProvider>
-			</ProjectsProvider>
+			<>
+				<Router>
+					<Route path="/" component={Home} />
+					<Route path="/dashboard" component={Dashboard} />
+					<Route path="/login" component={LoginRedirect} />
+					<Route path="/help" component={Help} />
+					<Route path="/projects" component={Projects} />
+					<Route path="/sync/create" component={CreateSync} />
+					<Route path="/sync/:id" component={Sync} />
+					<Route path="/syncs" component={Syncs} />
+					<Route path="/project/create" component={CreateProject} />
+					<Route path="/organization/create" component={CreateOrganization} />
+					<Route path="/organizations" component={Organizations} />
+					<Route path="/project/:id" component={Project} />
+					<Route path="/project/:id/compose" component={ComposeStatus} />
+					<Route path="/project/:id/invite" component={InviteToProject} />
+					<Route path="/user" component={User} />
+					<Route path="/status/:id/edit" component={EditStatus} />
+					<Route path="/reactions" component={Reactions} />
+				</Router>
+				<Footer />
+			</>
 		)
+	}
 	return (
 		<>
 			<Router>
-				<Route path="/" component={Login} />
+				<Route path="/" component={Home} />
 				<Route path="/login" component={Login} />
+				<Route path="/help" component={Help} />
 				<Route path="/sync/:id" component={PublicSync} />
 			</Router>
 			<Footer />

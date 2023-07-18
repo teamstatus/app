@@ -4,14 +4,19 @@ import { AcceptProjectInvitation } from '../components/AcceptProjectInvitation.j
 import { Colorpicker } from '../components/Colorpicker.js'
 import {
 	ColorsIcon,
+	DownIcon,
 	HiddenIcon,
 	MembersIcon,
 	PersistencePendingIcon,
+	ProjectsIcon,
 	UpIcon,
 	VisibleIcon,
 } from '../components/Icons.js'
 import { Role, useProjects, type Project } from '../context/Projects.js'
-import { useSettings } from '../context/Settings.js'
+import {
+	useSettings,
+	type ProjectPersonalization,
+} from '../context/Settings.js'
 import { LogoHeader } from '../components/LogoHeader.js'
 import { ProjectMenu } from '../components/ProjectMenu.js'
 import { Invitations } from '../components/Invitations.js'
@@ -21,7 +26,7 @@ import { Main } from '../components/Main.js'
 
 export const Projects = () => {
 	const { projects } = useProjects()
-	const { visibleProjects } = useSettings()
+	const { orderedProjects } = useSettings()
 	return (
 		<>
 			<LogoHeader />
@@ -29,24 +34,22 @@ export const Projects = () => {
 				<div class="row mt-3">
 					<div class="col-md-8 offset-md-2">
 						<div class="card">
-							<div class="card-header">
+							<div class="card-header  d-flex justify-content-between align-items-center">
 								<h1>Projects</h1>
+								<ProjectsIcon />
 							</div>
 							<div class="card-body">
-								{Object.values(projects)
-									.sort(
-										(p1, p2) =>
-											(visibleProjects().indexOf(p1.id) ??
-												Number.MAX_SAFE_INTEGER) -
-											(visibleProjects().indexOf(p2.id) ??
-												Number.MAX_SAFE_INTEGER),
-									)
-									.sort((_, { id: p2 }) =>
-										visibleProjects().includes(p2) ? 1 : -1,
-									)
-									.map((project) => (
-										<ProjectInfo key={project.id} project={project} />
-									))}
+								{orderedProjects.map(
+									({ project, personalization }, index, arr) => (
+										<ProjectInfo
+											key={project.id}
+											personalization={personalization}
+											project={project}
+											first={index === 0}
+											last={index === arr.length - 1}
+										/>
+									),
+								)}
 								{Object.values(projects).length === 0 && (
 									<>
 										<p>You have no projects,yet.</p>
@@ -82,126 +85,123 @@ export const Projects = () => {
 
 const ProjectInfo = ({
 	project: { id, name, persisted, role },
+	personalization: { alias, icon, color, hidden },
+	first,
+	last,
 }: {
+	personalization: ProjectPersonalization
 	project: Project
+	first: boolean
+	last: boolean
 }) => {
-	const {
-		toggleProject,
-		isVisible,
-		personalizeProject,
-		getProjectPersonalization,
-		visibleProjects,
-		bumpProject,
-	} = useSettings()
+	const { toggleProject, personalizeProject, bumpProject } = useSettings()
 
 	const [colorsVisible, setColorsVisible] = useState(false)
-	const visible = isVisible(id)
-	const pos = visibleProjects().indexOf(id) ?? Number.MAX_SAFE_INTEGER
-	const { alias, icon, color } = getProjectPersonalization(id)
+	const visible = hidden ?? false
 
 	return (
 		<div class="mb-3">
-			<div class="d-flex align-items-center justify-content-between mb-1">
+			<div class="d-flex align-items-center justify-content-between">
+				<ProjectId id={id} />
 				<div>
-					<ProjectId id={id} />
-
-					{name !== undefined && (
-						<>
-							<br />
-							<small class="text-muted">{name}</small>
-						</>
-					)}
+					{persisted === false && <PersistencePendingIcon />}
+					<RolePill role={role} />
 				</div>
-				<div class={'flex-shrink-0'}>
-					<RolePill role={role} class="me-2" />
+			</div>
+			{name !== undefined && (
+				<div>
+					<small class="text-muted">{name}</small>
+				</div>
+			)}
+			<div class="d-flex align-items-center justify-content-between mt-1">
+				<div class="flex-row d-flex">
+					<input
+						type="text"
+						class="form-control me-1"
+						value={icon ?? ''}
+						onInput={(e) => {
+							const icon = (e.target as HTMLInputElement).value
+							personalizeProject(id, {
+								icon: icon.length > 0 ? icon : undefined,
+							})
+						}}
+						size={1}
+						style={{ width: '50px' }}
+						disabled={!visible}
+					/>
 					<button
 						type="button"
-						class={cx('btn btn-sm me-2', {
-							'btn-outline-danger': !visible,
-							'btn-outline-success': visible,
-						})}
+						class="btn btn-sm btn-outline-secondary"
+						onClick={() => setColorsVisible((v) => !v)}
+						disabled={!visible}
+					>
+						<ColorsIcon />
+					</button>
+				</div>
+				<div>
+					<button
+						type="button"
+						class={cx('btn btn-sm btn-outline-secondary')}
 						onClick={() => toggleProject(id)}
 					>
 						{visible ? <VisibleIcon /> : <HiddenIcon />}
 					</button>
-					{visible && (
-						<button
-							type="button"
-							class="btn btn-sm btn-outline-secondary"
-							disabled={pos === 0}
-							onClick={() => {
-								bumpProject(id)
-							}}
-						>
-							<UpIcon />
-						</button>
-					)}
+					<button
+						type="button"
+						class="btn btn-sm btn-outline-secondary ms-2"
+						disabled={!visible || first}
+						onClick={() => {
+							bumpProject(id, 'up')
+						}}
+					>
+						<UpIcon />
+					</button>
+					<button
+						type="button"
+						class="btn btn-sm btn-outline-secondary ms-1"
+						disabled={!visible || last}
+						onClick={() => {
+							bumpProject(id, 'down')
+						}}
+					>
+						<DownIcon />
+					</button>
 					{role === Role.OWNER && (
 						<a
 							href={`/project/${encodeURIComponent(id)}/invite`}
 							title={'Invite a user'}
-							class={'ms-2 btn btn-outline-secondary btn-sm'}
+							class={'btn btn-sm btn-outline-secondary ms-2'}
 						>
 							<MembersIcon />
 						</a>
 					)}
 				</div>
 			</div>
-			<div class="d-flex align-items-center justify-content-between">
-				{!colorsVisible && (
-					<>
-						<input
-							type="text"
-							class="form-control me-1"
-							value={icon ?? ''}
-							onInput={(e) => {
-								const icon = (e.target as HTMLInputElement).value
-								personalizeProject(id, {
-									alias: (alias?.length ?? 0) > 0 ? alias : undefined,
-									color: (color?.length ?? 0) > 0 ? color : undefined,
-									icon: icon.length > 0 ? icon : undefined,
-								})
-							}}
-							size={1}
-							style={{ width: '50px' }}
-						/>
-						<input
-							type="text"
-							class="form-control"
-							value={alias ?? ''}
-							onInput={(e) => {
-								const alias = (e.target as HTMLInputElement).value
-								personalizeProject(id, {
-									alias: alias.length > 0 ? alias : undefined,
-									color: (color?.length ?? 0) > 0 ? color : undefined,
-									icon: (icon?.length ?? 0) > 0 ? icon : undefined,
-								})
-							}}
-						/>
-						{persisted === false && <PersistencePendingIcon />}
-						<button
-							type="button"
-							class="btn"
-							onClick={() => setColorsVisible(true)}
-						>
-							<ColorsIcon />
-						</button>
-					</>
-				)}
-				{colorsVisible && (
-					<Colorpicker
-						onColor={(color) => {
-							setColorsVisible(false)
-							return personalizeProject(id, {
-								color,
-								icon: (icon?.length ?? 0) > 0 ? icon : undefined,
-								alias: (alias?.length ?? 0) > 0 ? alias : undefined,
-							})
-						}}
-						color={getProjectPersonalization(id).color ?? '#212529'}
-					/>
-				)}
-			</div>
+			{!colorsVisible && (
+				<input
+					type="text"
+					class="form-control mt-1"
+					value={alias ?? ''}
+					onInput={(e) => {
+						const alias = (e.target as HTMLInputElement).value
+						personalizeProject(id, {
+							alias: alias.length > 0 ? alias : undefined,
+						})
+					}}
+					disabled={!visible}
+				/>
+			)}
+			{colorsVisible && (
+				<Colorpicker
+					onColor={(color) => {
+						setColorsVisible(false)
+						return personalizeProject(id, {
+							color,
+						})
+					}}
+					color={color ?? '#212529'}
+				/>
+			)}
 		</div>
 	)
 }

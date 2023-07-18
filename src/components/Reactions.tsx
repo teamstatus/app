@@ -72,9 +72,21 @@ export const Reaction = ({
 	onClick?: () => void
 }) => {
 	const { user } = useAuth()
-	const role = 'role' in reaction ? reaction.role : undefined
-	const { emoji, description } = reaction
 	const byUser = 'author' in reaction && reaction.author === user?.id
+	return <ReactionView byUser={byUser} reaction={reaction} onClick={onClick} />
+}
+
+export const ReactionView = ({
+	reaction,
+	byUser,
+	onClick,
+}: {
+	byUser?: boolean
+	onClick?: () => void
+	reaction: TReaction
+}) => {
+	const { emoji, description } = reaction
+	const role = 'role' in reaction ? reaction.role : undefined
 	return (
 		<button
 			type="button"

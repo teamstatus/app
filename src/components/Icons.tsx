@@ -35,6 +35,10 @@ import {
 	Crown,
 	EyeIcon,
 	UserCheck,
+	Home,
+	MessageSquare,
+	Rocket,
+	Building2,
 } from 'lucide-preact'
 
 const strokeWidth = 1
@@ -98,3 +102,7 @@ export const OwnerIcon = icon(Crown)
 export const WatcherIcon = icon(EyeIcon)
 export const AcceptInvitationIcon = icon(UserCheck)
 export const InfoIcon = icon(HelpCircle)
+export const HomeIcon = icon(Home)
+export const ContactIcon = icon(MessageSquare)
+export const DashboardIcon = icon(Rocket)
+export const OrganizationIcon = icon(Building2)

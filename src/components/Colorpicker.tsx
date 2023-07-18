@@ -13,6 +13,13 @@ export const logoColors = [
 	'#00c0ff',
 ]
 
+export const gradient = (colors: string[]) =>
+	`linear-gradient(135deg, ${colors
+		.map(
+			(color, i, colors) => `${color} ${i * Math.round(100 / colors.length)}%`,
+		)
+		.join(',')})`
+
 export const colors = [
 	...logoColors
 		.map((color) => [

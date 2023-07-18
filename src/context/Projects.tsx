@@ -77,13 +77,12 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 	const { user } = useAuth()
 	const [projectsListFetchId, setProjectsListId] = useState(ulid())
 	const [invitations, setInvitations] = useState<Invitation[]>([])
-
 	const refreshProjects = () => {
 		setProjectsListId(ulid())
 	}
 
 	useEffect(() => {
-		if (user?.id === undefined) return
+		if (user === undefined) return
 		throttle(async () =>
 			fetch(`${API_ENDPOINT}/organizations`, {
 				headers: {
@@ -101,10 +100,10 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 					}
 				}),
 		)().catch(console.error)
-	}, [])
+	}, [user])
 
 	useEffect(() => {
-		if (user?.id === undefined) return
+		if (user === undefined) return
 		throttle(async () =>
 			fetch(`${API_ENDPOINT}/projects`, {
 				headers: {
@@ -126,10 +125,11 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 					)
 				}),
 		)().catch(console.error)
-	}, [projectsListFetchId])
+	}, [projectsListFetchId, user])
 
 	// Fetch invites
 	useEffect(() => {
+		if (user === undefined) return
 		throttle(async () =>
 			fetch(`${API_ENDPOINT}/invitations`, {
 				headers: {
@@ -147,7 +147,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 					}
 				}),
 		)().catch(console.error)
-	}, [projectsListFetchId])
+	}, [projectsListFetchId, user])
 
 	return (
 		<ProjectsContext.Provider

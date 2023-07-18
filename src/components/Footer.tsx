@@ -6,7 +6,7 @@ export const Footer = () => {
 
 	return (
 		<footer
-			class="text-body-tertiary text-center"
+			class="text-body-tertiary text-center p-4"
 			style={{
 				filter: projectsMenuVisible ? 'blur(5px)' : undefined,
 			}}

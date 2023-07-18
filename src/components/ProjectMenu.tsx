@@ -1,9 +1,9 @@
 import Color from 'color'
 import { useSettings } from '../context/Settings.js'
 import { CloseIcon, ProjectsIcon, AddIcon } from './Icons.js'
-import { useProjects } from '../context/Projects.js'
 import { useUI } from '../context/UI.js'
 import { SettingsIcon } from 'lucide-preact'
+import { gradient, logoColors } from './Colorpicker.js'
 
 const colorStyle = (color?: string) => ({
 	color: new Color(color ?? '#212529').luminosity() > 0.5 ? 'black' : 'white',
@@ -19,8 +19,7 @@ export const ProjectMenu = ({
 		disabled?: boolean
 	}
 }) => {
-	const { projects } = useProjects()
-	const { getProjectPersonalization, visibleProjects } = useSettings()
+	const { visibleProjects } = useSettings()
 	const { projectsMenuVisible, showProjectsMenu } = useUI()
 
 	return (
@@ -33,14 +32,12 @@ export const ProjectMenu = ({
 			}}
 		>
 			{projectsMenuVisible &&
-				visibleProjects().length > 0 &&
-				visibleProjects().map((id) => {
-					const project = projects[id]
-					const { color, icon, alias } = getProjectPersonalization(id)
-					return (
+				visibleProjects.length > 0 &&
+				visibleProjects.map(
+					({ project, personalization: { color, icon, alias } }) => (
 						<div class="d-flex flex-column align-items-center">
 							<a
-								href={`/project/${encodeURIComponent(id)}`}
+								href={`/project/${encodeURIComponent(project.id)}`}
 								class="mb-2 d-flex align-items-center text-decoration-none text-dark"
 								onClick={() => showProjectsMenu(false)}
 							>
@@ -52,7 +49,7 @@ export const ProjectMenu = ({
 									}}
 									class="px-3 py-1 me-2"
 								>
-									{alias ?? project?.name ?? id}
+									{alias ?? project?.name ?? project.id}
 								</span>
 								{icon === undefined && (
 									<span
@@ -91,8 +88,8 @@ export const ProjectMenu = ({
 								)}
 							</a>
 						</div>
-					)
-				})}
+					),
+				)}
 			{!projectsMenuVisible && (
 				<>
 					{action !== undefined && (action.disabled ?? false) === false && (
@@ -134,8 +131,9 @@ export const ProjectMenu = ({
 						onClick={() => showProjectsMenu(true)}
 						style={{
 							borderRadius: '100%',
-							color: 'white',
+							color: 'black',
 							backgroundColor: '#212529',
+							background: gradient(logoColors),
 							display: 'block',
 							height: '48px',
 							width: '48px',

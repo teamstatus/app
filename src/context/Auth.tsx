@@ -11,13 +11,11 @@ type AutoLoginState = 'in_progress' | 'failed' | 'success'
 export const AuthContext = createContext<{
 	logout: () => void
 	setUser: (user: UserContext) => void
-	loggedIn: boolean
 	user?: UserContext
 	autoLoginState: AutoLoginState
 }>({
 	logout: () => undefined,
 	setUser: () => undefined,
-	loggedIn: false,
 	autoLoginState: 'in_progress',
 })
 
@@ -49,7 +47,6 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 		<AuthContext.Provider
 			value={{
 				setUser,
-				loggedIn: user !== undefined,
 				logout: () => {
 					fetch(`${API_ENDPOINT}/logout`, {
 						headers: {
@@ -58,11 +55,15 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						mode: 'cors',
 						credentials: 'include',
 						method: 'POST',
-					}).catch((err) => {
-						console.error(`Server-side logout failed.`)
-						console.error(err)
 					})
-					setUser(undefined)
+						.catch((err) => {
+							console.error(`Server-side logout failed.`)
+							console.error(err)
+						})
+						.finally(() => {
+							setUser(undefined)
+							document.location.assign('/')
+						})
 				},
 				user,
 				autoLoginState,

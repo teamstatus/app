@@ -1,5 +1,6 @@
 :root {
   --sans-serif-font: "Instrument Sans";
+  --headline-font: "Nunito";
 }
 
 abbr[title] {
@@ -28,7 +29,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Nunito", sans-serif;
+  font-family: var(--headline-font);
   font-weight: 300;
 }
 

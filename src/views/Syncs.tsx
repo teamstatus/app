@@ -3,6 +3,7 @@ import { useSyncs } from '../context/Syncs.js'
 import { LogoHeader } from '../components/LogoHeader.js'
 import { ProjectMenu } from '../components/ProjectMenu.js'
 import { Main } from '../components/Main.js'
+import { SyncIcon } from '../components/Icons.js'
 
 export const Syncs = () => {
 	const { syncs } = useSyncs()
@@ -15,10 +16,10 @@ export const Syncs = () => {
 				<div class="row mt-3">
 					<div class="col-md-8 offset-md-2">
 						<div class="card">
-							<div class="card-header">
+							<div class="card-header  d-flex justify-content-between align-items-center">
 								<h1>Syncs</h1>
+								<SyncIcon />
 							</div>
-
 							{syncItems.length === 0 && (
 								<div class="card-body">
 									<p>You have no syncs,yet.</p>

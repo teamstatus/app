@@ -1,6 +1,7 @@
 import { createContext, type ComponentChildren } from 'preact'
 import { useContext, useEffect, useState } from 'preact/hooks'
 import { ulid } from 'ulid'
+import { useAuth } from './Auth.js'
 
 export type Sync = {
 	id: string
@@ -28,8 +29,10 @@ export const SyncsContext = createContext<SyncsContext>({
 
 export const Provider = ({ children }: { children: ComponentChildren }) => {
 	const [syncs, setSyncs] = useState<Record<string, Sync>>({})
+	const { user } = useAuth()
 
 	useEffect(() => {
+		if (user === undefined) return
 		fetch(`${API_ENDPOINT}/syncs`, {
 			headers: {
 				Accept: 'application/json; charset=utf-8',
@@ -60,7 +63,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 				)
 			})
 			.catch(console.error)
-	}, [])
+	}, [user])
 
 	return (
 		<SyncsContext.Provider

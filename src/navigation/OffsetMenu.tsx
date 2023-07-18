@@ -19,7 +19,14 @@ export const OffsetMenu = ({ onClick }: { onClick: () => unknown }) => (
 					height="25"
 					class="me-2"
 				/>{' '}
-				<strong>teamstatus.space</strong>
+				<span
+					style={{
+						fontFamily: 'var(--headline-font)',
+						fontWeight: 700,
+					}}
+				>
+					teamstatus.space
+				</span>
 			</a>
 			<button
 				type="button"
