@@ -26,7 +26,7 @@
   "author": "Markus Tacker <m@coderbyheart.com> | coderbyheart.com",
   "license": "MIT",
   "devDependencies": {
-    "@nordicsemiconductor/asset-tracker-cloud-code-style": "12.0.59",
+    "@nordicsemiconductor/asset-tracker-cloud-code-style": "12.0.60",
     "@nordicsemiconductor/eslint-config-asset-tracker-cloud-typescript": "16.0.4",
     "@nordicsemiconductor/from-env": "2.0.0",
     "@preact/preset-vite": "2.5.0",
