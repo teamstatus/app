@@ -29,6 +29,7 @@ export const ProjectMenu = ({
 				position: 'fixed',
 				bottom: '1rem',
 				right: '1rem',
+				zIndex: 1000,
 			}}
 		>
 			{projectsMenuVisible &&

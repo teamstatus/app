@@ -5,7 +5,7 @@ export const ProjectId = ({ id }: { id: string }) => {
 	return (
 		<span>
 			<span style={{ opacity: 0.75 }}>{organization}</span>&#8203;
-			<strong class="nowrap">{projectId}</strong>
+			<strong class="text-nowrap">{projectId}</strong>
 		</span>
 	)
 }

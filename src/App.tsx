@@ -25,6 +25,7 @@ import { Login } from './views/public/Login.js'
 import { LoginRedirect } from './views/LoginRedirect.js'
 import { Reactions } from './views/Reactions.js'
 import { Organizations } from './views/Organizations.js'
+import { Organization } from './views/Organization.js'
 
 export const App = () => (
 	<AuthProvider>
@@ -60,6 +61,7 @@ export const Routing = () => {
 					<Route path="/project/create" component={CreateProject} />
 					<Route path="/organization/create" component={CreateOrganization} />
 					<Route path="/organizations" component={Organizations} />
+					<Route path="/organization/:id" component={Organization} />
 					<Route path="/project/:id" component={Project} />
 					<Route path="/project/:id/compose" component={ComposeStatus} />
 					<Route path="/project/:id/invite" component={InviteToProject} />

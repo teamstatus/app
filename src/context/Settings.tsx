@@ -88,14 +88,14 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 			project: projects[id] as Project,
 			personalization: projectPersonalizations[id] ?? {
 				alias: projects[id]?.name ?? id,
-				color: '#9eec79',
+				color: '#212529',
 				order: 0,
 			},
 		}))
 
 	const visibleProjects = orderedProjects.filter(
 		({ project: { id } }) =>
-			(projectPersonalizations[id]?.hidden ?? false) !== false,
+			(projectPersonalizations[id]?.hidden ?? false) !== true,
 	)
 
 	return (
@@ -139,7 +139,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 				getProjectPersonalization: (id) =>
 					projectPersonalizations[id] ?? {
 						alias: projects[id]?.name ?? id,
-						color: '#9eec79',
+						color: '#212529',
 						order: 0,
 					},
 				personalizeProject: (id, personalization) => {

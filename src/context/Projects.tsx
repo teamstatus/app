@@ -24,7 +24,6 @@ export type Project = {
 	id: string
 	name?: string
 	icon?: string
-	organization: Organization
 	role: Role
 	persisted?: boolean
 }
@@ -161,7 +160,6 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 					const newProject: Project = {
 						id,
 						name,
-						organization,
 						persisted: false,
 						role: Role.OWNER,
 					}

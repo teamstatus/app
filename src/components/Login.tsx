@@ -4,6 +4,7 @@ import { useAuth } from '../context/Auth.js'
 import { InternalError } from '../context/InternalError.js'
 import { type ProblemDetail } from '../context/ProblemDetail.js'
 import { ProgressBar } from './ProgressBar.js'
+import { AsHeadline } from './HeadlineFont.js'
 
 export const Login = ({ redirect }: { redirect?: string }) => {
 	const { setUser, autoLoginState } = useAuth()
@@ -18,6 +19,15 @@ export const Login = ({ redirect }: { redirect?: string }) => {
 
 	return (
 		<>
+			{redirect !== undefined && (
+				<div class="alert alert-warning" role="alert">
+					Hei, you first need to log in in order to access{' '}
+					<AsHeadline>teamstatus.space</AsHeadline>
+					.<br />
+					If you don't have an account yet, just use your email to request a
+					login token.
+				</div>
+			)}
 			<div class="card">
 				<div class="card-header">
 					<h1>Login</h1>

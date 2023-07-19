@@ -8,11 +8,11 @@ import { LogoHeader } from '../components/LogoHeader.js'
 import { Main } from '../components/Main.js'
 import { ProjectMenu } from '../components/ProjectMenu.js'
 
-export const CreateProject = () => {
+export const CreateProject = ({ organization }: { organization?: string }) => {
 	const [name, setName] = useState<string>('')
 	const { addProject, organizations } = useProjects()
 	const [organizationId, setOrganization] = useState<string>(
-		organizations[0]?.id ?? '',
+		organizations[0]?.id ?? organization ?? '',
 	)
 	const [error, setError] = useState<string | undefined>()
 	const [id, setId] = useState('')

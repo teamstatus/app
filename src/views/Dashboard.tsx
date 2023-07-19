@@ -22,7 +22,7 @@ export const Dashboard = ({ redirect }: { redirect?: string }) => {
 				{user?.id === undefined && <SelectID />}
 				<section>
 					<div class="row mt-3">
-						<div class="col-md-8 offset-md-2">
+						<div class="col-12 col-md-8 offset-md-2">
 							<p>Welcome {user?.id ?? user?.email ?? 'anonymous'}!</p>
 						</div>
 					</div>
