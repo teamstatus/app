@@ -19,14 +19,37 @@ export const Dashboard = ({ redirect }: { redirect?: string }) => {
 		<>
 			<LogoHeader animated />
 			<Main class="container">
-				{user?.id === undefined && <SelectID />}
 				<section>
-					<div class="row mt-3">
-						<div class="col-12 col-md-8 offset-md-2">
-							<p>Welcome {user?.id ?? user?.email ?? 'anonymous'}!</p>
+					<div class="row mt-4">
+						<div class="col-12 col-md-6 offset-md-3">
+							<h1>
+								Welcome{' '}
+								<strong>{user?.id ?? user?.email ?? 'anonymous'}</strong>!
+							</h1>
+							<p>
+								This is your Dashboard, and we haven't figured out what to show
+								you here, yet.
+							</p>
+							<p>
+								<a
+									href="https://github.com/orgs/teamstatus/discussions/categories/ideas"
+									target="_blank"
+								>
+									Suggestions welcome!
+								</a>
+							</p>
 						</div>
 					</div>
 				</section>
+				{user?.id === undefined && (
+					<section>
+						<div class="row mt-4">
+							<div class="col-12 col-md-6 offset-md-3">
+								<SelectID />
+							</div>
+						</div>
+					</section>
+				)}
 			</Main>
 			<ProjectMenu />
 		</>

@@ -50,8 +50,7 @@ export const Routing = () => {
 		return (
 			<>
 				<Router>
-					<Route path="/" component={Home} />
-					<Route path="/dashboard" component={Dashboard} />
+					<Route path="/" component={Dashboard} />
 					<Route path="/login" component={LoginRedirect} />
 					<Route path="/help" component={Help} />
 					<Route path="/projects" component={Projects} />

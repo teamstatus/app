@@ -14,7 +14,7 @@ export const Syncs = () => {
 			<LogoHeader />
 			<Main class="container">
 				<div class="row mt-3">
-					<div class="col-12 col-md-8 offset-md-2">
+					<div class="col-12 col-md-6 offset-md-3">
 						<div class="card">
 							<div class="card-header  d-flex justify-content-between align-items-center">
 								<h1>Syncs</h1>

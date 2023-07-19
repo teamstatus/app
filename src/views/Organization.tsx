@@ -32,7 +32,7 @@ export const Organization = ({ id }: { id: string }) => {
 			<LogoHeader />
 			<Main class="container">
 				<div class="row mt-3">
-					<div class="col-12 col-md-8 offset-md-2">
+					<div class="col-12 col-md-6 offset-md-3">
 						<div class="card">
 							<div class="card-header">
 								<div class="  d-flex justify-content-between align-items-center">

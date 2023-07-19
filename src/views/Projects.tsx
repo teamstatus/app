@@ -27,6 +27,7 @@ import { Main } from '../components/Main.js'
 export const Projects = () => {
 	const { projects } = useProjects()
 	const { orderedProjects } = useSettings()
+
 	return (
 		<>
 			<LogoHeader />
@@ -97,7 +98,7 @@ const ProjectInfo = ({
 	const { toggleProject, personalizeProject, bumpProject } = useSettings()
 
 	const [colorsVisible, setColorsVisible] = useState(false)
-	const visible = hidden ?? true
+	const visible = (hidden ?? false) === false
 
 	return (
 		<div class="mb-3">

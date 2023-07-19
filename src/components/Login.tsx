@@ -173,9 +173,7 @@ export const Login = ({ redirect }: { redirect?: string }) => {
 															.then(async (res) => res.json())
 															.then((user) => {
 																setUser(user)
-																document.location.assign(
-																	redirect ?? '/dashboard',
-																)
+																document.location.assign(redirect ?? '/')
 															})
 													} else {
 														setError(await res.json())
