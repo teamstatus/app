@@ -30,11 +30,9 @@ export const InviteToProject = ({
 		<>
 			{project !== undefined && <ProjectHeader project={project} />}
 			<Main class="container">
-				<div class="card col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-4">
-					<div class="card-header">
+				<div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-4">
+					<section>
 						<h1>Invite a member</h1>
-					</div>
-					<div class="card-body">
 						{success !== undefined && (
 							<div class="alert alert-success" role="alert">
 								{success}
@@ -97,36 +95,36 @@ export const InviteToProject = ({
 							))}
 							<div class="form-text">(required)</div>
 						</div>
-					</div>
-					<div class="card-footer d-flex align-items-center justify-content-between">
-						<a href={`/projects/`} class="btn btn-outline-danger">
-							<BackIcon />
-						</a>
-						<button
-							class={cx('btn', {
-								'btn-primary': isValid,
-								'btn-secondary': !isValid,
-							})}
-							disabled={!isValid}
-							onClick={() => {
-								setInviting(true)
-								setSuccess(undefined)
-								inviteToProject(id, userId, role)
-									.then((res) => {
-										setInviting(false)
-										if ('error' in res) {
-											setError(res.error)
-										} else {
-											setSuccess(`${userId} invited successfully.`)
-											setInvitee('')
-										}
-									})
-									.catch(setError)
-							}}
-						>
-							<SubmitIcon />
-						</button>
-					</div>
+						<div class="d-flex align-items-center justify-content-between">
+							<a href={`/projects/`} class="btn btn-outline-danger">
+								<BackIcon />
+							</a>
+							<button
+								class={cx('btn', {
+									'btn-primary': isValid,
+									'btn-secondary': !isValid,
+								})}
+								disabled={!isValid}
+								onClick={() => {
+									setInviting(true)
+									setSuccess(undefined)
+									inviteToProject(id, userId, role)
+										.then((res) => {
+											setInviting(false)
+											if ('error' in res) {
+												setError(res.error)
+											} else {
+												setSuccess(`${userId} invited successfully.`)
+												setInvitee('')
+											}
+										})
+										.catch(setError)
+								}}
+							>
+								<SubmitIcon />
+							</button>
+						</div>
+					</section>
 				</div>
 			</Main>
 			<ProjectMenu />

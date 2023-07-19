@@ -8,16 +8,12 @@ export const Invitations = () => {
 	const { invitations } = useProjects()
 	if (invitations.length === 0) return null
 	return (
-		<div class="card">
-			<div class="card-header">
-				<h1>Open invitations</h1>
-			</div>
-			<div class="card-body">
-				{invitations.map((invitation) => (
-					<Invitation invitation={invitation} />
-				))}
-			</div>
-		</div>
+		<section>
+			<h1>Open invitations</h1>
+			{invitations.map((invitation) => (
+				<Invitation invitation={invitation} />
+			))}
+		</section>
 	)
 }
 

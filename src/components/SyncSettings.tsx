@@ -40,109 +40,103 @@ export const SyncSettings = ({
 			(endDate?.getTime() ?? Number.MIN_SAFE_INTEGER)
 
 	return (
-		<div class="card">
-			<div class="card-header">
-				<h2>Projects in the sync</h2>
-			</div>
-			<div class="card-body">
-				{projects.map((project) => (
-					<div class="form-check">
-						<label htmlFor={project.id}>
-							<input
-								class="form-check-input"
-								type="checkbox"
-								id={project.id}
-								onClick={() => {
-									setSelectedProjects((selectedProjects) =>
-										selectedProjects.includes(project.id)
-											? selectedProjects.filter((id) => id !== project.id)
-											: [...selectedProjects, project.id],
-									)
-								}}
-								checked={selectedProjects.includes(project.id)}
-							/>
-							{project.id}
-						</label>
-					</div>
-				))}
-				{Object.values(projects).length === 0 && (
-					<div>
-						<p>You have no projects,yet.</p>
-						<p>
-							<a href="/project/create">Create a new project</a>, or ask to be
-							invited to an existing one.
-						</p>
-					</div>
-				)}
-				<div class={'row mt-3'}>
-					<div class="col mb-3">
-						<label for="startDate" class="form-label">
-							Start day
-						</label>
+		<section>
+			<h2>Projects in the sync</h2>
+			{projects.map((project) => (
+				<div class="form-check">
+					<label htmlFor={project.id}>
 						<input
-							type="date"
-							class="form-control"
-							id="startDate"
-							value={startDay}
-							onInput={(e) => setStartDay((e.target as HTMLInputElement).value)}
+							class="form-check-input"
+							type="checkbox"
+							id={project.id}
+							onClick={() => {
+								setSelectedProjects((selectedProjects) =>
+									selectedProjects.includes(project.id)
+										? selectedProjects.filter((id) => id !== project.id)
+										: [...selectedProjects, project.id],
+								)
+							}}
+							checked={selectedProjects.includes(project.id)}
 						/>
-					</div>
-					<div class="col mb-3">
-						<label for="startTime" class="form-label">
-							Start time
-						</label>
-						<input
-							type="time"
-							class="form-control"
-							id="startTime"
-							value={startTime}
-							onInput={(e) =>
-								setStartTime((e.target as HTMLInputElement).value)
-							}
-						/>
-					</div>
+						{project.id}
+					</label>
 				</div>
-				<div class={'row'}>
-					<div class="col mb-3">
-						<label for="endDate" class="form-label">
-							End day
-						</label>
-						<input
-							type="date"
-							class="form-control"
-							id="endDate"
-							value={endDay}
-							onInput={(e) => setEndDay((e.target as HTMLInputElement).value)}
-						/>
-					</div>
-					<div class="col mb-3">
-						<label for="endTime" class="form-label">
-							End time
-						</label>
-						<input
-							type="time"
-							class="form-control"
-							id="endTime"
-							value={endTime}
-							onInput={(e) => setEndTime((e.target as HTMLInputElement).value)}
-						/>
-					</div>
-				</div>
+			))}
+			{Object.values(projects).length === 0 && (
 				<div>
-					<label for="name" class="form-label">
-						Name
+					<p>You have no projects,yet.</p>
+					<p>
+						<a href="/project/create">Create a new project</a>, or ask to be
+						invited to an existing one.
+					</p>
+				</div>
+			)}
+			<div class={'row mt-3'}>
+				<div class="col mb-3">
+					<label for="startDate" class="form-label">
+						Start day
 					</label>
 					<input
-						type="text"
+						type="date"
 						class="form-control"
-						id="name"
-						placeholder={`e.g. "${defaultSyncName}"`}
-						value={name}
-						onInput={(e) => setName((e.target as HTMLInputElement).value)}
+						id="startDate"
+						value={startDay}
+						onInput={(e) => setStartDay((e.target as HTMLInputElement).value)}
+					/>
+				</div>
+				<div class="col mb-3">
+					<label for="startTime" class="form-label">
+						Start time
+					</label>
+					<input
+						type="time"
+						class="form-control"
+						id="startTime"
+						value={startTime}
+						onInput={(e) => setStartTime((e.target as HTMLInputElement).value)}
 					/>
 				</div>
 			</div>
-			<div class="card-footer d-flex align-items-center justify-content-between">
+			<div class={'row'}>
+				<div class="col mb-3">
+					<label for="endDate" class="form-label">
+						End day
+					</label>
+					<input
+						type="date"
+						class="form-control"
+						id="endDate"
+						value={endDay}
+						onInput={(e) => setEndDay((e.target as HTMLInputElement).value)}
+					/>
+				</div>
+				<div class="col mb-3">
+					<label for="endTime" class="form-label">
+						End time
+					</label>
+					<input
+						type="time"
+						class="form-control"
+						id="endTime"
+						value={endTime}
+						onInput={(e) => setEndTime((e.target as HTMLInputElement).value)}
+					/>
+				</div>
+			</div>
+			<div>
+				<label for="name" class="form-label">
+					Name
+				</label>
+				<input
+					type="text"
+					class="form-control"
+					id="name"
+					placeholder={`e.g. "${defaultSyncName}"`}
+					value={name}
+					onInput={(e) => setName((e.target as HTMLInputElement).value)}
+				/>
+			</div>
+			<div class="d-flex align-items-center justify-content-between">
 				<span>
 					<a href={`/`} class="btn btn-outline-secondary">
 						<BackIcon />
@@ -172,6 +166,6 @@ export const SyncSettings = ({
 					</button>
 				</span>
 			</div>
-		</div>
+		</section>
 	)
 }

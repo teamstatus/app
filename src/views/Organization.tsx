@@ -33,19 +33,17 @@ export const Organization = ({ id }: { id: string }) => {
 			<Main class="container">
 				<div class="row mt-3">
 					<div class="col-12 col-md-6 offset-md-3">
-						<div class="card">
-							<div class="card-header">
-								<div class="  d-flex justify-content-between align-items-center">
-									<h1>{organization.name ?? organization.id}</h1>
+						<section>
+							<div class="d-flex justify-content-between align-items-center">
+								<h1>{organization.name ?? organization.id}</h1>
 
-									<OrganizationIcon />
-								</div>
-								{organization.name !== undefined && (
-									<small class="text-muted">{organization.id}</small>
-								)}
+								<OrganizationIcon />
 							</div>
+							{organization.name !== undefined && (
+								<small class="text-muted">{organization.id}</small>
+							)}
 							{organizationProjects.length === 0 && (
-								<div class="card-body">
+								<>
 									<p>This organization does not have projects, yet.</p>
 									<p>
 										Why don't you{' '}
@@ -58,7 +56,7 @@ export const Organization = ({ id }: { id: string }) => {
 										</a>{' '}
 										right now?
 									</p>
-								</div>
+								</>
 							)}
 							{organizationProjects.length > 0 && (
 								<ul class="list-group list-group-flush">
@@ -77,7 +75,7 @@ export const Organization = ({ id }: { id: string }) => {
 									))}
 								</ul>
 							)}
-						</div>
+						</section>
 					</div>
 				</div>
 			</Main>

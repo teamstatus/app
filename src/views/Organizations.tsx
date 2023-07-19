@@ -13,20 +13,20 @@ export const Organizations = () => {
 			<Main class="container">
 				<div class="row mt-3">
 					<div class="col-12 col-md-6 offset-md-3">
-						<div class="card">
-							<div class="card-header  d-flex justify-content-between align-items-center">
+						<section>
+							<div class="d-flex justify-content-between align-items-center">
 								<h1>Organizations</h1>
 								<OrganizationIcon />
 							</div>
 							{organizations.length === 0 && (
-								<div class="card-body">
+								<>
 									<p>You have no organizations, yet.</p>
 									<p>
 										Why don't you{' '}
 										<a href="/organization/create">create a new organization</a>{' '}
 										right now?
 									</p>
-								</div>
+								</>
 							)}
 							{organizations.length > 0 && (
 								<ul class="list-group list-group-flush">
@@ -44,7 +44,7 @@ export const Organizations = () => {
 									))}
 								</ul>
 							)}
-						</div>
+						</section>
 					</div>
 				</div>
 			</Main>

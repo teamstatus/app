@@ -15,19 +15,19 @@ export const Syncs = () => {
 			<Main class="container">
 				<div class="row mt-3">
 					<div class="col-12 col-md-6 offset-md-3">
-						<div class="card">
-							<div class="card-header  d-flex justify-content-between align-items-center">
+						<section>
+							<div class="d-flex justify-content-between align-items-center">
 								<h1>Syncs</h1>
 								<SyncIcon />
 							</div>
 							{syncItems.length === 0 && (
-								<div class="card-body">
+								<>
 									<p>You have no syncs,yet.</p>
 									<p>
 										Why don't you <a href="/sync/create">create a new sync</a>{' '}
 										right now?
 									</p>
-								</div>
+								</>
 							)}
 							{syncItems.length > 0 && (
 								<ul class="list-group list-group-flush">
@@ -48,7 +48,7 @@ export const Syncs = () => {
 									})}
 								</ul>
 							)}
-						</div>
+						</section>
 					</div>
 				</div>
 			</Main>

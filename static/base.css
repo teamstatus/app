@@ -42,15 +42,6 @@ h6 strong {
   font-weight: 500;
 }
 
-.card-header h1,
-.card-header h2,
-.card-header h3,
-.card-header h4,
-.card-header h5,
-.card-header h6 {
-  margin-bottom: 0;
-}
-
 .markdown p:last-child {
   margin-bottom: 0;
 }

@@ -33,7 +33,7 @@ export const ProjectSync = ({
 		.filter(filterByRole(ReactionRole.QUESTION))
 
 	return (
-		<section class="pt-4">
+		<div class="pt-4">
 			<h2 class="mt-4">{project.name ?? project.id}</h2>
 			{status.length === 0 && (
 				<>
@@ -53,39 +53,33 @@ export const ProjectSync = ({
 				</>
 			)}
 			{questions.length > 0 && (
-				<>
-					<div class={'card'}>
-						<div class={'card-header'}>
-							<h3>Questions ({questions.length})</h3>
-						</div>
-						<div class="list-group list-group-flush">
-							{questions.map((status, i) => {
-								const users = status.reactions
-									.filter(isRole(ReactionRole.QUESTION))
-									.map(({ author }) => author)
-								return (
-									<div class="list-group-item">
-										<div>
-											<QuestionIcon />{' '}
-											{users.map((user) => (
-												<span>{user}</span>
-											))}
-										</div>
-										<StatusSync status={status} />
-										{i < questions.length - 1 && <hr />}
+				<section>
+					<h3>Questions ({questions.length})</h3>
+					<div class="list-group list-group-flush">
+						{questions.map((status, i) => {
+							const users = status.reactions
+								.filter(isRole(ReactionRole.QUESTION))
+								.map(({ author }) => author)
+							return (
+								<div class="list-group-item">
+									<div>
+										<QuestionIcon />{' '}
+										{users.map((user) => (
+											<span>{user}</span>
+										))}
 									</div>
-								)
-							})}
-						</div>
+									<StatusSync status={status} />
+									{i < questions.length - 1 && <hr />}
+								</div>
+							)
+						})}
 					</div>
-				</>
+				</section>
 			)}
 			{significant.length > 0 && (
 				<>
-					<div class="card mt-3 mb-3">
-						<div class="card-header">
-							<h3>Significant updates</h3>
-						</div>
+					<section class="mt-3 mb-3">
+						<h3>Significant updates</h3>
 						<div class="list-group list-group-flush">
 							{significant.map((status, i) => (
 								<div class="list-group-item">
@@ -94,7 +88,7 @@ export const ProjectSync = ({
 								</div>
 							))}
 						</div>
-					</div>
+					</section>
 					{normal.length > 0 && <h3>Remaining updates</h3>}
 				</>
 			)}
@@ -104,6 +98,6 @@ export const ProjectSync = ({
 					{i < normal.length - 1 && <hr />}
 				</>
 			))}
-		</section>
+		</div>
 	)
 }

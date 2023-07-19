@@ -34,12 +34,12 @@ export const Projects = () => {
 			<Main class="container">
 				<div class="row mt-3">
 					<div class="col-12 col-md-6 offset-md-3">
-						<div class="card">
-							<div class="card-header  d-flex justify-content-between align-items-center">
+						<section>
+							<div class="d-flex justify-content-between align-items-center">
 								<h1>Projects</h1>
 								<ProjectsIcon />
 							</div>
-							<div class="card-body">
+							<div>
 								{orderedProjects.map(
 									({ project, personalization }, index, arr) => (
 										<ProjectInfo
@@ -61,7 +61,7 @@ export const Projects = () => {
 									</>
 								)}
 							</div>
-						</div>
+						</section>
 					</div>
 				</div>
 				<div class="row mt-3">
@@ -101,7 +101,7 @@ const ProjectInfo = ({
 	const visible = (hidden ?? false) === false
 
 	return (
-		<div class="mb-3">
+		<div class="mb-3 mb-md-4 mt-md-4">
 			<div class="d-flex align-items-center justify-content-between">
 				<ProjectId id={id} />
 				<div>

@@ -12,36 +12,30 @@ export const AcceptProjectInvitation = () => {
 	const isValid = isInvitationId(invitationId)
 	const { acceptProjectInvitation } = useProjects()
 	return (
-		<div class="card">
-			<div class="card-header">
-				<h1>Accept project invitation</h1>
-			</div>
-			<div class="card-body">
-				{error !== undefined && (
-					<div class="alert alert-danger" role="alert">
-						An error occured ({error.title})!
-					</div>
-				)}
-				<div class="mb-3 ">
-					<label for="invitationIdInput" class="form-label">
-						Invitation ID
-					</label>
-					<input
-						type="text"
-						class="form-control"
-						id="invitationIdInput"
-						onInput={(e) =>
-							setInvitationId((e.target as HTMLInputElement).value)
-						}
-						value={invitationId}
-						placeholder={`e.g. "$team#project@userid"`}
-						pattern={`^${slugPart}$`}
-						required
-					/>
-					<div class="form-text">(required)</div>
+		<section>
+			<h1>Accept project invitation</h1>
+			{error !== undefined && (
+				<div class="alert alert-danger" role="alert">
+					An error occured ({error.title})!
 				</div>
+			)}
+			<div class="mb-3 ">
+				<label for="invitationIdInput" class="form-label">
+					Invitation ID
+				</label>
+				<input
+					type="text"
+					class="form-control"
+					id="invitationIdInput"
+					onInput={(e) => setInvitationId((e.target as HTMLInputElement).value)}
+					value={invitationId}
+					placeholder={`e.g. "$team#project@userid"`}
+					pattern={`^${slugPart}$`}
+					required
+				/>
+				<div class="form-text">(required)</div>
 			</div>
-			<div class="card-footer d-flex align-items-center justify-content-end">
+			<div class="d-flex align-items-center justify-content-end">
 				<button
 					class={cx('btn', {
 						'btn-primary': isValid,
@@ -65,6 +59,6 @@ export const AcceptProjectInvitation = () => {
 					<SubmitIcon />
 				</button>
 			</div>
-		</div>
+		</section>
 	)
 }
