@@ -80,7 +80,7 @@
     "color": "4.2.3",
     "date-fns": "2.30.0",
     "lodash-es": "4.17.21",
-    "lucide-preact": "0.261.0",
+    "lucide-preact": "0.262.0",
     "p-throttle": "5.1.0",
     "preact": "10.16.0",
     "preact-router": "4.1.1",
