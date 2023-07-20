@@ -177,14 +177,31 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						credentials: 'include',
 						body: JSON.stringify({ id, name }),
 					})
-						.then(() => {
-							setProjects((projects) => ({
-								...projects,
-								[id]: {
-									...(projects[id] as Project),
-									persisted: true,
-								},
-							}))
+						.then(handleResponse)
+						.then((res) => {
+							if ('error' in res) {
+								console.error(res)
+								setProjects((projects) => {
+									delete projects[id]
+									return Object.entries(projects)
+										.filter(([projectId]) => projectId !== id)
+										.reduce<Record<string, Project>>(
+											(projects, [id, project]) => ({
+												...projects,
+												[id]: project,
+											}),
+											{},
+										)
+								})
+							} else {
+								setProjects((projects) => ({
+									...projects,
+									[id]: {
+										...(projects[id] as Project),
+										persisted: true,
+									},
+								}))
+							}
 						})
 						.catch(console.error)
 

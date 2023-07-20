@@ -152,27 +152,32 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 							body: JSON.stringify({ id, message }),
 						},
 					)
-						.then(() => {
-							setStatus((status) => {
-								const projectStatus = status[projectId] ?? []
-								const persistedStatus = projectStatus.find(
-									({ id: statusId }) => id === statusId,
-								)
+						.then(handleResponse)
+						.then((res) => {
+							if ('error' in res) {
+								console.error(res)
+							} else {
+								setStatus((status) => {
+									const projectStatus = status[projectId] ?? []
+									const persistedStatus = projectStatus.find(
+										({ id: statusId }) => id === statusId,
+									)
 
-								let updatedStatus = projectStatus.filter(
-									({ id: statusId }) => statusId !== id,
-								)
-								if (persistedStatus !== undefined) {
-									updatedStatus = [
-										{ ...persistedStatus, persisted: true },
-										...updatedStatus,
-									]
-								}
-								return {
-									...status,
-									[projectId]: updatedStatus,
-								}
-							})
+									let updatedStatus = projectStatus.filter(
+										({ id: statusId }) => statusId !== id,
+									)
+									if (persistedStatus !== undefined) {
+										updatedStatus = [
+											{ ...persistedStatus, persisted: true },
+											...updatedStatus,
+										]
+									}
+									return {
+										...status,
+										[projectId]: updatedStatus,
+									}
+								})
+							}
 						})
 						.catch(console.error)
 
@@ -256,24 +261,29 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 								}),
 							},
 						)
-							.then(() => {
-								setStatus((s) => ({
-									...s,
-									[status.project]: (s[status.project] ?? []).map((st) => {
-										if (st.id !== status.id) return st
-										return {
-											...st,
-											reactions: st.reactions.map((reaction) => {
-												if (reaction.id === id)
-													return {
-														...reaction,
-														persisted: true,
-													}
-												return reaction
-											}),
-										}
-									}),
-								}))
+							.then(handleResponse)
+							.then((res) => {
+								if ('error' in res) {
+									console.error(res)
+								} else {
+									setStatus((s) => ({
+										...s,
+										[status.project]: (s[status.project] ?? []).map((st) => {
+											if (st.id !== status.id) return st
+											return {
+												...st,
+												reactions: st.reactions.map((reaction) => {
+													if (reaction.id === id)
+														return {
+															...reaction,
+															persisted: true,
+														}
+													return reaction
+												}),
+											}
+										}),
+									}))
+								}
 							})
 							.catch(console.error)
 					}
@@ -353,31 +363,36 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						credentials: 'include',
 						body: JSON.stringify({ message }),
 					})
-						.then(() => {
-							setStatus((allStatus) => {
-								const projectStatus = allStatus[status.project] ?? []
-								const persistedStatus = projectStatus.find(
-									({ id: statusId }) => status.id === statusId,
-								)
+						.then(handleResponse)
+						.then((res) => {
+							if ('error' in res) {
+								console.error(res)
+							} else {
+								setStatus((allStatus) => {
+									const projectStatus = allStatus[status.project] ?? []
+									const persistedStatus = projectStatus.find(
+										({ id: statusId }) => status.id === statusId,
+									)
 
-								let updatedStatus = projectStatus.filter(
-									({ id: statusId }) => statusId !== status.id,
-								)
-								if (persistedStatus !== undefined) {
-									updatedStatus = [
-										{
-											...persistedStatus,
-											persisted: true,
-											version: persistedStatus.version + 1,
-										},
-										...updatedStatus,
-									]
-								}
-								return {
-									...allStatus,
-									[status.project]: updatedStatus,
-								}
-							})
+									let updatedStatus = projectStatus.filter(
+										({ id: statusId }) => statusId !== status.id,
+									)
+									if (persistedStatus !== undefined) {
+										updatedStatus = [
+											{
+												...persistedStatus,
+												persisted: true,
+												version: persistedStatus.version + 1,
+											},
+											...updatedStatus,
+										]
+									}
+									return {
+										...allStatus,
+										[status.project]: updatedStatus,
+									}
+								})
+							}
 						})
 						.catch(console.error)
 

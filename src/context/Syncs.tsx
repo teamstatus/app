@@ -2,6 +2,7 @@ import { createContext, type ComponentChildren } from 'preact'
 import { useContext, useEffect, useState } from 'preact/hooks'
 import { ulid } from 'ulid'
 import { useAuth } from './Auth.js'
+import { handleResponse } from './handleResponse.js'
 
 export type Sync = {
 	id: string
@@ -102,14 +103,19 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 									: undefined,
 						}),
 					})
-						.then(() => {
-							setSyncs((syncs) => ({
-								...syncs,
-								[id]: {
-									...(syncs[id] as Sync),
-									persisted: true,
-								},
-							}))
+						.then(handleResponse)
+						.then((res) => {
+							if ('error' in res) {
+								console.error(res)
+							} else {
+								setSyncs((syncs) => ({
+									...syncs,
+									[id]: {
+										...(syncs[id] as Sync),
+										persisted: true,
+									},
+								}))
+							}
 						})
 						.catch(console.error)
 

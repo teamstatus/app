@@ -10,7 +10,7 @@ import { ProjectMenu } from '../components/ProjectMenu.js'
 
 export const CreateProject = ({ organization }: { organization?: string }) => {
 	const [name, setName] = useState<string>('')
-	const { addProject, organizations } = useProjects()
+	const { addProject, organizations, projects } = useProjects()
 	const [organizationId, setOrganization] = useState<string>(
 		organizations[0]?.id ?? organization ?? '',
 	)
@@ -18,7 +18,7 @@ export const CreateProject = ({ organization }: { organization?: string }) => {
 	const [id, setId] = useState('')
 
 	const projectId = `${organizationId}#${id}`
-	const isValid = isProjectId(projectId)
+	const isValid = isProjectId(projectId) && projects[projectId] === undefined
 	return (
 		<>
 			<LogoHeader />
