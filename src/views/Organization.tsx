@@ -58,10 +58,10 @@ export const Organization = ({ id }: { id: string }) => {
 									</p>
 								</>
 							)}
-							{organizationProjects.length > 0 && (
-								<ul class="list-group list-group-flush">
-									{organizationProjects.map((project) => (
-										<li class="list-group-item d-flex justify-content-between align-items-center">
+							{organizationProjects.length > 0 &&
+								organizationProjects.map((project) => (
+									<>
+										<div class="my-2 d-flex justify-content-between align-items-center">
 											<a href={`/project/${encodeURIComponent(project.id)}`}>
 												{project.name ?? project.id}
 											</a>
@@ -71,10 +71,10 @@ export const Organization = ({ id }: { id: string }) => {
 											>
 												{project.id}
 											</span>
-										</li>
-									))}
-								</ul>
-							)}
+										</div>
+										<hr />
+									</>
+								))}
 						</section>
 					</div>
 				</div>

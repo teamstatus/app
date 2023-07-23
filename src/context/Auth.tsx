@@ -1,5 +1,6 @@
 import { createContext, type ComponentChildren } from 'preact'
 import { useContext, useEffect, useState } from 'preact/hooks'
+import { CREATE, GET } from '../api/client'
 
 export type UserContext = {
 	email: string
@@ -25,20 +26,12 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 		useState<AutoLoginState>('in_progress')
 
 	useEffect(() => {
-		fetch(`${API_ENDPOINT}/me`, {
-			headers: {
-				Accept: 'application/json; charset=utf-8',
-			},
-			mode: 'cors',
-			credentials: 'include',
-		})
-			.then(async (res) => res.json())
-			.then((user) => {
+		GET<UserContext>(`/me`)
+			.ok((user) => {
 				setUser(user)
 				setAutoLoginState('success')
 			})
-			.catch((err) => {
-				console.error(err)
+			.fail(() => {
 				setAutoLoginState('failed')
 			})
 	}, [])
@@ -48,19 +41,11 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 			value={{
 				setUser,
 				logout: () => {
-					fetch(`${API_ENDPOINT}/logout`, {
-						headers: {
-							Accept: 'application/json; charset=utf-8',
-						},
-						mode: 'cors',
-						credentials: 'include',
-						method: 'POST',
-					})
-						.catch((err) => {
+					CREATE(`/logout`, {})
+						.fail(() => {
 							console.error(`Server-side logout failed.`)
-							console.error(err)
 						})
-						.finally(() => {
+						.anyway(() => {
 							setUser(undefined)
 							document.location.assign('/')
 						})

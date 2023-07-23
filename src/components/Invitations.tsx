@@ -35,7 +35,7 @@ const Invitation = ({ invitation }: { invitation: Invitation }) => {
 				type="button"
 				class="btn btn-outline-primary btn-sm"
 				onClick={() => {
-					acceptProjectInvitation(invitation.id).catch(console.error)
+					acceptProjectInvitation(invitation.id)
 				}}
 			>
 				<AcceptInvitationIcon />

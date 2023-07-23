@@ -3,10 +3,8 @@ import { useContext, useEffect, useState } from 'preact/hooks'
 import { ulid } from 'ulid'
 import { parseInvitationId, parseProjectId } from '../proto/ids.js'
 import { useAuth } from './Auth.js'
-import { InternalError } from './InternalError.js'
-import { type ProblemDetail } from './ProblemDetail.js'
-import { handleResponse } from './handleResponse.js'
-import { throttle } from '../api/throttle.js'
+import { CREATE, GET } from '../api/client.js'
+import { notReady } from '../api/notReady.js'
 
 export type Organization = {
 	id: string
@@ -45,10 +43,8 @@ export type ProjectsContext = {
 		id: string,
 		user: string,
 		role: Role,
-	) => Promise<{ error: ProblemDetail } | { success: boolean }>
-	acceptProjectInvitation: (
-		invitationId: string,
-	) => Promise<{ error: ProblemDetail } | { success: boolean }>
+	) => ReturnType<typeof CREATE>
+	acceptProjectInvitation: (invitationId: string) => ReturnType<typeof CREATE>
 	addOrganization: (
 		id: string,
 		name?: string,
@@ -60,12 +56,8 @@ export const ProjectsContext = createContext<ProjectsContext>({
 	projects: {},
 	addProject: () => ({ error: 'Not ready.' }),
 	addOrganization: () => ({ error: 'Not ready.' }),
-	inviteToProject: async () => ({
-		error: InternalError('Not ready.'),
-	}),
-	acceptProjectInvitation: async () => ({
-		error: InternalError('Not ready.'),
-	}),
+	inviteToProject: () => notReady,
+	acceptProjectInvitation: () => notReady,
 	organizations: [],
 	invitations: [],
 })
@@ -82,70 +74,34 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 
 	useEffect(() => {
 		if (user === undefined) return
-		throttle(async () =>
-			fetch(`${API_ENDPOINT}/organizations`, {
-				headers: {
-					Accept: 'application/json; charset=utf-8',
-				},
-				mode: 'cors',
-				credentials: 'include',
-			})
-				.then(handleResponse<{ organizations: Organization[] }>)
-				.then(async (res) => {
-					if ('error' in res) {
-						console.error(res)
-					} else {
-						setOrganizations(res.result?.organizations ?? [])
-					}
-				}),
-		)().catch(console.error)
+		GET<{ organizations: Organization[] }>(`/organizations`).ok(
+			({ organizations }) => {
+				setOrganizations(organizations)
+			},
+		)
 	}, [user])
 
 	useEffect(() => {
 		if (user === undefined) return
-		throttle(async () =>
-			fetch(`${API_ENDPOINT}/projects`, {
-				headers: {
-					Accept: 'application/json; charset=utf-8',
-				},
-				mode: 'cors',
-				credentials: 'include',
-			})
-				.then<{ projects: Project[] }>(async (res) => res.json())
-				.then(({ projects }) => {
-					setProjects(
-						projects.reduce(
-							(projects, project) => ({
-								...projects,
-								[project.id]: project,
-							}),
-							{},
-						),
-					)
-				}),
-		)().catch(console.error)
+		GET<{ projects: Project[] }>(`/projects`).ok(({ projects }) => {
+			setProjects(
+				projects.reduce(
+					(projects, project) => ({
+						...projects,
+						[project.id]: project,
+					}),
+					{},
+				),
+			)
+		})
 	}, [projectsListFetchId, user])
 
 	// Fetch invites
 	useEffect(() => {
 		if (user === undefined) return
-		throttle(async () =>
-			fetch(`${API_ENDPOINT}/invitations`, {
-				headers: {
-					Accept: 'application/json; charset=utf-8',
-				},
-				mode: 'cors',
-				credentials: 'include',
-			})
-				.then(handleResponse<{ invitations: Invitation[] }>)
-				.then(async (res) => {
-					if ('error' in res) {
-						console.error(res)
-					} else {
-						setInvitations(res.result?.invitations ?? [])
-					}
-				}),
-		)().catch(console.error)
+		GET<{ invitations: Invitation[] }>(`/invitations`).ok(({ invitations }) => {
+			setInvitations(invitations ?? [])
+		})
 	}, [projectsListFetchId, user])
 
 	return (
@@ -167,85 +123,48 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						...projects,
 						[newProject.id]: newProject,
 					}))
-					fetch(`${API_ENDPOINT}/projects`, {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json; charset=utf-8',
-							Accept: 'application/json; charset=utf-8',
-						},
-						mode: 'cors',
-						credentials: 'include',
-						body: JSON.stringify({ id, name }),
-					})
-						.then(handleResponse)
-						.then((res) => {
-							if ('error' in res) {
-								console.error(res)
-								setProjects((projects) => {
-									delete projects[id]
-									return Object.entries(projects)
-										.filter(([projectId]) => projectId !== id)
-										.reduce<Record<string, Project>>(
-											(projects, [id, project]) => ({
-												...projects,
-												[id]: project,
-											}),
-											{},
-										)
-								})
-							} else {
-								setProjects((projects) => ({
-									...projects,
-									[id]: {
-										...(projects[id] as Project),
-										persisted: true,
-									},
-								}))
-							}
+					CREATE(`/projects`, { id, name })
+						.ok(() => {
+							setProjects((projects) => ({
+								...projects,
+								[id]: {
+									...(projects[id] as Project),
+									persisted: true,
+								},
+							}))
 						})
-						.catch(console.error)
+						.fail(() => {
+							setProjects((projects) => {
+								delete projects[id]
+								return Object.entries(projects)
+									.filter(([projectId]) => projectId !== id)
+									.reduce<Record<string, Project>>(
+										(projects, [id, project]) => ({
+											...projects,
+											[id]: project,
+										}),
+										{},
+									)
+							})
+						})
 
 					return { success: true }
 				},
 				organizations,
-				inviteToProject: async (id, invitedUserId, role) =>
-					fetch(`${API_ENDPOINT}/project/${encodeURIComponent(id)}/member`, {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json; charset=utf-8',
-							Accept: 'application/json; charset=utf-8',
-						},
-						mode: 'cors',
-						credentials: 'include',
-						body: JSON.stringify({ invitedUserId, role }),
-					})
-						.then(async (res) => handleResponse(res))
-						.then(async (res) => {
-							if ('error' in res) return res
-							return { success: true }
-						})
-						.catch((error) => ({ error: InternalError(error.message) })),
-				acceptProjectInvitation: async (invitationId) =>
-					fetch(
+				inviteToProject: (id, invitedUserId, role) =>
+					CREATE(`/project/${encodeURIComponent(id)}/member`, {
+						invitedUserId,
+						role,
+					}),
+				acceptProjectInvitation: (invitationId) =>
+					CREATE(
 						`${API_ENDPOINT}/project/${encodeURIComponent(
 							parseInvitationId(invitationId).projectId ?? 'null',
 						)}/invitation`,
-						{
-							method: 'POST',
-							headers: {
-								Accept: 'application/json; charset=utf-8',
-							},
-							mode: 'cors',
-							credentials: 'include',
-						},
-					)
-						.then(async (res) => handleResponse(res))
-						.then(async (res) => {
-							if ('error' in res) return res
-							refreshProjects()
-							return { success: true }
-						})
-						.catch((error) => ({ error: InternalError(error.message) })),
+						{},
+					).ok(() => {
+						refreshProjects()
+					}),
 				addOrganization: (id, name) => {
 					const newOrg: Organization = {
 						id,
@@ -254,26 +173,15 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 					}
 					setOrganizations((organizations) => [...organizations, newOrg])
 
-					fetch(`${API_ENDPOINT}/organizations`, {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json; charset=utf-8',
-							Accept: 'application/json; charset=utf-8',
-						},
-						mode: 'cors',
-						credentials: 'include',
-						body: JSON.stringify({ id, name }),
+					CREATE(`/organizations`, { id, name }).ok(() => {
+						setOrganizations((organizations) => [
+							...organizations.filter(({ id: orgId }) => orgId !== id),
+							{
+								id,
+								name,
+							},
+						])
 					})
-						.then(() => {
-							setOrganizations((organizations) => [
-								...organizations.filter(({ id: orgId }) => orgId !== id),
-								{
-									id,
-									name,
-								},
-							])
-						})
-						.catch(console.error)
 
 					return { success: true }
 				},

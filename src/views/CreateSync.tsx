@@ -22,18 +22,16 @@ export const CreateSync = () => {
 	useEffect(() => {
 		Promise.all(
 			visibleProjects.map(async ({ project: { id: projectId } }) =>
-				fetchProjectStatus(projectId, startDate, endDate).then((res) => {
-					if ('error' in res) {
-						console.error(res.error)
-					} else {
+				fetchProjectStatus(projectId, startDate, endDate).ok(
+					({ status: fetchedStatus }) => {
 						setProjectStatus((status) => ({
 							...status,
-							[projectId]: res.status,
+							[projectId]: fetchedStatus,
 						}))
-					}
-				}),
+					},
+				),
 			),
-		).catch(console.error)
+		)
 	}, [selectedProjects, startDate, endDate])
 
 	return (

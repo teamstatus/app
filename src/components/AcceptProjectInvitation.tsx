@@ -44,16 +44,12 @@ export const AcceptProjectInvitation = () => {
 					disabled={!isValid}
 					onClick={() => {
 						acceptProjectInvitation(invitationId)
-							.then((res) => {
-								if ('error' in res) {
-									setError(res.error)
-								} else {
-									route(
-										`/projects?accepted=${encodeURIComponent(invitationId)}`,
-									)
-								}
+							.ok(() => {
+								route(`/projects?accepted=${encodeURIComponent(invitationId)}`)
 							})
-							.catch(setError)
+							.fail((problem) => {
+								setError(problem)
+							})
 					}}
 				>
 					<SubmitIcon />

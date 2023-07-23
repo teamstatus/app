@@ -1,6 +1,6 @@
 import type { ProblemDetail } from './ProblemDetail'
 
-export const handleResponse = async <Result extends Record<string, any>>(
+export const handleResponse = async <Result extends Record<string, unknown>>(
 	res: Response,
 ): Promise<{ error: ProblemDetail } | { result: Result | null }> => {
 	if (

@@ -1,69 +1,50 @@
 import { useEffect, useState } from 'preact/hooks'
 import { ProjectSync } from '../components/ProjectSync.js'
 import { SyncTitle } from '../components/SyncTitle.js'
-import { useProjects } from '../context/Projects.js'
+import { useProjects, type Project } from '../context/Projects.js'
 import { useSyncs, type Sync as TSync } from '../context/Syncs.js'
 import { LogoHeader } from '../components/LogoHeader.js'
-import { handleResponse } from '../context/handleResponse.js'
 import { type ProblemDetail } from '../context/ProblemDetail.js'
-import type { Status } from '../context/Status.js'
+import { ReactionRole, type Status } from '../context/Status.js'
 import { ProjectMenu } from '../components/ProjectMenu.js'
 import { Main } from '../components/Main.js'
+import { decodeTime } from 'ulid'
+import { GET } from '../api/client.js'
+
+type ProjectStatusMap = Record<string, Status[]>
 
 export const Sync = ({ id }: { id: string }) => {
 	const { syncs } = useSyncs()
 	const { projects } = useProjects()
 	const [problem, setProblem] = useState<ProblemDetail>()
 	const [sync, setSync] = useState<TSync | undefined>(syncs[id])
-	const [status, setStatus] = useState<Record<string, Status[]>>({})
+	const [status, setStatus] = useState<ProjectStatusMap>({})
 
 	useEffect(() => {
 		if (sync !== undefined) return
-		fetch(`${API_ENDPOINT}/sync/${encodeURIComponent(id)}`, {
-			headers: {
-				Accept: 'application/json; charset=utf-8',
-			},
-			mode: 'cors',
-			credentials: 'include',
-		})
-			.then(handleResponse<{ sync: TSync }>)
-			.then((maybeSync) => {
-				if ('error' in maybeSync) {
-					setProblem(maybeSync.error)
-				} else if (maybeSync.result !== null) {
-					setSync({
-						...maybeSync.result.sync,
-						inclusiveStartDate:
-							maybeSync.result.sync.inclusiveStartDate !== undefined
-								? new Date(maybeSync.result.sync.inclusiveStartDate)
-								: undefined,
-						inclusiveEndDate:
-							maybeSync.result.sync.inclusiveEndDate !== undefined
-								? new Date(maybeSync.result.sync.inclusiveEndDate)
-								: undefined,
-					})
-				}
+		GET<{ sync: TSync }>(`/sync/${encodeURIComponent(id)}`)
+			.fail(setProblem)
+			.ok(({ sync }) => {
+				setSync({
+					...sync,
+					inclusiveStartDate:
+						sync.inclusiveStartDate !== undefined
+							? new Date(sync.inclusiveStartDate)
+							: undefined,
+					inclusiveEndDate:
+						sync.inclusiveEndDate !== undefined
+							? new Date(sync.inclusiveEndDate)
+							: undefined,
+				})
 			})
-			.catch(console.error)
 	}, [id])
 
 	useEffect(() => {
 		if (sync === undefined) return
-		fetch(`${API_ENDPOINT}/sync/${encodeURIComponent(id)}/status`, {
-			headers: {
-				Accept: 'application/json; charset=utf-8',
-			},
-			mode: 'cors',
-			credentials: 'include',
-		})
-			.then(handleResponse<{ status: Status[] }>)
-			.then((res) => {
-				if ('error' in res) {
-					console.error(res)
-					return
-				}
+		GET<{ status: Status[] }>(`/sync/${encodeURIComponent(id)}/status`).ok(
+			({ status }) => {
 				setStatus(
-					res.result?.status?.reduce<Record<string, Status[]>>(
+					status.reduce<ProjectStatusMap>(
 						(projectStatus, status) => ({
 							...projectStatus,
 							[status.project]: [
@@ -74,8 +55,8 @@ export const Sync = ({ id }: { id: string }) => {
 						{},
 					) ?? {},
 				)
-			})
-			.catch(console.error)
+			},
+		)
 	}, [sync])
 
 	if (problem !== undefined) {
@@ -120,9 +101,11 @@ export const Sync = ({ id }: { id: string }) => {
 		)
 	}
 
-	const projectsInSync = Object.values(projects).filter((project) =>
-		sync.projectIds.includes(project.id),
-	)
+	const projectsInSync = Object.values(projects)
+		.filter((project) => sync.projectIds.includes(project.id))
+		.sort(byMostRecentUpdate(status))
+		.sort(byNumberOfSignificant(status))
+		.sort(byNumberOfQuestions(status))
 
 	return (
 		<>
@@ -152,3 +135,43 @@ export const Sync = ({ id }: { id: string }) => {
 		</>
 	)
 }
+
+const byReactionsWithRole =
+	(role: ReactionRole, status: ProjectStatusMap) =>
+	(p1: Project, p2: Project) => {
+		console.log(p2.id, getNumberOfReactionsWithRole(role, status[p2.id] ?? []))
+		return (
+			(getNumberOfReactionsWithRole(role, status[p2.id] ?? []) ?? 0) -
+			(getNumberOfReactionsWithRole(role, status[p1.id] ?? []) ?? 0)
+		)
+	}
+
+const byNumberOfSignificant = (status: ProjectStatusMap) =>
+	byReactionsWithRole(ReactionRole.SIGNIFICANT, status)
+
+const byNumberOfQuestions = (status: ProjectStatusMap) =>
+	byReactionsWithRole(ReactionRole.QUESTION, status)
+
+const byMostRecentUpdate =
+	(status: ProjectStatusMap) => (p1: Project, p2: Project) =>
+		(getLastUpdate(status[p2.id] ?? []) ?? 0) -
+		(getLastUpdate(status[p1.id] ?? []) ?? 0)
+
+const getLastUpdate = (status: Status[]): number | null => {
+	const lastUpdated = [...status]
+		.map(({ id }) => decodeTime(id))
+		.sort((d1, d2) => d1 - d2)[0]
+	return lastUpdated ?? null
+}
+
+const getNumberOfReactionsWithRole = (role: ReactionRole, status: Status[]) =>
+	status
+		.map(
+			({ reactions }) =>
+				reactions.filter(
+					(reaction) => 'role' in reaction && reaction.role === role,
+				).length,
+		)
+		.reduce(sum, 0)
+
+const sum = (total: number, count: number): number => total + count

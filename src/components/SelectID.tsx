@@ -4,6 +4,7 @@ import { useState } from 'preact/hooks'
 import { useAuth } from '../context/Auth.js'
 import { isUserId, slugPart } from '../proto/ids.js'
 import { SubmitIcon } from './Icons.js'
+import { CREATE } from '../api/client.js'
 
 export const SelectID = () => {
 	const [id, setId] = useState('')
@@ -68,24 +69,15 @@ export const SelectID = () => {
 					})}
 					disabled={!isValid}
 					onClick={() => {
-						fetch(`${API_ENDPOINT}/me/user`, {
-							method: 'PUT',
-							headers: {
-								Accept: 'application/json; charset=utf-8',
-								'Content-Type': 'application/json; charset=utf-8',
-							},
-							mode: 'cors',
-							credentials: 'include',
-							body: JSON.stringify({ id: userId, name }),
-						})
-							.then(() => {
+						CREATE(`/me/user`, { id: userId, name })
+							.ok(() => {
 								setUser({
 									email: user.email,
 									id: userId,
 								})
 								route(`/projects`)
 							})
-							.catch((error) => setError(error.message))
+							.fail((problem) => setError(problem.title))
 					}}
 				>
 					<SubmitIcon />

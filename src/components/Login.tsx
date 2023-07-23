@@ -1,10 +1,10 @@
 import cx from 'classnames'
 import { useState } from 'preact/hooks'
-import { useAuth } from '../context/Auth.js'
-import { InternalError } from '../context/InternalError.js'
+import { type UserContext, useAuth } from '../context/Auth.js'
 import { type ProblemDetail } from '../context/ProblemDetail.js'
 import { ProgressBar } from './ProgressBar.js'
 import { AsHeadline } from './HeadlineFont.js'
+import { GET, CREATE } from '../api/client.js'
 
 export const Login = ({ redirect }: { redirect?: string }) => {
 	const { setUser, autoLoginState } = useAuth()
@@ -77,30 +77,17 @@ export const Login = ({ redirect }: { redirect?: string }) => {
 										setSuccess(undefined)
 										setError(undefined)
 										setPIN('')
-										fetch(`${API_ENDPOINT}/login/email`, {
-											method: 'POST',
-											body: JSON.stringify({ email }),
-											headers: {
-												'Content-Type': 'application/json; charset=utf-8',
-												Accept: 'application/json; charset=utf-8',
-											},
-											mode: 'cors',
-											credentials: 'include',
-										})
-											.then(async (res) => {
-												if (res.ok) {
-													setSuccess(
-														'Please check your mailbox for a mail from notification@teamstatus.space.',
-													)
-												} else {
-													setError(await res.json())
-												}
+										CREATE(`/login/email`, { email })
+											.ok(() => {
+												setSuccess(
+													'Please check your mailbox for a mail from notification@teamstatus.space.',
+												)
 											})
-											.catch((error) => {
-												console.error(error)
-												setError(InternalError(error.message))
+											.fail((problem) => {
+												console.error(problem)
+												setError(problem)
 											})
-											.finally(() => {
+											.anyway(() => {
 												setLoading(false)
 											})
 									}}
@@ -144,43 +131,26 @@ export const Login = ({ redirect }: { redirect?: string }) => {
 										setLoading(true)
 										setError(undefined)
 										setSuccess(undefined)
-										fetch(`${API_ENDPOINT}/login/email/pin`, {
-											method: 'POST',
-											body: JSON.stringify({ email, pin }),
-											headers: {
-												'Content-Type': 'application/json; charset=utf-8',
-												Accept: 'application/json; charset=utf-8',
-											},
-											mode: 'cors',
-											credentials: 'include',
+										CREATE<Record<string, never>>(`/login/email/pin`, {
+											email,
+											pin,
 										})
-											.then(async (res) => {
-												if (res.ok) {
-													setSuccess('Logged in.')
-													setPIN('')
-													return fetch(`${API_ENDPOINT}/me`, {
-														headers: {
-															Accept: 'application/json; charset=utf-8',
-														},
-														mode: 'cors',
-														credentials: 'include',
+											.ok(() => {
+												setSuccess('Logged in.')
+												setPIN('')
+												GET<UserContext>(`/me`)
+													.ok((user) => {
+														setUser(user)
+														document.location.assign(redirect ?? '/')
 													})
-														.then(async (res) => res.json())
-														.then((user) => {
-															setUser(user)
-															document.location.assign(redirect ?? '/')
-														})
-												} else {
-													setError(await res.json())
-												}
+													.fail((problem) => {
+														console.error(error)
+														setError(problem)
+													})
 											})
-											.catch((error) => {
+											.fail((problem) => {
 												console.error(error)
-												setError(InternalError(error.message))
-											})
-
-											.finally(() => {
-												setLoading(false)
+												setError(problem)
 											})
 									}}
 								>

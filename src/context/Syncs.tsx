@@ -2,7 +2,7 @@ import { createContext, type ComponentChildren } from 'preact'
 import { useContext, useEffect, useState } from 'preact/hooks'
 import { ulid } from 'ulid'
 import { useAuth } from './Auth.js'
-import { handleResponse } from './handleResponse.js'
+import { GET, CREATE } from '../api/client.js'
 
 export type Sync = {
 	id: string
@@ -34,36 +34,27 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 
 	useEffect(() => {
 		if (user === undefined) return
-		fetch(`${API_ENDPOINT}/syncs`, {
-			headers: {
-				Accept: 'application/json; charset=utf-8',
-			},
-			mode: 'cors',
-			credentials: 'include',
+		GET<{ syncs: Sync[] }>(`/syncs`).ok(({ syncs }) => {
+			setSyncs(
+				syncs.reduce(
+					(syncs, sync) => ({
+						...syncs,
+						[sync.id]: {
+							...sync,
+							inclusiveStartDate:
+								sync.inclusiveStartDate !== undefined
+									? new Date(sync.inclusiveStartDate)
+									: undefined,
+							inclusiveEndDate:
+								sync.inclusiveEndDate !== undefined
+									? new Date(sync.inclusiveEndDate)
+									: undefined,
+						},
+					}),
+					{},
+				),
+			)
 		})
-			.then<{ syncs: Sync[] }>(async (res) => res.json())
-			.then(({ syncs }) => {
-				setSyncs(
-					syncs.reduce(
-						(syncs, sync) => ({
-							...syncs,
-							[sync.id]: {
-								...sync,
-								inclusiveStartDate:
-									sync.inclusiveStartDate !== undefined
-										? new Date(sync.inclusiveStartDate)
-										: undefined,
-								inclusiveEndDate:
-									sync.inclusiveEndDate !== undefined
-										? new Date(sync.inclusiveEndDate)
-										: undefined,
-							},
-						}),
-						{},
-					),
-				)
-			})
-			.catch(console.error)
 	}, [user])
 
 	return (
@@ -83,42 +74,25 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						...syncs,
 					}))
 
-					fetch(`${API_ENDPOINT}/sync`, {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json; charset=utf-8',
-							Accept: 'application/json; charset=utf-8',
-						},
-						mode: 'cors',
-						credentials: 'include',
-						body: JSON.stringify({
-							...newSync,
-							inclusiveStartDate:
-								newSync.inclusiveStartDate !== undefined
-									? newSync.inclusiveStartDate.toISOString()
-									: undefined,
-							inclusiveEndDate:
-								newSync.inclusiveEndDate !== undefined
-									? newSync.inclusiveEndDate.toISOString()
-									: undefined,
-						}),
+					CREATE(`/sync`, {
+						...newSync,
+						inclusiveStartDate:
+							newSync.inclusiveStartDate !== undefined
+								? newSync.inclusiveStartDate.toISOString()
+								: undefined,
+						inclusiveEndDate:
+							newSync.inclusiveEndDate !== undefined
+								? newSync.inclusiveEndDate.toISOString()
+								: undefined,
+					}).ok(() => {
+						setSyncs((syncs) => ({
+							...syncs,
+							[id]: {
+								...(syncs[id] as Sync),
+								persisted: true,
+							},
+						}))
 					})
-						.then(handleResponse)
-						.then((res) => {
-							if ('error' in res) {
-								console.error(res)
-							} else {
-								setSyncs((syncs) => ({
-									...syncs,
-									[id]: {
-										...(syncs[id] as Sync),
-										persisted: true,
-									},
-								}))
-							}
-						})
-						.catch(console.error)
-
 					return { id }
 				},
 				syncs,

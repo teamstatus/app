@@ -26,6 +26,7 @@ import { LoginRedirect } from './views/LoginRedirect.js'
 import { Reactions } from './views/Reactions.js'
 import { Organizations } from './views/Organizations.js'
 import { Organization } from './views/Organization.js'
+import { Status } from './views/Status.js'
 
 export const App = () => (
 	<AuthProvider>
@@ -62,10 +63,17 @@ export const Routing = () => {
 					<Route path="/organizations" component={Organizations} />
 					<Route path="/organization/:id" component={Organization} />
 					<Route path="/project/:id" component={Project} />
+					<Route
+						path="/project/:projectId/status/:statusId"
+						component={Status}
+					/>
+					<Route
+						path="/project/:projectId/status/:statusId/edit"
+						component={EditStatus}
+					/>
 					<Route path="/project/:id/compose" component={ComposeStatus} />
 					<Route path="/project/:id/invite" component={InviteToProject} />
 					<Route path="/user" component={User} />
-					<Route path="/status/:id/edit" component={EditStatus} />
 					<Route path="/reactions" component={Reactions} />
 				</Router>
 				<Footer />

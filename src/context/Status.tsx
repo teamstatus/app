@@ -2,11 +2,15 @@ import { createContext, type ComponentChildren } from 'preact'
 import { useContext, useEffect, useState } from 'preact/hooks'
 import { ulid } from 'ulid'
 import { useAuth } from './Auth.js'
-import { InternalError } from './InternalError.js'
-import { type ProblemDetail } from './ProblemDetail.js'
 import { useSettings } from './Settings.js'
-import { handleResponse } from './handleResponse.js'
-import { throttle } from '../api/throttle.js'
+import {
+	CREATE,
+	DELETE,
+	GET,
+	UPDATE,
+	type RequestResult,
+} from '../api/client.js'
+import { notReady } from '../api/notReady.js'
 
 // Reactions can have special roles
 export enum ReactionRole {
@@ -42,12 +46,12 @@ export type Status = {
 }
 
 export type StatusContext = {
-	projectStatus: (projectId: string) => Status[]
+	projectStatus: Record<string, Status[]>
 	fetchProjectStatus: (
 		projectId: string,
 		startDate?: Date,
 		endDate?: Date,
-	) => Promise<{ status: Status[] } | { error: ProblemDetail }>
+	) => RequestResult<{ status: Status[] }>
 	addProjectStatus: (
 		projectId: string,
 		message: string,
@@ -65,19 +69,18 @@ export type StatusContext = {
 		status: Status,
 		reaction: PersistedReaction,
 	) => { error: string } | { success: true }
-	statusById: (id: string) => Status | undefined
+	// FIXME: implement
+	// statusById: (id: string) => Status | undefined
 }
 
 export const StatusContext = createContext<StatusContext>({
-	projectStatus: () => [],
+	projectStatus: {},
 	addProjectStatus: () => ({ error: 'Not ready.' }),
 	updateStatus: () => ({ error: 'Not ready.' }),
 	deleteStatus: () => ({ error: 'Not ready.' }),
 	addReaction: () => ({ error: 'Not ready.' }),
 	deleteReaction: () => ({ error: 'Not ready.' }),
-	statusById: () => undefined,
-	fetchProjectStatus: async () =>
-		Promise.resolve({ error: InternalError('Not ready.') }),
+	fetchProjectStatus: () => notReady as RequestResult<{ status: Status[] }>,
 })
 
 export const Provider = ({ children }: { children: ComponentChildren }) => {
@@ -88,40 +91,30 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 	useEffect(() => {
 		Promise.all(
 			visibleProjects.map(
-				throttle(async ({ project: { id: projectId } }) =>
-					fetch(
-						`${API_ENDPOINT}/project/${encodeURIComponent(projectId)}/status`,
-						{
-							headers: {
-								Accept: 'application/json; charset=utf-8',
-							},
-							mode: 'cors',
-							credentials: 'include',
-						},
-					)
-						.then<{ status: Status[] }>(async (res) => res.json())
-						.then(({ status }) => ({ projectId, status })),
+				async ({ project: { id: projectId } }) =>
+					new Promise<{ projectId: string; status: Status[] }>((resolve) =>
+						GET<{ status: Status[] }>(
+							`/project/${encodeURIComponent(projectId)}/status`,
+						).ok(({ status }) => resolve({ status, projectId })),
+					),
+			),
+		).then((projectStatus) =>
+			setStatus(
+				projectStatus.reduce(
+					(allStatus, { projectId, status }) => ({
+						...allStatus,
+						[projectId]: status,
+					}),
+					{},
 				),
 			),
 		)
-			.then((projectStatus) =>
-				setStatus(
-					projectStatus.reduce(
-						(allStatus, { projectId, status }) => ({
-							...allStatus,
-							[projectId]: status,
-						}),
-						{},
-					),
-				),
-			)
-			.catch(console.error)
 	}, [visibleProjects])
 
 	return (
 		<StatusContext.Provider
 			value={{
-				projectStatus: (projectId) => status[projectId] ?? [],
+				projectStatus: status,
 				addProjectStatus: (projectId, message) => {
 					const author = user?.id
 					if (author === undefined) return { error: 'Not authorized!' }
@@ -139,47 +132,31 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						...status,
 						[projectId]: [newStatus, ...(status[projectId] ?? [])],
 					}))
-					fetch(
-						`${API_ENDPOINT}/project/${encodeURIComponent(projectId)}/status`,
-						{
-							method: 'POST',
-							headers: {
-								'Content-Type': 'application/json; charset=utf-8',
-								Accept: 'application/json; charset=utf-8',
-							},
-							mode: 'cors',
-							credentials: 'include',
-							body: JSON.stringify({ id, message }),
-						},
-					)
-						.then(handleResponse)
-						.then((res) => {
-							if ('error' in res) {
-								console.error(res)
-							} else {
-								setStatus((status) => {
-									const projectStatus = status[projectId] ?? []
-									const persistedStatus = projectStatus.find(
-										({ id: statusId }) => id === statusId,
-									)
+					CREATE(`/project/${encodeURIComponent(projectId)}/status`, {
+						id,
+						message,
+					}).ok(() => {
+						setStatus((status) => {
+							const projectStatus = status[projectId] ?? []
+							const persistedStatus = projectStatus.find(
+								({ id: statusId }) => id === statusId,
+							)
 
-									let updatedStatus = projectStatus.filter(
-										({ id: statusId }) => statusId !== id,
-									)
-									if (persistedStatus !== undefined) {
-										updatedStatus = [
-											{ ...persistedStatus, persisted: true },
-											...updatedStatus,
-										]
-									}
-									return {
-										...status,
-										[projectId]: updatedStatus,
-									}
-								})
+							let updatedStatus = projectStatus.filter(
+								({ id: statusId }) => statusId !== id,
+							)
+							if (persistedStatus !== undefined) {
+								updatedStatus = [
+									{ ...persistedStatus, persisted: true },
+									...updatedStatus,
+								]
+							}
+							return {
+								...status,
+								[projectId]: updatedStatus,
 							}
 						})
-						.catch(console.error)
+					})
 
 					return { id }
 				},
@@ -196,17 +173,10 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						).filter(({ id }) => id !== statusToDelete.id),
 					}))
 
-					fetch(
-						`${API_ENDPOINT}/status/${encodeURIComponent(statusToDelete.id)}`,
-						{
-							method: 'DELETE',
-							headers: {
-								Accept: 'application/json; charset=utf-8',
-							},
-							mode: 'cors',
-							credentials: 'include',
-						},
-					).catch(console.error)
+					DELETE(
+						`/status/${encodeURIComponent(statusToDelete.id)}`,
+						exists.version,
+					)
 
 					return { success: true }
 				},
@@ -244,48 +214,28 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						}
 					})
 					if (added) {
-						fetch(
-							`${API_ENDPOINT}/status/${encodeURIComponent(
-								status.id,
-							)}/reaction`,
-							{
-								method: 'POST',
-								headers: {
-									Accept: 'application/json; charset=utf-8',
-								},
-								mode: 'cors',
-								credentials: 'include',
-								body: JSON.stringify({
-									id,
-									...reaction,
-								}),
-							},
-						)
-							.then(handleResponse)
-							.then((res) => {
-								if ('error' in res) {
-									console.error(res)
-								} else {
-									setStatus((s) => ({
-										...s,
-										[status.project]: (s[status.project] ?? []).map((st) => {
-											if (st.id !== status.id) return st
-											return {
-												...st,
-												reactions: st.reactions.map((reaction) => {
-													if (reaction.id === id)
-														return {
-															...reaction,
-															persisted: true,
-														}
-													return reaction
-												}),
-											}
+						CREATE(`/status/${encodeURIComponent(status.id)}/reaction`, {
+							id,
+							...reaction,
+						}).ok(() => {
+							setStatus((s) => ({
+								...s,
+								[status.project]: (s[status.project] ?? []).map((st) => {
+									if (st.id !== status.id) return st
+									return {
+										...st,
+										reactions: st.reactions.map((reaction) => {
+											if (reaction.id === id)
+												return {
+													...reaction,
+													persisted: true,
+												}
+											return reaction
 										}),
-									}))
-								}
-							})
-							.catch(console.error)
+									}
+								}),
+							}))
+						})
 					}
 					return { id }
 				},
@@ -314,24 +264,10 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						}
 					})
 					if (deleted) {
-						fetch(
-							`${API_ENDPOINT}/reaction/${encodeURIComponent(reaction.id)}`,
-							{
-								method: 'DELETE',
-								headers: {
-									Accept: 'application/json; charset=utf-8',
-								},
-								mode: 'cors',
-								credentials: 'include',
-							},
-						).catch(console.error)
+						DELETE(`/reaction/${encodeURIComponent(reaction.id)}`, 1)
 					}
 					return { success: true }
 				},
-				statusById: (id) =>
-					Object.values(status)
-						.flat()
-						.find((status) => status.id === id),
 				updateStatus: (status, message) => {
 					setStatus((allStatus) => {
 						let updatedStatus = (allStatus[status.project] ?? [])?.find(
@@ -352,54 +288,37 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 							[status.project]: [updatedStatus, ...remainingStatus],
 						}
 					})
-					fetch(`${API_ENDPOINT}/status/${status.id}`, {
-						method: 'PATCH',
-						headers: {
-							'Content-Type': 'application/json; charset=utf-8',
-							Accept: 'application/json; charset=utf-8',
-							'if-match': status.version.toString(),
-						},
-						mode: 'cors',
-						credentials: 'include',
-						body: JSON.stringify({ message }),
-					})
-						.then(handleResponse)
-						.then((res) => {
-							if ('error' in res) {
-								console.error(res)
-							} else {
-								setStatus((allStatus) => {
-									const projectStatus = allStatus[status.project] ?? []
-									const persistedStatus = projectStatus.find(
-										({ id: statusId }) => status.id === statusId,
-									)
+					UPDATE(`/status/${status.id}`, { message }, status.version).ok(() => {
+						setStatus((allStatus) => {
+							const projectStatus = allStatus[status.project] ?? []
+							const persistedStatus = projectStatus.find(
+								({ id: statusId }) => status.id === statusId,
+							)
 
-									let updatedStatus = projectStatus.filter(
-										({ id: statusId }) => statusId !== status.id,
-									)
-									if (persistedStatus !== undefined) {
-										updatedStatus = [
-											{
-												...persistedStatus,
-												persisted: true,
-												version: persistedStatus.version + 1,
-											},
-											...updatedStatus,
-										]
-									}
-									return {
-										...allStatus,
-										[status.project]: updatedStatus,
-									}
-								})
+							let updatedStatus = projectStatus.filter(
+								({ id: statusId }) => statusId !== status.id,
+							)
+							if (persistedStatus !== undefined) {
+								updatedStatus = [
+									{
+										...persistedStatus,
+										persisted: true,
+										version: persistedStatus.version + 1,
+									},
+									...updatedStatus,
+								]
+							}
+							return {
+								...allStatus,
+								[status.project]: updatedStatus,
 							}
 						})
-						.catch(console.error)
+					})
 
 					return { version: status.version + 1 }
 				},
-				fetchProjectStatus: throttle(async (id, startDate, endDate) => {
-					const url = `${API_ENDPOINT}/project/${encodeURIComponent(id)}/status`
+				fetchProjectStatus: (id, startDate, endDate) => {
+					const url = `/project/${encodeURIComponent(id)}/status`
 					const params = new URLSearchParams()
 					if (startDate !== undefined) {
 						params.set('inclusiveStartDate', startDate.toISOString())
@@ -407,24 +326,8 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 					if (endDate !== undefined) {
 						params.set('inclusiveEndDate', endDate.toISOString())
 					}
-					return fetch(`${url}?${params.toString()}`, {
-						method: 'GET',
-						headers: {
-							'Content-Type': 'application/json; charset=utf-8',
-							Accept: 'application/json; charset=utf-8',
-						},
-						mode: 'cors',
-						credentials: 'include',
-					})
-						.then(handleResponse)
-						.then(async (res) => {
-							if ('error' in res) return res
-							if (res.result === null)
-								return { error: InternalError('No response..') }
-							return { status: res.result.status as Status[] }
-						})
-						.catch((error) => ({ error: InternalError(error.message) }))
-				}),
+					return GET<{ status: Status[] }>(`${url}?${params.toString()}`)
+				},
 			}}
 		>
 			{children}

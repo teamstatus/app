@@ -28,10 +28,10 @@ export const Organizations = () => {
 									</p>
 								</>
 							)}
-							{organizations.length > 0 && (
-								<ul class="list-group list-group-flush">
-									{organizations.map((organization) => (
-										<li class="list-group-item d-flex justify-content-between">
+							{organizations.length > 0 &&
+								organizations.map((organization) => (
+									<>
+										<div class="my-2 d-flex justify-content-between">
 											<a
 												href={`/organization/${encodeURIComponent(
 													organization.id,
@@ -40,10 +40,10 @@ export const Organizations = () => {
 												{organization.name ?? organization.id}
 											</a>
 											<span style={{ opacity: 0.75 }}>{organization.id}</span>
-										</li>
-									))}
-								</ul>
-							)}
+										</div>
+										<hr />
+									</>
+								))}
 						</section>
 					</div>
 				</div>

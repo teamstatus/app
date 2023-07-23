@@ -34,7 +34,7 @@ export const Project = ({
 			</>
 		)
 	}
-	const status = projectStatus(project.id)
+	const status = projectStatus[project.id] ?? []
 	return (
 		<>
 			<ProjectHeader project={project} />

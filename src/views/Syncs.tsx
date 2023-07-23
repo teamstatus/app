@@ -29,25 +29,23 @@ export const Syncs = () => {
 									</p>
 								</>
 							)}
-							{syncItems.length > 0 && (
-								<ul class="list-group list-group-flush">
-									{syncItems.map((sync) => {
-										const ts = new Date(decodeTime(sync.id))
-										return (
-											<li class="list-group-item">
+							{syncItems.length > 0 &&
+								syncItems.map((sync) => {
+									const ts = new Date(decodeTime(sync.id))
+									return (
+										<>
+											<div class="my-2 d-flex justify-content-between align-items-center">
 												<a href={`/sync/${sync.id}`}>{sync.title}</a>
-												<small class="me-1 text-muted ms-1 text-nowrap">
-													(
+												<small class="text-muted ms-1 text-nowrap">
 													<time dateTime={ts.toISOString()}>
 														{ts.toISOString().slice(0, 10)}
 													</time>
-													)
 												</small>
-											</li>
-										)
-									})}
-								</ul>
-							)}
+											</div>
+											<hr />
+										</>
+									)
+								})}
 						</section>
 					</div>
 				</div>

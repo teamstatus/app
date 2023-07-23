@@ -24,28 +24,45 @@ export const Status = ({ status }: { status: TStatus }) => {
 	const hasOperations = canEdit
 	return (
 		<>
+			<div>
+				<small class="text-muted d-flex me-2">
+					<span class="text-nowrap me-1 d-flex align-items-center">
+						{status.author}
+					</span>
+					<span>&middot;</span>
+					<span class="ms-1 text-nowrap d-flex align-items-center">
+						<a
+							href={`/status/${encodeURIComponent(status.id)}`}
+							class="text-muted"
+						>
+							<Ago date={new Date(decodeTime(status.id))} />
+						</a>
+						{status.version > 1 && (
+							<>
+								<EditIcon size={20} class={'ms-1'} /> {status.version}
+							</>
+						)}
+					</span>
+				</small>
+			</div>
 			<Markdown markdown={status.message} />
-			{!reactionsVisible && (
-				<div class="d-flex align-items-center justify-content-between mb-1 flex-wrap">
-					<small class="text-muted d-flex me-2">
-						<span class="text-nowrap me-1 d-flex align-items-center">
-							{status.author}
-						</span>
-						<span>&middot;</span>
-						<span class="ms-1 text-nowrap d-flex align-items-center">
-							<a
-								href={`/status/${encodeURIComponent(status.id)}`}
-								class="text-muted"
-							>
-								<Ago date={new Date(decodeTime(status.id))} />
-							</a>
-							{status.version > 1 && (
-								<>
-									<EditIcon size={20} class={'ms-1'} /> {status.version}
-								</>
-							)}
-						</span>
-					</small>
+			<div class="d-flex align-items-center justify-content-between mb-2 flex-wrap">
+				<div>
+					{status.reactions.map((reaction) => {
+						const isAuthor = reaction.author === userId
+						return (
+							<Reaction
+								reaction={reaction}
+								onClick={() => {
+									if (isAuthor) {
+										deleteReaction(status, reaction)
+									}
+								}}
+							/>
+						)
+					})}
+				</div>
+				{!reactionsVisible && (
 					<div class="text-nowrap">
 						{status.persisted === false && (
 							<PersistencePendingIcon class="me-1" />
@@ -74,7 +91,9 @@ export const Status = ({ status }: { status: TStatus }) => {
 										</button>
 										<a
 											class="btn btn-sm btn-outline-secondary me-1"
-											href={`/status/${encodeURIComponent(status.id)}/edit`}
+											href={`/project/${encodeURIComponent(
+												status.project,
+											)}/status/${encodeURIComponent(status.id)}/edit`}
 										>
 											<EditIcon size={18} />
 										</a>
@@ -99,41 +118,24 @@ export const Status = ({ status }: { status: TStatus }) => {
 							</button>
 						)}
 					</div>
-				</div>
-			)}
-			{reactionsVisible && (
-				<div class="d-flex align-items-center justify-content-end">
-					<SelectReaction
-						onReaction={(reaction) => {
-							addReaction(status, reaction)
-						}}
-					/>
-					<button
-						type="button"
-						class="btn btn-sm btn-light mb-1"
-						onClick={() => showReactions(false)}
-					>
-						<CollapseRightIcon size={18} />
-					</button>
-				</div>
-			)}
-			{status.reactions.length > 0 && (
-				<div>
-					{status.reactions.map((reaction) => {
-						const isAuthor = reaction.author === userId
-						return (
-							<Reaction
-								reaction={reaction}
-								onClick={() => {
-									if (isAuthor) {
-										deleteReaction(status, reaction)
-									}
-								}}
-							/>
-						)
-					})}
-				</div>
-			)}
+				)}
+				{reactionsVisible && (
+					<div class="d-flex align-items-center justify-content-end">
+						<SelectReaction
+							onReaction={(reaction) => {
+								addReaction(status, reaction)
+							}}
+						/>
+						<button
+							type="button"
+							class="btn btn-sm btn-light mb-1"
+							onClick={() => showReactions(false)}
+						>
+							<CollapseRightIcon size={18} />
+						</button>
+					</div>
+				)}
+			</div>
 		</>
 	)
 }

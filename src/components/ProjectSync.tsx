@@ -55,39 +55,35 @@ export const ProjectSync = ({
 			{questions.length > 0 && (
 				<section>
 					<h3>Questions ({questions.length})</h3>
-					<div class="list-group list-group-flush">
-						{questions.map((status, i) => {
-							const users = status.reactions
-								.filter(isRole(ReactionRole.QUESTION))
-								.map(({ author }) => author)
-							return (
-								<div class="list-group-item">
-									<div>
-										<QuestionIcon />{' '}
-										{users.map((user) => (
-											<span>{user}</span>
-										))}
-									</div>
-									<StatusSync status={status} />
-									{i < questions.length - 1 && <hr />}
+					{questions.map((status, i) => {
+						const users = status.reactions
+							.filter(isRole(ReactionRole.QUESTION))
+							.map(({ author }) => author)
+						return (
+							<div>
+								<div>
+									<QuestionIcon />{' '}
+									{users.map((user) => (
+										<span>{user}</span>
+									))}
 								</div>
-							)
-						})}
-					</div>
+								<StatusSync status={status} />
+								{i < questions.length - 1 && <hr />}
+							</div>
+						)
+					})}
 				</section>
 			)}
 			{significant.length > 0 && (
 				<>
 					<section class="mt-3 mb-3">
 						<h3>Significant updates</h3>
-						<div class="list-group list-group-flush">
-							{significant.map((status, i) => (
-								<div class="list-group-item">
-									<StatusSync status={status} />
-									{i < significant.length - 1 && <hr />}
-								</div>
-							))}
-						</div>
+						{significant.map((status, i) => (
+							<div>
+								<StatusSync status={status} />
+								{i < significant.length - 1 && <hr />}
+							</div>
+						))}
 					</section>
 					{normal.length > 0 && <h3>Remaining updates</h3>}
 				</>

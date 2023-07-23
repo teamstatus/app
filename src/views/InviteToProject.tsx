@@ -109,16 +109,14 @@ export const InviteToProject = ({
 									setInviting(true)
 									setSuccess(undefined)
 									inviteToProject(id, userId, role)
-										.then((res) => {
-											setInviting(false)
-											if ('error' in res) {
-												setError(res.error)
-											} else {
-												setSuccess(`${userId} invited successfully.`)
-												setInvitee('')
-											}
+										.fail(setError)
+										.ok(() => {
+											setSuccess(`${userId} invited successfully.`)
+											setInvitee('')
 										})
-										.catch(setError)
+										.anyway(() => {
+											setInviting(false)
+										})
 								}}
 							>
 								<SubmitIcon />

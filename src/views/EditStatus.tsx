@@ -3,56 +3,27 @@ import { route } from 'preact-router'
 import { useState } from 'preact/hooks'
 import { BackIcon, SubmitIcon } from '../components/Icons.js'
 import { ProjectHeader } from '../components/ProjectHeader.js'
-import { useProjects } from '../context/Projects.js'
 import { useStatus, type Status } from '../context/Status.js'
 import { Main } from '../components/Main.js'
 import { ProjectMenu } from '../components/ProjectMenu.js'
+import { WithStatus } from './WithStatus.js'
 
 export const EditStatus = ({
-	id,
+	statusId,
+	projectId,
 }: {
-	id: string // e.g. '01H1XVCVQXR8619Z4NVVCFD20F'
-}) => {
-	const { statusById } = useStatus()
-	const { projects } = useProjects()
-
-	const status = statusById(id)
-
-	if (status === undefined) {
-		return (
+	statusId: string // e.g. '01H1XVCVQXR8619Z4NVVCFD20F'
+	projectId: string // e.g. '$acme#project'
+}) => (
+	<WithStatus statusId={statusId} projectId={projectId}>
+		{({ status, project }) => (
 			<>
-				<Main class="container">
-					<div class="alert alert-danger" role="alert">
-						Status not found: {id}
-					</div>
-				</Main>
-				<ProjectMenu />
+				<ProjectHeader project={project} />
+				<EditStatusForm status={status} />
 			</>
-		)
-	}
-
-	const project = projects[status.project]
-
-	if (project === undefined) {
-		return (
-			<>
-				<Main class="container">
-					<div class="alert alert-danger" role="alert">
-						Project not found: {status.project}
-					</div>
-				</Main>
-				<ProjectMenu />
-			</>
-		)
-	}
-
-	return (
-		<>
-			<ProjectHeader project={project} />
-			<EditStatusForm status={status} />
-		</>
-	)
-}
+		)}
+	</WithStatus>
+)
 
 const EditStatusForm = ({ status }: { status: Status }) => {
 	const { updateStatus } = useStatus()
