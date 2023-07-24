@@ -1,8 +1,8 @@
 import cx from 'classnames'
 import { route } from 'preact-router'
 import { useState } from 'preact/hooks'
-import { type Project } from '../context/Projects.js'
-import { useSyncs } from '../context/Syncs.js'
+import { type Project } from '#context/Projects.js'
+import { useSyncs } from '#context/Syncs.js'
 import { ApplyIcon, BackIcon, NextIcon } from './Icons.js'
 
 export const SyncSettings = ({

@@ -1,13 +1,9 @@
 import { format } from 'date-fns'
 import { decodeTime } from 'ulid'
-import { type Sync } from '../context/Syncs.js'
-import {
-	BackIcon,
-	CalendarIcon,
-	ClockIcon,
-	EndDateIcon,
-	StartDateIcon,
-} from './Icons.js'
+import { type Sync } from '#context/Syncs.js'
+import { CalendarIcon, ClockIcon, EndDateIcon, StartDateIcon } from './Icons.js'
+import { ShortDate } from './ShortDate.js'
+import { Author } from './Author.js'
 
 const FormattedDate = ({ date }: { date: Date }) => (
 	<time dateTime={date.toISOString()} class="d-flex align-items-center">
@@ -21,39 +17,25 @@ const FormattedDate = ({ date }: { date: Date }) => (
 
 export const SyncTitle = ({ sync }: { sync: Sync }) => (
 	<>
-		<nav class="d-flex align-items-center">
-			<a href="/syncs">
-				<BackIcon /> back
-			</a>
-		</nav>
+		<p class="text-muted mb-0">
+			<small>
+				<ShortDate date={new Date(decodeTime(sync.id))} />
+			</small>
+			<small class="mx-1">&middot;</small>
+			<Author id={sync.owner} />
+		</p>
 		<h1>{sync.title}</h1>
-		<dl>
-			<dt>Created</dt>
-			<dd>
-				<FormattedDate date={new Date(decodeTime(sync.id))} />
-			</dd>
-			{sync.inclusiveStartDate !== undefined && (
-				<>
-					<dt>
-						Status including from <StartDateIcon class="ms-1 me-1" size={20} />
-					</dt>
-					<dd>
-						<FormattedDate date={sync.inclusiveStartDate} />
-					</dd>
-				</>
-			)}
-			{sync.inclusiveEndDate !== undefined && (
-				<>
-					<dt>
-						Status including until <EndDateIcon class="ms-1 me-1" size={20} />
-					</dt>
-					<dd>
-						<time dateTime={sync.inclusiveEndDate.toISOString()}>
-							<FormattedDate date={sync.inclusiveEndDate} />
-						</time>
-					</dd>
-				</>
-			)}
-		</dl>
+		{sync.inclusiveStartDate !== undefined && (
+			<p class="d-flex align-items-center mb-0">
+				<StartDateIcon class="ms-1 me-1" size={20} />
+				<FormattedDate date={sync.inclusiveStartDate} />
+			</p>
+		)}
+		{sync.inclusiveEndDate !== undefined && (
+			<p class="d-flex align-items-center mb-0">
+				<EndDateIcon class="ms-1 me-1" size={20} />
+				<FormattedDate date={sync.inclusiveEndDate} />
+			</p>
+		)}
 	</>
 )

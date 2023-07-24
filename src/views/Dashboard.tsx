@@ -1,10 +1,10 @@
 import { useEffect } from 'preact/hooks'
-import { SelectID } from '../components/SelectID.js'
-import { useAuth } from '../context/Auth.js'
-import { LogoHeader } from '../components/LogoHeader.js'
+import { SelectID } from '#components/SelectID.js'
+import { useAuth } from '#context/Auth.js'
+import { LogoHeader } from '#components/LogoHeader.js'
 import { route } from 'preact-router'
-import { ProjectMenu } from '../components/ProjectMenu.js'
-import { Main } from '../components/Main.js'
+import { ProjectMenu } from '#components/ProjectMenu.js'
+import { Main } from '#components/Main.js'
 
 export const Dashboard = ({ redirect }: { redirect?: string }) => {
 	const { user } = useAuth()
@@ -21,7 +21,7 @@ export const Dashboard = ({ redirect }: { redirect?: string }) => {
 			<Main class="container">
 				<section>
 					<div class="row mt-4">
-						<div class="col-12 col-md-6 offset-md-3">
+						<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
 							<h1>
 								Welcome{' '}
 								<strong>{user?.id ?? user?.email ?? 'anonymous'}</strong>!
@@ -44,7 +44,7 @@ export const Dashboard = ({ redirect }: { redirect?: string }) => {
 				{user?.id === undefined && (
 					<section>
 						<div class="row mt-4">
-							<div class="col-12 col-md-6 offset-md-3">
+							<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
 								<SelectID />
 							</div>
 						</div>

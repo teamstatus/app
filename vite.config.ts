@@ -38,6 +38,17 @@ export default defineConfig({
 		outDir: './build',
 		sourcemap: true,
 	},
+	resolve: {
+		alias: [
+			{ find: '#api/', replacement: '/src/api/' },
+			{ find: '#components/', replacement: '/src/components/' },
+			{ find: '#context/', replacement: '/src/context/' },
+			{ find: '#navigation/', replacement: '/src/navigation/' },
+			{ find: '#proto/', replacement: '/src/proto/' },
+			{ find: '#util/', replacement: '/src/util/' },
+			{ find: '#views/', replacement: '/src/views/' },
+		],
+	},
 	esbuild: {
 		logOverride: { 'this-is-undefined-in-esm': 'silent' },
 	},

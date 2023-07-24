@@ -1,4 +1,4 @@
-import { parseProjectId } from '../proto/ids.js'
+import { parseProjectId } from '#proto/ids.js'
 
 export const ProjectId = ({ id }: { id: string }) => {
 	const { organization, project: projectId } = parseProjectId(id)

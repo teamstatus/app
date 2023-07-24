@@ -3,14 +3,8 @@ import { useContext, useEffect, useState } from 'preact/hooks'
 import { ulid } from 'ulid'
 import { useAuth } from './Auth.js'
 import { useSettings } from './Settings.js'
-import {
-	CREATE,
-	DELETE,
-	GET,
-	UPDATE,
-	type RequestResult,
-} from '../api/client.js'
-import { notReady } from '../api/notReady.js'
+import { CREATE, DELETE, GET, UPDATE, type RequestResult } from '#api/client.js'
+import { notReady } from '#api/notReady.js'
 
 // Reactions can have special roles
 export enum ReactionRole {
@@ -69,8 +63,10 @@ export type StatusContext = {
 		status: Status,
 		reaction: PersistedReaction,
 	) => { error: string } | { success: true }
-	// FIXME: implement
-	// statusById: (id: string) => Status | undefined
+	fetchProjectStatusById: (
+		projectId: string,
+		statusId: string,
+	) => ReturnType<typeof GET<{ status: Status }>>
 }
 
 export const StatusContext = createContext<StatusContext>({
@@ -80,7 +76,8 @@ export const StatusContext = createContext<StatusContext>({
 	deleteStatus: () => ({ error: 'Not ready.' }),
 	addReaction: () => ({ error: 'Not ready.' }),
 	deleteReaction: () => ({ error: 'Not ready.' }),
-	fetchProjectStatus: () => notReady as RequestResult<{ status: Status[] }>,
+	fetchProjectStatus: notReady<{ status: Status[] }>,
+	fetchProjectStatusById: notReady<{ status: Status }>,
 })
 
 export const Provider = ({ children }: { children: ComponentChildren }) => {
@@ -98,17 +95,19 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						).ok(({ status }) => resolve({ status, projectId })),
 					),
 			),
-		).then((projectStatus) =>
-			setStatus(
-				projectStatus.reduce(
-					(allStatus, { projectId, status }) => ({
-						...allStatus,
-						[projectId]: status,
-					}),
-					{},
-				),
-			),
 		)
+			.then((projectStatus) =>
+				setStatus(
+					projectStatus.reduce(
+						(allStatus, { projectId, status }) => ({
+							...allStatus,
+							[projectId]: status,
+						}),
+						{},
+					),
+				),
+			)
+			.catch(console.error)
 	}, [visibleProjects])
 
 	return (
@@ -328,6 +327,12 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 					}
 					return GET<{ status: Status[] }>(`${url}?${params.toString()}`)
 				},
+				fetchProjectStatusById: (projectId, statusId) =>
+					GET<{ status: Status }>(
+						`/project/${encodeURIComponent(
+							projectId,
+						)}/status/${encodeURIComponent(statusId)}`,
+					),
 			}}
 		>
 			{children}

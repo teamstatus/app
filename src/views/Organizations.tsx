@@ -1,8 +1,8 @@
-import { LogoHeader } from '../components/LogoHeader.js'
-import { ProjectMenu } from '../components/ProjectMenu.js'
-import { Main } from '../components/Main.js'
-import { useProjects } from '../context/Projects.js'
-import { OrganizationIcon } from '../components/Icons.js'
+import { LogoHeader } from '#components/LogoHeader.js'
+import { ProjectMenu } from '#components/ProjectMenu.js'
+import { Main } from '#components/Main.js'
+import { useProjects } from '#context/Projects.js'
+import { OrganizationIcon } from '#components/Icons.js'
 
 export const Organizations = () => {
 	const { organizations } = useProjects()
@@ -12,7 +12,7 @@ export const Organizations = () => {
 			<LogoHeader />
 			<Main class="container">
 				<div class="row mt-3">
-					<div class="col-12 col-md-6 offset-md-3">
+					<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
 						<section>
 							<div class="d-flex justify-content-between align-items-center">
 								<h1>Organizations</h1>

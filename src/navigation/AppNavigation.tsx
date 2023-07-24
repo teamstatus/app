@@ -1,4 +1,4 @@
-import { useAuth } from '../context/Auth.js'
+import { useAuth } from '#context/Auth.js'
 import {
 	HelpIcon,
 	LogoutIcon,
@@ -8,7 +8,7 @@ import {
 	UserIcon,
 	HomeIcon,
 	OrganizationIcon,
-} from '../components/Icons.js'
+} from '#components/Icons.js'
 
 export const AppNavigation = ({ onClick }: { onClick?: () => unknown }) => {
 	const { user, logout } = useAuth()

@@ -1,5 +1,5 @@
-import { LogoHeader } from '../components/LogoHeader.js'
-import { ReactionsHelp } from '../components/ReactionsHelp.js'
+import { LogoHeader } from '#components/LogoHeader.js'
+import { ReactionsHelp } from '#components/ReactionsHelp.js'
 
 export const Reactions = () => (
 	<>

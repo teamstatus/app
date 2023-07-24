@@ -1,6 +1,6 @@
 import { createContext, type ComponentChildren } from 'preact'
 import { useContext, useEffect, useState } from 'preact/hooks'
-import { CREATE, GET } from '../api/client'
+import { CREATE, GET } from '#api/client.js'
 
 export type UserContext = {
 	email: string

@@ -1,17 +1,25 @@
 import { useEffect, useState } from 'preact/hooks'
-import { ProjectSync } from '../components/ProjectSync.js'
-import { SyncTitle } from '../components/SyncTitle.js'
-import { useProjects, type Project } from '../context/Projects.js'
-import { useSyncs, type Sync as TSync } from '../context/Syncs.js'
-import { LogoHeader } from '../components/LogoHeader.js'
-import { type ProblemDetail } from '../context/ProblemDetail.js'
-import { ReactionRole, type Status } from '../context/Status.js'
-import { ProjectMenu } from '../components/ProjectMenu.js'
-import { Main } from '../components/Main.js'
+import { ProjectSync } from '#components/ProjectSync.js'
+import { SyncTitle } from '#components/SyncTitle.js'
+import { useProjects, type Project } from '#context/Projects.js'
+import { useSyncs, type Sync as TSync } from '#context/Syncs.js'
+import { LogoHeader } from '#components/LogoHeader.js'
+import { type ProblemDetail } from '#context/ProblemDetail.js'
+import { ReactionRole, type Status } from '#context/Status.js'
+import { ProjectMenu } from '#components/ProjectMenu.js'
+import { Main } from '#components/Main.js'
 import { decodeTime } from 'ulid'
-import { GET } from '../api/client.js'
+import { GET } from '#api/client.js'
+import { StatusSync } from '#components/StatusSync.js'
+import { Author } from '#components/Author.js'
+import { QuestionIcon } from '#components/Icons.js'
+import { logoColors } from '#components/Colorpicker.js'
+import Color from 'color'
 
 type ProjectStatusMap = Record<string, Status[]>
+
+const isStatus = (item: Status | undefined): item is Status =>
+	item !== undefined
 
 export const Sync = ({ id }: { id: string }) => {
 	const { syncs } = useSyncs()
@@ -65,7 +73,7 @@ export const Sync = ({ id }: { id: string }) => {
 				<LogoHeader />
 				<Main class="container">
 					<div class="row mt-3">
-						<div class="col">
+						<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
 							<div class="alert alert-danger" role="alert">
 								{problem.title} ({problem.status})
 								{problem.detail !== undefined && (
@@ -89,7 +97,7 @@ export const Sync = ({ id }: { id: string }) => {
 				<LogoHeader />
 				<Main class="container">
 					<div class="row mt-3">
-						<div class="col">
+						<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
 							<div class="alert alert-danger" role="alert">
 								Sync not found: {id}
 							</div>
@@ -107,29 +115,82 @@ export const Sync = ({ id }: { id: string }) => {
 		.sort(byNumberOfSignificant(status))
 		.sort(byNumberOfQuestions(status))
 
+	const statusWithQuestions: Status[] = projectsInSync
+		.map(({ id }) => status[id])
+		.flat()
+		.filter(isStatus)
+		.filter(
+			({ reactions }) =>
+				(reactions ?? []).find(
+					(r) => 'role' in r && r.role === ReactionRole.QUESTION,
+				) !== undefined,
+		)
+
+	console.log(statusWithQuestions)
+
 	return (
 		<>
 			<LogoHeader />
-			<Main class="container">
-				<header class="mt-3">
-					<div class="row">
-						<div class="col-12 col-md-6 offset-md-3">
-							<SyncTitle sync={sync} />
-						</div>
-					</div>
-				</header>
-				<div class="row mt-3">
-					<div class="col-12 col-md-6 offset-md-3">
-						{projectsInSync.map((project) => (
-							<ProjectSync
-								key={project.id}
-								project={project}
-								status={status[project.id] ?? []}
-								startDate={sync.inclusiveStartDate}
-							/>
-						))}
+			<Main>
+				<div
+					style={{
+						backgroundColor: new Color(logoColors[8]).lighten(0.8).hex(),
+					}}
+				>
+					<div class="container py-4">
+						<header class="row">
+							<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+								<SyncTitle sync={sync} />
+							</div>
+						</header>
 					</div>
 				</div>
+				{statusWithQuestions.length > 0 && (
+					<div
+						style={{
+							backgroundColor: new Color(logoColors[5]).lighten(0.8).hex(),
+						}}
+					>
+						<div class="container mb-4 py-4">
+							<div class="row">
+								<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+									<h2>Questions</h2>
+									<hr class="mt-2 mb-4" />
+									{statusWithQuestions.map((status) => (
+										<>
+											<StatusSync status={status} />
+											{status.reactions
+												.filter(
+													(r) =>
+														'role' in r && r.role === ReactionRole.QUESTION,
+												)
+												.map((reaction) => (
+													<>
+														<QuestionIcon class="me-1" />
+														<Author id={reaction.author} />
+													</>
+												))}
+										</>
+									))}
+								</div>
+							</div>
+						</div>
+					</div>
+				)}
+				{projectsInSync.map((project) => (
+					<div class="container ">
+						<div class="row mt-3">
+							<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+								<ProjectSync
+									key={project.id}
+									project={project}
+									status={status[project.id] ?? []}
+									startDate={sync.inclusiveStartDate}
+								/>
+							</div>
+						</div>
+					</div>
+				))}
 			</Main>
 			<ProjectMenu />
 		</>
@@ -138,13 +199,9 @@ export const Sync = ({ id }: { id: string }) => {
 
 const byReactionsWithRole =
 	(role: ReactionRole, status: ProjectStatusMap) =>
-	(p1: Project, p2: Project) => {
-		console.log(p2.id, getNumberOfReactionsWithRole(role, status[p2.id] ?? []))
-		return (
-			(getNumberOfReactionsWithRole(role, status[p2.id] ?? []) ?? 0) -
-			(getNumberOfReactionsWithRole(role, status[p1.id] ?? []) ?? 0)
-		)
-	}
+	(p1: Project, p2: Project) =>
+		(getNumberOfReactionsWithRole(role, status[p2.id] ?? []) ?? 0) -
+		(getNumberOfReactionsWithRole(role, status[p1.id] ?? []) ?? 0)
 
 const byNumberOfSignificant = (status: ProjectStatusMap) =>
 	byReactionsWithRole(ReactionRole.SIGNIFICANT, status)

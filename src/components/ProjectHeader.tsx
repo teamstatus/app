@@ -1,9 +1,9 @@
 import Color from 'color'
-import { type Project } from '../context/Projects.js'
-import { useSettings } from '../context/Settings.js'
+import { type Project } from '#context/Projects.js'
+import { useSettings } from '#context/Settings.js'
 import { MenuIcon } from './Icons.js'
 import { useState } from 'preact/hooks'
-import { OffsetMenu } from '../navigation/OffsetMenu.js'
+import { OffsetMenu } from '#navigation/OffsetMenu.js'
 import { ProjectId } from './ProjectId.js'
 
 export const ProjectHeader = ({ project }: { project: Project }) => {

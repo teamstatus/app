@@ -1,6 +1,8 @@
 import { decodeTime } from 'ulid'
-import { ReactionRole, type Status } from '../context/Status.js'
+import { ReactionRole, type Status } from '#context/Status.js'
 import { Markdown } from './Markdown.js'
+import { ShortDate } from './ShortDate.js'
+import { Author } from './Author.js'
 
 export const StatusSync = ({ status }: { status: Status }) => {
 	const ts = new Date(decodeTime(status.id))
@@ -10,8 +12,34 @@ export const StatusSync = ({ status }: { status: Status }) => {
 			reaction.role === ReactionRole.SIGNIFICANT &&
 			reaction.author === status.author,
 	)
+
 	return (
 		<div class="mb-1 mt-2">
+			<div class="d-flex align-items-start justify-content-between">
+				<div class="d-flex align-items-end justify-content-start me-2 flex-row text-muted">
+					<small>
+						<a
+							href={`/project/${encodeURIComponent(status.project)}`}
+							class="text-muted"
+						>
+							{status.project}
+						</a>
+					</small>
+					<small class="mx-1">&middot;</small>
+					<small class="text-nowrap">
+						<a
+							href={`/project/${encodeURIComponent(
+								status.project,
+							)}/status/${encodeURIComponent(status.id)}`}
+							class="text-muted"
+						>
+							<ShortDate date={ts} />
+						</a>
+					</small>
+					<small class="mx-1">&middot;</small>
+					<Author id={status.author} />
+				</div>
+			</div>
 			{signficantReactionsByAuthor.map((reaction) => (
 				<div>
 					{reaction.emoji}{' '}
@@ -19,24 +47,6 @@ export const StatusSync = ({ status }: { status: Status }) => {
 				</div>
 			))}
 			<Markdown markdown={status.message} />
-			<div class="d-flex align-items-start justify-content-between">
-				<div class="d-flex align-items-end justify-content-start me-2 flex-row text-muted">
-					<small class="me-1">{status.author}</small>
-					<small>&middot;</small>
-					<small class="ms-1 text-nowrap">
-						<a
-							href={`/project/${encodeURIComponent(
-								status.project,
-							)}/status/${encodeURIComponent(status.id)}`}
-							class="text-muted"
-						>
-							<time dateTime={ts.toISOString()}>
-								{ts.toISOString().slice(0, 10)}
-							</time>
-						</a>
-					</small>
-				</div>
-			</div>
 		</div>
 	)
 }

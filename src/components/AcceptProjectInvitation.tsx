@@ -1,9 +1,9 @@
 import cx from 'classnames'
 import { route } from 'preact-router'
 import { useState } from 'preact/hooks'
-import { type ProblemDetail } from '../context/ProblemDetail.js'
-import { useProjects } from '../context/Projects.js'
-import { isInvitationId, slugPart } from '../proto/ids.js'
+import { type ProblemDetail } from '#context/ProblemDetail.js'
+import { useProjects } from '#context/Projects.js'
+import { isInvitationId, slugPart } from '#proto/ids.js'
 import { SubmitIcon } from './Icons.js'
 
 export const AcceptProjectInvitation = () => {

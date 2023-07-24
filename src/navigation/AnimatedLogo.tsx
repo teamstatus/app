@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'preact/hooks'
-import { logoColors } from '../components/Colorpicker.js'
+import { logoColors } from '#components/Colorpicker.js'
 
 export const AnimatedLogo = ({ animated }: { animated?: boolean }) => {
 	const [enableAnimation, setEnableAnimation] = useState<boolean>(

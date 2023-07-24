@@ -1,5 +1,7 @@
 import type { ComponentChildren } from 'preact'
-import { useUI } from '../context/UI.js'
+import { useUI } from '#context/UI.js'
+import './Main.css'
+import cx from 'classnames'
 
 export const Main = ({
 	children,
@@ -8,13 +10,17 @@ export const Main = ({
 	children: ComponentChildren
 	class?: string
 }) => {
-	const { projectsMenuVisible } = useUI()
+	const { projectsMenuVisible, showProjectsMenu } = useUI()
 
 	return (
 		<main
-			class={c}
-			style={{
-				filter: projectsMenuVisible ? 'blur(5px)' : undefined,
+			class={cx(c, {
+				blur: projectsMenuVisible,
+			})}
+			onClick={() => {
+				if (projectsMenuVisible) {
+					showProjectsMenu(false)
+				}
 			}}
 		>
 			{children}

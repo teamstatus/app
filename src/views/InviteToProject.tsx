@@ -1,13 +1,13 @@
 import cx from 'classnames'
 import { useState } from 'preact/hooks'
-import { BackIcon, SubmitIcon } from '../components/Icons.js'
-import { type ProblemDetail } from '../context/ProblemDetail.js'
-import { Role, useProjects } from '../context/Projects.js'
-import { isUserId, slugPart } from '../proto/ids.js'
-import { ProjectHeader } from '../components/ProjectHeader.js'
-import { ProjectMenu } from '../components/ProjectMenu.js'
-import { ProgressBar } from '../components/ProgressBar.js'
-import { Main } from '../components/Main.js'
+import { BackIcon, SubmitIcon } from '#components/Icons.js'
+import { type ProblemDetail } from '#context/ProblemDetail.js'
+import { Role, useProjects } from '#context/Projects.js'
+import { isUserId, slugPart } from '#proto/ids.js'
+import { ProjectHeader } from '#components/ProjectHeader.js'
+import { ProjectMenu } from '#components/ProjectMenu.js'
+import { ProgressBar } from '#components/ProgressBar.js'
+import { Main } from '#components/Main.js'
 
 export const InviteToProject = ({
 	id,

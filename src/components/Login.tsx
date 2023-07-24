@@ -1,10 +1,10 @@
 import cx from 'classnames'
 import { useState } from 'preact/hooks'
-import { type UserContext, useAuth } from '../context/Auth.js'
-import { type ProblemDetail } from '../context/ProblemDetail.js'
+import { type UserContext, useAuth } from '#context/Auth.js'
+import { type ProblemDetail } from '#context/ProblemDetail.js'
 import { ProgressBar } from './ProgressBar.js'
 import { AsHeadline } from './HeadlineFont.js'
-import { GET, CREATE } from '../api/client.js'
+import { GET, CREATE } from '#api/client.js'
 
 export const Login = ({ redirect }: { redirect?: string }) => {
 	const { setUser, autoLoginState } = useAuth()

@@ -1,10 +1,10 @@
-import { ProjectHeader } from '../components/ProjectHeader.js'
-import { Status } from '../components/Status.js'
-import { canCreateStatus, useProjects } from '../context/Projects.js'
-import { useSettings } from '../context/Settings.js'
-import { useStatus } from '../context/Status.js'
-import { ProjectMenu } from '../components/ProjectMenu.js'
-import { Main } from '../components/Main.js'
+import { ProjectHeader } from '#components/ProjectHeader.js'
+import { Status } from '#components/Status.js'
+import { canCreateStatus, useProjects } from '#context/Projects.js'
+import { useSettings } from '#context/Settings.js'
+import { useStatus } from '#context/Status.js'
+import { ProjectMenu } from '#components/ProjectMenu.js'
+import { Main } from '#components/Main.js'
 
 export const Project = ({
 	id,
@@ -42,7 +42,7 @@ export const Project = ({
 				<section>
 					{status.map((status) => (
 						<div class="row">
-							<div class="col-12 col-md-6 offset-md-3">
+							<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
 								<Status status={status} />
 								<hr class="mt-1 mb-2" />
 							</div>
@@ -50,7 +50,7 @@ export const Project = ({
 					))}
 					{status.length === 0 && (
 						<div class="row">
-							<div class="col-12 col-md-6 offset-md-3">
+							<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
 								<p>No status updates, yet.</p>
 								<p>
 									<a href={`/project/${encodeURIComponent(id)}/compose`}>

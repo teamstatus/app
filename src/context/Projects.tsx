@@ -1,10 +1,10 @@
 import { createContext, type ComponentChildren } from 'preact'
 import { useContext, useEffect, useState } from 'preact/hooks'
 import { ulid } from 'ulid'
-import { parseInvitationId, parseProjectId } from '../proto/ids.js'
+import { parseInvitationId, parseProjectId } from '#proto/ids.js'
 import { useAuth } from './Auth.js'
-import { CREATE, GET } from '../api/client.js'
-import { notReady } from '../api/notReady.js'
+import { CREATE, GET } from '#api/client.js'
+import { notReady } from '#api/notReady.js'
 
 export type Organization = {
 	id: string
@@ -56,8 +56,8 @@ export const ProjectsContext = createContext<ProjectsContext>({
 	projects: {},
 	addProject: () => ({ error: 'Not ready.' }),
 	addOrganization: () => ({ error: 'Not ready.' }),
-	inviteToProject: () => notReady,
-	acceptProjectInvitation: () => notReady,
+	inviteToProject: notReady<Record<string, never>>,
+	acceptProjectInvitation: notReady<Record<string, never>>,
 	organizations: [],
 	invitations: [],
 })
@@ -158,7 +158,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 					}),
 				acceptProjectInvitation: (invitationId) =>
 					CREATE(
-						`${API_ENDPOINT}/project/${encodeURIComponent(
+						`/project/${encodeURIComponent(
 							parseInvitationId(invitationId).projectId ?? 'null',
 						)}/invitation`,
 						{},

@@ -20,9 +20,17 @@
     "noUnusedLocals": true,
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
+    "baseUrl": "src",
     "paths": {
       "react": ["./node_modules/preact/compat/"],
-      "react-dom": ["./node_modules/preact/compat/"]
+      "react-dom": ["./node_modules/preact/compat/"],
+      "#api/*": ["api/*"],
+      "#components/*": ["components/*"],
+      "#context/*": ["context/*"],
+      "#navigation/*": ["navigation/*"],
+      "#proto/*": ["proto/*"],
+      "#util/*": ["util/*"],
+      "#views/*": ["views/*"]
     }
   }
 }

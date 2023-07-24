@@ -1,9 +1,9 @@
-import { useAuth } from '../context/Auth.js'
+import { useAuth } from '#context/Auth.js'
 import {
 	ReactionRole,
 	type PersistedReaction,
 	type Reaction as TReaction,
-} from '../context/Status.js'
+} from '#context/Status.js'
 import {
 	AuthorIcon,
 	PersistencePendingIcon,

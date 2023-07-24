@@ -1,3 +1,4 @@
+import { Ago } from '#components/Ago.js'
 import { AppNavigation } from './AppNavigation.js'
 
 export const OffsetMenu = ({ onClick }: { onClick: () => unknown }) => (
@@ -36,8 +37,18 @@ export const OffsetMenu = ({ onClick }: { onClick: () => unknown }) => (
 				onClick={onClick}
 			></button>
 		</div>
-		<div class="offcanvas-body">
+		<div class="offcanvas-body d-flex flex-column justify-content-between">
 			<AppNavigation onClick={onClick} />
+			<footer class="text-muted text-center">
+				<p>
+					<small>
+						version: {VERSION} &middot; build time:{' '}
+						<time dateTime={BUILD_TIME}>
+							<Ago date={new Date(BUILD_TIME)} />
+						</time>
+					</small>
+				</p>
+			</footer>
 		</div>
 	</div>
 )

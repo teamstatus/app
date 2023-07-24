@@ -1,6 +1,6 @@
 import pThrottle from 'p-throttle'
-import type { ProblemDetail } from '../context/ProblemDetail'
-import { InternalError } from '../context/InternalError'
+import type { ProblemDetail } from '#context/ProblemDetail.js'
+import { InternalError } from '#context/InternalError.js'
 
 type ProblemHandler = (problem: ProblemDetail) => unknown
 type SuccessHandler<Response extends Record<string, unknown>> = (
@@ -33,7 +33,11 @@ export const request = <Result extends Record<string, unknown>>(
 	let anywayHandler: AnywayHandler
 
 	const method = requestOptions?.method ?? 'GET'
-	const url = new URL(resource, API_ENDPOINT)
+	const base = new URL(API_ENDPOINT)
+	const url = new URL(
+		`${base.pathname.replace(/\/+$/, '')}/${resource.replace(/^\//, '')}`,
+		base,
+	)
 	const key = `${method} ${url.toString()}`
 	let p: CachedRequest<Result> | undefined = requestPromise[key]
 	if (
@@ -52,42 +56,40 @@ export const request = <Result extends Record<string, unknown>>(
 					...(requestOptions?.headers ?? {}),
 				},
 				...requestOptions,
-			})
-				.then(async (res) => {
-					if (
-						res.headers
-							.get('content-type')
-							?.includes('application/problem+json') ??
-						false
-					) {
-						const problem = await res.json()
-						console.error(problem)
-						return { problem }
-					} else if (!res.ok) {
-						return { problem: InternalError(await res.text()) }
-					} else if (
-						(res.headers.get('content-type')?.includes('application/json') ??
-							false) &&
-						parseInt(res.headers.get('content-length') ?? '0', 10) > 0
-					) {
-						return { result: await res.json() }
-					}
-					return { result: null }
-				})
-				.catch((err) => {
-					console.error(err)
-					return {
-						problem: InternalError(err.message),
-					}
-				}),
+			}).then(async (res) => {
+				if (
+					res.headers
+						.get('content-type')
+						?.includes('application/problem+json') ??
+					false
+				) {
+					const problem = await res.json()
+					console.error(problem)
+					return { problem }
+				} else if (!res.ok) {
+					return { problem: InternalError(await res.text()) }
+				} else if (
+					(res.headers.get('content-type')?.includes('application/json') ??
+						false) &&
+					parseInt(res.headers.get('content-length') ?? '0', 10) > 0
+				) {
+					return { result: await res.json() }
+				}
+				return { result: null }
+			}),
 		}
 	}
 
-	p.request.then((res) => {
-		if ('problem' in res) problemHandler?.(res.problem)
-		if ('result' in res) successHandler?.(res.result)
-		anywayHandler?.()
-	})
+	p.request
+		.then((res) => {
+			if ('problem' in res) problemHandler?.(res.problem)
+			if ('result' in res) successHandler?.(res.result)
+			anywayHandler?.()
+		})
+		.catch((error) => {
+			console.error(error)
+			problemHandler?.(InternalError((error as Error).message))
+		})
 
 	const r: RequestResult<Result> = {
 		fail: (handler) => {
@@ -109,12 +111,12 @@ export const request = <Result extends Record<string, unknown>>(
 
 export const GET = <Response extends Record<string, unknown>>(
 	resource: string,
-) => request<Response>(resource)
+): RequestResult<Response> => request<Response>(resource)
 
 export const CREATE = <Response extends Record<string, unknown>>(
 	resource: string,
 	body: Record<string, unknown>,
-) =>
+): RequestResult<Response> =>
 	request<Response>(resource, {
 		method: 'POST',
 		body: JSON.stringify(body),
@@ -123,7 +125,7 @@ export const UPDATE = <Response extends Record<string, unknown>>(
 	resource: string,
 	body: Record<string, unknown>,
 	version: number,
-) =>
+): RequestResult<Response> =>
 	request<Response>(resource, {
 		method: 'PATCH',
 		body: JSON.stringify(body),
@@ -135,7 +137,7 @@ export const UPDATE = <Response extends Record<string, unknown>>(
 export const DELETE = <Response extends Record<string, unknown>>(
 	resource: string,
 	version: number,
-) =>
+): RequestResult<Response> =>
 	request<Response>(resource, {
 		method: 'DELETE',
 		headers: {

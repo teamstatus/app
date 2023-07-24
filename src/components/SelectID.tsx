@@ -1,10 +1,10 @@
 import cx from 'classnames'
 import { route } from 'preact-router'
 import { useState } from 'preact/hooks'
-import { useAuth } from '../context/Auth.js'
-import { isUserId, slugPart } from '../proto/ids.js'
+import { useAuth } from '#context/Auth.js'
+import { isUserId, slugPart } from '#proto/ids.js'
 import { SubmitIcon } from './Icons.js'
-import { CREATE } from '../api/client.js'
+import { CREATE } from '#api/client.js'
 
 export const SelectID = () => {
 	const [id, setId] = useState('')

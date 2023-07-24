@@ -1,7 +1,7 @@
 import Color from 'color'
-import { useSettings } from '../context/Settings.js'
+import { useSettings } from '#context/Settings.js'
 import { CloseIcon, ProjectsIcon, AddIcon } from './Icons.js'
-import { useUI } from '../context/UI.js'
+import { useUI } from '#context/UI.js'
 import { SettingsIcon } from 'lucide-preact'
 import { gradient, logoColors } from './Colorpicker.js'
 

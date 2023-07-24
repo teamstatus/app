@@ -1,7 +1,7 @@
 import cx from 'classnames'
 import { useState } from 'preact/hooks'
-import { AcceptProjectInvitation } from '../components/AcceptProjectInvitation.js'
-import { Colorpicker } from '../components/Colorpicker.js'
+import { AcceptProjectInvitation } from '#components/AcceptProjectInvitation.js'
+import { Colorpicker } from '#components/Colorpicker.js'
 import {
 	ColorsIcon,
 	DownIcon,
@@ -11,18 +11,15 @@ import {
 	ProjectsIcon,
 	UpIcon,
 	VisibleIcon,
-} from '../components/Icons.js'
-import { Role, useProjects, type Project } from '../context/Projects.js'
-import {
-	useSettings,
-	type ProjectPersonalization,
-} from '../context/Settings.js'
-import { LogoHeader } from '../components/LogoHeader.js'
-import { ProjectMenu } from '../components/ProjectMenu.js'
-import { Invitations } from '../components/Invitations.js'
-import { ProjectId } from '../components/ProjectId.js'
+} from '#components/Icons.js'
+import { Role, useProjects, type Project } from '#context/Projects.js'
+import { useSettings, type ProjectPersonalization } from '#context/Settings.js'
+import { LogoHeader } from '#components/LogoHeader.js'
+import { ProjectMenu } from '#components/ProjectMenu.js'
+import { Invitations } from '#components/Invitations.js'
+import { ProjectId } from '#components/ProjectId.js'
 import { RolePill } from './RolePill.js'
-import { Main } from '../components/Main.js'
+import { Main } from '#components/Main.js'
 
 export const Projects = () => {
 	const { projects } = useProjects()
@@ -33,7 +30,7 @@ export const Projects = () => {
 			<LogoHeader />
 			<Main class="container">
 				<div class="row mt-3">
-					<div class="col-12 col-md-6 offset-md-3">
+					<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
 						<section>
 							<div class="d-flex justify-content-between align-items-center">
 								<h1>Projects</h1>
@@ -65,12 +62,12 @@ export const Projects = () => {
 					</div>
 				</div>
 				<div class="row mt-3">
-					<div class="col-12 col-md-6 offset-md-3">
+					<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
 						<AcceptProjectInvitation />
 					</div>
 				</div>
 				<div class="row mt-3">
-					<div class="col-12 col-md-6 offset-md-3">
+					<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
 						<Invitations />
 					</div>
 				</div>

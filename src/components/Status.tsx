@@ -1,7 +1,7 @@
 import { useState } from 'preact/hooks'
 import { decodeTime } from 'ulid'
-import { useAuth } from '../context/Auth.js'
-import { useStatus, type Status as TStatus } from '../context/Status.js'
+import { useAuth } from '#context/Auth.js'
+import { useStatus, type Status as TStatus } from '#context/Status.js'
 import { Ago } from './Ago.js'
 import {
 	AddReactionIcon,
@@ -13,6 +13,7 @@ import {
 } from './Icons.js'
 import { Markdown } from './Markdown.js'
 import { Reaction, SelectReaction } from './Reactions.js'
+import { Author } from './Author.js'
 
 export const Status = ({ status }: { status: TStatus }) => {
 	const [reactionsVisible, showReactions] = useState(false)
@@ -26,13 +27,11 @@ export const Status = ({ status }: { status: TStatus }) => {
 		<>
 			<div>
 				<small class="text-muted d-flex me-2">
-					<span class="text-nowrap me-1 d-flex align-items-center">
-						{status.author}
-					</span>
-					<span>&middot;</span>
-					<span class="ms-1 text-nowrap d-flex align-items-center">
+					<span class="text-nowrap d-flex align-items-center">
 						<a
-							href={`/status/${encodeURIComponent(status.id)}`}
+							href={`/project/${encodeURIComponent(
+								status.project,
+							)}/status/${encodeURIComponent(status.id)}`}
 							class="text-muted"
 						>
 							<Ago date={new Date(decodeTime(status.id))} />
@@ -42,6 +41,10 @@ export const Status = ({ status }: { status: TStatus }) => {
 								<EditIcon size={20} class={'ms-1'} /> {status.version}
 							</>
 						)}
+					</span>
+					<span class="mx-1">&middot;</span>
+					<span class="text-nowrap d-flex align-items-center">
+						<Author id={status.author} />
 					</span>
 				</small>
 			</div>

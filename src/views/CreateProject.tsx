@@ -1,12 +1,12 @@
 import cx from 'classnames'
 import { route } from 'preact-router'
 import { useState } from 'preact/hooks'
-import { BackIcon, SubmitIcon } from '../components/Icons.js'
-import { useProjects } from '../context/Projects.js'
-import { isProjectId, slugPart } from '../proto/ids.js'
-import { LogoHeader } from '../components/LogoHeader.js'
-import { Main } from '../components/Main.js'
-import { ProjectMenu } from '../components/ProjectMenu.js'
+import { BackIcon, SubmitIcon } from '#components/Icons.js'
+import { useProjects } from '#context/Projects.js'
+import { isProjectId, slugPart } from '#proto/ids.js'
+import { LogoHeader } from '#components/LogoHeader.js'
+import { Main } from '#components/Main.js'
+import { ProjectMenu } from '#components/ProjectMenu.js'
 
 export const CreateProject = ({ organization }: { organization?: string }) => {
 	const [name, setName] = useState<string>('')

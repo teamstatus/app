@@ -2,7 +2,7 @@ import { createContext, type ComponentChildren } from 'preact'
 import { useContext, useEffect, useState } from 'preact/hooks'
 import { ulid } from 'ulid'
 import { useAuth } from './Auth.js'
-import { GET, CREATE } from '../api/client.js'
+import { GET, CREATE } from '#api/client.js'
 
 export type Sync = {
 	id: string
@@ -11,6 +11,7 @@ export type Sync = {
 	inclusiveStartDate?: Date
 	inclusiveEndDate?: Date
 	persisted?: boolean
+	owner: string
 }
 
 export type SyncsContext = {
@@ -61,6 +62,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 		<SyncsContext.Provider
 			value={{
 				addSync: (projectIds, title, inclusiveStartDate, inclusiveEndDate) => {
+					if (user?.id === undefined) return { error: `Not authorized!` }
 					const id = ulid()
 					const newSync: Sync = {
 						id,
@@ -68,6 +70,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						title,
 						inclusiveStartDate,
 						inclusiveEndDate,
+						owner: user.id,
 					}
 					setSyncs((syncs) => ({
 						[newSync.id]: newSync,

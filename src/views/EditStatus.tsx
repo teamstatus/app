@@ -1,11 +1,11 @@
 import cx from 'classnames'
 import { route } from 'preact-router'
 import { useState } from 'preact/hooks'
-import { BackIcon, SubmitIcon } from '../components/Icons.js'
-import { ProjectHeader } from '../components/ProjectHeader.js'
-import { useStatus, type Status } from '../context/Status.js'
-import { Main } from '../components/Main.js'
-import { ProjectMenu } from '../components/ProjectMenu.js'
+import { BackIcon, SubmitIcon } from '#components/Icons.js'
+import { ProjectHeader } from '#components/ProjectHeader.js'
+import { useStatus, type Status } from '#context/Status.js'
+import { Main } from '#components/Main.js'
+import { ProjectMenu } from '#components/ProjectMenu.js'
 import { WithStatus } from './WithStatus.js'
 
 export const EditStatus = ({
