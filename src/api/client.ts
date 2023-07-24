@@ -43,7 +43,9 @@ export const request = <Result extends Record<string, unknown>>(
 	if (
 		p === undefined ||
 		// Cache time expired
-		p.ts.getTime() + 60 * 60 * 1000 < Date.now()
+		p.ts.getTime() + 60 * 60 * 1000 < Date.now() ||
+		// Not a cacheable method
+		method !== 'GET'
 	) {
 		p = {
 			ts: new Date(),
