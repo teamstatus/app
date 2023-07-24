@@ -9,6 +9,7 @@ import {
 	MembersIcon,
 	PersistencePendingIcon,
 	ProjectsIcon,
+	SettingsIcon,
 	UpIcon,
 	VisibleIcon,
 } from '#components/Icons.js'
@@ -165,13 +166,22 @@ const ProjectInfo = ({
 						<DownIcon />
 					</button>
 					{role === Role.OWNER && (
-						<a
-							href={`/project/${encodeURIComponent(id)}/invite`}
-							title={'Invite a user'}
-							class={'btn btn-sm btn-outline-secondary ms-2'}
-						>
-							<MembersIcon />
-						</a>
+						<>
+							<a
+								href={`/project/${encodeURIComponent(id)}/invite`}
+								title={'Invite a user'}
+								class={'btn btn-sm btn-outline-secondary ms-2'}
+							>
+								<MembersIcon />
+							</a>
+							<a
+								href={`/project/${encodeURIComponent(id)}/settings`}
+								title={'Edit the project'}
+								class={'btn btn-sm btn-outline-secondary ms-2'}
+							>
+								<SettingsIcon />
+							</a>
+						</>
 					)}
 				</div>
 			</div>

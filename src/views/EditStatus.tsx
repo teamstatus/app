@@ -6,7 +6,8 @@ import { ProjectHeader } from '#components/ProjectHeader.js'
 import { useStatus, type Status } from '#context/Status.js'
 import { Main } from '#components/Main.js'
 import { ProjectMenu } from '#components/ProjectMenu.js'
-import { WithStatus } from './WithStatus.js'
+import { WithStatus } from '#components/WithStatus.js'
+import { WithProject } from '#components/WithProject.js'
 
 export const EditStatus = ({
 	statusId,
@@ -15,14 +16,18 @@ export const EditStatus = ({
 	statusId: string // e.g. '01H1XVCVQXR8619Z4NVVCFD20F'
 	projectId: string // e.g. '$acme#project'
 }) => (
-	<WithStatus statusId={statusId} projectId={projectId}>
-		{({ status, project }) => (
-			<>
-				<ProjectHeader project={project} />
-				<EditStatusForm status={status} />
-			</>
+	<WithProject id={projectId}>
+		{({ project }) => (
+			<WithStatus id={statusId} project={project}>
+				{({ status }) => (
+					<>
+						<ProjectHeader project={project} />
+						<EditStatusForm status={status} />
+					</>
+				)}
+			</WithStatus>
 		)}
-	</WithStatus>
+	</WithProject>
 )
 
 const EditStatusForm = ({ status }: { status: Status }) => {

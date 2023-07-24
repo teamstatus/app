@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from 'preact/hooks'
 import { ulid } from 'ulid'
 import { parseInvitationId, parseProjectId } from '#proto/ids.js'
 import { useAuth } from './Auth.js'
-import { CREATE, GET } from '#api/client.js'
+import { CREATE, GET, UPDATE } from '#api/client.js'
 import { notReady } from '#api/notReady.js'
 
 export type Organization = {
@@ -24,6 +24,7 @@ export type Project = {
 	icon?: string
 	role: Role
 	persisted?: boolean
+	version: number
 }
 
 export type Invitation = {
@@ -50,6 +51,10 @@ export type ProjectsContext = {
 		name?: string,
 	) => { error: string } | { success: boolean }
 	invitations: Invitation[]
+	updateProject: (
+		project: Project,
+		update: { name: string },
+	) => ReturnType<typeof UPDATE>
 }
 
 export const ProjectsContext = createContext<ProjectsContext>({
@@ -60,6 +65,7 @@ export const ProjectsContext = createContext<ProjectsContext>({
 	acceptProjectInvitation: notReady<Record<string, never>>,
 	organizations: [],
 	invitations: [],
+	updateProject: notReady<Record<string, never>>,
 })
 
 export const Provider = ({ children }: { children: ComponentChildren }) => {
@@ -118,6 +124,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						name,
 						persisted: false,
 						role: Role.OWNER,
+						version: 1,
 					}
 					setProjects((projects) => ({
 						...projects,
@@ -186,6 +193,12 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 					return { success: true }
 				},
 				invitations,
+				updateProject: (project, update) =>
+					UPDATE(
+						`/project/${encodeURIComponent(project.id)}`,
+						update,
+						project.version,
+					),
 			}}
 		>
 			{children}

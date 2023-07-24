@@ -26,6 +26,7 @@ import { Reactions } from '#views/Reactions.js'
 import { Organizations } from '#views/Organizations.js'
 import { Organization } from '#views/Organization.js'
 import { Status } from '#views/Status.js'
+import { ProjectSettings } from '#views/ProjectSettings.js'
 
 export const App = () => (
 	<AuthProvider>
@@ -72,6 +73,7 @@ export const Routing = () => {
 					/>
 					<Route path="/project/:id/compose" component={ComposeStatus} />
 					<Route path="/project/:id/invite" component={InviteToProject} />
+					<Route path="/project/:id/settings" component={ProjectSettings} />
 					<Route path="/user" component={User} />
 					<Route path="/reactions" component={Reactions} />
 				</Router>

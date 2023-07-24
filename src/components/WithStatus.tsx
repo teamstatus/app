@@ -1,4 +1,4 @@
-import { useProjects, type Project } from '#context/Projects.js'
+import { type Project } from '#context/Projects.js'
 import { useStatus, type Status as TStatus } from '#context/Status.js'
 import { Main } from '#components/Main.js'
 import { ProjectMenu } from '#components/ProjectMenu.js'
@@ -7,45 +7,23 @@ import type { ComponentChildren } from 'preact'
 import { ProjectHeader } from '#components/ProjectHeader.js'
 
 export const WithStatus = ({
-	statusId,
-	projectId,
+	id,
+	project,
 	children,
 }: {
-	statusId: string
-	projectId: string
-	children: (args: { status: TStatus; project: Project }) => ComponentChildren
+	id: string
+	project: Project
+	children: (args: { status: TStatus }) => ComponentChildren
 }) => {
-	const { projects } = useProjects()
 	const { projectStatus, fetchProjectStatusById } = useStatus()
 	const [status, setStatus] = useState<TStatus | undefined>(
-		projectStatus[projectId]?.find(({ id }) => id === statusId),
+		projectStatus[project.id]?.find(({ id }) => id === id),
 	)
 
 	useEffect(() => {
 		if (status !== undefined) return
-		fetchProjectStatusById(projectId, statusId).ok(({ status }) =>
-			setStatus(status),
-		)
+		fetchProjectStatusById(project.id, id).ok(({ status }) => setStatus(status))
 	}, [status])
-
-	const project = projects[projectId]
-
-	if (project === undefined) {
-		return (
-			<>
-				<Main class="container">
-					<div class="row">
-						<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
-							<div class="alert alert-danger" role="alert">
-								Project not found: {projectId}
-							</div>
-						</div>
-					</div>
-				</Main>
-				<ProjectMenu />
-			</>
-		)
-	}
 
 	if (status === undefined) {
 		return (
@@ -55,7 +33,7 @@ export const WithStatus = ({
 					<div class="row">
 						<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
 							<div class="alert alert-danger" role="alert">
-								Status not found: {statusId}
+								Status not found: {id}
 							</div>
 						</div>
 					</div>
@@ -65,5 +43,5 @@ export const WithStatus = ({
 		)
 	}
 
-	return <>{children({ status, project })}</>
+	return <>{children({ status })}</>
 }
