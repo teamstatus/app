@@ -26,8 +26,8 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 		useState<AutoLoginState>('in_progress')
 
 	useEffect(() => {
-		GET<UserContext>(`/me`)
-			.ok((user) => {
+		GET<{ user: UserContext }>(`/me`)
+			.ok(({ user }) => {
 				setUser(user)
 				setAutoLoginState('success')
 			})
