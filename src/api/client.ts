@@ -28,9 +28,9 @@ export const request = <Result extends Record<string, unknown>>(
 	resource: string,
 	requestOptions?: RequestInit,
 ): RequestResult<Result> => {
-	let successHandler: SuccessHandler<Result>
-	let problemHandler: ProblemHandler
-	let anywayHandler: AnywayHandler
+	const successHandler: SuccessHandler<Result>[] = []
+	const problemHandler: ProblemHandler[] = []
+	const anywayHandler: AnywayHandler[] = []
 
 	const method = requestOptions?.method ?? 'GET'
 	const base = new URL(API_ENDPOINT)
@@ -84,26 +84,29 @@ export const request = <Result extends Record<string, unknown>>(
 
 	p.request
 		.then((res) => {
-			if ('problem' in res) problemHandler?.(res.problem)
-			if ('result' in res) successHandler?.(res.result)
-			anywayHandler?.()
+			if ('problem' in res)
+				problemHandler.map((handler) => handler(res.problem))
+			if ('result' in res) successHandler.map((handler) => handler(res.result))
+			anywayHandler.map((handler) => handler())
 		})
 		.catch((error) => {
 			console.error(error)
-			problemHandler?.(InternalError((error as Error).message))
+			problemHandler.map((handler) =>
+				handler(InternalError((error as Error).message)),
+			)
 		})
 
 	const r: RequestResult<Result> = {
 		fail: (handler) => {
-			problemHandler = handler
+			problemHandler.push(handler)
 			return r
 		},
 		ok: (handler) => {
-			successHandler = handler
+			successHandler.push(handler)
 			return r
 		},
 		anyway: (handler) => {
-			anywayHandler = handler
+			anywayHandler.push(handler)
 			return r
 		},
 	}

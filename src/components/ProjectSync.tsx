@@ -1,9 +1,9 @@
 import { decodeTime } from 'ulid'
 import { type Project } from '#context/Projects.js'
 import { type Status } from '#context/Status.js'
-import { StatusSync } from './StatusSync.js'
+import { StatusSync } from '#components/StatusSync.js'
 import './ProjectSync.css'
-import { ShortDate } from './ShortDate.js'
+import { ShortDate } from '#components/ShortDate.js'
 
 const byTimeAsc = (s1: Status, s2: Status): number =>
 	decodeTime(s1.id) - decodeTime(s2.id)
@@ -18,7 +18,18 @@ export const ProjectSync = ({
 	status: Status[]
 }) => (
 	<section class="projectInSync">
-		<h2 class="mt-4 mb-0">{project.name ?? project.id}</h2>
+		<header class="d-flex justify-content-between align-items-end">
+			<h2 class="mt-4 mb-0">{project.name ?? project.id}</h2>
+			<small>
+				<a
+					href={`/project/${encodeURIComponent(project.id)}`}
+					class="text-muted"
+				>
+					{project.id}
+				</a>
+			</small>
+		</header>
+
 		<hr class="mt-2 mb-4" />
 		{status.length === 0 && (
 			<>

@@ -198,7 +198,20 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						`/project/${encodeURIComponent(project.id)}`,
 						update,
 						project.version,
-					),
+					).ok(() => {
+						setProjects((projects) => {
+							const updated = projects[project.id] as Project
+							console.log
+							return {
+								...projects,
+								[project.id]: {
+									...(projects[project.id] as Project),
+									...update,
+									version: updated.version + 1,
+								},
+							}
+						})
+					}),
 			}}
 		>
 			{children}
