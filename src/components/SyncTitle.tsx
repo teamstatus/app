@@ -3,7 +3,7 @@ import { decodeTime } from 'ulid'
 import { type Sync } from '#context/Syncs.js'
 import { CalendarIcon, ClockIcon, EndDateIcon, StartDateIcon } from './Icons.js'
 import { ShortDate } from './ShortDate.js'
-import { Author } from './Author.js'
+import { UserProfile } from '#components/UserProfile.js'
 
 const FormattedDate = ({ date }: { date: Date }) => (
 	<time dateTime={date.toISOString()} class="d-flex align-items-center">
@@ -19,10 +19,12 @@ export const SyncTitle = ({ sync }: { sync: Sync }) => (
 	<>
 		<p class="text-muted mb-0">
 			<small>
-				<ShortDate date={new Date(decodeTime(sync.id))} />
+				<a href={`/sync/${sync.id}`} style={{ color: 'inherit' }}>
+					<ShortDate date={new Date(decodeTime(sync.id))} />
+				</a>
 			</small>
 			<small class="mx-1">&middot;</small>
-			<Author id={sync.owner} />
+			<UserProfile id={sync.owner} />
 		</p>
 		<h1>{sync.title}</h1>
 		{sync.inclusiveStartDate !== undefined && (

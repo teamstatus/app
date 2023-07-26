@@ -2,7 +2,7 @@ import { decodeTime } from 'ulid'
 import { ReactionRole, type Status } from '#context/Status.js'
 import { Markdown } from './Markdown.js'
 import { ShortDate } from './ShortDate.js'
-import { Author } from './Author.js'
+import { UserProfile } from '#components/UserProfile.js'
 
 export const StatusSync = ({ status }: { status: Status }) => {
 	const ts = new Date(decodeTime(status.id))
@@ -28,7 +28,7 @@ export const StatusSync = ({ status }: { status: Status }) => {
 						</a>
 					</small>
 					<small class="mx-1">&middot;</small>
-					<Author id={status.author} />
+					<UserProfile id={status.author} />
 				</div>
 			</div>
 			{signficantReactionsByAuthor.map((reaction) => (

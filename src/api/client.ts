@@ -80,6 +80,7 @@ export const request = <Result extends Record<string, unknown>>(
 				return { result: null }
 			}),
 		}
+		requestPromise[key] = p
 	}
 
 	p.request

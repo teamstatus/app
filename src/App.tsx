@@ -27,20 +27,24 @@ import { Organizations } from '#views/Organizations.js'
 import { Organization } from '#views/Organization.js'
 import { Status } from '#views/Status.js'
 import { ProjectSettings } from '#views/ProjectSettings.js'
+import { UserProfile } from '#views/UserProfile.js'
+import { Provider as UserProfilesProvider } from '#context/UserProfiles.js'
 
 export const App = () => (
 	<AuthProvider>
-		<ProjectsProvider>
-			<SettingsProvider>
-				<StatusProvider>
-					<SyncsProvider>
-						<UIProvider>
-							<Routing />
-						</UIProvider>
-					</SyncsProvider>
-				</StatusProvider>
-			</SettingsProvider>
-		</ProjectsProvider>
+		<UserProfilesProvider>
+			<ProjectsProvider>
+				<SettingsProvider>
+					<StatusProvider>
+						<SyncsProvider>
+							<UIProvider>
+								<Routing />
+							</UIProvider>
+						</SyncsProvider>
+					</StatusProvider>
+				</SettingsProvider>
+			</ProjectsProvider>
+		</UserProfilesProvider>
 	</AuthProvider>
 )
 
@@ -75,6 +79,7 @@ export const Routing = () => {
 					<Route path="/project/:id/invite" component={InviteToProject} />
 					<Route path="/project/:id/settings" component={ProjectSettings} />
 					<Route path="/user" component={User} />
+					<Route path="/user/:id" component={UserProfile} />
 					<Route path="/reactions" component={Reactions} />
 				</Router>
 			</>

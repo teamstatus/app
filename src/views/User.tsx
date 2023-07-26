@@ -4,8 +4,9 @@ import { ProjectMenu } from '#components/ProjectMenu.js'
 import { Main } from '#components/Main.js'
 import { useEffect, useState } from 'preact/hooks'
 import { GET } from '#api/client.js'
+import { UserInfo } from '#components/UserProfile.js'
 
-type Profile = {
+type MyProfile = {
 	id: string // e.g. '@alex'
 	email: string // e.g. 'alex@example.com'
 	name: string // e.g. 'Alex Doe'
@@ -15,12 +16,12 @@ type Profile = {
 
 export const User = () => {
 	const { user } = useAuth()
-	const [profile, setProfile] = useState<Profile>()
+	const [profile, setProfile] = useState<MyProfile>()
 
 	useEffect(() => {
 		if (user?.id === undefined) return
 		GET<{
-			user: Profile
+			user: MyProfile
 		}>(`/me`).ok(({ user }) => setProfile(user))
 	}, [user])
 
@@ -32,8 +33,11 @@ export const User = () => {
 				<div class="row mt-3">
 					<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
 						<h1>
-							{profile !== undefined && <UserInfo profile={profile} />}
-							{profile === undefined && <>{user.id ?? 'anonymous'}</>}
+							<UserInfo
+								id={user?.id ?? 'anonymous'}
+								name={profile?.name}
+								pronouns={profile?.pronouns}
+							/>
 						</h1>
 						<dl>
 							<dt>Email</dt>
@@ -51,18 +55,6 @@ export const User = () => {
 				</div>
 			</Main>
 			<ProjectMenu />
-		</>
-	)
-}
-
-const UserInfo = ({ profile }: { profile: Profile }) => {
-	return (
-		<>
-			<strong class="me-1">{profile.name}</strong>
-			{profile.pronouns !== undefined && (
-				<span class="text-muted">({profile.pronouns})</span>
-			)}
-			<small class="text-muted">{profile.id}</small>
 		</>
 	)
 }

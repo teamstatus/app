@@ -13,7 +13,7 @@ import {
 } from './Icons.js'
 import { Markdown } from './Markdown.js'
 import { Reaction, SelectReaction } from './Reactions.js'
-import { Author } from './Author.js'
+import { UserProfile } from '#components/UserProfile.js'
 
 export const Status = ({ status }: { status: TStatus }) => {
 	const [reactionsVisible, showReactions] = useState(false)
@@ -44,7 +44,7 @@ export const Status = ({ status }: { status: TStatus }) => {
 					</span>
 					<span class="mx-1">&middot;</span>
 					<span class="text-nowrap d-flex align-items-center">
-						<Author id={status.author} />
+						<UserProfile id={status.author} />
 					</span>
 				</small>
 			</div>

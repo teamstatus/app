@@ -11,10 +11,10 @@ import { Main } from '#components/Main.js'
 import { decodeTime } from 'ulid'
 import { GET } from '#api/client.js'
 import { StatusSync } from '#components/StatusSync.js'
-import { Author } from '#components/Author.js'
 import { QuestionIcon } from '#components/Icons.js'
 import { logoColors } from '#components/Colorpicker.js'
 import Color from 'color'
+import { UserProfile } from '#components/UserProfile.js'
 
 type ProjectStatusMap = Record<string, Status[]>
 
@@ -126,8 +126,6 @@ export const Sync = ({ id }: { id: string }) => {
 				) !== undefined,
 		)
 
-	console.log(statusWithQuestions)
-
 	return (
 		<>
 			<LogoHeader />
@@ -167,7 +165,7 @@ export const Sync = ({ id }: { id: string }) => {
 												.map((reaction) => (
 													<>
 														<QuestionIcon class="me-1" />
-														<Author id={reaction.author} />
+														<UserProfile id={reaction.author} />
 													</>
 												))}
 										</>
