@@ -2,7 +2,8 @@ import { createContext, type ComponentChildren } from 'preact'
 import { useContext, useEffect, useState } from 'preact/hooks'
 import { ulid } from 'ulid'
 import { useAuth } from './Auth.js'
-import { GET, CREATE } from '#api/client.js'
+import { GET, CREATE, DELETE } from '#api/client.js'
+import { notReady } from '#api/notReady.js'
 
 export type Sync = {
 	id: string
@@ -12,6 +13,7 @@ export type Sync = {
 	inclusiveEndDate?: Date
 	persisted?: boolean
 	owner: string
+	version: number
 }
 
 export type SyncsContext = {
@@ -22,11 +24,13 @@ export type SyncsContext = {
 		inclusiveEndDate?: Date,
 	) => { error: string } | { id: string }
 	syncs: Record<string, Sync>
+	deleteSync: (sync: Sync) => ReturnType<typeof DELETE>
 }
 
 export const SyncsContext = createContext<SyncsContext>({
 	addSync: () => ({ error: 'Not ready.' }),
 	syncs: {},
+	deleteSync: notReady,
 })
 
 export const Provider = ({ children }: { children: ComponentChildren }) => {
@@ -71,6 +75,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						inclusiveStartDate,
 						inclusiveEndDate,
 						owner: user.id,
+						version: 1,
 					}
 					setSyncs((syncs) => ({
 						[newSync.id]: newSync,
@@ -99,6 +104,13 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 					return { id }
 				},
 				syncs,
+				deleteSync: (sync) =>
+					DELETE(`/sync/${sync.id}`, sync.version).ok(() => {
+						setSyncs((syncs) => {
+							delete syncs[sync.id]
+							return syncs
+						})
+					}),
 			}}
 		>
 			{children}

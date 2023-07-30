@@ -1,10 +1,16 @@
 import { decodeTime } from 'ulid'
-import { useSyncs } from '#context/Syncs.js'
+import { useSyncs, type Sync } from '#context/Syncs.js'
 import { LogoHeader } from '#components/LogoHeader.js'
 import { ProjectMenu } from '#components/ProjectMenu.js'
 import { Main } from '#components/Main.js'
-import { SyncIcon } from '#components/Icons.js'
+import {
+	CollapseRightIcon,
+	DeleteIcon,
+	SubMenuIcon,
+	SyncIcon,
+} from '#components/Icons.js'
 import { ShortDate } from '#components/ShortDate.js'
+import { useState } from 'preact/hooks'
 
 export const Syncs = () => {
 	const { syncs } = useSyncs()
@@ -36,10 +42,14 @@ export const Syncs = () => {
 									return (
 										<>
 											<div class="my-2 d-flex justify-content-between align-items-center">
-												<a href={`/sync/${sync.id}`}>{sync.title}</a>
-												<small class="text-muted ms-1 text-nowrap">
-													<ShortDate date={ts} />
-												</small>
+												<div>
+													<small class="text-muted text-nowrap">
+														<ShortDate date={ts} />
+													</small>
+													<br />
+													<a href={`/sync/${sync.id}`}>{sync.title}</a>
+												</div>
+												<EditMenu sync={sync} />
 											</div>
 											<hr />
 										</>
@@ -51,5 +61,42 @@ export const Syncs = () => {
 			</Main>
 			<ProjectMenu action={{ href: '/sync/create' }} />
 		</>
+	)
+}
+
+const EditMenu = ({ sync }: { sync: Sync }) => {
+	const [operationsVisible, showOperations] = useState<boolean>(false)
+	const { deleteSync } = useSyncs()
+
+	if (!operationsVisible) {
+		return (
+			<button
+				type="button"
+				class="btn btn-sm btn-light me-1"
+				onClick={() => showOperations(true)}
+			>
+				<SubMenuIcon size={18} />
+			</button>
+		)
+	}
+	return (
+		<div>
+			<button
+				type="button"
+				class="btn btn-sm btn-outline-danger me-1"
+				onClick={() => {
+					deleteSync(sync)
+				}}
+			>
+				<DeleteIcon size={18} />
+			</button>
+			<button
+				type="button"
+				class="btn btn-sm btn-light"
+				onClick={() => showOperations(false)}
+			>
+				<CollapseRightIcon size={18} />
+			</button>
+		</div>
 	)
 }

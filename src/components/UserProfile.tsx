@@ -16,7 +16,7 @@ export const UserProfile = ({ id }: { id: string }) => {
 	return <UserInfo id={id} name={profile?.name} pronouns={profile?.pronouns} />
 }
 
-export const UserInfo = (
+const UserInfo = (
 	profile: { id: string } | { id: string; name: string; pronouns?: string },
 ) => {
 	const name = 'name' in profile ? profile.name : undefined
