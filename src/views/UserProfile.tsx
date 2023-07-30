@@ -7,13 +7,19 @@ import {
 } from '#context/UserProfiles.js'
 import { useEffect, useState } from 'preact/hooks'
 
-export const UserProfile = ({ id }: { id: string }) => {
+export const UserProfile = ({
+	id,
+	version,
+}: {
+	id: string
+	version?: string
+}) => {
 	const { get } = useUserProfiles()
 	const [profile, setProfile] = useState<TUserProfile>()
 
 	useEffect(() => {
 		get(id).ok(({ user }) => setProfile(user))
-	}, [id])
+	}, [id, version])
 
 	return (
 		<>

@@ -4,6 +4,7 @@ import { CloseIcon, ProjectsIcon, AddIcon } from './Icons.js'
 import { useUI } from '#context/UI.js'
 import { SettingsIcon } from 'lucide-preact'
 import { gradient, logoColors } from './Colorpicker.js'
+import { type VNode } from 'preact'
 
 const colorStyle = (color?: string) => ({
 	color: new Color(color ?? '#212529').luminosity() > 0.5 ? 'black' : 'white',
@@ -17,6 +18,7 @@ export const ProjectMenu = ({
 		href: string
 		color?: string
 		disabled?: boolean
+		icon?: VNode<any>
 	}
 }) => {
 	const { visibleProjects } = useSettings()
@@ -107,7 +109,7 @@ export const ProjectMenu = ({
 							}}
 							class="d-flex align-items-center justify-content-center mb-2"
 						>
-							<AddIcon />
+							{action.icon ?? <AddIcon />}
 						</a>
 					)}
 					{action !== undefined && (action.disabled ?? false) === true && (
@@ -125,7 +127,7 @@ export const ProjectMenu = ({
 								boxShadow: '0 0 8px 0 #00000075',
 							}}
 						>
-							<AddIcon />
+							{action.icon ?? <AddIcon />}
 						</button>
 					)}
 					<button

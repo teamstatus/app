@@ -26,17 +26,17 @@ export const UserInfo = (
 		<span>
 			<span>{name}</span>
 			{'pronouns' in profile && profile.pronouns !== undefined && (
-				<span class="text-muted">({profile.pronouns})</span>
+				<small class="text-muted ms-1">({profile.pronouns})</small>
 			)}
 			<span class="text-muted mx-1">&middot;</span>
-			<small class="text-muted">
+			<span class="text-muted">
 				<a
 					href={`/user/${encodeURIComponent(id)}`}
 					style={{ color: 'inherit' }}
 				>
 					{id}
 				</a>
-			</small>
+			</span>
 		</span>
 	)
 }
