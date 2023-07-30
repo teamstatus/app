@@ -1,9 +1,8 @@
 import cx from 'classnames'
-import { route } from 'preact-router'
 import { useState } from 'preact/hooks'
 import { type Project } from '#context/Projects.js'
 import { useSyncs } from '#context/Syncs.js'
-import { ApplyIcon, BackIcon, NextIcon } from './Icons.js'
+import { ApplyIcon, BackIcon, SubmitIcon } from './Icons.js'
 
 export const SyncSettings = ({
 	projects,
@@ -24,6 +23,7 @@ export const SyncSettings = ({
 	const [selectedProjects, setSelectedProjects] = useState<string[]>([])
 	const defaultSyncName = `Sync ${new Date().toISOString().slice(0, 10)}`
 	const [name, setName] = useState(defaultSyncName)
+	const [createdSyncId, setCreatedSyncId] = useState<string>()
 
 	const startDate =
 		startDay.length > 0 && startTime.length > 0
@@ -41,7 +41,7 @@ export const SyncSettings = ({
 
 	return (
 		<section>
-			<h2>Projects in the sync</h2>
+			<label class="mb-2">Projects</label>
 			{projects.map((project) => (
 				<div class="form-check">
 					<label htmlFor={project.id}>
@@ -136,19 +136,11 @@ export const SyncSettings = ({
 					onInput={(e) => setName((e.target as HTMLInputElement).value)}
 				/>
 			</div>
-			<div class="d-flex align-items-center justify-content-between">
+			<div class="d-flex align-items-center justify-content-between mt-4">
 				<span>
 					<a href={`/`} class="btn btn-outline-secondary">
 						<BackIcon />
 					</a>
-					<button
-						class={'btn btn-secondary ms-1'}
-						onClick={() => {
-							onUpdate(selectedProjects, startDate, endDate)
-						}}
-					>
-						<ApplyIcon />
-					</button>
 				</span>
 				<span>
 					<button
@@ -159,13 +151,26 @@ export const SyncSettings = ({
 						disabled={!isValid}
 						onClick={() => {
 							const res = addSync(selectedProjects, name, startDate, endDate)
-							if ('id' in res) route(`/sync/${res.id}`)
+							if ('id' in res) setCreatedSyncId(res.id)
 						}}
 					>
-						<NextIcon />
+						<SubmitIcon />
+					</button>
+					<button
+						class={'btn btn-secondary ms-1'}
+						onClick={() => {
+							onUpdate(selectedProjects, startDate, endDate)
+						}}
+					>
+						<ApplyIcon />
 					</button>
 				</span>
 			</div>
+			{createdSyncId !== undefined && (
+				<div class="alert alert-success mt-4" role="alert">
+					Sync <a href={`/sync/${createdSyncId}`}>{name}</a> created.
+				</div>
+			)}
 		</section>
 	)
 }
