@@ -50,23 +50,27 @@ export const Organization = ({ id }: { id: string }) => {
 									</p>
 								</>
 							)}
-							{organizationProjects.length > 0 &&
-								organizationProjects.map((project) => (
-									<>
-										<div class="my-2 d-flex justify-content-between align-items-center">
-											<a href={`/project/${encodeURIComponent(project.id)}`}>
-												{project.name ?? project.id}
-											</a>
-											<span
-												style={{ opacity: 0.75 }}
-												class="text-nowrap flex-shrink-0"
-											>
-												{project.id}
-											</span>
-										</div>
-										<hr />
-									</>
-								))}
+							{organizationProjects.length > 0 && (
+								<section class="mt-4">
+									<h2>Projects</h2>
+									{organizationProjects.map((project) => (
+										<>
+											<div class="my-2 d-flex justify-content-between align-items-center">
+												<a href={`/project/${encodeURIComponent(project.id)}`}>
+													{project.name ?? project.id}
+												</a>
+												<span
+													style={{ opacity: 0.75 }}
+													class="text-nowrap flex-shrink-0"
+												>
+													{project.id}
+												</span>
+											</div>
+											<hr />
+										</>
+									))}
+								</section>
+							)}
 						</section>
 					</div>
 				</div>

@@ -20,18 +20,18 @@ export const AppNavigation = ({ onClick }: { onClick?: () => unknown }) => {
 					{user.id !== undefined && (
 						<>
 							<a
-								href="/projects"
-								class="btn btn-link text-body text-decoration-none"
-								onClick={onClick}
-							>
-								<ProjectsIcon /> <span class="ms-2">Projects</span>
-							</a>
-							<a
 								href="/syncs"
 								class="btn btn-link text-body text-decoration-none"
 								onClick={onClick}
 							>
 								<SyncsIcon /> <span class="ms-2">Syncs</span>
+							</a>
+							<a
+								href="/projects"
+								class="btn btn-link text-body text-decoration-none"
+								onClick={onClick}
+							>
+								<ProjectsIcon /> <span class="ms-2">Projects</span>
 							</a>
 							<a
 								href="/organizations"
