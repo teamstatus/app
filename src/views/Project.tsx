@@ -1,12 +1,13 @@
 import { ProjectHeader } from '#components/ProjectHeader.js'
 import { Status } from '#components/Status.js'
-import { canCreateStatus, useProjects } from '#context/Projects.js'
+import { Role, canCreateStatus, useProjects } from '#context/Projects.js'
 import { useSettings } from '#context/Settings.js'
 import { useStatus } from '#context/Status.js'
 import { ProjectMenu } from '#components/ProjectMenu.js'
 import { Main } from '#components/Main.js'
 import { NotFound } from '#components/NotFound.js'
 import { useEffect } from 'preact/hooks'
+import { EditIcon, MembersIcon } from '#components/Icons.js'
 
 export const Project = ({
 	id,
@@ -74,11 +75,23 @@ export const Project = ({
 				</section>
 			</Main>
 			<ProjectMenu
-				action={{
-					href: `/project/${encodeURIComponent(id)}/compose`,
-					color,
-					disabled: !canCreateStatus(project.role),
-				}}
+				actions={[
+					{
+						href: `/project/${encodeURIComponent(id)}/invite`,
+						icon: <MembersIcon />,
+						disabled: project.role !== Role.OWNER,
+					},
+					{
+						href: `/project/${encodeURIComponent(id)}/settings`,
+						icon: <EditIcon />,
+						disabled: project.role !== Role.OWNER,
+					},
+					{
+						href: `/project/${encodeURIComponent(id)}/compose`,
+						color,
+						disabled: !canCreateStatus(project.role),
+					},
+				]}
 			/>
 		</>
 	)

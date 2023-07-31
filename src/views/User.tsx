@@ -38,10 +38,12 @@ export const User = () => {
 				</div>
 			</Main>
 			<ProjectMenu
-				action={{
-					href: '/user/edit',
-					icon: <EditIcon />,
-				}}
+				actions={[
+					{
+						href: '/user/edit',
+						icon: <EditIcon />,
+					},
+				]}
 			/>
 		</>
 	)

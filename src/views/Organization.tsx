@@ -1,10 +1,12 @@
 import { LogoHeader } from '#components/LogoHeader.js'
 import { ProjectMenu } from '#components/ProjectMenu.js'
 import { Main } from '#components/Main.js'
-import { useProjects } from '#context/Projects.js'
-import { OrganizationIcon } from '#components/Icons.js'
+import { Role, useProjects } from '#context/Projects.js'
+import { EditIcon, MembersIcon, OrganizationIcon } from '#components/Icons.js'
 import { parseProjectId } from '#proto/ids.js'
 import { NotFound } from '#components/NotFound.js'
+import { EditMenu } from '#components/EditMenu.js'
+import { RolePill } from '#components/RolePill.js'
 
 export const Organization = ({ id }: { id: string }) => {
 	const { organizations, projects } = useProjects()
@@ -56,15 +58,42 @@ export const Organization = ({ id }: { id: string }) => {
 									{organizationProjects.map((project) => (
 										<>
 											<div class="my-2 d-flex justify-content-between align-items-center">
-												<a href={`/project/${encodeURIComponent(project.id)}`}>
-													{project.name ?? project.id}
-												</a>
-												<span
-													style={{ opacity: 0.75 }}
-													class="text-nowrap flex-shrink-0"
-												>
-													{project.id}
-												</span>
+												<div>
+													<small class="text-muted text-nowrap">
+														{project.id}
+													</small>
+													<br />
+													<a
+														href={`/project/${encodeURIComponent(project.id)}`}
+													>
+														{project.name ?? project.id}
+													</a>
+												</div>
+												<div class="d-flex flex-column  align-items-end">
+													<RolePill role={project.role} class="mb-1" />
+													{project.role === Role.OWNER && (
+														<EditMenu>
+															<a
+																href={`/project/${encodeURIComponent(
+																	project.id,
+																)}/settings`}
+																title={'Settings'}
+																class={'btn btn-sm btn-outline-secondary ms-2'}
+															>
+																<EditIcon size={18} />
+															</a>
+															<a
+																href={`/project/${encodeURIComponent(
+																	project.id,
+																)}/invite`}
+																title={'Invite a user'}
+																class={'btn btn-sm btn-outline-secondary ms-2'}
+															>
+																<MembersIcon size={18} />
+															</a>
+														</EditMenu>
+													)}
+												</div>
 											</div>
 											<hr />
 										</>
@@ -76,11 +105,13 @@ export const Organization = ({ id }: { id: string }) => {
 				</div>
 			</Main>
 			<ProjectMenu
-				action={{
-					href: `/project/create?${new URLSearchParams({
-						organization: id,
-					})}`,
-				}}
+				actions={[
+					{
+						href: `/project/create?${new URLSearchParams({
+							organization: id,
+						})}`,
+					},
+				]}
 			/>
 		</>
 	)

@@ -1,6 +1,6 @@
 import { useProjects, type Invitation } from '#context/Projects.js'
 import { parseInvitationId } from '#proto/ids.js'
-import { RolePill } from '#views/RolePill.js'
+import { RolePill } from '#components/RolePill.js'
 import { AcceptInvitationIcon } from './Icons.js'
 import { ProjectId } from './ProjectId.js'
 

@@ -8,18 +8,18 @@ import { type VNode } from 'preact'
 
 const colorStyle = (color?: string) => ({
 	color: new Color(color ?? '#212529').luminosity() > 0.5 ? 'black' : 'white',
-	backgroundColor: color ?? '#212529',
+	backgroundColor: new Color(color ?? '#212529').hex(),
 })
 
 export const ProjectMenu = ({
-	action,
+	actions,
 }: {
-	action?: {
+	actions?: {
 		href: string
 		color?: string
 		disabled?: boolean
 		icon?: VNode<any>
-	}
+	}[]
 }) => {
 	const { visibleProjects } = useSettings()
 	const { projectsMenuVisible, showProjectsMenu } = useUI()
@@ -95,41 +95,45 @@ export const ProjectMenu = ({
 				)}
 			{!projectsMenuVisible && (
 				<>
-					{action !== undefined && (action.disabled ?? false) === false && (
-						<a
-							href={action.href}
-							onClick={() => showProjectsMenu(false)}
-							style={{
-								borderRadius: '100%',
-								...colorStyle(action.color),
-								display: 'block',
-								height: '48px',
-								width: '48px',
-								boxShadow: '0 0 8px 0 #00000075',
-							}}
-							class="d-flex align-items-center justify-content-center mb-2"
-						>
-							{action.icon ?? <AddIcon />}
-						</a>
-					)}
-					{action !== undefined && (action.disabled ?? false) === true && (
-						<button
-							disabled
-							class="btn d-flex align-items-center justify-content-center mb-2"
-							style={{
-								border: 0,
-								borderRadius: '100%',
-								color: 'black',
-								backgroundColor: '#999',
-								display: 'block',
-								height: '48px',
-								width: '48px',
-								boxShadow: '0 0 8px 0 #00000075',
-							}}
-						>
-							{action.icon ?? <AddIcon />}
-						</button>
-					)}
+					{(actions ?? []).map((action) => (
+						<>
+							{(action.disabled ?? false) === false && (
+								<a
+									href={action.href}
+									onClick={() => showProjectsMenu(false)}
+									style={{
+										borderRadius: '100%',
+										...colorStyle(action.color),
+										display: 'block',
+										height: '48px',
+										width: '48px',
+										boxShadow: '0 0 8px 0 #00000075',
+									}}
+									class="d-flex align-items-center justify-content-center mb-2"
+								>
+									{action.icon ?? <AddIcon />}
+								</a>
+							)}
+							{(action.disabled ?? false) === true && (
+								<button
+									disabled
+									class="btn d-flex align-items-center justify-content-center mb-2"
+									style={{
+										border: 0,
+										borderRadius: '100%',
+										color: 'black',
+										backgroundColor: '#999',
+										display: 'block',
+										height: '48px',
+										width: '48px',
+										boxShadow: '0 0 8px 0 #00000075',
+									}}
+								>
+									{action.icon ?? <AddIcon />}
+								</button>
+							)}
+						</>
+					))}
 					<button
 						onClick={() => showProjectsMenu(true)}
 						style={{

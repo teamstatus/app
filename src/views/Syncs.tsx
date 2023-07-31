@@ -1,19 +1,14 @@
 import { decodeTime } from 'ulid'
-import { useSyncs, type Sync } from '#context/Syncs.js'
+import { useSyncs } from '#context/Syncs.js'
 import { LogoHeader } from '#components/LogoHeader.js'
 import { ProjectMenu } from '#components/ProjectMenu.js'
 import { Main } from '#components/Main.js'
-import {
-	CollapseRightIcon,
-	DeleteIcon,
-	SubMenuIcon,
-	SyncIcon,
-} from '#components/Icons.js'
+import { DeleteIcon, SyncIcon } from '#components/Icons.js'
 import { ShortDate } from '#components/ShortDate.js'
-import { useState } from 'preact/hooks'
+import { EditMenu } from '#components/EditMenu.js'
 
 export const Syncs = () => {
-	const { syncs } = useSyncs()
+	const { syncs, deleteSync } = useSyncs()
 	const syncItems = Object.values(syncs)
 
 	return (
@@ -52,7 +47,17 @@ export const Syncs = () => {
 													<br />
 													<a href={`/sync/${sync.id}`}>{sync.title}</a>
 												</div>
-												<EditMenu sync={sync} />
+												<EditMenu>
+													<button
+														type="button"
+														class="btn btn-sm btn-outline-danger me-1"
+														onClick={() => {
+															deleteSync(sync)
+														}}
+													>
+														<DeleteIcon size={18} />
+													</button>
+												</EditMenu>
 											</div>
 											<hr />
 										</>
@@ -62,44 +67,7 @@ export const Syncs = () => {
 					</div>
 				</div>
 			</Main>
-			<ProjectMenu action={{ href: '/sync/create' }} />
+			<ProjectMenu actions={[{ href: '/sync/create' }]} />
 		</>
-	)
-}
-
-const EditMenu = ({ sync }: { sync: Sync }) => {
-	const [operationsVisible, showOperations] = useState<boolean>(false)
-	const { deleteSync } = useSyncs()
-
-	if (!operationsVisible) {
-		return (
-			<button
-				type="button"
-				class="btn btn-sm btn-light me-1"
-				onClick={() => showOperations(true)}
-			>
-				<SubMenuIcon size={18} />
-			</button>
-		)
-	}
-	return (
-		<div>
-			<button
-				type="button"
-				class="btn btn-sm btn-outline-danger me-1"
-				onClick={() => {
-					deleteSync(sync)
-				}}
-			>
-				<DeleteIcon size={18} />
-			</button>
-			<button
-				type="button"
-				class="btn btn-sm btn-light"
-				onClick={() => showOperations(false)}
-			>
-				<CollapseRightIcon size={18} />
-			</button>
-		</div>
 	)
 }

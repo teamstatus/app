@@ -6,20 +6,17 @@ import {
 	ColorsIcon,
 	DownIcon,
 	HiddenIcon,
-	MembersIcon,
 	PersistencePendingIcon,
 	ProjectsIcon,
-	SettingsIcon,
 	UpIcon,
 	VisibleIcon,
 } from '#components/Icons.js'
-import { Role, useProjects, type Project } from '#context/Projects.js'
+import { useProjects, type Project } from '#context/Projects.js'
 import { useSettings, type ProjectPersonalization } from '#context/Settings.js'
 import { LogoHeader } from '#components/LogoHeader.js'
 import { ProjectMenu } from '#components/ProjectMenu.js'
 import { Invitations } from '#components/Invitations.js'
 import { ProjectId } from '#components/ProjectId.js'
-import { RolePill } from './RolePill.js'
 import { Main } from '#components/Main.js'
 
 export const Projects = () => {
@@ -74,16 +71,18 @@ export const Projects = () => {
 				</div>
 			</Main>
 			<ProjectMenu
-				action={{
-					href: '/project/create',
-				}}
+				actions={[
+					{
+						href: '/project/create',
+					},
+				]}
 			/>
 		</>
 	)
 }
 
 const ProjectInfo = ({
-	project: { id, name, persisted, role },
+	project: { id, name, persisted },
 	personalization: { alias, icon, color, hidden },
 	first,
 	last,
@@ -102,10 +101,7 @@ const ProjectInfo = ({
 		<div class="mb-3 mb-md-4 mt-md-4">
 			<div class="d-flex align-items-center justify-content-between">
 				<ProjectId id={id} />
-				<div>
-					{persisted === false && <PersistencePendingIcon />}
-					<RolePill role={role} />
-				</div>
+				<div>{persisted === false && <PersistencePendingIcon />}</div>
 			</div>
 			{name !== undefined && (
 				<div>
@@ -165,24 +161,6 @@ const ProjectInfo = ({
 					>
 						<DownIcon />
 					</button>
-					{role === Role.OWNER && (
-						<>
-							<a
-								href={`/project/${encodeURIComponent(id)}/invite`}
-								title={'Invite a user'}
-								class={'btn btn-sm btn-outline-secondary ms-2'}
-							>
-								<MembersIcon />
-							</a>
-							<a
-								href={`/project/${encodeURIComponent(id)}/settings`}
-								title={'Edit the project'}
-								class={'btn btn-sm btn-outline-secondary ms-2'}
-							>
-								<SettingsIcon />
-							</a>
-						</>
-					)}
 				</div>
 			</div>
 			{!colorsVisible && (

@@ -84,7 +84,10 @@ export const CreateProject = ({ organization }: { organization?: string }) => {
 							/>
 						</div>
 						<div class="d-flex align-items-center justify-content-between">
-							<a href={`/projects/`} class="btn btn-outline-danger">
+							<a
+								href={`/organization/${encodeURIComponent(organizationId)}`}
+								class="btn btn-outline-danger"
+							>
 								<BackIcon />
 							</a>
 							<button

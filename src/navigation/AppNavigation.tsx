@@ -2,7 +2,6 @@ import { useAuth } from '#context/Auth.js'
 import {
 	HelpIcon,
 	LogoutIcon,
-	ProjectsIcon,
 	SyncsIcon,
 	LogInIcon,
 	UserIcon,
@@ -25,13 +24,6 @@ export const AppNavigation = ({ onClick }: { onClick?: () => unknown }) => {
 								onClick={onClick}
 							>
 								<SyncsIcon /> <span class="ms-2">Syncs</span>
-							</a>
-							<a
-								href="/projects"
-								class="btn btn-link text-body text-decoration-none"
-								onClick={onClick}
-							>
-								<ProjectsIcon /> <span class="ms-2">Projects</span>
 							</a>
 							<a
 								href="/organizations"

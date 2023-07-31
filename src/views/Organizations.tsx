@@ -32,14 +32,20 @@ export const Organizations = () => {
 								organizations.map((organization) => (
 									<>
 										<div class="my-2 d-flex justify-content-between">
-											<a
-												href={`/organization/${encodeURIComponent(
-													organization.id,
-												)}`}
-											>
-												{organization.name ?? organization.id}
-											</a>
-											<span style={{ opacity: 0.75 }}>{organization.id}</span>
+											<div>
+												<small class="text-muted text-nowrap">
+													{organization.id}
+												</small>
+												<br />
+												<a
+													href={`/organization/${encodeURIComponent(
+														organization.id,
+													)}`}
+												>
+													{organization.name ?? organization.id}
+												</a>
+											</div>
+											<div></div>
 										</div>
 										<hr />
 									</>
@@ -48,7 +54,7 @@ export const Organizations = () => {
 					</div>
 				</div>
 			</Main>
-			<ProjectMenu action={{ href: '/organization/create' }} />
+			<ProjectMenu actions={[{ href: '/organization/create' }]} />
 		</>
 	)
 }

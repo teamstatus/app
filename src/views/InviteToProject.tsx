@@ -3,7 +3,7 @@ import { useState } from 'preact/hooks'
 import { BackIcon, SubmitIcon } from '#components/Icons.js'
 import { type ProblemDetail } from '#context/ProblemDetail.js'
 import { Role, useProjects } from '#context/Projects.js'
-import { isUserId, slugPart } from '#proto/ids.js'
+import { isUserId, parseProjectId, slugPart } from '#proto/ids.js'
 import { ProjectHeader } from '#components/ProjectHeader.js'
 import { ProjectMenu } from '#components/ProjectMenu.js'
 import { ProgressBar } from '#components/ProgressBar.js'
@@ -103,7 +103,12 @@ export const InviteToProject = ({
 									<div class="form-text">(required)</div>
 								</div>
 								<div class="d-flex align-items-center justify-content-between">
-									<a href={`/projects/`} class="btn btn-outline-danger">
+									<a
+										href={`/organization/${encodeURIComponent(
+											parseProjectId(id).organization ?? '',
+										)}`}
+										class="btn btn-outline-danger"
+									>
 										<BackIcon />
 									</a>
 									<button
