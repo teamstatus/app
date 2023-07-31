@@ -44,7 +44,7 @@ export const Login = ({ redirect }: { redirect?: string }) => {
 					</div>
 				)}
 				{autoLoginState === 'failed' && (
-					<form onSubmit={noop}>
+					<>
 						<div class="d-flex d-flex align-items-end justify-content-between ">
 							<div class="flex-grow-1">
 								<label for="emailInput" class="form-label">
@@ -164,14 +164,9 @@ export const Login = ({ redirect }: { redirect?: string }) => {
 								requested it above.
 							</div>
 						</div>
-					</form>
+					</>
 				)}
 			</section>
 		</>
 	)
-}
-
-const noop = (e: Event) => {
-	e.preventDefault()
-	return false
 }

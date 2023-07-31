@@ -21,41 +21,39 @@ export const SelectID = () => {
 				All users need a user ID, like <code>@alex</code>. Please select one for
 				yourself:
 			</p>
-			<form>
-				<div class="mb-3 ">
-					<label for="idInput" class="form-label">
-						ID
-					</label>
-					<div class="input-group">
-						<span class="input-group-text">@</span>
-						<input
-							type="text"
-							class="form-control"
-							id="idInput"
-							onInput={(e) => setId((e.target as HTMLInputElement).value)}
-							value={id}
-							placeholder='e.g. "alex"'
-							pattern={`^${slugPart}$`}
-							required
-						/>
-					</div>
-
-					<div class="form-text">(required)</div>
-				</div>
-				<div class="mb-3 ">
-					<label for="nameInput" class="form-label">
-						Your name
-					</label>
+			<div class="mb-3 ">
+				<label for="idInput" class="form-label">
+					ID
+				</label>
+				<div class="input-group">
+					<span class="input-group-text">@</span>
 					<input
 						type="text"
 						class="form-control"
-						id="nameInput"
-						onInput={(e) => setName((e.target as HTMLInputElement).value)}
-						value={name}
-						placeholder='e.g. "Alex Doe"'
+						id="idInput"
+						onInput={(e) => setId((e.target as HTMLInputElement).value)}
+						value={id}
+						placeholder='e.g. "alex"'
+						pattern={`^${slugPart}$`}
+						required
 					/>
 				</div>
-			</form>
+
+				<div class="form-text">(required)</div>
+			</div>
+			<div class="mb-3 ">
+				<label for="nameInput" class="form-label">
+					Your name
+				</label>
+				<input
+					type="text"
+					class="form-control"
+					id="nameInput"
+					onInput={(e) => setName((e.target as HTMLInputElement).value)}
+					value={name}
+					placeholder='e.g. "Alex Doe"'
+				/>
+			</div>
 			{error !== undefined && (
 				<div class="alert alert-danger" role="alert">
 					An error occured ({error})!
@@ -72,6 +70,7 @@ export const SelectID = () => {
 						CREATE(`/me/user`, { id: userId, name })
 							.ok(() => {
 								setUser({
+									...user,
 									email: user.email,
 									id: userId,
 								})

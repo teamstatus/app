@@ -26,7 +26,7 @@ const requestPromise: Record<string, CachedRequest<any>> = {}
 
 export const request = <Result extends Record<string, unknown>>(
 	resource: string,
-	requestOptions?: RequestInit,
+	requestOptions?: RequestInit & { cacheError?: boolean },
 ): RequestResult<Result> => {
 	const successHandler: SuccessHandler<Result>[] = []
 	const problemHandler: ProblemHandler[] = []
@@ -87,8 +87,10 @@ export const request = <Result extends Record<string, unknown>>(
 
 	p.request
 		.then((res) => {
-			if ('problem' in res)
+			if ('problem' in res) {
 				problemHandler.map((handler) => handler(res.problem))
+				if (requestOptions?.cacheError === false) delete requestPromise[key]
+			}
 			if ('result' in res) successHandler.map((handler) => handler(res.result))
 			anywayHandler.map((handler) => handler())
 		})
@@ -97,6 +99,7 @@ export const request = <Result extends Record<string, unknown>>(
 			problemHandler.map((handler) =>
 				handler(InternalError((error as Error).message)),
 			)
+			if (requestOptions?.cacheError === false) delete requestPromise[key]
 		})
 
 	const r: RequestResult<Result> = {
@@ -119,7 +122,8 @@ export const request = <Result extends Record<string, unknown>>(
 
 export const GET = <Response extends Record<string, unknown>>(
 	resource: string,
-): RequestResult<Response> => request<Response>(resource)
+	options?: { cacheError?: boolean },
+): RequestResult<Response> => request<Response>(resource, options)
 
 export const CREATE = <Response extends Record<string, unknown>>(
 	resource: string,

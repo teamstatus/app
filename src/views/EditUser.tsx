@@ -5,20 +5,23 @@ import { useState } from 'preact/hooks'
 import { BackIcon, SubmitIcon } from '#components/Icons.js'
 import cx from 'classnames'
 import { route } from 'preact-router'
-import { type UserProfile, useProfile } from '#context/UserProfile.js'
 import type { ProblemDetail } from '#context/ProblemDetail.js'
+import { useAuth, type UserContext } from '#context/Auth.js'
 
 export const EditUser = () => {
-	const { profile } = useProfile()
+	const { user } = useAuth()
 
-	if (profile === undefined) return null
+	if (user === undefined) return null
 
-	return <EditUserProfile profile={profile} />
+	return <EditUserProfile user={user} />
 }
 
-const EditUserProfile = ({ profile }: { profile: UserProfile }) => {
-	const { update } = useProfile()
-	const [edited, setEdited] = useState<UserProfile>(profile)
+const EditUserProfile = ({ user }: { user: UserContext }) => {
+	const { update } = useAuth()
+	const [edited, setEdited] = useState<{ name: string; pronouns?: string }>({
+		name: user.name ?? '',
+		pronouns: user.pronouns,
+	})
 	const [error, setError] = useState<ProblemDetail>()
 	const isValid = edited.name.length > 0
 	return (
@@ -45,7 +48,7 @@ const EditUserProfile = ({ profile }: { profile: UserProfile }) => {
 									placeholder='e.g. "alex@example.com"'
 									minLength={1}
 									required
-									value={edited.email}
+									value={user.email ?? ''}
 									disabled
 								/>
 							</div>
@@ -60,7 +63,7 @@ const EditUserProfile = ({ profile }: { profile: UserProfile }) => {
 									placeholder='e.g. "@alex"'
 									minLength={1}
 									required
-									value={edited.id}
+									value={user.id ?? ''}
 									disabled
 								/>
 							</div>
@@ -100,13 +103,10 @@ const EditUserProfile = ({ profile }: { profile: UserProfile }) => {
 									value={edited.pronouns ?? ''}
 									onInput={(e) => {
 										const v = (e.target as HTMLTextAreaElement).value
-										setEdited((profile) => {
-											if (profile === undefined) return profile
-											return {
-												...profile,
-												pronouns: v.length > 0 ? v : undefined,
-											}
-										})
+										setEdited((profile) => ({
+											...profile,
+											pronouns: v.length > 0 ? v : undefined,
+										}))
 									}}
 								/>
 							</div>

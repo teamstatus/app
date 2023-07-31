@@ -30,27 +30,24 @@ import { ProjectSettings } from '#views/ProjectSettings.js'
 import { UserProfile } from '#views/UserProfile.js'
 import { Provider as UserProfilesProvider } from '#context/UserProfiles.js'
 import { EditUser } from '#views/EditUser.js'
-import { Provider as UserProfileProvider } from '#context/UserProfile.js'
 import { SyncExportTeams } from '#views/SyncExportTeams.js'
 import { SyncExportConfluence } from '#views/SyncExportConfluence.js'
 
 export const App = () => (
 	<AuthProvider>
-		<UserProfileProvider>
-			<UserProfilesProvider>
-				<ProjectsProvider>
-					<SettingsProvider>
-						<StatusProvider>
-							<SyncsProvider>
-								<UIProvider>
-									<Routing />
-								</UIProvider>
-							</SyncsProvider>
-						</StatusProvider>
-					</SettingsProvider>
-				</ProjectsProvider>
-			</UserProfilesProvider>
-		</UserProfileProvider>
+		<UserProfilesProvider>
+			<ProjectsProvider>
+				<SettingsProvider>
+					<StatusProvider>
+						<SyncsProvider>
+							<UIProvider>
+								<Routing />
+							</UIProvider>
+						</SyncsProvider>
+					</StatusProvider>
+				</SettingsProvider>
+			</ProjectsProvider>
+		</UserProfilesProvider>
 	</AuthProvider>
 )
 

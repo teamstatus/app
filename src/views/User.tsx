@@ -3,19 +3,9 @@ import { LogoHeader } from '#components/LogoHeader.js'
 import { ProjectMenu } from '#components/ProjectMenu.js'
 import { Main } from '#components/Main.js'
 import { EditIcon } from '#components/Icons.js'
-import { useProfile } from '#context/UserProfile.js'
-
-export type MyProfile = {
-	id: string // e.g. '@alex'
-	email: string // e.g. 'alex@example.com'
-	name: string // e.g. 'Alex Doe'
-	version: number // e.g. 1
-	pronouns?: string
-}
 
 export const User = () => {
 	const { user } = useAuth()
-	const { profile } = useProfile()
 
 	if (user === undefined) return null
 	return (
@@ -30,16 +20,17 @@ export const User = () => {
 							<dd>{user.email}</dd>
 							<dt>ID</dt>
 							<dd>{user.id}</dd>
-							{profile !== undefined && (
+							{user.name !== undefined && (
 								<>
 									<dt>Name</dt>
-									<dd>{profile.name}</dd>
-									{profile?.pronouns !== undefined && (
-										<>
-											<dt>Pronouns</dt>
-											<dd>{profile.pronouns}</dd>
-										</>
-									)}
+									<dd>{user.name}</dd>
+								</>
+							)}
+
+							{user.pronouns !== undefined && (
+								<>
+									<dt>Pronouns</dt>
+									<dd>{user.pronouns}</dd>
 								</>
 							)}
 						</dl>
