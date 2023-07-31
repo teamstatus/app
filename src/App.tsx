@@ -31,6 +31,8 @@ import { UserProfile } from '#views/UserProfile.js'
 import { Provider as UserProfilesProvider } from '#context/UserProfiles.js'
 import { EditUser } from '#views/EditUser.js'
 import { Provider as UserProfileProvider } from '#context/UserProfile.js'
+import { SyncExportTeams } from '#views/SyncExportTeams.js'
+import { SyncExportConfluence } from '#views/SyncExportConfluence.js'
 
 export const App = () => (
 	<AuthProvider>
@@ -65,6 +67,11 @@ export const Routing = () => {
 					<Route path="/projects" component={Projects} />
 					<Route path="/sync/create" component={CreateSync} />
 					<Route path="/sync/:id" component={Sync} />
+					<Route path="/sync/:id/export/teams" component={SyncExportTeams} />
+					<Route
+						path="/sync/:id/export/confluence"
+						component={SyncExportConfluence}
+					/>
 					<Route path="/syncs" component={Syncs} />
 					<Route path="/project/create" component={CreateProject} />
 					<Route path="/organization/create" component={CreateOrganization} />

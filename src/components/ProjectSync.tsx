@@ -5,8 +5,8 @@ import { StatusSync } from '#components/StatusSync.js'
 import './ProjectSync.css'
 import { ShortDate } from '#components/ShortDate.js'
 
-const byTimeAsc = (s1: Status, s2: Status): number =>
-	decodeTime(s1.id) - decodeTime(s2.id)
+export const byTimeDesc = (s1: Status, s2: Status): number =>
+	decodeTime(s2.id) - decodeTime(s1.id)
 
 export const ProjectSync = ({
 	project,
@@ -43,7 +43,7 @@ export const ProjectSync = ({
 				</p>
 			</>
 		)}
-		{status.sort(byTimeAsc).map((status, i, arr) => (
+		{status.sort(byTimeDesc).map((status, i, arr) => (
 			<>
 				<StatusSync status={status} />
 				{arr.length > 1 && i !== arr.length - 1 && (

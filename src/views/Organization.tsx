@@ -4,6 +4,7 @@ import { Main } from '#components/Main.js'
 import { useProjects } from '#context/Projects.js'
 import { OrganizationIcon } from '#components/Icons.js'
 import { parseProjectId } from '#proto/ids.js'
+import { NotFound } from '#components/NotFound.js'
 
 export const Organization = ({ id }: { id: string }) => {
 	const { organizations, projects } = useProjects()
@@ -15,16 +16,7 @@ export const Organization = ({ id }: { id: string }) => {
 	)
 
 	if (organization === undefined) {
-		return (
-			<>
-				<Main class="container">
-					<div class="alert alert-danger" role="alert">
-						Organization not found: {id}
-					</div>
-				</Main>
-				<ProjectMenu />
-			</>
-		)
+		return <NotFound>Organization not found: {id}</NotFound>
 	}
 
 	return (

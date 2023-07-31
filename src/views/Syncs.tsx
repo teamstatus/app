@@ -41,7 +41,10 @@ export const Syncs = () => {
 									const ts = new Date(decodeTime(sync.id))
 									return (
 										<>
-											<div class="my-2 d-flex justify-content-between align-items-center">
+											<div
+												class="my-2 d-flex justify-content-between align-items-center"
+												key={sync.id}
+											>
 												<div>
 													<small class="text-muted text-nowrap">
 														<ShortDate date={ts} />

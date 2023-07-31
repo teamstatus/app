@@ -21,8 +21,7 @@ export const SyncSettings = ({
 	const [startTime, setStartTime] = useState('00:00') // '00:35'
 	const [endTime, setEndTime] = useState('00:00') // '00:35'
 	const [selectedProjects, setSelectedProjects] = useState<string[]>([])
-	const defaultSyncName = `Sync ${new Date().toISOString().slice(0, 10)}`
-	const [name, setName] = useState(defaultSyncName)
+	const [name, setName] = useState('')
 	const [createdSyncId, setCreatedSyncId] = useState<string>()
 
 	const startDate =
@@ -36,8 +35,8 @@ export const SyncSettings = ({
 
 	const isValid =
 		name.length > 0 &&
-		(startDate?.getTime() ?? -Number.MIN_SAFE_INTEGER) <
-			(endDate?.getTime() ?? Number.MIN_SAFE_INTEGER)
+		(startDate?.getTime() ?? Number.MIN_SAFE_INTEGER) <
+			(endDate?.getTime() ?? Number.MAX_SAFE_INTEGER)
 
 	return (
 		<section>
@@ -131,7 +130,7 @@ export const SyncSettings = ({
 					type="text"
 					class="form-control"
 					id="name"
-					placeholder={`e.g. "${defaultSyncName}"`}
+					placeholder={`e.g. "Weekly sync meeting"`}
 					value={name}
 					onInput={(e) => setName((e.target as HTMLInputElement).value)}
 				/>

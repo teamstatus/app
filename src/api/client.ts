@@ -49,16 +49,18 @@ export const request = <Result extends Record<string, unknown>>(
 	) {
 		p = {
 			ts: new Date(),
-			request: fetch(url, {
-				mode: 'cors',
-				credentials: 'include',
-				headers: {
-					'Content-Type': 'application/json; charset=utf-8',
-					Accept: 'application/json; charset=utf-8',
-					...(requestOptions?.headers ?? {}),
-				},
-				...requestOptions,
-			}).then(async (res) => {
+			request: throttle(async () =>
+				fetch(url, {
+					mode: 'cors',
+					credentials: 'include',
+					headers: {
+						'Content-Type': 'application/json; charset=utf-8',
+						Accept: 'application/json; charset=utf-8',
+						...(requestOptions?.headers ?? {}),
+					},
+					...requestOptions,
+				}),
+			)().then(async (res) => {
 				if (
 					res.headers
 						.get('content-type')

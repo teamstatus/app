@@ -7,6 +7,7 @@ import { useProjects } from '#context/Projects.js'
 import { useStatus } from '#context/Status.js'
 import { Main } from '#components/Main.js'
 import { ProjectMenu } from '#components/ProjectMenu.js'
+import { NotFound } from '#components/NotFound.js'
 
 export const ComposeStatus = ({
 	id,
@@ -20,16 +21,7 @@ export const ComposeStatus = ({
 
 	const project = projects[id]
 	if (project === undefined) {
-		return (
-			<>
-				<Main class="container">
-					<div class="alert alert-danger" role="alert">
-						Project not found: {id}
-					</div>
-				</Main>
-				<ProjectMenu />
-			</>
-		)
+		return <NotFound>Project not found: {id}</NotFound>
 	}
 
 	const isValid = message.length > 0

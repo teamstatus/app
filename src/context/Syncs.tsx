@@ -108,7 +108,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 					DELETE(`/sync/${sync.id}`, sync.version).ok(() => {
 						setSyncs((syncs) => {
 							delete syncs[sync.id]
-							return syncs
+							return { ...syncs }
 						})
 					}),
 			}}
