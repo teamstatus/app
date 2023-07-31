@@ -3,6 +3,7 @@ import { useStatus, type Status as TStatus } from '#context/Status.js'
 import { NotFound } from '#components/NotFound.js'
 import type { ComponentChildren } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
+import { fetchProjectStatusById } from '#api/status.js'
 
 export const WithStatus = ({
 	id,
@@ -13,7 +14,7 @@ export const WithStatus = ({
 	project: Project
 	children: (args: { status: TStatus }) => ComponentChildren
 }) => {
-	const { projectStatus, fetchProjectStatusById } = useStatus()
+	const { projectStatus } = useStatus()
 	const [status, setStatus] = useState<TStatus | undefined>(
 		projectStatus[project.id]?.find(({ id }) => id === id),
 	)

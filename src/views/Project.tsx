@@ -6,6 +6,7 @@ import { useStatus } from '#context/Status.js'
 import { ProjectMenu } from '#components/ProjectMenu.js'
 import { Main } from '#components/Main.js'
 import { NotFound } from '#components/NotFound.js'
+import { useEffect } from 'preact/hooks'
 
 export const Project = ({
 	id,
@@ -18,9 +19,13 @@ export const Project = ({
 	id: string // e.g. '$teamstatus#development'
 }) => {
 	const { projects } = useProjects()
-	const { projectStatus } = useStatus()
+	const { projectStatus, observe, hasMore, fetchMore } = useStatus()
 	const { getProjectPersonalization } = useSettings()
 	const { color } = getProjectPersonalization(id)
+
+	useEffect(() => {
+		observe(id)
+	}, [id])
 
 	const project = projects[id]
 	if (project === undefined) {
@@ -40,6 +45,19 @@ export const Project = ({
 							</div>
 						</div>
 					))}
+					{hasMore(project.id) && (
+						<div class="d-flex justify-content-center mt-2">
+							<button
+								type="button"
+								class="btn btn-outline-secondary"
+								onClick={() => {
+									fetchMore(project.id)
+								}}
+							>
+								load more
+							</button>
+						</div>
+					)}
 					{status.length === 0 && (
 						<div class="row">
 							<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">

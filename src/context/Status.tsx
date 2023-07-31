@@ -2,9 +2,7 @@ import { createContext, type ComponentChildren } from 'preact'
 import { useContext, useEffect, useState } from 'preact/hooks'
 import { ulid } from 'ulid'
 import { useAuth } from './Auth.js'
-import { useSettings } from './Settings.js'
-import { CREATE, DELETE, GET, UPDATE, type RequestResult } from '#api/client.js'
-import { notReady } from '#api/notReady.js'
+import { CREATE, DELETE, GET, UPDATE } from '#api/client.js'
 
 // Reactions can have special roles
 export enum ReactionRole {
@@ -41,11 +39,6 @@ export type Status = {
 
 export type StatusContext = {
 	projectStatus: Record<string, Status[]>
-	fetchProjectStatus: (
-		projectId: string,
-		startDate?: Date,
-		endDate?: Date,
-	) => RequestResult<{ status: Status[] }>
 	addProjectStatus: (
 		projectId: string,
 		message: string,
@@ -63,10 +56,9 @@ export type StatusContext = {
 		status: Status,
 		reaction: PersistedReaction,
 	) => { error: string } | { success: true }
-	fetchProjectStatusById: (
-		projectId: string,
-		statusId: string,
-	) => ReturnType<typeof GET<{ status: Status }>>
+	observe: (id: string) => void
+	hasMore: (id: string) => boolean
+	fetchMore: (id: string) => void
 }
 
 export const StatusContext = createContext<StatusContext>({
@@ -76,39 +68,55 @@ export const StatusContext = createContext<StatusContext>({
 	deleteStatus: () => ({ error: 'Not ready.' }),
 	addReaction: () => ({ error: 'Not ready.' }),
 	deleteReaction: () => ({ error: 'Not ready.' }),
-	fetchProjectStatus: notReady<{ status: Status[] }>,
-	fetchProjectStatusById: notReady<{ status: Status }>,
+	observe: () => undefined,
+	hasMore: () => false,
+	fetchMore: () => undefined,
 })
+
+type Page<Result extends Record<string, any>> = {
+	nextStartKey?: string
+} & Result
+
+const projectStatusPromiseMap: Record<
+	string,
+	ReturnType<typeof GET<Page<{ status: Status[] }>>>
+> = {}
 
 export const Provider = ({ children }: { children: ComponentChildren }) => {
 	const [status, setStatus] = useState<Record<string, Status[]>>({})
-	const { visibleProjects } = useSettings()
 	const { user } = useAuth()
+	const [observedProjects, setObservedProjects] = useState<
+		{ id: string; startKey?: string }[]
+	>([])
+	const [nextStartKey, setNextStartKey] = useState<Record<string, string>>({})
 
 	useEffect(() => {
-		Promise.all(
-			visibleProjects.map(
-				async ({ project: { id: projectId } }) =>
-					new Promise<{ projectId: string; status: Status[] }>((resolve) =>
-						GET<{ status: Status[] }>(
-							`/project/${encodeURIComponent(projectId)}/status`,
-						).ok(({ status }) => resolve({ status, projectId })),
-					),
-			),
-		)
-			.then((projectStatus) =>
-				setStatus(
-					projectStatus.reduce(
-						(allStatus, { projectId, status }) => ({
-							...allStatus,
-							[projectId]: status,
-						}),
-						{},
-					),
-				),
-			)
-			.catch(console.error)
-	}, [visibleProjects])
+		for (const { id, startKey } of observedProjects) {
+			const k = `${id}:${startKey ?? 'initial'}`
+			if (projectStatusPromiseMap[k] !== undefined) continue
+			projectStatusPromiseMap[k] = GET<Page<{ status: Status[] }>>(
+				`/project/${encodeURIComponent(id)}/status${
+					startKey === undefined
+						? ''
+						: `?${new URLSearchParams({ startKey }).toString()}`
+				}`,
+			).ok(({ status, nextStartKey }) => {
+				setStatus((projectStatus) => ({
+					...projectStatus,
+					[id]: [...(projectStatus[id] ?? []), ...status],
+				}))
+
+				setNextStartKey((keys) => {
+					if (nextStartKey !== undefined) {
+						return { ...keys, [id]: nextStartKey }
+					} else {
+						delete keys[id]
+						return { ...keys }
+					}
+				})
+			})
+		}
+	}, [observedProjects])
 
 	return (
 		<StatusContext.Provider
@@ -316,23 +324,17 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 
 					return { version: status.version + 1 }
 				},
-				fetchProjectStatus: (id, startDate, endDate) => {
-					const url = `/project/${encodeURIComponent(id)}/status`
-					const params = new URLSearchParams()
-					if (startDate !== undefined) {
-						params.set('inclusiveStartDate', startDate.toISOString())
-					}
-					if (endDate !== undefined) {
-						params.set('inclusiveEndDate', endDate.toISOString())
-					}
-					return GET<{ status: Status[] }>(`${url}?${params.toString()}`)
+				observe: (id) => {
+					setObservedProjects((observed) => [...new Set([...observed, { id }])])
 				},
-				fetchProjectStatusById: (projectId, statusId) =>
-					GET<{ status: Status }>(
-						`/project/${encodeURIComponent(
-							projectId,
-						)}/status/${encodeURIComponent(statusId)}`,
-					),
+				hasMore: (id) => nextStartKey[id] !== undefined,
+				fetchMore: (id) => {
+					const startKey = nextStartKey[id]
+					if (startKey === undefined) return
+					setObservedProjects((observed) => [
+						...new Set([...observed, { id, startKey }]),
+					])
+				},
 			}}
 		>
 			{children}

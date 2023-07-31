@@ -3,12 +3,12 @@ import { ProjectSync } from '#components/ProjectSync.js'
 import { SyncSettings } from '#components/SyncSettings.js'
 import { useProjects, type Project } from '#context/Projects.js'
 import { LogoHeader } from '#components/LogoHeader.js'
-import { useStatus, type Status } from '#context/Status.js'
+import { type Status } from '#context/Status.js'
 import { Main } from '#components/Main.js'
 import { ProjectMenu } from '#components/ProjectMenu.js'
+import { fetchProjectStatus } from '#api/status.js'
 
 export const CreateSync = () => {
-	const { fetchProjectStatus } = useStatus()
 	const { projects } = useProjects()
 	const [selectedProjects, setSelectedProjects] = useState<string[]>([])
 	const [startDate, setStartDate] = useState<Date>()
