@@ -1,12 +1,10 @@
 import cx from 'classnames'
 import { useState } from 'preact/hooks'
-import { AcceptProjectInvitation } from '#components/AcceptProjectInvitation.js'
 import { Colorpicker } from '#components/Colorpicker.js'
 import {
 	ColorsIcon,
 	DownIcon,
 	HiddenIcon,
-	PersistencePendingIcon,
 	ProjectsIcon,
 	UpIcon,
 	VisibleIcon,
@@ -15,11 +13,11 @@ import { useProjects, type Project } from '#context/Projects.js'
 import { useSettings, type ProjectPersonalization } from '#context/Settings.js'
 import { LogoHeader } from '#components/LogoHeader.js'
 import { ProjectMenu } from '#components/ProjectMenu.js'
-import { Invitations } from '#components/Invitations.js'
 import { ProjectId } from '#components/ProjectId.js'
 import { Main } from '#components/Main.js'
+import Color from 'color'
 
-export const Projects = () => {
+export const PersonalizeProjects = () => {
 	const { projects } = useProjects()
 	const { orderedProjects } = useSettings()
 
@@ -31,9 +29,14 @@ export const Projects = () => {
 					<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
 						<section>
 							<div class="d-flex justify-content-between align-items-center">
-								<h1>Projects</h1>
+								<h1>Personalize Projects</h1>
 								<ProjectsIcon />
 							</div>
+							<p>
+								Here you can personalize the projects for you. You can decide
+								whether to include them in the project menu, their order, color
+								and icon.
+							</p>
 							<div>
 								{orderedProjects.map(
 									({ project, personalization }, index, arr) => (
@@ -59,16 +62,6 @@ export const Projects = () => {
 						</section>
 					</div>
 				</div>
-				<div class="row mt-3">
-					<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
-						<AcceptProjectInvitation />
-					</div>
-				</div>
-				<div class="row mt-3">
-					<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
-						<Invitations />
-					</div>
-				</div>
 			</Main>
 			<ProjectMenu
 				actions={[
@@ -82,7 +75,7 @@ export const Projects = () => {
 }
 
 const ProjectInfo = ({
-	project: { id, name, persisted },
+	project: { id, name },
 	personalization: { alias, icon, color, hidden },
 	first,
 	last,
@@ -98,18 +91,28 @@ const ProjectInfo = ({
 	const visible = (hidden ?? false) === false
 
 	return (
-		<div class="mb-3 mb-md-4 mt-md-4">
-			<div class="d-flex align-items-center justify-content-between">
+		<div class="mb-2">
+			<div class="d-flex align-items-center">
 				<ProjectId id={id} />
-				<div>{persisted === false && <PersistencePendingIcon />}</div>
+				{name !== undefined && <small class="text-muted ms-2">({name})</small>}
 			</div>
-			{name !== undefined && (
-				<div>
-					<small class="text-muted">{name}</small>
-				</div>
-			)}
 			<div class="d-flex align-items-center justify-content-between mt-1">
 				<div class="flex-row d-flex">
+					<button
+						type="button"
+						class="btn btn-outline-secondary me-1"
+						onClick={() => setColorsVisible((v) => !v)}
+						disabled={!visible}
+						style={{
+							backgroundColor: color,
+							color:
+								new Color(color ?? '#212529').luminosity() > 0.5
+									? 'black'
+									: 'white',
+						}}
+					>
+						<ColorsIcon />
+					</button>
 					<input
 						type="text"
 						class="form-control me-1"
@@ -124,16 +127,21 @@ const ProjectInfo = ({
 						style={{ width: '50px' }}
 						disabled={!visible}
 					/>
-					<button
-						type="button"
-						class="btn btn-sm btn-outline-secondary"
-						onClick={() => setColorsVisible((v) => !v)}
+					<input
+						type="text"
+						class="form-control me-1"
+						value={alias ?? ''}
+						onInput={(e) => {
+							const alias = (e.target as HTMLInputElement).value
+							personalizeProject(id, {
+								alias: alias.length > 0 ? alias : undefined,
+							})
+						}}
 						disabled={!visible}
-					>
-						<ColorsIcon />
-					</button>
+						placeholder={'your alias'}
+					/>
 				</div>
-				<div>
+				<div class="flex-shrink-0">
 					<button
 						type="button"
 						class={cx('btn btn-sm btn-outline-secondary')}
@@ -143,7 +151,7 @@ const ProjectInfo = ({
 					</button>
 					<button
 						type="button"
-						class="btn btn-sm btn-outline-secondary ms-2"
+						class="btn btn-sm btn-outline-secondary ms-1"
 						disabled={!visible || first}
 						onClick={() => {
 							bumpProject(id, 'up')
@@ -163,20 +171,6 @@ const ProjectInfo = ({
 					</button>
 				</div>
 			</div>
-			{!colorsVisible && (
-				<input
-					type="text"
-					class="form-control mt-1"
-					value={alias ?? ''}
-					onInput={(e) => {
-						const alias = (e.target as HTMLInputElement).value
-						personalizeProject(id, {
-							alias: alias.length > 0 ? alias : undefined,
-						})
-					}}
-					disabled={!visible}
-				/>
-			)}
 			{colorsVisible && (
 				<Colorpicker
 					onColor={(color) => {

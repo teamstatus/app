@@ -5,7 +5,7 @@ import { useStatus, type Status as TStatus } from '#context/Status.js'
 import { Ago } from './Ago.js'
 import {
 	AddReactionIcon,
-	CollapseRightIcon,
+	CloseIcon,
 	DeleteIcon,
 	EditIcon,
 	PersistencePendingIcon,
@@ -104,14 +104,14 @@ export const Status = ({ status }: { status: TStatus }) => {
 								)}
 								<button
 									type="button"
-									class="btn btn-sm btn-light"
+									class="btn btn-sm btn-light me-1"
 									onClick={() => showOperations(false)}
 								>
-									<CollapseRightIcon size={18} />
+									<CloseIcon size={18} />
 								</button>
 							</>
 						)}
-						{!reactionsVisible && !operationsVisible && (
+						{!reactionsVisible && (
 							<button
 								type="button"
 								class="btn btn-sm btn-light"
@@ -131,10 +131,10 @@ export const Status = ({ status }: { status: TStatus }) => {
 						/>
 						<button
 							type="button"
-							class="btn btn-sm btn-light mb-1"
+							class="btn btn-sm btn-light"
 							onClick={() => showReactions(false)}
 						>
-							<CollapseRightIcon size={18} />
+							<CloseIcon size={18} />
 						</button>
 					</div>
 				)}

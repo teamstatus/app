@@ -1,28 +1,37 @@
 import Color from 'color'
 import { useSettings } from '#context/Settings.js'
-import { CloseIcon, ProjectsIcon, AddIcon } from './Icons.js'
+import { CloseIcon, ProjectsIcon, AddIcon, SubMenuIcon } from './Icons.js'
 import { useUI } from '#context/UI.js'
 import { SettingsIcon } from 'lucide-preact'
 import { gradient, logoColors } from './Colorpicker.js'
 import { type VNode } from 'preact'
+import { useState } from 'preact/hooks'
 
 const colorStyle = (color?: string) => ({
 	color: new Color(color ?? '#212529').luminosity() > 0.5 ? 'black' : 'white',
 	backgroundColor: new Color(color ?? '#212529').hex(),
 })
 
-export const ProjectMenu = ({
-	actions,
-}: {
-	actions?: {
-		href: string
-		color?: string
-		disabled?: boolean
-		icon?: VNode<any>
-	}[]
-}) => {
+type Action = {
+	href: string
+	color?: string
+	disabled?: boolean
+	icon?: VNode<any>
+	secondary?: boolean
+}
+
+export const ProjectMenu = ({ actions }: { actions?: Action[] }) => {
 	const { visibleProjects } = useSettings()
 	const { projectsMenuVisible, showProjectsMenu } = useUI()
+	const [showSecondaryActions, setShowSecondaryActions] =
+		useState<boolean>(false)
+
+	const primaryActions = (actions ?? []).filter(
+		({ secondary }) => secondary !== true,
+	)
+	const secondaryActions = (actions ?? []).filter(
+		({ secondary }) => secondary === true,
+	)
 
 	return (
 		<nav
@@ -95,28 +104,10 @@ export const ProjectMenu = ({
 				)}
 			{!projectsMenuVisible && (
 				<>
-					{(actions ?? []).map((action) => (
+					{secondaryActions.length > 0 && (
 						<>
-							{(action.disabled ?? false) === false && (
-								<a
-									href={action.href}
-									onClick={() => showProjectsMenu(false)}
-									style={{
-										borderRadius: '100%',
-										...colorStyle(action.color),
-										display: 'block',
-										height: '48px',
-										width: '48px',
-										boxShadow: '0 0 8px 0 #00000075',
-									}}
-									class="d-flex align-items-center justify-content-center mb-2"
-								>
-									{action.icon ?? <AddIcon />}
-								</a>
-							)}
-							{(action.disabled ?? false) === true && (
+							{!showSecondaryActions && (
 								<button
-									disabled
 									class="btn d-flex align-items-center justify-content-center mb-2"
 									style={{
 										border: 0,
@@ -128,11 +119,32 @@ export const ProjectMenu = ({
 										width: '48px',
 										boxShadow: '0 0 8px 0 #00000075',
 									}}
+									onClick={() => setShowSecondaryActions(true)}
 								>
-									{action.icon ?? <AddIcon />}
+									<SubMenuIcon />
 								</button>
 							)}
+							{showSecondaryActions && (
+								<>
+									{secondaryActions.map((action) => (
+										<ActionButton
+											action={action}
+											onClick={() => showProjectsMenu(false)}
+										/>
+									))}
+									<CloseButton
+										onClick={() => setShowSecondaryActions(false)}
+										class="mb-2"
+									/>
+								</>
+							)}
 						</>
+					)}
+					{primaryActions.map((action) => (
+						<ActionButton
+							action={action}
+							onClick={() => showProjectsMenu(false)}
+						/>
 					))}
 					<button
 						onClick={() => showProjectsMenu(true)}
@@ -156,7 +168,7 @@ export const ProjectMenu = ({
 			{projectsMenuVisible && (
 				<div class="d-flex">
 					<a
-						href={`/projects`}
+						href={`/personalize-projects`}
 						style={{
 							borderRadius: '100%',
 							color: 'black',
@@ -171,24 +183,79 @@ export const ProjectMenu = ({
 					>
 						<SettingsIcon strokeWidth={1} />
 					</a>
-					<button
-						onClick={() => showProjectsMenu(false)}
-						style={{
-							borderRadius: '100%',
-							color: 'white',
-							backgroundColor: '#999',
-							display: 'block',
-							height: '48px',
-							width: '48px',
-							boxShadow: '0 0 8px 0 #00000075',
-							border: '0',
-						}}
-						class="d-flex align-items-center justify-content-center"
-					>
-						<CloseIcon />
-					</button>
+					<CloseButton onClick={() => showProjectsMenu(false)} />
 				</div>
 			)}
 		</nav>
+	)
+}
+
+const CloseButton = ({
+	onClick,
+	class: c,
+}: {
+	onClick: () => unknown
+	class?: string
+}) => (
+	<button
+		onClick={onClick}
+		style={{
+			borderRadius: '100%',
+			color: 'white',
+			backgroundColor: '#999',
+			display: 'block',
+			height: '48px',
+			width: '48px',
+			boxShadow: '0 0 8px 0 #00000075',
+			border: '0',
+		}}
+		class={`d-flex align-items-center justify-content-center ${c}`}
+	>
+		<CloseIcon />
+	</button>
+)
+
+const ActionButton = ({
+	action,
+	onClick,
+}: {
+	action: Action
+	onClick: () => unknown
+}) => {
+	if (action.disabled === true)
+		return (
+			<button
+				disabled
+				class="btn d-flex align-items-center justify-content-center mb-2"
+				style={{
+					border: 0,
+					borderRadius: '100%',
+					color: 'black',
+					backgroundColor: '#999',
+					display: 'block',
+					height: '48px',
+					width: '48px',
+					boxShadow: '0 0 8px 0 #00000075',
+				}}
+			>
+				{action.icon ?? <AddIcon />}
+			</button>
+		)
+	return (
+		<a
+			href={action.href}
+			onClick={onClick}
+			style={{
+				borderRadius: '100%',
+				...colorStyle(action.color),
+				display: 'block',
+				height: '48px',
+				width: '48px',
+				boxShadow: '0 0 8px 0 #00000075',
+			}}
+			class="d-flex align-items-center justify-content-center mb-2"
+		>
+			{action.icon ?? <AddIcon />}
+		</a>
 	)
 }

@@ -12,7 +12,7 @@ import { CreateSync } from '#views/CreateSync.js'
 import { EditStatus } from '#views/EditStatus.js'
 import { InviteToProject } from '#views/InviteToProject.js'
 import { Project } from '#views/Project.js'
-import { Projects } from '#views/Projects.js'
+import { PersonalizeProjects } from '#views/PersonalizeProjects.js'
 import { Sync } from '#views/Sync.js'
 import { Syncs } from '#views/Syncs.js'
 import { User } from '#views/User.js'
@@ -61,7 +61,7 @@ export const Routing = () => {
 					<Route path="/" component={Dashboard} />
 					<Route path="/login" component={LoginRedirect} />
 					<Route path="/help" component={Help} />
-					<Route path="/projects" component={Projects} />
+					<Route path="/personalize-projects" component={PersonalizeProjects} />
 					<Route path="/sync/create" component={CreateSync} />
 					<Route path="/sync/:id" component={Sync} />
 					<Route path="/sync/:id/export/teams" component={SyncExportTeams} />

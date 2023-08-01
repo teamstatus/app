@@ -9,7 +9,7 @@ export const Invitations = () => {
 	if (invitations.length === 0) return null
 	return (
 		<section>
-			<h1>Open invitations</h1>
+			<h2>Open invitations</h2>
 			{invitations.map((invitation) => (
 				<Invitation invitation={invitation} />
 			))}

@@ -80,11 +80,13 @@ export const Project = ({
 						href: `/project/${encodeURIComponent(id)}/invite`,
 						icon: <MembersIcon />,
 						disabled: project.role !== Role.OWNER,
+						secondary: true,
 					},
 					{
 						href: `/project/${encodeURIComponent(id)}/settings`,
 						icon: <EditIcon />,
 						disabled: project.role !== Role.OWNER,
+						secondary: true,
 					},
 					{
 						href: `/project/${encodeURIComponent(id)}/compose`,

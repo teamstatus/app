@@ -13,7 +13,7 @@ export const AcceptProjectInvitation = () => {
 	const { acceptProjectInvitation } = useProjects()
 	return (
 		<section>
-			<h1>Accept project invitation</h1>
+			<h2>Accept project invitation</h2>
 			{error !== undefined && (
 				<div class="alert alert-danger" role="alert">
 					An error occured ({error.title})!
