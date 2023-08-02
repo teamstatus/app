@@ -1,4 +1,5 @@
 import { useAuth } from '#context/Auth.js'
+import { useOpenmoji } from '#context/Openmoji.js'
 import {
 	ReactionRole,
 	type PersistedReaction,
@@ -30,7 +31,7 @@ export const decision: TReaction = {
 }
 
 export const importantEvent: TReaction = {
-	description: 'An important event occured',
+	description: 'An important event occurred',
 	emoji: '📆',
 	role: ReactionRole.SIGNIFICANT,
 }
@@ -47,7 +48,7 @@ export const praise: TReaction = {
 }
 
 export const thumbsUp = {
-	emoji: '👍',
+	emoji: '👍️',
 }
 
 export const reactionPresets: TReaction[] = [
@@ -92,19 +93,20 @@ export const ReactionView = ({
 	onClick?: () => void
 	reaction: TReaction
 }) => {
+	const { svgFromEmoji } = useOpenmoji()
 	const { emoji, description } = reaction
 	const role = 'role' in reaction ? reaction.role : undefined
 	return (
 		<button
 			type="button"
-			class={'btn btn-sm me-1 mb-1 text-nowrap btn-light'}
+			class={'btn me-1 text-nowrap btn-light reaction'}
 			style={byUser === true ? { borderColor: 'goldenrod' } : {}}
 			title={description}
 			onClick={() => onClick?.()}
 			disabled={onClick === undefined}
 		>
 			{role !== undefined && <Role role={role} />}
-			<span>{emoji}</span>
+			{svgFromEmoji(emoji)}
 			{byUser === true && <AuthorIcon size={18} strokeWidth={1} class="ms-1" />}
 			{'persisted' in reaction && reaction.persisted === false && (
 				<PersistencePendingIcon class="ms-1" size={18} strokeWidth={1} />

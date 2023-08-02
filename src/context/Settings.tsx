@@ -179,6 +179,4 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 	)
 }
 
-export const Consumer = SettingsContext.Consumer
-
 export const useSettings = () => useContext(SettingsContext)

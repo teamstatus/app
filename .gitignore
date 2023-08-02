@@ -6,3 +6,5 @@ node_modules/
 npm-debug.log
 .envrc
 build/
+static/openmoji/
+src/openmoji/

@@ -40,12 +40,33 @@ export const OffsetMenu = ({ onClick }: { onClick: () => unknown }) => (
 		<div class="offcanvas-body d-flex flex-column justify-content-between">
 			<AppNavigation onClick={onClick} />
 			<footer class="text-muted text-center">
-				<p>
+				<p class="m-0">
 					<small>
 						version: {VERSION} &middot; build time:{' '}
 						<time dateTime={BUILD_TIME}>
 							<Ago date={new Date(BUILD_TIME)} />
 						</time>
+					</small>
+				</p>
+				<p class="m-0">
+					<small>
+						Icons by{' '}
+						<a
+							href="https://openmoji.org/"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							Openmoji
+						</a>
+						, licensed under CC BY-SA 4.0, and{' '}
+						<a
+							href="https://lucide.dev/"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							Lucide
+						</a>
+						, licensed under the ISC License.
 					</small>
 				</p>
 			</footer>

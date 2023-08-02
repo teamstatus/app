@@ -14,6 +14,7 @@ import {
 import { Markdown } from './Markdown.js'
 import { Reaction, SelectReaction } from './Reactions.js'
 import { UserProfile } from '#components/UserProfile.js'
+import cx from 'classnames'
 
 export const Status = ({ status }: { status: TStatus }) => {
 	const [reactionsVisible, showReactions] = useState(false)
@@ -26,7 +27,7 @@ export const Status = ({ status }: { status: TStatus }) => {
 	return (
 		<>
 			<div>
-				<small class="text-muted d-flex me-2">
+				<small class="text-muted opacity-75 d-flex me-2 mb-2 flex-wrap">
 					<span class="text-nowrap d-flex align-items-center">
 						<a
 							href={`/project/${encodeURIComponent(
@@ -49,7 +50,14 @@ export const Status = ({ status }: { status: TStatus }) => {
 				</small>
 			</div>
 			<Markdown markdown={status.message} />
-			<div class="d-flex align-items-center justify-content-between mb-2 flex-wrap">
+			<div
+				class={cx(
+					'd-flex align-items-center justify-content-between mb-3 flex-wrap',
+					{
+						'mt-2': status.reactions.length > 0,
+					},
+				)}
+			>
 				<div>
 					{status.reactions.map((reaction) => {
 						const isAuthor = reaction.author === userId
@@ -73,7 +81,7 @@ export const Status = ({ status }: { status: TStatus }) => {
 						{hasOperations && !operationsVisible && (
 							<button
 								type="button"
-								class="btn btn-sm btn-light me-1"
+								class="btn btn-light me-1"
 								onClick={() => showOperations(true)}
 							>
 								<SubMenuIcon size={18} />
@@ -85,7 +93,7 @@ export const Status = ({ status }: { status: TStatus }) => {
 									<>
 										<button
 											type="button"
-											class="btn btn-sm btn-outline-danger me-1"
+											class="btn btn-outline-danger me-1"
 											onClick={() => {
 												deleteStatus(status)
 											}}
@@ -93,7 +101,7 @@ export const Status = ({ status }: { status: TStatus }) => {
 											<DeleteIcon size={18} />
 										</button>
 										<a
-											class="btn btn-sm btn-outline-secondary me-1"
+											class="btn btn-outline-secondary me-1"
 											href={`/project/${encodeURIComponent(
 												status.project,
 											)}/status/${encodeURIComponent(status.id)}/edit`}
@@ -104,7 +112,7 @@ export const Status = ({ status }: { status: TStatus }) => {
 								)}
 								<button
 									type="button"
-									class="btn btn-sm btn-light me-1"
+									class="btn btn-light me-1"
 									onClick={() => showOperations(false)}
 								>
 									<CloseIcon size={18} />
@@ -114,7 +122,7 @@ export const Status = ({ status }: { status: TStatus }) => {
 						{!reactionsVisible && (
 							<button
 								type="button"
-								class="btn btn-sm btn-light"
+								class="btn btn-light"
 								onClick={() => showReactions(true)}
 							>
 								<AddReactionIcon size={18} />
@@ -123,7 +131,7 @@ export const Status = ({ status }: { status: TStatus }) => {
 					</div>
 				)}
 				{reactionsVisible && (
-					<div class="d-flex align-items-center justify-content-end">
+					<div class="d-flex align-items-center justify-content-end flex-wrap">
 						<SelectReaction
 							onReaction={(reaction) => {
 								addReaction(status, reaction)
@@ -131,7 +139,7 @@ export const Status = ({ status }: { status: TStatus }) => {
 						/>
 						<button
 							type="button"
-							class="btn btn-sm btn-light"
+							class="btn btn-light"
 							onClick={() => showReactions(false)}
 						>
 							<CloseIcon size={18} />

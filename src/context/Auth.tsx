@@ -77,6 +77,4 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 	)
 }
 
-export const Consumer = AuthContext.Consumer
-
 export const useAuth = () => useContext(AuthContext)

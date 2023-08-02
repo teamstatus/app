@@ -219,8 +219,6 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 	)
 }
 
-export const Consumer = ProjectsContext.Consumer
-
 export const useProjects = () => useContext(ProjectsContext)
 
 export const canCreateStatus = (role: Role) =>

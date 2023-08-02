@@ -24,6 +24,4 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 	)
 }
 
-export const Consumer = UIContext.Consumer
-
 export const useUI = () => useContext(UIContext)

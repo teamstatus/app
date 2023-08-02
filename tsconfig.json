@@ -30,7 +30,9 @@
       "#navigation/*": ["navigation/*"],
       "#proto/*": ["proto/*"],
       "#util/*": ["util/*"],
+      "#openmoji/*": ["openmoji/*"],
       "#views/*": ["views/*"]
-    }
+    },
+    "types": ["./src/openmoji/types.d.ts"]
   }
 }

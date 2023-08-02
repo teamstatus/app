@@ -32,6 +32,7 @@ import { Provider as UserProfilesProvider } from '#context/UserProfiles.js'
 import { EditUser } from '#views/EditUser.js'
 import { SyncExportTeams } from '#views/SyncExportTeams.js'
 import { SyncExportConfluence } from '#views/SyncExportConfluence.js'
+import { Provider as OpenmojiProvider } from '#context/Openmoji.js'
 
 export const App = () => (
 	<AuthProvider>
@@ -41,7 +42,9 @@ export const App = () => (
 					<StatusProvider>
 						<SyncsProvider>
 							<UIProvider>
-								<Routing />
+								<OpenmojiProvider>
+									<Routing />
+								</OpenmojiProvider>
 							</UIProvider>
 						</SyncsProvider>
 					</StatusProvider>

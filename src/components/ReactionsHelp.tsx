@@ -3,6 +3,7 @@ import type { Reaction as TReaction } from '#context/Status.js'
 import { ReactionRole } from '#context/Status.js'
 import { Reaction, ReactionView, Role, reactionPresets } from './Reactions.js'
 import { redirectAfterLogin } from './redirectAfterLogin.js'
+import { ThumbsUp } from '#openmoji/1F44D.js'
 
 export const ReactionsHelp = () => (
 	<section>
@@ -11,8 +12,8 @@ export const ReactionsHelp = () => (
 				<h2>Reactions</h2>
 				<p>
 					Reactions are a way to add annotations to a status. Besides simple
-					reactions, for example a 👍 to indicate that you like a status,
-					reactions can have two special roles:
+					reactions, for example a <ThumbsUp /> to indicate that you like a
+					status, reactions can have two special roles:
 				</p>
 				<ol>
 					<li>
@@ -34,7 +35,7 @@ export const ReactionsHelp = () => (
 				<ReactionView
 					byUser={true}
 					reaction={{
-						emoji: '👍',
+						emoji: '👍️',
 					}}
 				/>
 			</div>

@@ -18,6 +18,20 @@ body {
   margin-left: 0.25rem;
 }
 
+.openmoji {
+
+  width: 28px;
+  height: 28px;
+}
+
+p > .openmoji {
+  width: 22px;
+  height: 22px;
+
+button.reaction .openmoji {
+  margin: -4px 0;
+}
+
 main {
   padding-bottom: 75px;
 }

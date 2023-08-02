@@ -342,8 +342,6 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 	)
 }
 
-export const Consumer = StatusContext.Consumer
-
 export const useStatus = () => useContext(StatusContext)
 
 export const reactionHash = (reaction: Omit<PersistedReaction, 'id'>): string =>

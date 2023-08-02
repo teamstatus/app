@@ -6,6 +6,7 @@ import { SettingsIcon } from 'lucide-preact'
 import { gradient, logoColors } from './Colorpicker.js'
 import { type VNode } from 'preact'
 import { useState } from 'preact/hooks'
+import { OpenmojiIcon } from './OpenmojiIcon.js'
 
 const colorStyle = (color?: string) => ({
 	color: new Color(color ?? '#212529').luminosity() > 0.5 ? 'black' : 'white',
@@ -63,41 +64,28 @@ export const ProjectMenu = ({ actions }: { actions?: Action[] }) => {
 								>
 									{alias ?? project?.name ?? project.id}
 								</span>
-								{icon === undefined && (
-									<span
-										class="d-flex align-items-center justify-content-center"
-										style={{
-											...colorStyle(color),
-											borderRadius: '100%',
-											display: 'block',
-											height: '48px',
-											width: '48px',
-											boxShadow: '0 0 8px 0 #00000075',
-										}}
-									>
+
+								<span
+									class="d-flex align-items-center justify-content-center flex-shrink-0"
+									style={{
+										...colorStyle(color),
+										borderRadius: '100%',
+										display: 'block',
+										height: '48px',
+										width: '48px',
+										boxShadow: '0 0 8px 0 #00000075',
+									}}
+								>
+									{icon === undefined && (
 										<img
 											src="/static/heart.svg"
 											alt="❤️ teamstatus"
 											width="20"
 											height="20"
 										/>
-									</span>
-								)}
-								{icon !== undefined && (
-									<span
-										class="d-flex align-items-center justify-content-center"
-										style={{
-											borderRadius: '100%',
-											...colorStyle(color),
-											display: 'block',
-											height: '48px',
-											width: '48px',
-											boxShadow: '0 0 8px 0 #00000075',
-										}}
-									>
-										{icon}
-									</span>
-								)}
+									)}
+									{icon !== undefined && <OpenmojiIcon emoji={icon} black />}
+								</span>
 							</a>
 						</div>
 					),

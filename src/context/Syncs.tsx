@@ -118,6 +118,4 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 	)
 }
 
-export const Consumer = SyncsContext.Consumer
-
 export const useSyncs = () => useContext(SyncsContext)

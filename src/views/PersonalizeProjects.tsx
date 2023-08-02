@@ -1,8 +1,7 @@
 import cx from 'classnames'
-import { useState } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
 import { Colorpicker } from '#components/Colorpicker.js'
 import {
-	ColorsIcon,
 	DownIcon,
 	HiddenIcon,
 	ProjectsIcon,
@@ -16,6 +15,11 @@ import { ProjectMenu } from '#components/ProjectMenu.js'
 import { ProjectId } from '#components/ProjectId.js'
 import { Main } from '#components/Main.js'
 import Color from 'color'
+import {
+	useOpenmoji,
+	type OpenmojiIcon as OpenmojiIconType,
+} from '#context/Openmoji.js'
+import { OpenmojiIcon } from '#components/OpenmojiIcon.js'
 
 export const PersonalizeProjects = () => {
 	const { projects } = useProjects()
@@ -63,13 +67,7 @@ export const PersonalizeProjects = () => {
 					</div>
 				</div>
 			</Main>
-			<ProjectMenu
-				actions={[
-					{
-						href: '/project/create',
-					},
-				]}
-			/>
+			<ProjectMenu />
 		</>
 	)
 }
@@ -87,7 +85,7 @@ const ProjectInfo = ({
 }) => {
 	const { toggleProject, personalizeProject, bumpProject } = useSettings()
 
-	const [colorsVisible, setColorsVisible] = useState(false)
+	const [iconStyleVisible, setIconStyleVisible] = useState(false)
 	const visible = (hidden ?? false) === false
 
 	return (
@@ -101,7 +99,7 @@ const ProjectInfo = ({
 					<button
 						type="button"
 						class="btn btn-outline-secondary me-1"
-						onClick={() => setColorsVisible((v) => !v)}
+						onClick={() => setIconStyleVisible((v) => !v)}
 						disabled={!visible}
 						style={{
 							backgroundColor: color,
@@ -111,22 +109,16 @@ const ProjectInfo = ({
 									: 'white',
 						}}
 					>
-						<ColorsIcon />
+						{icon === undefined && (
+							<img
+								src="/static/heart.svg"
+								alt="❤️ teamstatus"
+								width="20"
+								height="20"
+							/>
+						)}
+						{icon !== undefined && <OpenmojiIcon emoji={icon} black />}
 					</button>
-					<input
-						type="text"
-						class="form-control me-1"
-						value={icon ?? ''}
-						onInput={(e) => {
-							const icon = (e.target as HTMLInputElement).value
-							personalizeProject(id, {
-								icon: icon.length > 0 ? icon : undefined,
-							})
-						}}
-						size={1}
-						style={{ width: '50px' }}
-						disabled={!visible}
-					/>
 					<input
 						type="text"
 						class="form-control me-1"
@@ -171,17 +163,63 @@ const ProjectInfo = ({
 					</button>
 				</div>
 			</div>
-			{colorsVisible && (
-				<Colorpicker
-					onColor={(color) => {
-						setColorsVisible(false)
-						return personalizeProject(id, {
-							color,
-						})
-					}}
-					color={color ?? '#212529'}
-				/>
+			{iconStyleVisible && (
+				<>
+					<IconPicker
+						onIcon={(icon) => {
+							setIconStyleVisible(false)
+							return personalizeProject(id, {
+								icon,
+							})
+						}}
+					/>
+					<Colorpicker
+						onColor={(color) => {
+							setIconStyleVisible(false)
+							return personalizeProject(id, {
+								color,
+							})
+						}}
+						color={color ?? '#212529'}
+					/>
+				</>
 			)}
 		</div>
+	)
+}
+
+const IconPicker = ({ onIcon }: { onIcon: (icon: string) => void }) => {
+	const { icons } = useOpenmoji()
+	const [search, setSearch] = useState<string>('')
+	const [match, setMatch] = useState<OpenmojiIconType[]>([])
+	useEffect(() => {
+		if (search.length < 3) return
+		setMatch(icons.filter(({ search: s }) => s.includes(search)).slice(0, 10))
+	}, [search])
+	return (
+		<>
+			<div class="ps-0">
+				<label class="d-flex align-items-center justify-content-start">
+					Pick your icon:
+					<input
+						type="search"
+						class="form-control form-control-sm mx-1 my-1"
+						value={search}
+						onInput={(e) => setSearch((e.target as HTMLInputElement).value)}
+					/>
+				</label>
+			</div>
+			{match.map((icon) => (
+				<button
+					type="button"
+					class="btn btn-sm btn-outline-secondary me-1 mb-1"
+					onClick={() => {
+						onIcon(icon.emoji)
+					}}
+				>
+					<OpenmojiIcon emoji={icon.emoji} />
+				</button>
+			))}
+		</>
 	)
 }
