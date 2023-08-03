@@ -46,45 +46,50 @@ export const Colorpicker = ({
 }) => {
 	const [customColor, setCustomColor] = useState(color)
 	return (
-		<div class="ps-0">
-			<label class="d-flex align-items-center justify-content-start">
-				Pick your color:
-				<input
-					type="color"
-					class="mx-1 my-1"
-					style={{
-						height: '32px',
-						width: '32px',
-						padding: 0,
-						border: 0,
-						borderRadius: '25%',
-					}}
-					value={customColor}
-					onInput={(e) => setCustomColor((e.target as HTMLInputElement).value)}
-				/>
-				<button
-					type="button"
-					class="btn btn-sm btn-outline-secondary"
-					onClick={() => {
-						onColor(customColor)
-					}}
-				>
-					OK
-				</button>
-			</label>
+		<div class="mt-2">
+			<p class="mb-1">Pick a predefined color:</p>
 			<div>
 				{colors
 					.sort((a, b) => parseInt(a.slice(1), 16) - parseInt(b.slice(1), 16))
 					.map((color) => (
 						<button
 							type="button"
-							class="btn px-3 py-3 mx-1 my-1"
+							class="btn btn-outline-secondary px-3 py-3 me-1 mb-1"
 							style={{ backgroundColor: color }}
 							onClick={() => {
 								onColor(color)
 							}}
 						></button>
 					))}
+			</div>
+			<div>
+				<label htmlFor="customColor">or select a custom color:</label>
+				<label class="d-flex align-items-center justify-content-start">
+					<input
+						type="color"
+						class="me-1"
+						style={{
+							height: '38px',
+							width: '38px',
+							padding: 0,
+							border: 0,
+							borderRadius: '25%',
+						}}
+						value={customColor}
+						onInput={(e) =>
+							setCustomColor((e.target as HTMLInputElement).value)
+						}
+					/>
+					<button
+						type="button"
+						class="btn btn-outline-secondary"
+						onClick={() => {
+							onColor(customColor)
+						}}
+					>
+						OK
+					</button>
+				</label>
 			</div>
 		</div>
 	)

@@ -1,5 +1,5 @@
 import cx from 'classnames'
-import { useEffect, useState } from 'preact/hooks'
+import { useState } from 'preact/hooks'
 import { Colorpicker } from '#components/Colorpicker.js'
 import {
 	DownIcon,
@@ -15,11 +15,8 @@ import { ProjectMenu } from '#components/ProjectMenu.js'
 import { ProjectId } from '#components/ProjectId.js'
 import { Main } from '#components/Main.js'
 import Color from 'color'
-import {
-	useOpenmoji,
-	type OpenmojiIcon as OpenmojiIconType,
-} from '#context/Openmoji.js'
 import { OpenmojiIcon } from '#components/OpenmojiIcon.js'
+import { IconPicker } from '#components/IconPicker.js'
 
 export const PersonalizeProjects = () => {
 	const { projects } = useProjects()
@@ -185,47 +182,5 @@ const ProjectInfo = ({
 				</>
 			)}
 		</div>
-	)
-}
-
-const IconPicker = ({ onIcon }: { onIcon: (icon: string) => void }) => {
-	const { icons } = useOpenmoji()
-	const [search, setSearch] = useState<string>('')
-	const [match, setMatch] = useState<OpenmojiIconType[]>([])
-	useEffect(() => {
-		if (search.length < 3) return
-		setMatch(
-			icons
-				.filter(({ search: s }) =>
-					s.toLocaleLowerCase().includes(search.toLocaleLowerCase()),
-				)
-				.slice(0, 10),
-		)
-	}, [search])
-	return (
-		<>
-			<div class="ps-0">
-				<label class="d-flex align-items-center justify-content-start">
-					Pick your icon:
-					<input
-						type="search"
-						class="form-control form-control-sm mx-1 my-1"
-						value={search}
-						onInput={(e) => setSearch((e.target as HTMLInputElement).value)}
-					/>
-				</label>
-			</div>
-			{match.map((icon) => (
-				<button
-					type="button"
-					class="btn btn-sm btn-outline-secondary me-1 mb-1"
-					onClick={() => {
-						onIcon(icon.emoji)
-					}}
-				>
-					<OpenmojiIcon emoji={icon.emoji} />
-				</button>
-			))}
-		</>
 	)
 }
