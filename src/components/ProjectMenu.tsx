@@ -84,7 +84,7 @@ export const ProjectMenu = ({ actions }: { actions?: Action[] }) => {
 											height="20"
 										/>
 									)}
-									{icon !== undefined && <OpenmojiIcon emoji={icon} black />}
+									{icon !== undefined && <OpenmojiIcon emoji={icon} />}
 								</span>
 							</a>
 						</div>

@@ -7,4 +7,3 @@ npm-debug.log
 .envrc
 build/
 static/openmoji/
-src/openmoji/

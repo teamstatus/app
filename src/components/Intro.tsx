@@ -1,6 +1,4 @@
-import { Dizzy } from '#openmoji/1F4AB.jsx'
-import { PersonRaisingHand } from '#openmoji/1F64B.jsx'
-import { Rocket } from '#openmoji/1F680.jsx'
+import { OpenmojiIcon } from './OpenmojiIcon.js'
 import { redirectAfterLogin } from './redirectAfterLogin.js'
 
 export const Intro = () => (
@@ -55,10 +53,11 @@ export const Intro = () => (
 		</p>
 		<p>
 			Team members can see status, and add reactions. They are an important tool
-			to share praise <Dizzy />, but also prepare the next sync meeting. Status
-			can be marked as significant <Rocket />, so they will be highlighted in
-			the next sync. Or a status can be marked as a question{' '}
-			<PersonRaisingHand /> so they can be discussed during the sync.
+			to share praise <OpenmojiIcon emoji="🌟" />, but also prepare the next
+			sync meeting. Status can be marked as significant{' '}
+			<OpenmojiIcon emoji="🚀" />, so they will be highlighted in the next sync.
+			Or a status can be marked as a question <OpenmojiIcon emoji="🙋" /> so
+			they can be discussed during the sync.
 		</p>
 		<p>
 			And when it's time for a sync meeting with your collaborators, you create

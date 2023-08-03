@@ -42,7 +42,6 @@ export default defineConfig({
 		alias: [
 			{ find: '#api/', replacement: '/src/api/' },
 			{ find: '#components/', replacement: '/src/components/' },
-			{ find: '#openmoji/', replacement: '/src/openmoji/' },
 			{ find: '#context/', replacement: '/src/context/' },
 			{ find: '#navigation/', replacement: '/src/navigation/' },
 			{ find: '#proto/', replacement: '/src/proto/' },

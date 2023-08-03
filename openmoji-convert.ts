@@ -4,17 +4,6 @@ import openmojiData from './node_modules/openmoji/data/openmoji.json'
 import { readFile, writeFile, mkdir } from 'node:fs/promises'
 import path from 'node:path'
 
-const fixBadNames = (s: string): string =>
-	s.replace(/^1st/, 'First').replace(/^2nd/, 'Second').replace(/^3rd/, 'Third')
-
-const slugify = (s: string): string =>
-	s
-		.split(' ')
-		.map((s) => s.slice(0, 1).toUpperCase() + s.slice(1))
-		.map(fixBadNames)
-		.join('')
-		.replace(/[^a-z0-9]/gi, '')
-
 const openMojiIcons = (
 	openmojiData as {
 		emoji: string // e.g. "😀",
@@ -45,7 +34,6 @@ const openMojiIcons = (
 			emoji,
 			search: `${annotation}${tags.length > 0 ? ` (${tags})` : ''}`,
 			hexcode,
-			name: `${slugify(annotation)}`,
 		}),
 	)
 
@@ -61,91 +49,35 @@ try {
 	// pass
 }
 
-for (const { name, hexcode } of openMojiIcons) {
-	const [svgBlack, svgColor] = (
-		await Promise.all([
-			await readFile(
-				path.join(
-					process.cwd(),
-					'node_modules',
-					'openmoji',
-					'black',
-					'svg',
-					`${hexcode}.svg`,
-				),
-				'utf-8',
+for (const { hexcode } of openMojiIcons) {
+	const svgColor = (
+		await readFile(
+			path.join(
+				process.cwd(),
+				'node_modules',
+				'openmoji',
+				'color',
+				'svg',
+				`${hexcode}.svg`,
 			),
-			await readFile(
-				path.join(
-					process.cwd(),
-					'node_modules',
-					'openmoji',
-					'color',
-					'svg',
-					`${hexcode}.svg`,
-				),
-				'utf-8',
-			),
-		])
-	).map((s) =>
-		s
-			.replace('id="emoji"', 'class="openmoji"')
-			.replace(/id="[^"]+"/g, '')
-			.replace(/[a-z]+:[a-z]+="[^"]+"/gi, ''),
-	) as [string, string]
+			'utf-8',
+		)
+	)
+		.replace('id="emoji"', 'class="openmoji"')
+		.replace(/id="[^"]+"/g, '')
+		.replace(/[a-z]+:[a-z]+="[^"]+"/gi, '')
 
-	const svgWithcurrentColor = svgBlack.replace(/#0000*/g, 'currentColor')
-	await Promise.all([
-		writeFile(
-			path.join('static', 'openmoji', `${hexcode}Black.svg`),
-			svgBlack,
-			'utf-8',
-		),
-		writeFile(
-			path.join('static', 'openmoji', `${hexcode}.svg`),
-			svgColor,
-			'utf-8',
-		),
-		writeFile(
-			path.join('src', 'openmoji', `${hexcode}.jsx`),
-			[
-				`export const ${name} = () => ${svgColor}`,
-				`export const ${name}Black = () => ${svgWithcurrentColor}`,
-			].join('\n'),
-		),
-	])
+	await writeFile(
+		path.join('static', 'openmoji', `${hexcode}.svg`),
+		svgColor,
+		'utf-8',
+	)
 }
 
 await writeFile(
 	path.join(process.cwd(), 'static', 'openmoji', 'list.json'),
 	JSON.stringify(
-		openMojiIcons.map(({ hexcode, search, emoji, name }) => [
-			hexcode,
-			search,
-			emoji,
-			name,
-		]),
+		openMojiIcons.map(({ hexcode, search, emoji }) => [hexcode, search, emoji]),
 	),
-	'utf-8',
-)
-
-await writeFile(
-	path.join(process.cwd(), 'src', 'openmoji', 'types.d.ts'),
-	openMojiIcons
-		.map(({ name, emoji, search, hexcode }) =>
-			[
-				`declare module '#openmoji/${hexcode}.jsx' {`,
-				`/**`,
-				` * ${emoji} (${search})`,
-				` */`,
-				`export function ${name}(): JSX.Element;`,
-				`/**`,
-				` * ${emoji} (${search}) Black`,
-				` */`,
-				`export function ${name}Black(): JSX.Element;`,
-				`}`,
-			].join('\n'),
-		)
-		.join('\n'),
 	'utf-8',
 )

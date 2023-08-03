@@ -117,7 +117,7 @@ const ProjectInfo = ({
 								height="20"
 							/>
 						)}
-						{icon !== undefined && <OpenmojiIcon emoji={icon} black />}
+						{icon !== undefined && <OpenmojiIcon emoji={icon} />}
 					</button>
 					<input
 						type="text"
@@ -194,7 +194,13 @@ const IconPicker = ({ onIcon }: { onIcon: (icon: string) => void }) => {
 	const [match, setMatch] = useState<OpenmojiIconType[]>([])
 	useEffect(() => {
 		if (search.length < 3) return
-		setMatch(icons.filter(({ search: s }) => s.includes(search)).slice(0, 10))
+		setMatch(
+			icons
+				.filter(({ search: s }) =>
+					s.toLocaleLowerCase().includes(search.toLocaleLowerCase()),
+				)
+				.slice(0, 10),
+		)
 	}, [search])
 	return (
 		<>
