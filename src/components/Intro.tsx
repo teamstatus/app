@@ -1,6 +1,6 @@
-import { Dizzy } from '#openmoji/1F4AB.js'
-import { PersonRaisingHand } from '#openmoji/1F64B.js'
-import { Rocket } from '#openmoji/1F680.js'
+import { Dizzy } from '#openmoji/1F4AB.jsx'
+import { PersonRaisingHand } from '#openmoji/1F64B.jsx'
+import { Rocket } from '#openmoji/1F680.jsx'
 import { redirectAfterLogin } from './redirectAfterLogin.js'
 
 export const Intro = () => (

@@ -107,7 +107,7 @@ for (const { name, hexcode } of openMojiIcons) {
 			'utf-8',
 		),
 		writeFile(
-			path.join('src', 'openmoji', `${hexcode}.js`),
+			path.join('src', 'openmoji', `${hexcode}.jsx`),
 			[
 				`export const ${name} = () => ${svgColor}`,
 				`export const ${name}Black = () => ${svgWithcurrentColor}`,
@@ -134,7 +134,7 @@ await writeFile(
 	openMojiIcons
 		.map(({ name, emoji, search, hexcode }) =>
 			[
-				`declare module '#openmoji/${hexcode}.js' {`,
+				`declare module '#openmoji/${hexcode}.jsx' {`,
 				`/**`,
 				` * ${emoji} (${search})`,
 				` */`,

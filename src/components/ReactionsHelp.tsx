@@ -3,7 +3,7 @@ import type { Reaction as TReaction } from '#context/Status.js'
 import { ReactionRole } from '#context/Status.js'
 import { Reaction, ReactionView, Role, reactionPresets } from './Reactions.js'
 import { redirectAfterLogin } from './redirectAfterLogin.js'
-import { ThumbsUp } from '#openmoji/1F44D.js'
+import { ThumbsUp } from '#openmoji/1F44D.jsx'
 
 export const ReactionsHelp = () => (
 	<section>

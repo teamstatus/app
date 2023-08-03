@@ -44,7 +44,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 					if (openmojiComponent[key] === undefined) {
 						import(
 							/* @vite-ignore */
-							`../openmoji/${hexcode}.js`
+							`../openmoji/${hexcode}.jsx`
 						)
 							.then((module) => {
 								if (module[exportName] !== undefined) {
