@@ -88,7 +88,10 @@ for (const { name, hexcode } of openMojiIcons) {
 			),
 		])
 	).map((s) =>
-		s.replace('id="emoji"', 'class="openmoji"').replace(/id="[^"]+"/g, ''),
+		s
+			.replace('id="emoji"', 'class="openmoji"')
+			.replace(/id="[^"]+"/g, '')
+			.replace(/[a-z]+:[a-z]+="[^"]+"/gi, ''),
 	) as [string, string]
 
 	const svgWithcurrentColor = svgBlack.replace(/#0000*/g, 'currentColor')
