@@ -1,9 +1,7 @@
-import { InfoIcon } from 'lucide-preact'
 import type { Reaction as TReaction } from '#context/Status.js'
 import { ReactionRole } from '#context/Status.js'
-import { Reaction, ReactionView, Role, reactionPresets } from './Reactions.js'
-import { redirectAfterLogin } from './redirectAfterLogin.js'
 import { OpenmojiIcon } from './OpenmojiIcon.js'
+import { Reaction, ReactionView, Role, reactionPresets } from './Reactions.js'
 
 export const ReactionsHelp = () => (
 	<section>
@@ -43,12 +41,7 @@ export const ReactionsHelp = () => (
 
 		<div class="row mt-3">
 			<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
-				<h3>Available reactions</h3>
-				<p>
-					<InfoIcon strokeWidth={1} size={20} class="me-1" />
-					You can customize your reactions{' '}
-					<a href={redirectAfterLogin('/reactions')}>here</a>.
-				</p>
+				<h3>Reaction examples</h3>
 			</div>
 		</div>
 
@@ -57,7 +50,14 @@ export const ReactionsHelp = () => (
 				<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3 d-flex align-items-center justify-content-star">
 					<Reaction reaction={reaction} />
 					<span>
-						{reaction.description ?? 'N/A'} <br />
+						{reaction.description !== undefined ? (
+							<>
+								{reaction.description}
+								<br />
+							</>
+						) : (
+							''
+						)}
 						<ExplainRole reaction={reaction} />
 					</span>
 				</div>
@@ -70,14 +70,14 @@ export const ExplainRole = ({ reaction }: { reaction: TReaction }) => {
 	switch ('role' in reaction && reaction.role) {
 		case ReactionRole.QUESTION:
 			return (
-				<span>
+				<em>
 					Marks the status as a question to be discussed during the sync
 					meeting.
-				</span>
+				</em>
 			)
 		case ReactionRole.SIGNIFICANT:
-			return <span>Denotes a significant update that should be reviewed.</span>
+			return <em>Denotes a significant update that should be reviewed.</em>
 		default:
-			return <span>This reaction has no special role.</span>
+			return <em>This reaction has no special role.</em>
 	}
 }

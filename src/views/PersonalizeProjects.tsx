@@ -162,14 +162,16 @@ const ProjectInfo = ({
 			</div>
 			{iconStyleVisible && (
 				<>
-					<IconPicker
-						onIcon={(icon) => {
-							setIconStyleVisible(false)
-							return personalizeProject(id, {
-								icon,
-							})
-						}}
-					/>
+					<div class="mt-2">
+						<IconPicker
+							onIcon={(icon) => {
+								setIconStyleVisible(false)
+								return personalizeProject(id, {
+									icon,
+								})
+							}}
+						/>
+					</div>
 					<Colorpicker
 						onColor={(color) => {
 							setIconStyleVisible(false)

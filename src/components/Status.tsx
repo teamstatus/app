@@ -1,9 +1,12 @@
-import { useState } from 'preact/hooks'
-import { decodeTime } from 'ulid'
+import { UserProfile } from '#components/UserProfile.js'
 import { useAuth } from '#context/Auth.js'
 import { useStatus, type Status as TStatus } from '#context/Status.js'
+import cx from 'classnames'
+import { useState } from 'preact/hooks'
+import { decodeTime } from 'ulid'
 import { Ago } from './Ago.js'
 import {
+	AddIcon,
 	AddReactionIcon,
 	CloseIcon,
 	DeleteIcon,
@@ -13,11 +16,11 @@ import {
 } from './Icons.js'
 import { Markdown } from './Markdown.js'
 import { Reaction, SelectReaction } from './Reactions.js'
-import { UserProfile } from '#components/UserProfile.js'
-import cx from 'classnames'
+import { CustomReaction } from './CustomReaction.js'
 
 export const Status = ({ status }: { status: TStatus }) => {
 	const [reactionsVisible, showReactions] = useState(false)
+	const [customReactionVisible, showCustomReaction] = useState(false)
 	const [operationsVisible, showOperations] = useState(false)
 	const { user } = useAuth()
 	const userId = user?.id
@@ -131,22 +134,45 @@ export const Status = ({ status }: { status: TStatus }) => {
 					</div>
 				)}
 				{reactionsVisible && (
-					<div class="d-flex align-items-center justify-content-end flex-wrap">
-						<SelectReaction
-							onReaction={(reaction) => {
-								addReaction(status, reaction)
-							}}
-						/>
-						<button
-							type="button"
-							class="btn btn-light"
-							onClick={() => showReactions(false)}
-						>
-							<CloseIcon size={18} />
-						</button>
-					</div>
+					<>
+						<div class="d-flex align-items-end justify-content-end flex-wrap">
+							<SelectReaction
+								onReaction={(reaction) => {
+									addReaction(status, reaction)
+								}}
+							/>
+							<button
+								type="button"
+								class="btn btn-light me-1"
+								onClick={() => {
+									showReactions(false)
+									showCustomReaction(true)
+								}}
+							>
+								<AddIcon size={18} />
+							</button>
+							<button
+								type="button"
+								class="btn btn-light"
+								onClick={() => showReactions(false)}
+							>
+								<CloseIcon size={18} />
+							</button>
+						</div>
+					</>
 				)}
 			</div>
+			{customReactionVisible && (
+				<CustomReaction
+					onReaction={(reaction) => {
+						addReaction(status, reaction)
+						showCustomReaction(false)
+					}}
+					onClose={() => {
+						showCustomReaction(false)
+					}}
+				/>
+			)}
 		</>
 	)
 }

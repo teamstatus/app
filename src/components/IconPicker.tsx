@@ -20,39 +20,34 @@ export const IconPicker = ({ onIcon }: { onIcon: (icon: string) => void }) => {
 		)
 	}, [search])
 	return (
-		<>
-			<div class="mt-2">
-				<label
-					class="d-flex align-items-center justify-content-start"
-					htmlFor="iconSearch"
-				>
-					<span class="text-nowrap">Search for an icon:</span>
+		<div class="d-flex justify-items-start align-items-start">
+			<div class="mb-1">
+				<label for="emojiSearch" class="form-label text-nowrap">
+					Search for an icon
 				</label>
-				<div class="d-flex justify-items-start align-items-start">
-					<input
-						id="iconSearch"
-						type="search"
-						class="form-control me-2"
-						value={search}
-						onInput={(e) => setSearch((e.target as HTMLInputElement).value)}
-						placeholder={`e.g. 'rocket'`}
-						style={{ width: '125px' }}
-					/>
-					<div>
-						{match.map((icon) => (
-							<button
-								type="button"
-								class="btn btn-sm btn-outline-secondary me-1 mb-1"
-								onClick={() => {
-									onIcon(icon.emoji)
-								}}
-							>
-								<OpenmojiIcon emoji={icon.emoji} />
-							</button>
-						))}
-					</div>
-				</div>
+				<input
+					id="emojiSearch"
+					type="search"
+					class="form-control me-2"
+					value={search}
+					onInput={(e) => setSearch((e.target as HTMLInputElement).value)}
+					placeholder={`e.g. 'rocket'`}
+					style={{ width: '125px' }}
+				/>
 			</div>
-		</>
+			<div>
+				{match.map((icon) => (
+					<button
+						type="button"
+						class="btn btn-sm btn-outline-secondary me-1 mb-1"
+						onClick={() => {
+							onIcon(icon.emoji)
+						}}
+					>
+						<OpenmojiIcon emoji={icon.emoji} />
+					</button>
+				))}
+			</div>
+		</div>
 	)
 }
