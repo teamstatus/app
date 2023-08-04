@@ -1,6 +1,6 @@
 import cx from 'classnames'
 import { useState } from 'preact/hooks'
-import { BackIcon, SubmitIcon } from '#components/Icons.js'
+import { SubmitIcon } from '#components/Icons.js'
 import { type ProblemDetail } from '#context/ProblemDetail.js'
 import { useProjects } from '#context/Projects.js'
 import { ProjectHeader } from '#components/ProjectHeader.js'
@@ -8,7 +8,6 @@ import { ProjectMenu } from '#components/ProjectMenu.js'
 import { ProgressBar } from '#components/ProgressBar.js'
 import { Main } from '#components/Main.js'
 import { WithProject } from '#components/WithProject.js'
-import { parseProjectId } from '#proto/ids.js'
 
 export const ProjectSettings = ({
 	id,
@@ -63,15 +62,7 @@ export const ProjectSettings = ({
 									/>
 									<div class="form-text">(required)</div>
 								</div>
-								<div class="d-flex align-items-center justify-content-between">
-									<a
-										href={`/organization/${encodeURIComponent(
-											parseProjectId(id).organization ?? '',
-										)}`}
-										class="btn btn-outline-danger"
-									>
-										<BackIcon />
-									</a>
+								<div class="d-flex align-items-center justify-content-end">
 									<button
 										class={cx('btn', {
 											'btn-primary': isValid,

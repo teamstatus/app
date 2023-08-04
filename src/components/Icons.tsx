@@ -5,7 +5,6 @@ import {
 	Calendar,
 	Check,
 	ChevronDown,
-	ChevronLeft,
 	ChevronRight,
 	ChevronUp,
 	Clock,
@@ -67,7 +66,6 @@ const icon =
 export const UserIcon = icon(User)
 export const CalendarIcon = icon(Calendar)
 export const CloseIcon = icon(X)
-export const BackIcon = icon(ChevronLeft)
 export const CollapseRightIcon = icon(ChevronRight)
 export const NextIcon = icon(ChevronRight)
 export const SubmitIcon = icon(Send)

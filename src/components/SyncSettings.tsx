@@ -2,7 +2,7 @@ import cx from 'classnames'
 import { useState } from 'preact/hooks'
 import { type Project } from '#context/Projects.js'
 import { useSyncs } from '#context/Syncs.js'
-import { ApplyIcon, BackIcon, SubmitIcon } from './Icons.js'
+import { ApplyIcon, SubmitIcon } from './Icons.js'
 
 export const SyncSettings = ({
 	projects,
@@ -135,12 +135,7 @@ export const SyncSettings = ({
 					onInput={(e) => setName((e.target as HTMLInputElement).value)}
 				/>
 			</div>
-			<div class="d-flex align-items-center justify-content-between mt-4">
-				<span>
-					<a href={`/`} class="btn btn-outline-secondary">
-						<BackIcon />
-					</a>
-				</span>
+			<div class="d-flex align-items-center justify-content-end mt-4">
 				<span>
 					<button
 						class={cx('btn', {

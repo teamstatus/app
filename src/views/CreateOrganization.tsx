@@ -1,7 +1,7 @@
 import cx from 'classnames'
 import { route } from 'preact-router'
 import { useState } from 'preact/hooks'
-import { BackIcon, SubmitIcon } from '#components/Icons.js'
+import { SubmitIcon } from '#components/Icons.js'
 import { useProjects } from '#context/Projects.js'
 import { isOrganizationId, slugPart } from '#proto/ids.js'
 import { LogoHeader } from '#components/LogoHeader.js'
@@ -61,10 +61,7 @@ export const CreateOrganization = () => {
 								placeholder='e.g. "Teamstatus"'
 							/>
 						</div>
-						<div class="d-flex align-items-center justify-content-between">
-							<a href={`/projects`} class="btn btn-outline-danger">
-								<BackIcon />
-							</a>
+						<div class="d-flex align-items-center justify-content-end">
 							<button
 								class={cx('btn', {
 									'btn-primary': isValid,

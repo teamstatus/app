@@ -1,7 +1,7 @@
 import cx from 'classnames'
 import { route } from 'preact-router'
 import { useState } from 'preact/hooks'
-import { BackIcon, SubmitIcon } from '#components/Icons.js'
+import { SubmitIcon } from '#components/Icons.js'
 import { ProjectHeader } from '#components/ProjectHeader.js'
 import { useStatus, type Status } from '#context/Status.js'
 import { Main } from '#components/Main.js'
@@ -64,13 +64,7 @@ const EditStatusForm = ({ status }: { status: Status }) => {
 							></textarea>
 							<div class="form-text">Markdown is supported.</div>
 						</div>
-						<div class="d-flex align-items-center justify-content-between">
-							<a
-								href={`/project/${encodeURIComponent(status.project)}`}
-								class="btn btn-outline-danger"
-							>
-								<BackIcon />
-							</a>
+						<div class="d-flex align-items-center justify-content-end">
 							<button
 								class={cx('btn', {
 									'btn-primary': isValid,

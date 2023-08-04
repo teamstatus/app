@@ -2,7 +2,7 @@ import { LogoHeader } from '#components/LogoHeader.js'
 import { ProjectMenu } from '#components/ProjectMenu.js'
 import { Main } from '#components/Main.js'
 import { useState } from 'preact/hooks'
-import { BackIcon, SubmitIcon } from '#components/Icons.js'
+import { SubmitIcon } from '#components/Icons.js'
 import cx from 'classnames'
 import { route } from 'preact-router'
 import type { ProblemDetail } from '#context/ProblemDetail.js'
@@ -110,10 +110,7 @@ const EditUserProfile = ({ user }: { user: UserContext }) => {
 									}}
 								/>
 							</div>
-							<div class="d-flex align-items-center justify-content-between">
-								<a href={`/user`} class="btn btn-outline-danger">
-									<BackIcon />
-								</a>
+							<div class="d-flex align-items-center justify-content-end">
 								<button
 									class={cx('btn', {
 										'btn-primary': isValid,
