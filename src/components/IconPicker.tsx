@@ -10,11 +10,13 @@ export const IconPicker = ({ onIcon }: { onIcon: (icon: string) => void }) => {
 	const [search, setSearch] = useState<string>('')
 	const [match, setMatch] = useState<OpenmojiIconType[]>([])
 	useEffect(() => {
-		if (search.length < 3) return
+		if (search.length < 2) return
 		setMatch(
 			icons
-				.filter(({ search: s }) =>
-					s.toLocaleLowerCase().includes(search.toLocaleLowerCase()),
+				.filter(
+					({ search: s, emoji }) =>
+						emoji === search ||
+						s.toLocaleLowerCase().includes(search.toLocaleLowerCase()),
 				)
 				.slice(0, 20),
 		)
