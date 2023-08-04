@@ -3,6 +3,7 @@ import { useState } from 'preact/hooks'
 import { IconPicker } from './IconPicker.js'
 import { CloseIcon, QuestionIcon, SignificantIcon } from './Icons.js'
 import { Reaction } from './Reactions.js'
+import { FormContainer } from './FormContainer.js'
 
 export const CustomReaction = ({
 	onReaction,
@@ -21,13 +22,7 @@ export const CustomReaction = ({
 	}
 
 	return (
-		<div
-			style={{
-				backgroundColor: '#eee',
-				borderRadius: '10px',
-			}}
-			class={'p-4 mb-3'}
-		>
+		<FormContainer>
 			<header class="d-flex justify-content-between">
 				<h2 class="fs-5">Custom Reaction</h2>
 				<button
@@ -120,6 +115,6 @@ export const CustomReaction = ({
 					</label>
 				</div>
 			</form>
-		</div>
+		</FormContainer>
 	)
 }

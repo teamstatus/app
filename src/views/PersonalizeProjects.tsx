@@ -17,6 +17,7 @@ import { Main } from '#components/Main.js'
 import Color from 'color'
 import { OpenmojiIcon } from '#components/OpenmojiIcon.js'
 import { IconPicker } from '#components/IconPicker.js'
+import { FormContainer } from '#components/FormContainer.js'
 
 export const PersonalizeProjects = () => {
 	const { projects } = useProjects()
@@ -161,8 +162,8 @@ const ProjectInfo = ({
 				</div>
 			</div>
 			{iconStyleVisible && (
-				<>
-					<div class="mt-2">
+				<FormContainer class="mt-2">
+					<div>
 						<IconPicker
 							onIcon={(icon) => {
 								setIconStyleVisible(false)
@@ -172,6 +173,7 @@ const ProjectInfo = ({
 							}}
 						/>
 					</div>
+					<hr />
 					<Colorpicker
 						onColor={(color) => {
 							setIconStyleVisible(false)
@@ -181,7 +183,7 @@ const ProjectInfo = ({
 						}}
 						color={color ?? '#212529'}
 					/>
-				</>
+				</FormContainer>
 			)}
 		</div>
 	)
