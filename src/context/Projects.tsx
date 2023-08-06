@@ -20,6 +20,7 @@ export enum Role {
 
 export type Project = {
 	id: string
+	organizationId: string
 	name?: string
 	icon?: string
 	role: Role
@@ -94,7 +95,10 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 				projects.reduce(
 					(projects, project) => ({
 						...projects,
-						[project.id]: project,
+						[project.id]: {
+							...project,
+							organizationId: parseProjectId(project.id).organization,
+						},
 					}),
 					{},
 				),
@@ -121,6 +125,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						return { error: `Unknown organization: ${orgId}` }
 					const newProject: Project = {
 						id,
+						organizationId: organization.id,
 						name,
 						persisted: false,
 						role: Role.OWNER,
