@@ -2,7 +2,7 @@ import { LogoHeader } from '#components/LogoHeader.js'
 import { ProjectMenu } from '#components/ProjectMenu.js'
 import { Main } from '#components/Main.js'
 import { useState } from 'preact/hooks'
-import { SubmitIcon } from '#components/Icons.js'
+import { UpdateIcon } from '#components/Icons.js'
 import cx from 'classnames'
 import { route } from 'preact-router'
 import type { ProblemDetail } from '#context/ProblemDetail.js'
@@ -128,7 +128,7 @@ const EditUserProfile = ({ user }: { user: UserContext }) => {
 											.fail(setError)
 									}}
 								>
-									<SubmitIcon />
+									<UpdateIcon />
 								</button>
 							</div>
 						</section>

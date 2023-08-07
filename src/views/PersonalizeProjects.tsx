@@ -162,7 +162,7 @@ const ProjectInfo = ({
 				</div>
 			</div>
 			{iconStyleVisible && (
-				<FormContainer class="mt-2">
+				<FormContainer class="mt-2" header={<h3>Configure the icon</h3>}>
 					<div>
 						<IconPicker
 							onIcon={(icon) => {

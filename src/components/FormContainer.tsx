@@ -1,19 +1,18 @@
 import type { ComponentChild } from 'preact'
+import cx from 'classnames'
+import './FormContainer.css'
 
 export const FormContainer = ({
+	header,
 	children,
 	class: c,
 }: {
 	class?: string
+	header: ComponentChild
 	children: ComponentChild
 }) => (
-	<div
-		style={{
-			backgroundColor: '#eee',
-			borderRadius: '10px',
-		}}
-		class={`p-2 p-lg-4 mb-3 ${c}`}
-	>
-		{children}
+	<div class={cx('my-4 formContainer', c)}>
+		<header>{header}</header>
+		<div>{children}</div>
 	</div>
 )

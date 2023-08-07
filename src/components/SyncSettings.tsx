@@ -2,7 +2,7 @@ import cx from 'classnames'
 import { useState } from 'preact/hooks'
 import { type Project } from '#context/Projects.js'
 import { useSyncs } from '#context/Syncs.js'
-import { ApplyIcon, SubmitIcon } from './Icons.js'
+import { AddIcon, ApplyIcon } from './Icons.js'
 
 export const SyncSettings = ({
 	projects,
@@ -148,7 +148,7 @@ export const SyncSettings = ({
 							if ('id' in res) setCreatedSyncId(res.id)
 						}}
 					>
-						<SubmitIcon />
+						<AddIcon />
 					</button>
 					<button
 						class={'btn btn-secondary ms-1'}

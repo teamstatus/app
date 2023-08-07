@@ -57,8 +57,8 @@ export const Dashboard = ({ redirect }: { redirect?: string }) => {
 						<Invitations />
 					</div>
 				</div>
-				<Onbaording />
 			</Main>
+			<Onbaording />
 			<ProjectMenu />
 		</>
 	)

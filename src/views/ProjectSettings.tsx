@@ -1,6 +1,6 @@
 import cx from 'classnames'
 import { useState } from 'preact/hooks'
-import { SubmitIcon } from '#components/Icons.js'
+import { UpdateIcon } from '#components/Icons.js'
 import { type ProblemDetail } from '#context/ProblemDetail.js'
 import { useProjects } from '#context/Projects.js'
 import { ProjectHeader } from '#components/ProjectHeader.js'
@@ -82,7 +82,7 @@ export const ProjectSettings = ({
 												})
 										}}
 									>
-										<SubmitIcon />
+										<UpdateIcon />
 									</button>
 								</div>
 							</section>

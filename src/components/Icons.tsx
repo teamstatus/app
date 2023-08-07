@@ -18,7 +18,6 @@ import {
 	Pen,
 	Plus,
 	RefreshCw,
-	Send,
 	SmilePlus,
 	Sprout,
 	Trash,
@@ -38,6 +37,7 @@ import {
 	MessageSquare,
 	Rocket,
 	Building2,
+	CheckCircle,
 } from 'lucide-preact'
 
 const strokeWidth = 1
@@ -68,7 +68,7 @@ export const CalendarIcon = icon(Calendar)
 export const CloseIcon = icon(X)
 export const CollapseRightIcon = icon(ChevronRight)
 export const NextIcon = icon(ChevronRight)
-export const SubmitIcon = icon(Send)
+export const UpdateIcon = icon(CheckCircle)
 export const ColorsIcon = icon(Palette)
 export const AddIcon = icon(Plus)
 export const ProjectsIcon = icon(Sprout)

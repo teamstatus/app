@@ -1,0 +1,27 @@
+.formContainer header {
+  background-color: #eee;
+  margin-bottom: 1px;
+  margin: 0 -1rem;
+  padding: 0.5rem 1rem;
+}
+
+.formContainer > div {
+  background-color: #f6f6f6;
+  margin: 0 -1rem;
+  padding: 0.5rem 1rem;
+}
+
+@media (min-width: 576px) {
+  .formContainer header {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    margin-top: 1rem;
+    padding: 1rem 1rem 0.25rem 1rem;
+  }
+
+  .formContainer > div {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 1rem;
+  }
+}

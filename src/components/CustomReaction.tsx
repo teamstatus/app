@@ -22,17 +22,20 @@ export const CustomReaction = ({
 	}
 
 	return (
-		<FormContainer>
-			<header class="d-flex justify-content-between">
-				<h2 class="fs-5">Custom Reaction</h2>
-				<button
-					type="button"
-					class="btn btn-outline-secondary btn-sm"
-					onClick={onClose}
-				>
-					<CloseIcon />
-				</button>
-			</header>
+		<FormContainer
+			header={
+				<header class="d-flex justify-content-between">
+					<h2 class="fs-5">Custom Reaction</h2>
+					<button
+						type="button"
+						class="btn btn-outline-secondary btn-sm"
+						onClick={onClose}
+					>
+						<CloseIcon />
+					</button>
+				</header>
+			}
+		>
 			<div>
 				<Reaction
 					reaction={reaction}

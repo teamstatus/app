@@ -1,7 +1,7 @@
 import cx from 'classnames'
 import { route } from 'preact-router'
 import { useState } from 'preact/hooks'
-import { SubmitIcon } from '#components/Icons.js'
+import { UpdateIcon } from '#components/Icons.js'
 import { ProjectHeader } from '#components/ProjectHeader.js'
 import { useStatus, type Status } from '#context/Status.js'
 import { Main } from '#components/Main.js'
@@ -87,7 +87,7 @@ const EditStatusForm = ({ status }: { status: Status }) => {
 									}
 								}}
 							>
-								<SubmitIcon />
+								<UpdateIcon />
 							</button>
 						</div>
 					</section>

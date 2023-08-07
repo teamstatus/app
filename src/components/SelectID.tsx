@@ -3,7 +3,7 @@ import { route } from 'preact-router'
 import { useState } from 'preact/hooks'
 import { useAuth } from '#context/Auth.js'
 import { isUserId, slugPart } from '#proto/ids.js'
-import { SubmitIcon } from './Icons.js'
+import { AddIcon } from './Icons.js'
 import { CREATE } from '#api/client.js'
 
 export const SelectID = () => {
@@ -79,7 +79,7 @@ export const SelectID = () => {
 							.fail((problem) => setError(problem.title))
 					}}
 				>
-					<SubmitIcon />
+					<AddIcon />
 				</button>
 			</div>
 		</section>

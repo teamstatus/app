@@ -1,6 +1,6 @@
 import cx from 'classnames'
 import { useState } from 'preact/hooks'
-import { SubmitIcon } from '#components/Icons.js'
+import { AddIcon } from '#components/Icons.js'
 import { type ProblemDetail } from '#context/ProblemDetail.js'
 import { Role, useProjects } from '#context/Projects.js'
 import { isUserId, slugPart } from '#proto/ids.js'
@@ -123,7 +123,7 @@ export const InviteToProject = ({
 												})
 										}}
 									>
-										<SubmitIcon />
+										<AddIcon />
 									</button>
 								</div>
 							</section>
