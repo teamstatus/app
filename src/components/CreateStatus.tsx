@@ -4,6 +4,7 @@ import { AddIcon } from '#components/Icons.js'
 import type { Project } from '#context/Projects.js'
 import { useStatus, type Status } from '#context/Status.js'
 import { useAuth } from '#context/Auth.js'
+import { ResizingTextarea } from '#components/ResizingTextarea.js'
 
 export const CreateStatus = ({
 	onStatus,
@@ -34,17 +35,12 @@ export const CreateStatus = ({
 				<label for="statusUpdate" class="form-label">
 					Describe your status update
 				</label>
-				<textarea
-					class="form-control"
-					id="statusUpdate"
-					rows={3}
-					placeholder='e.g. "Implemented the validation for the UI"'
-					minLength={1}
+				<ResizingTextarea
 					value={message}
-					onInput={(e) => setMessage((e.target as HTMLTextAreaElement).value)}
-					autoFocus
-				></textarea>
-				<div class="form-text">Markdown is supported.</div>
+					id="statusUpdate"
+					placeholder='e.g. "Implemented the validation for the UI"'
+					onInput={setMessage}
+				/>
 			</div>
 			<div class="d-flex align-items-center justify-content-end">
 				<button

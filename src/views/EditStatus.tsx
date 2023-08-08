@@ -8,6 +8,7 @@ import { Main } from '#components/Main.js'
 import { ProjectMenu } from '#components/ProjectMenu.js'
 import { WithStatus } from '#components/WithStatus.js'
 import { WithProject } from '#components/WithProject.js'
+import { ResizingTextarea } from '#components/ResizingTextarea.js'
 
 export const EditStatus = ({
 	statusId,
@@ -50,19 +51,12 @@ const EditStatusForm = ({ status }: { status: Status }) => {
 							<label for="statusUpdate" class="form-label">
 								Describe your status update
 							</label>
-							<textarea
-								class="form-control"
-								id="statusUpdate"
-								rows={3}
-								placeholder='e.g. "Implemented the validation for the UI"'
-								minLength={1}
+							<ResizingTextarea
 								value={message}
-								onInput={(e) =>
-									setMessage((e.target as HTMLTextAreaElement).value)
-								}
-								autoFocus
-							></textarea>
-							<div class="form-text">Markdown is supported.</div>
+								onInput={setMessage}
+								id="statusUpdate"
+								placeholder='e.g. "Implemented the validation for the UI"'
+							/>
 						</div>
 						<div class="d-flex align-items-center justify-content-end">
 							<button
