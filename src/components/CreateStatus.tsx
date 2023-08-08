@@ -2,7 +2,7 @@ import cx from 'classnames'
 import { useState } from 'preact/hooks'
 import { AddIcon } from '#components/Icons.js'
 import type { Project } from '#context/Projects.js'
-import { useStatus, type Status } from '#context/Status.js'
+import { useStatus } from '#context/Status.js'
 import { useAuth } from '#context/Auth.js'
 import { ResizingTextarea } from '#components/ResizingTextarea.js'
 
@@ -10,7 +10,7 @@ export const CreateStatus = ({
 	onStatus,
 	project,
 }: {
-	onStatus: (status: Status) => void
+	onStatus: (id: string) => void
 	project: Project
 }) => {
 	const { user } = useAuth()
@@ -54,14 +54,7 @@ export const CreateStatus = ({
 						if ('error' in res) {
 							setError(res.error)
 						} else {
-							onStatus({
-								author: user.id as string,
-								id: res.id,
-								message,
-								project: project.id,
-								reactions: [],
-								version: 1,
-							})
+							onStatus(res.id)
 						}
 					}}
 				>

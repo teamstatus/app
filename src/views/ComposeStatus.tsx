@@ -30,7 +30,7 @@ export const ComposeStatus = ({
 							onStatus={(status) => {
 								route(
 									`/project/${encodeURIComponent(id)}?${new URLSearchParams({
-										newStatus: status.id,
+										newStatus: status,
 									}).toString()}`,
 								)
 							}}

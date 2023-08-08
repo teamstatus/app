@@ -2,7 +2,7 @@ import { UserProfile } from '#components/UserProfile.js'
 import { useAuth } from '#context/Auth.js'
 import { useStatus, type Status as TStatus } from '#context/Status.js'
 import cx from 'classnames'
-import { useState } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
 import { decodeTime } from 'ulid'
 import { Ago } from './Ago.js'
 import {
@@ -18,7 +18,13 @@ import { Markdown } from './Markdown.js'
 import { Reaction, SelectReaction } from './Reactions.js'
 import { CustomReaction } from './CustomReaction.js'
 
-export const Status = ({ status }: { status: TStatus }) => {
+export const Status = ({
+	status,
+	onReactionsVisible,
+}: {
+	status: TStatus
+	onReactionsVisible?: (visible: boolean) => void
+}) => {
 	const [reactionsVisible, showReactions] = useState(false)
 	const [customReactionVisible, showCustomReaction] = useState(false)
 	const [operationsVisible, showOperations] = useState(false)
@@ -27,6 +33,11 @@ export const Status = ({ status }: { status: TStatus }) => {
 	const { addReaction, deleteReaction, deleteStatus } = useStatus()
 	const canEdit = userId === status.author
 	const hasOperations = canEdit
+
+	useEffect(() => {
+		onReactionsVisible?.(reactionsVisible)
+	}, [reactionsVisible])
+
 	return (
 		<>
 			<div>

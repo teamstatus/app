@@ -31,23 +31,25 @@ export const ReactionsHelp = () => (
 				}}
 			/>
 		</p>
-		<h3>Reaction examples</h3>
-		{reactionPresets.map((reaction) => (
-			<div class="d-flex align-items-center justify-content-start">
-				<Reaction reaction={reaction} />
-				<span>
-					{reaction.description !== undefined ? (
-						<>
-							{reaction.description}
-							<br />
-						</>
-					) : (
-						''
-					)}
-					<ExplainRole reaction={reaction} />
-				</span>
-			</div>
-		))}
+		<section class="mb-3">
+			<h3>Reaction examples</h3>
+			{reactionPresets.map((reaction) => (
+				<div class="d-flex align-items-center justify-content-start">
+					<Reaction reaction={reaction} />
+					<span>
+						{reaction.description !== undefined ? (
+							<>
+								{reaction.description}
+								<br />
+							</>
+						) : (
+							''
+						)}
+						<ExplainRole reaction={reaction} />
+					</span>
+				</div>
+			))}
+		</section>
 	</>
 )
 
