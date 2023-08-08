@@ -38,6 +38,30 @@ export const Status = ({
 		onReactionsVisible?.(reactionsVisible)
 	}, [reactionsVisible])
 
+	useEffect(() => {
+		if (!reactionsVisible) return
+
+		const t = setTimeout(() => {
+			showReactions(false)
+		}, 5000)
+
+		return () => {
+			clearTimeout(t)
+		}
+	}, [reactionsVisible])
+
+	useEffect(() => {
+		if (!operationsVisible) return
+
+		const t = setTimeout(() => {
+			showOperations(false)
+		}, 5000)
+
+		return () => {
+			clearTimeout(t)
+		}
+	}, [operationsVisible])
+
 	return (
 		<>
 			<div>

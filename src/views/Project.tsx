@@ -41,7 +41,7 @@ export const Project = ({
 					{status.map((status) => (
 						<div class="row">
 							<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
-								<Status status={status} />
+								<Status status={status} key={status.id} />
 								<hr class="mt-1 mb-2" />
 							</div>
 						</div>
