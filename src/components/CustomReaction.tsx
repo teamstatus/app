@@ -19,6 +19,7 @@ export const CustomReaction = ({
 	const reaction: TReaction = {
 		emoji: icon,
 		role,
+		description,
 	}
 
 	return (
