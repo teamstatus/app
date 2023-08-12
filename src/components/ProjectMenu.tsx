@@ -1,4 +1,3 @@
-import Color from 'color'
 import { useSettings } from '#context/Settings.js'
 import { CloseIcon, ProjectsIcon, AddIcon, SubMenuIcon } from './Icons.js'
 import { useUI } from '#context/UI.js'
@@ -7,11 +6,7 @@ import { gradient, logoColors } from './Colorpicker.js'
 import { type VNode } from 'preact'
 import { useState } from 'preact/hooks'
 import { OpenmojiIcon } from './OpenmojiIcon.js'
-
-const colorStyle = (color?: string) => ({
-	color: new Color(color ?? '#212529').luminosity() > 0.5 ? 'black' : 'white',
-	backgroundColor: new Color(color ?? '#212529').hex(),
-})
+import { colorStyle } from '../util/colorStyle.js'
 
 type Action = {
 	href: string
@@ -62,6 +57,9 @@ export const ProjectMenu = ({ actions }: { actions?: Action[] }) => {
 									}}
 									class="px-3 py-1 me-2"
 								>
+									<small class="me-2 opacity-75">
+										{project.organizationId}
+									</small>
 									{alias ?? project?.name ?? project.id}
 								</span>
 
@@ -84,7 +82,14 @@ export const ProjectMenu = ({ actions }: { actions?: Action[] }) => {
 											height="20"
 										/>
 									)}
-									{icon !== undefined && <OpenmojiIcon emoji={icon} />}
+									{icon !== undefined && (
+										<OpenmojiIcon
+											emoji={icon}
+											title={project.name ?? project.id}
+											width={20}
+											height={20}
+										/>
+									)}
 								</span>
 							</a>
 						</div>

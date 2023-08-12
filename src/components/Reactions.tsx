@@ -106,7 +106,7 @@ export const ReactionView = ({
 			disabled={onClick === undefined}
 		>
 			{role !== undefined && <Role role={role} />}
-			{svgFromEmoji(emoji, reaction.description)}
+			{svgFromEmoji(emoji, { title: reaction.description })}
 			{byUser === true && <AuthorIcon size={18} strokeWidth={1} class="ms-1" />}
 			{'persisted' in reaction && reaction.persisted === false && (
 				<PersistencePendingIcon class="ms-1" size={18} strokeWidth={1} />

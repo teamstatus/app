@@ -8,7 +8,15 @@ export type OpenmojiIcon = {
 }
 
 export const OpenmojiContext = createContext<{
-	svgFromEmoji: (emoji: string, title?: string) => VNode<any>
+	svgFromEmoji: (
+		emoji: string,
+		options: {
+			title?: string
+			width?: number
+			height?: number
+			class?: string
+		},
+	) => VNode<any>
 	icons: OpenmojiIcon[]
 }>({
 	svgFromEmoji: (emoji) => <span>{emoji}</span>,
@@ -30,16 +38,22 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 	return (
 		<OpenmojiContext.Provider
 			value={{
-				svgFromEmoji: (emoji, title) => {
+				svgFromEmoji: (emoji, { title, width, height, class: c }) => {
 					const maybeOpenmoji = openmojiList.find(([, , e]) => e === emoji)
 					if (maybeOpenmoji === undefined) return <span>{emoji}</span>
 					const [hexcode, search] = maybeOpenmoji
 					return (
 						<img
-							class="openmoji"
+							class={`openmoji ${c}`}
 							src={`/static/openmoji/${hexcode}.svg`}
 							alt={title ?? emoji}
 							title={title ?? search}
+							width={width}
+							height={height}
+							style={{
+								width,
+								height,
+							}}
 						/>
 					)
 				},
