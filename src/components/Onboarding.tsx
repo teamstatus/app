@@ -202,6 +202,10 @@ const CreateOrSelectProject = ({
 		)
 	}
 
+	const orgProjects = Object.values(projects)
+		.filter((project) => project.organizationId === organization.id)
+		.sort(({ id: id1 }, { id: id2 }) => id1.localeCompare(id2))
+
 	return (
 		<>
 			<p>Within an organization, there can be multiple projects.</p>
@@ -209,28 +213,25 @@ const CreateOrSelectProject = ({
 			<FormContainer header={<h3>Create a project</h3>}>
 				<CreateProject organization={organization} onProject={onProject} />
 			</FormContainer>
-			{Object.values(projects).length > 0 && (
+			{orgProjects.length > 0 && (
 				<>
 					<p>
 						or, because you already have projects you can also pick an existing
 						one:
 					</p>
 					<FormContainer header={<h3>Select an existing project</h3>}>
-						{Object.values(projects)
-							.filter((project) => project.organizationId === organization.id)
-							.sort(({ id: id1 }, { id: id2 }) => id1.localeCompare(id2))
-							.map((project) => (
-								<p class="mb-1 d-flex justify-content-between align-items-center">
-									{project.name ?? project.id}
-									<button
-										type="button"
-										class={'btn btn-outline-secondary'}
-										onClick={() => onProject(project)}
-									>
-										select
-									</button>
-								</p>
-							))}
+						{orgProjects.map((project) => (
+							<p class="mb-1 d-flex justify-content-between align-items-center">
+								{project.name ?? project.id}
+								<button
+									type="button"
+									class={'btn btn-outline-secondary'}
+									onClick={() => onProject(project)}
+								>
+									select
+								</button>
+							</p>
+						))}
 					</FormContainer>
 				</>
 			)}
