@@ -32,9 +32,9 @@ export const ProjectHeader = ({ project }: { project: Project }) => {
 										<img
 											src="/static/heart.svg"
 											alt={project.name ?? project.id}
-											width="56"
-											height="56"
-											class="me-2"
+											width="48"
+											height="48"
+											class="me-3 p-1 my-1"
 										/>
 									)}
 									{icon !== undefined && (

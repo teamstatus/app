@@ -6,7 +6,6 @@ import { route } from 'preact-router'
 import { ProjectMenu } from '#components/ProjectMenu.js'
 import { Main } from '#components/Main.js'
 import { Invitations } from '#components/Invitations.js'
-import { Onbaording } from '#components/Onboarding.js'
 
 export const Dashboard = ({ redirect }: { redirect?: string }) => {
 	const { user } = useAuth()
@@ -58,7 +57,6 @@ export const Dashboard = ({ redirect }: { redirect?: string }) => {
 					</div>
 				</div>
 			</Main>
-			<Onbaording />
 			<ProjectMenu />
 		</>
 	)

@@ -31,11 +31,11 @@ export const ProjectMenu = ({ actions }: { actions?: Action[] }) => {
 
 	return (
 		<nav
-			class="d-flex flex-column align-items-end"
+			class="d-flex flex-column align-items-end p-2"
 			style={{
 				position: 'fixed',
-				bottom: '1rem',
-				right: '1rem',
+				bottom: '0',
+				right: '0',
 				zIndex: 1000,
 			}}
 		>
@@ -46,7 +46,7 @@ export const ProjectMenu = ({ actions }: { actions?: Action[] }) => {
 						<div class="d-flex flex-column align-items-center">
 							<a
 								href={`/project/${encodeURIComponent(project.id)}`}
-								class="mb-2 d-flex align-items-center text-decoration-none text-dark"
+								class="mb-1 d-flex align-items-center text-decoration-none text-dark"
 								onClick={() => showProjectsMenu(false)}
 							>
 								<span
@@ -55,7 +55,7 @@ export const ProjectMenu = ({ actions }: { actions?: Action[] }) => {
 										boxShadow: '0 0 8px 0 #00000075',
 										borderRadius: '15px',
 									}}
-									class="px-3 py-1 me-2"
+									class="px-3 py-1 me-1"
 								>
 									<small class="me-2 opacity-75">
 										{project.organizationId}
@@ -69,8 +69,9 @@ export const ProjectMenu = ({ actions }: { actions?: Action[] }) => {
 										...colorStyle(color),
 										borderRadius: '100%',
 										display: 'block',
-										height: '48px',
-										width: '48px',
+										height: '40px',
+										width: '40px',
+										marginRight: '4px',
 										boxShadow: '0 0 8px 0 #00000075',
 									}}
 								>
@@ -86,8 +87,8 @@ export const ProjectMenu = ({ actions }: { actions?: Action[] }) => {
 										<OpenmojiIcon
 											emoji={icon}
 											title={project.name ?? project.id}
-											width={20}
-											height={20}
+											width={30}
+											height={30}
 										/>
 									)}
 								</span>
