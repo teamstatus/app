@@ -2,7 +2,7 @@ import type { ComponentChildren } from 'preact'
 import { useUI } from '#context/UI.js'
 import cx from 'classnames'
 
-export const Main = ({
+export const Aside = ({
 	children,
 	class: c,
 }: {
@@ -12,7 +12,7 @@ export const Main = ({
 	const { projectsMenuVisible, showProjectsMenu } = useUI()
 
 	return (
-		<main
+		<aside
 			class={cx(c, {
 				blur: projectsMenuVisible,
 			})}
@@ -23,6 +23,6 @@ export const Main = ({
 			}}
 		>
 			{children}
-		</main>
+		</aside>
 	)
 }

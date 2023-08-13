@@ -71,3 +71,8 @@ h6 strong {
 .markdown p:last-child {
   margin-bottom: 0;
 }
+
+.blur {
+  filter: blur(5px);
+  user-select: none;
+}

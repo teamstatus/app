@@ -3,17 +3,22 @@ import { parseInvitationId } from '#proto/ids.js'
 import { RolePill } from '#components/RolePill.js'
 import { AcceptInvitationIcon } from './Icons.js'
 import { ProjectId } from './ProjectId.js'
+import { Aside } from './Aside.js'
 
 export const Invitations = () => {
 	const { invitations } = useProjects()
 	if (invitations.length === 0) return null
 	return (
-		<section>
-			<h2>Open invitations</h2>
-			{invitations.map((invitation) => (
-				<Invitation invitation={invitation} />
-			))}
-		</section>
+		<Aside class="container">
+			<div class="row mt-2">
+				<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+					<h2>Open invitations</h2>
+					{invitations.map((invitation) => (
+						<Invitation invitation={invitation} />
+					))}
+				</div>
+			</div>
+		</Aside>
 	)
 }
 
