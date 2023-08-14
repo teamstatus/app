@@ -7,8 +7,17 @@ import { parseProjectId } from '#proto/ids.js'
 import { NotFound } from '#components/NotFound.js'
 import { EditMenu } from '#components/EditMenu.js'
 import { RolePill } from '#components/RolePill.js'
+import { ProjectOnboarding } from '#components/onboarding/Project.js'
+import { withParams } from '#util/withParams.js'
 
-export const Organization = ({ id }: { id: string }) => {
+export const Organization = ({
+	id,
+	onboarding,
+}: {
+	id: string
+	onboarding?: string
+}) => {
+	const showOnboardingInfo = onboarding !== undefined
 	const { organizations, projects } = useProjects()
 
 	const organization = organizations.find(({ id: i }) => id === i)
@@ -24,6 +33,7 @@ export const Organization = ({ id }: { id: string }) => {
 	return (
 		<>
 			<LogoHeader />
+			{showOnboardingInfo && <ProjectOnboarding organization={organization} />}
 			<Main class="container">
 				<div class="row mt-3">
 					<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
@@ -42,7 +52,8 @@ export const Organization = ({ id }: { id: string }) => {
 									<p>
 										Why don't you{' '}
 										<a
-											href={`/project/create?${new URLSearchParams({
+											href={`/project/create${withParams({
+												onboarding,
 												organization: id,
 											})}`}
 										>
@@ -64,7 +75,9 @@ export const Organization = ({ id }: { id: string }) => {
 													</small>
 													<br />
 													<a
-														href={`/project/${encodeURIComponent(project.id)}`}
+														href={`/project/${encodeURIComponent(
+															project.id,
+														)}${withParams({ onboarding })}`}
 													>
 														{project.name ?? project.id}
 													</a>
@@ -107,7 +120,8 @@ export const Organization = ({ id }: { id: string }) => {
 			<ProjectMenu
 				actions={[
 					{
-						href: `/project/create?${new URLSearchParams({
+						href: `/project/create${withParams({
+							onboarding,
 							organization: id,
 						})}`,
 					},

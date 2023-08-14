@@ -11,7 +11,7 @@ export const FormContainer = ({
 	header: ComponentChild
 	children: ComponentChild
 }) => (
-	<div class={cx('my-4 formContainer', c)}>
+	<div class={cx('formContainer', c)}>
 		<header>{header}</header>
 		<div>{children}</div>
 	</div>

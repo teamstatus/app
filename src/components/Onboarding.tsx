@@ -2,13 +2,13 @@ import { logoColors } from '#components/Colorpicker.js'
 import Color from 'color'
 import { Aside } from '#components/Aside.js'
 
-export const Onbaording = () => (
+export const Onboarding = () => (
 	<Aside>
 		<div
 			style={{
 				backgroundColor: new Color(logoColors[8]).lighten(0.9).hex(),
 			}}
-			class={'pt-4'}
+			class={'p-4'}
 		>
 			<div class="container">
 				<div class="row">
@@ -48,9 +48,7 @@ export const Onbaording = () => (
 						</p>
 						<p>
 							So let's start by{' '}
-							<a href="/organization/create?onboarding=1">
-								creating an organization
-							</a>
+							<a href="/organizations?onboarding=1">creating an organization</a>
 							.
 						</p>
 					</div>
