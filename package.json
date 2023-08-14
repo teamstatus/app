@@ -84,7 +84,7 @@
     "lodash-es": "4.17.21",
     "lucide-preact": "0.268.0",
     "p-throttle": "5.1.0",
-    "preact": "10.16.0",
+    "preact": "10.17.0",
     "preact-router": "4.1.2",
     "rehype-format": "4.0.1",
     "rehype-stringify": "9.0.3",
