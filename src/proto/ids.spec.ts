@@ -57,13 +57,14 @@ describe('identifiers', async () => {
 				assert.equal(parseProjectId('$acme#teamsite').organization, '$acme'))
 			it('should extract the project', () =>
 				assert.equal(parseProjectId('$acme#teamsite').project, '#teamsite'))
-			it('should not return if project id is invalid', () =>
+			it('should not return if project id is invalid', () => {
 				check(parseProjectId('foo')).is(
 					objectMatching({
 						organization: null,
 						project: null,
 					}),
-				))
+				)
+			})
 		})
 	})
 
