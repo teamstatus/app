@@ -14,7 +14,6 @@ export const ProjectHeader = ({ project }: { project: Project }) => {
 	return (
 		<>
 			<header
-				class="mb-3"
 				style={{
 					color:
 						new Color(color ?? '#212529').luminosity() > 0.5

@@ -111,6 +111,27 @@ export const Status = ({
 						)
 					})}
 				</div>
+				{reactionsVisible && (
+					<div>
+						<button
+							type="button"
+							class="btn btn-light me-1"
+							onClick={() => {
+								showReactions(false)
+								showCustomReaction(true)
+							}}
+						>
+							<AddIcon size={18} />
+						</button>
+						<button
+							type="button"
+							class="btn btn-light"
+							onClick={() => showReactions(false)}
+						>
+							<CloseIcon size={18} />
+						</button>
+					</div>
+				)}
 				{!reactionsVisible && (
 					<div class="text-nowrap">
 						{status.persisted === false && (
@@ -176,23 +197,6 @@ export const Status = ({
 									addReaction(status, reaction)
 								}}
 							/>
-							<button
-								type="button"
-								class="btn btn-light me-1"
-								onClick={() => {
-									showReactions(false)
-									showCustomReaction(true)
-								}}
-							>
-								<AddIcon size={18} />
-							</button>
-							<button
-								type="button"
-								class="btn btn-light"
-								onClick={() => showReactions(false)}
-							>
-								<CloseIcon size={18} />
-							</button>
 						</div>
 					</>
 				)}

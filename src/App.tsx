@@ -5,7 +5,7 @@ import { Provider as SettingsProvider } from '#context/Settings.js'
 import { Provider as StatusProvider } from '#context/Status.js'
 import { Provider as SyncsProvider } from '#context/Syncs.js'
 import { Dashboard } from '#views/Dashboard.js'
-import { ComposeStatus } from '#views/ComposeStatus.js'
+import { CreateStatus } from '#views/CreateStatus.js'
 import { CreateOrganization } from '#views/CreateOrganization.js'
 import { CreateProject } from '#views/CreateProject.js'
 import { CreateSync } from '#views/CreateSync.js'
@@ -78,6 +78,7 @@ export const Routing = () => {
 					<Route path="/organizations" component={Organizations} />
 					<Route path="/organization/:id" component={Organization} />
 					<Route path="/project/:id" component={Project} />
+					<Route path="/project/:id/status/create" component={CreateStatus} />
 					<Route
 						path="/project/:projectId/status/:statusId"
 						component={Status}
@@ -86,7 +87,7 @@ export const Routing = () => {
 						path="/project/:projectId/status/:statusId/edit"
 						component={EditStatus}
 					/>
-					<Route path="/project/:id/compose" component={ComposeStatus} />
+
 					<Route path="/project/:id/invite" component={InviteToProject} />
 					<Route path="/project/:id/settings" component={ProjectSettings} />
 					<Route path="/user" component={User} />

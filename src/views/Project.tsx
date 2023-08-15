@@ -8,9 +8,12 @@ import { Main } from '#components/Main.js'
 import { NotFound } from '#components/NotFound.js'
 import { useEffect } from 'preact/hooks'
 import { EditIcon, MembersIcon } from '#components/Icons.js'
+import { StatusOnboarding } from '#components/onboarding/Status.js'
+import { linkUrl } from '#util/link.js'
 
 export const Project = ({
 	id,
+	onboarding,
 }: {
 	path: string // e.g. '/project/:id'
 	url: string // e.g. '/project/%24teamstatus%23development'
@@ -18,11 +21,13 @@ export const Project = ({
 		id: string // e.g. '$teamstatus#development'
 	}
 	id: string // e.g. '$teamstatus#development'
+	onboarding?: string
 }) => {
 	const { projects } = useProjects()
 	const { projectStatus, observe, hasMore, fetchMore } = useStatus()
 	const { getProjectPersonalization } = useSettings()
 	const { color } = getProjectPersonalization(id)
+	const showOnboardingInfo = onboarding !== undefined
 
 	useEffect(() => {
 		observe(id)
@@ -36,7 +41,8 @@ export const Project = ({
 	return (
 		<>
 			<ProjectHeader project={project} />
-			<Main class="container" key={project.id}>
+			{showOnboardingInfo && <StatusOnboarding project={project} />}
+			<Main class="container mt-3" key={project.id}>
 				<section>
 					{status.map((status) => (
 						<div class="row">
@@ -64,7 +70,11 @@ export const Project = ({
 							<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
 								<p>No status updates, yet.</p>
 								<p>
-									<a href={`/project/${encodeURIComponent(id)}/compose`}>
+									<a
+										href={linkUrl([`project`, id, 'status', 'create'], {
+											onboarding,
+										})}
+									>
 										Create
 									</a>{' '}
 									the first one!
@@ -89,7 +99,9 @@ export const Project = ({
 						secondary: true,
 					},
 					{
-						href: `/project/${encodeURIComponent(id)}/compose`,
+						href: linkUrl([`project`, id, 'status', 'create'], {
+							onboarding,
+						}),
 						color,
 						disabled: !canCreateStatus(project.role),
 					},

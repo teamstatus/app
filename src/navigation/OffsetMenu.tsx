@@ -1,4 +1,5 @@
 import { Ago } from '#components/Ago.js'
+import { AsHeadline } from '#components/HeadlineFont.js'
 import { AppNavigation } from './AppNavigation.js'
 
 export const OffsetMenu = ({ onClick }: { onClick: () => unknown }) => (
@@ -20,14 +21,7 @@ export const OffsetMenu = ({ onClick }: { onClick: () => unknown }) => (
 					height="25"
 					class="me-2"
 				/>{' '}
-				<span
-					style={{
-						fontFamily: 'var(--headline-font)',
-						fontWeight: 700,
-					}}
-				>
-					teamstatus.space
-				</span>
+				<AsHeadline>teamstatus.space</AsHeadline>
 			</a>
 			<button
 				type="button"

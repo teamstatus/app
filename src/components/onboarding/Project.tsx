@@ -1,3 +1,4 @@
+import { AsHeadline } from '#components/HeadlineFont.js'
 import { useProjects, type Organization } from '#context/Projects.js'
 import { OnboardingInfo } from '#views/OnboardingInfo.js'
 import { PlusCircle } from 'lucide-preact'
@@ -14,6 +15,9 @@ export const ProjectOnboarding = ({
 
 	return (
 		<OnboardingInfo>
+			<h2 class="mb-3">
+				Getting started: <AsHeadline>Projects</AsHeadline>
+			</h2>
 			<p>Within an organization, there can be multiple projects.</p>
 			<p>
 				Click the <PlusCircle class="mx-1" /> in the bottom right corner to

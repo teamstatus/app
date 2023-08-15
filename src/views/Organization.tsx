@@ -8,7 +8,7 @@ import { NotFound } from '#components/NotFound.js'
 import { EditMenu } from '#components/EditMenu.js'
 import { RolePill } from '#components/RolePill.js'
 import { ProjectOnboarding } from '#components/onboarding/Project.js'
-import { withParams } from '#util/withParams.js'
+import { linkUrl } from '#util/link.js'
 
 export const Organization = ({
 	id,
@@ -52,10 +52,10 @@ export const Organization = ({
 									<p>
 										Why don't you{' '}
 										<a
-											href={`/project/create${withParams({
+											href={linkUrl(['project', 'create'], {
 												onboarding,
 												organization: id,
-											})}`}
+											})}
 										>
 											create a new project
 										</a>{' '}
@@ -75,9 +75,10 @@ export const Organization = ({
 													</small>
 													<br />
 													<a
-														href={`/project/${encodeURIComponent(
-															project.id,
-														)}${withParams({ onboarding })}`}
+														href={linkUrl(['project', project.id], {
+															onboarding,
+															organization: id,
+														})}
 													>
 														{project.name ?? project.id}
 													</a>
@@ -120,10 +121,10 @@ export const Organization = ({
 			<ProjectMenu
 				actions={[
 					{
-						href: `/project/create${withParams({
+						href: linkUrl(['project', 'create'], {
 							onboarding,
 							organization: id,
-						})}`,
+						}),
 					},
 				]}
 			/>

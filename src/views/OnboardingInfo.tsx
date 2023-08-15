@@ -9,7 +9,7 @@ export const OnboardingInfo = ({ children }: { children: ComponentChild }) => {
 			style={{
 				backgroundColor: new Color(logoColors[8]).lighten(0.9).hex(),
 			}}
-			class={'py-2 mb-4'}
+			class={'py-4 mb-4'}
 		>
 			<div class="container mt-lg-4">
 				<div class="row">

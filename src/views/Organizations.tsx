@@ -4,7 +4,7 @@ import { Main } from '#components/Main.js'
 import { useProjects } from '#context/Projects.js'
 import { OrganizationIcon } from '#components/Icons.js'
 import { OrganizationOnboarding } from '#components/onboarding/Organization.js'
-import { withParams } from '#util/withParams.js'
+import { linkUrl } from '#util/link.js'
 
 export const Organizations = ({ onboarding }: { onboarding?: string }) => {
 	const { organizations } = useProjects()
@@ -27,7 +27,9 @@ export const Organizations = ({ onboarding }: { onboarding?: string }) => {
 									<p>
 										Why don't you{' '}
 										<a
-											href={`/organization/create${withParams({ onboarding })}`}
+											href={linkUrl(['organization', 'create'], {
+												onboarding,
+											})}
 										>
 											create a new organization
 										</a>{' '}
@@ -45,9 +47,9 @@ export const Organizations = ({ onboarding }: { onboarding?: string }) => {
 												</small>
 												<br />
 												<a
-													href={`/organization/${encodeURIComponent(
-														organization.id,
-													)}${withParams({ onboarding })}`}
+													href={linkUrl(['organization', organization.id], {
+														onboarding,
+													})}
 												>
 													{organization.name ?? organization.id}
 												</a>
@@ -61,7 +63,15 @@ export const Organizations = ({ onboarding }: { onboarding?: string }) => {
 					</div>
 				</div>
 			</Main>
-			<ProjectMenu actions={[{ href: '/organization/create' }]} />
+			<ProjectMenu
+				actions={[
+					{
+						href: linkUrl(['organization', 'create'], {
+							onboarding,
+						}),
+					},
+				]}
+			/>
 		</>
 	)
 }

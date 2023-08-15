@@ -38,7 +38,7 @@ const EditStatusForm = ({ status }: { status: Status }) => {
 	const isValid = message.length > 0
 	return (
 		<>
-			<Main class="container">
+			<Main class="container mt-3">
 				<div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-3">
 					<section>
 						<h1>Edit status</h1>

@@ -88,10 +88,12 @@ export const ReactionView = ({
 	reaction,
 	byUser,
 	onClick,
+	class: c,
 }: {
 	byUser?: boolean
 	onClick?: () => void
 	reaction: TReaction
+	class?: string
 }) => {
 	const { svgFromEmoji } = useOpenmoji()
 	const { emoji, description } = reaction
@@ -99,7 +101,7 @@ export const ReactionView = ({
 	return (
 		<button
 			type="button"
-			class={'btn me-1 text-nowrap btn-light reaction'}
+			class={`btn me-1 text-nowrap btn-light reaction ${c}`}
 			style={byUser === true ? { borderColor: 'goldenrod' } : {}}
 			title={description}
 			onClick={() => onClick?.()}

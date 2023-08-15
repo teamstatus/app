@@ -1,48 +1,23 @@
+import { AsHeadline } from './HeadlineFont.js'
 import { OpenmojiIcon } from './OpenmojiIcon.js'
 import { redirectAfterLogin } from './redirectAfterLogin.js'
 
 export const Intro = () => (
 	<>
 		<h1>
-			About{' '}
-			<span
-				style={{
-					fontFamily: 'var(--headline-font)',
-					fontWeight: 700,
-				}}
-			>
-				teamstatus.space
-			</span>
+			About <AsHeadline>teamstatus.space</AsHeadline>
 		</h1>
 		<p>
-			<a
-				href="https://teamstatus.space"
-				style={{
-					fontFamily: 'var(--headline-font)',
-					fontWeight: 700,
-				}}
-			>
-				teamstatus.space
-			</a>{' '}
-			allows distributed teams to collect status updates and collect them for a
-			sync meeting.
+			<AsHeadline>teamstatus.space</AsHeadline> allows distributed teams to
+			collect status updates and collect them for a sync meeting.
 		</p>
 		<p>
 			It is made by <a href="https://coderbyheart.com/">Markus Tacker</a>, in
 			Norway.
 		</p>
 		<p>
-			You use{' '}
-			<span
-				style={{
-					fontFamily: 'var(--headline-font)',
-					fontWeight: 700,
-				}}
-			>
-				teamstatus.space
-			</span>{' '}
-			to track what you are working on, as it happens. It may be small updates,
-			or big releases.
+			You use <AsHeadline>teamstatus.space</AsHeadline> to track what you are
+			working on, as it happens. It may be small updates, or big releases.
 		</p>
 		<p>
 			Status updates are associated to projects, which belong to organizations.

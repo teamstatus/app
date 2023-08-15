@@ -1,17 +1,22 @@
 import { CreateStatus as CreateForm } from '#components/CreateStatus.js'
+import { FormContainer } from '#components/FormContainer.js'
 import { Main } from '#components/Main.js'
 import { NotFound } from '#components/NotFound.js'
 import { ProjectHeader } from '#components/ProjectHeader.js'
 import { ProjectMenu } from '#components/ProjectMenu.js'
+import { StatusOnboarding } from '#components/onboarding/Status.js'
 import { useProjects } from '#context/Projects.js'
-import { route } from 'preact-router'
+import { navigateTo } from '#util/link.js'
 
-export const ComposeStatus = ({
+export const CreateStatus = ({
 	id,
+	onboarding,
 }: {
 	id: string // e.g. '$teamstatus#development'
+	onboarding?: string
 }) => {
 	const { projects } = useProjects()
+	const showOnboardingInfo = onboarding !== undefined
 
 	const project = projects[id]
 	if (project === undefined) {
@@ -21,21 +26,19 @@ export const ComposeStatus = ({
 	return (
 		<>
 			<ProjectHeader project={project} />
-			<Main class="container">
-				<div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-3">
-					<section>
-						<h1>Compose a new status</h1>
+			{showOnboardingInfo && (
+				<StatusOnboarding project={project} step={'create_status'} />
+			)}
+			<Main class="container mt-3">
+				<div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+					<FormContainer header={<h1>Create a new status</h1>}>
 						<CreateForm
 							project={project}
 							onStatus={(status) => {
-								route(
-									`/project/${encodeURIComponent(id)}?${new URLSearchParams({
-										newStatus: status,
-									}).toString()}`,
-								)
+								navigateTo(['project', id], { onboarding, newStatus: status })
 							}}
 						/>
-					</section>
+					</FormContainer>
 				</div>
 			</Main>
 			<ProjectMenu />
