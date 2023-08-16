@@ -8,9 +8,13 @@ import {
 	HomeIcon,
 	OrganizationIcon,
 } from '#components/Icons.js'
+import { linkUrl } from '#util/link.js'
 
 export const AppNavigation = ({ onClick }: { onClick?: () => unknown }) => {
 	const { user, logout } = useAuth()
+
+	const onboarding =
+		new URLSearchParams(document.location.search).get('onboarding') ?? undefined
 
 	return (
 		<nav class="d-flex flex-column align-items-start">
@@ -19,14 +23,14 @@ export const AppNavigation = ({ onClick }: { onClick?: () => unknown }) => {
 					{user.id !== undefined && (
 						<>
 							<a
-								href="/syncs"
+								href={linkUrl(['syncs'], { onboarding })}
 								class="btn btn-link text-body text-decoration-none"
 								onClick={onClick}
 							>
 								<SyncsIcon /> <span class="ms-2">Syncs</span>
 							</a>
 							<a
-								href="/organizations"
+								href={linkUrl(['organizations'], { onboarding })}
 								class="btn btn-link text-body text-decoration-none"
 								onClick={onClick}
 							>
@@ -35,11 +39,11 @@ export const AppNavigation = ({ onClick }: { onClick?: () => unknown }) => {
 						</>
 					)}
 					<hr class={'w-100'} />
-					<Home onClick={onClick} />
-					<Help onClick={onClick} />
+					<Home onClick={onClick} onboarding={onboarding} />
+					<Help onClick={onClick} onboarding={onboarding} />
 					<hr class={'w-100'} />
 					<a
-						href="/user"
+						href={linkUrl(['user'], { onboarding })}
 						class="btn btn-link text-body text-decoration-none"
 						onClick={onClick}
 					>
@@ -62,7 +66,7 @@ export const AppNavigation = ({ onClick }: { onClick?: () => unknown }) => {
 			{!user && (
 				<>
 					<a
-						href="/login"
+						href={linkUrl(['login'], { onboarding })}
 						class="btn btn-link text-body text-decoration-none"
 						onClick={onClick}
 					>
@@ -70,17 +74,23 @@ export const AppNavigation = ({ onClick }: { onClick?: () => unknown }) => {
 						<span class="ms-2">Log in</span>
 					</a>
 					<hr class={'w-100'} />
-					<Home onClick={onClick} />
-					<Help onClick={onClick} />
+					<Home onClick={onClick} onboarding={onboarding} />
+					<Help onClick={onClick} onboarding={onboarding} />
 				</>
 			)}
 		</nav>
 	)
 }
 
-const Home = ({ onClick }: { onClick?: () => unknown }) => (
+const Home = ({
+	onClick,
+	onboarding,
+}: {
+	onboarding?: string
+	onClick?: () => unknown
+}) => (
 	<a
-		href="/"
+		href={linkUrl([''], { onboarding })}
 		class="btn btn-link text-body text-decoration-none"
 		onClick={onClick}
 	>
@@ -89,9 +99,15 @@ const Home = ({ onClick }: { onClick?: () => unknown }) => (
 	</a>
 )
 
-const Help = ({ onClick }: { onClick?: () => unknown }) => (
+const Help = ({
+	onClick,
+	onboarding,
+}: {
+	onboarding?: string
+	onClick?: () => unknown
+}) => (
 	<a
-		href="/help"
+		href={linkUrl(['help'], { onboarding })}
 		class="btn btn-link text-body text-decoration-none"
 		onClick={onClick}
 	>

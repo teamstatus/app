@@ -6,14 +6,18 @@ import { Main } from '#components/Main.js'
 import { DeleteIcon, SyncIcon } from '#components/Icons.js'
 import { ShortDate } from '#components/ShortDate.js'
 import { EditMenu } from '#components/EditMenu.js'
+import { SyncOnboarding } from '#components/onboarding/Sync.js'
+import { linkUrl } from '#util/link.js'
 
-export const Syncs = () => {
+export const Syncs = ({ onboarding }: { onboarding?: string }) => {
 	const { syncs, deleteSync } = useSyncs()
 	const syncItems = Object.values(syncs)
+	const showOnboardingInfo = onboarding !== undefined
 
 	return (
 		<>
 			<LogoHeader />
+			{showOnboardingInfo && <SyncOnboarding />}
 			<Main class="container">
 				<div class="row mt-3">
 					<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
@@ -26,7 +30,10 @@ export const Syncs = () => {
 								<>
 									<p>You have no syncs,yet.</p>
 									<p>
-										Why don't you <a href="/sync/create">create a new sync</a>{' '}
+										Why don't you{' '}
+										<a href={linkUrl(['sync', 'create'], { onboarding })}>
+											create a new sync
+										</a>{' '}
 										right now?
 									</p>
 								</>
@@ -45,7 +52,9 @@ export const Syncs = () => {
 														<ShortDate date={ts} />
 													</small>
 													<br />
-													<a href={`/sync/${sync.id}`}>{sync.title}</a>
+													<a href={linkUrl(['sync', sync.id], { onboarding })}>
+														{sync.title}
+													</a>
 												</div>
 												<EditMenu>
 													<button
@@ -67,7 +76,9 @@ export const Syncs = () => {
 					</div>
 				</div>
 			</Main>
-			<ProjectMenu actions={[{ href: '/sync/create' }]} />
+			<ProjectMenu
+				actions={[{ href: linkUrl(['sync', 'create'], { onboarding }) }]}
+			/>
 		</>
 	)
 }

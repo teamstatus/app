@@ -7,7 +7,7 @@ export const OnboardingInfo = ({ children }: { children: ComponentChild }) => {
 	return (
 		<Aside
 			style={{
-				backgroundColor: new Color(logoColors[8]).lighten(0.9).hex(),
+				backgroundColor: new Color(logoColors[7]).lighten(1.25).hex(),
 			}}
 			class={'py-4 mb-4'}
 		>

@@ -7,6 +7,7 @@ import { AddIcon, ApplyIcon } from './Icons.js'
 export const SyncSettings = ({
 	projects,
 	onUpdate,
+	onCreated,
 }: {
 	projects: Project[]
 	onUpdate: (
@@ -14,6 +15,7 @@ export const SyncSettings = ({
 		startDate?: Date,
 		endDate?: Date,
 	) => void
+	onCreated: (syncId: string) => void
 }) => {
 	const { addSync } = useSyncs()
 	const [startDay, setStartDay] = useState('') // '2023-06-11'
@@ -22,7 +24,6 @@ export const SyncSettings = ({
 	const [endTime, setEndTime] = useState('00:00') // '00:35'
 	const [selectedProjects, setSelectedProjects] = useState<string[]>([])
 	const [name, setName] = useState('')
-	const [createdSyncId, setCreatedSyncId] = useState<string>()
 
 	const startDate =
 		startDay.length > 0 && startTime.length > 0
@@ -145,7 +146,7 @@ export const SyncSettings = ({
 						disabled={!isValid}
 						onClick={() => {
 							const res = addSync(selectedProjects, name, startDate, endDate)
-							if ('id' in res) setCreatedSyncId(res.id)
+							if ('id' in res) onCreated(res.id)
 						}}
 					>
 						<AddIcon />
@@ -160,11 +161,6 @@ export const SyncSettings = ({
 					</button>
 				</span>
 			</div>
-			{createdSyncId !== undefined && (
-				<div class="alert alert-success mt-4" role="alert">
-					Sync <a href={`/sync/${createdSyncId}`}>{name}</a> created.
-				</div>
-			)}
 		</section>
 	)
 }
