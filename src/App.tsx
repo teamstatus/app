@@ -33,79 +33,112 @@ import { EditUser } from '#views/EditUser.js'
 import { SyncExportTeams } from '#views/SyncExportTeams.js'
 import { SyncExportConfluence } from '#views/SyncExportConfluence.js'
 import { Provider as OpenmojiProvider } from '#context/Openmoji.js'
+import { IDOnboardingRedirect } from '#views/UsernameOnbaordingRedirect.js'
+import { IDSelection } from '#views/IDSelection.js'
 
 export const App = () => (
 	<AuthProvider>
-		<UserProfilesProvider>
-			<ProjectsProvider>
-				<SettingsProvider>
-					<StatusProvider>
-						<SyncsProvider>
-							<UIProvider>
-								<OpenmojiProvider>
-									<Routing />
-								</OpenmojiProvider>
-							</UIProvider>
-						</SyncsProvider>
-					</StatusProvider>
-				</SettingsProvider>
-			</ProjectsProvider>
-		</UserProfilesProvider>
+		<OpenmojiProvider>
+			<Routing />
+		</OpenmojiProvider>
 	</AuthProvider>
 )
 
 export const Routing = () => {
 	const { user } = useAuth()
 
-	if (user !== undefined) {
-		return (
-			<>
-				<Router>
-					<Route path="/" component={Dashboard} />
-					<Route path="/login" component={LoginRedirect} />
-					<Route path="/help" component={Help} />
-					<Route path="/personalize-projects" component={PersonalizeProjects} />
-					<Route path="/sync/create" component={CreateSync} />
-					<Route path="/sync/:id" component={Sync} />
-					<Route path="/sync/:id/export/teams" component={SyncExportTeams} />
-					<Route
-						path="/sync/:id/export/confluence"
-						component={SyncExportConfluence}
-					/>
-					<Route path="/syncs" component={Syncs} />
-					<Route path="/project/create" component={CreateProject} />
-					<Route path="/organization/create" component={CreateOrganization} />
-					<Route path="/organizations" component={Organizations} />
-					<Route path="/organization/:id" component={Organization} />
-					<Route path="/project/:id" component={Project} />
-					<Route path="/project/:id/status/create" component={CreateStatus} />
-					<Route
-						path="/project/:projectId/status/:statusId"
-						component={Status}
-					/>
-					<Route
-						path="/project/:projectId/status/:statusId/edit"
-						component={EditStatus}
-					/>
+	const userId = user?.id
 
-					<Route path="/project/:id/invite" component={InviteToProject} />
-					<Route path="/project/:id/settings" component={ProjectSettings} />
-					<Route path="/user" component={User} />
-					<Route path="/user/edit" component={EditUser} />
-					<Route path="/user/:id" component={UserProfile} />
-					<Route path="/reactions" component={Reactions} />
-				</Router>
-			</>
+	console.log({ user, userId })
+
+	if (user !== undefined && userId !== undefined) {
+		return (
+			<UserProfilesProvider>
+				<ProjectsProvider>
+					<SettingsProvider>
+						<StatusProvider>
+							<SyncsProvider>
+								<UIProvider>
+									<Router>
+										<Route path="/" component={Dashboard} />
+										<Route path="/login" component={LoginRedirect} />
+										<Route path="/help" component={Help} />
+										<Route
+											path="/personalize-projects"
+											component={PersonalizeProjects}
+										/>
+										<Route path="/sync/create" component={CreateSync} />
+										<Route path="/sync/:id" component={Sync} />
+										<Route
+											path="/sync/:id/export/teams"
+											component={SyncExportTeams}
+										/>
+										<Route
+											path="/sync/:id/export/confluence"
+											component={SyncExportConfluence}
+										/>
+										<Route path="/syncs" component={Syncs} />
+										<Route path="/project/create" component={CreateProject} />
+										<Route
+											path="/organization/create"
+											component={CreateOrganization}
+										/>
+										<Route path="/organizations" component={Organizations} />
+										<Route path="/organization/:id" component={Organization} />
+										<Route path="/project/:id" component={Project} />
+										<Route
+											path="/project/:id/status/create"
+											component={CreateStatus}
+										/>
+										<Route
+											path="/project/:projectId/status/:statusId"
+											component={Status}
+										/>
+										<Route
+											path="/project/:projectId/status/:statusId/edit"
+											component={EditStatus}
+										/>
+
+										<Route
+											path="/project/:id/invite"
+											component={InviteToProject}
+										/>
+										<Route
+											path="/project/:id/settings"
+											component={ProjectSettings}
+										/>
+										<Route path="/user" component={User} />
+										<Route path="/user/edit" component={EditUser} />
+										<Route path="/user/:id" component={UserProfile} />
+										<Route path="/reactions" component={Reactions} />
+									</Router>
+								</UIProvider>
+							</SyncsProvider>
+						</StatusProvider>
+					</SettingsProvider>
+				</ProjectsProvider>
+			</UserProfilesProvider>
 		)
 	}
-	return (
-		<>
+
+	if (user !== undefined && userId === undefined) {
+		return (
 			<Router>
 				<Route path="/" component={Home} />
-				<Route path="/login" component={Login} />
+				<Route path="/id" component={IDSelection} />
+				<Route path="/login" component={IDOnboardingRedirect} />
+				<Route path="/organization/create" component={IDOnboardingRedirect} />
 				<Route path="/help" component={Help} />
-				<Route path="/sync/:id" component={PublicSync} />
 			</Router>
-		</>
+		)
+	}
+
+	return (
+		<Router>
+			<Route path="/" component={Home} />
+			<Route path="/login" component={Login} />
+			<Route path="/help" component={Help} />
+			<Route path="/sync/:id" component={PublicSync} />
+		</Router>
 	)
 }
