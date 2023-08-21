@@ -54,14 +54,15 @@ const icon =
 		color?: string
 		size?: number
 		strokeWidth?: number
-	}) => (
-		<Icon
-			strokeWidth={sw ?? strokeWidth}
-			class={c}
-			size={s ?? size}
-			color={col}
-		/>
-	)
+	}) =>
+		(
+			<Icon
+				strokeWidth={sw ?? strokeWidth}
+				class={c}
+				size={s ?? size}
+				color={col}
+			/>
+		)
 
 export const UserIcon = icon(User)
 export const CalendarIcon = icon(Calendar)

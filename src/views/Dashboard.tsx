@@ -36,6 +36,7 @@ export const Dashboard = ({ redirect }: { redirect?: string }) => {
 								<a
 									href="https://github.com/orgs/teamstatus/discussions/categories/ideas"
 									target="_blank"
+									rel="noreferrer noopener"
 								>
 									Suggestions welcome!
 								</a>

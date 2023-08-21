@@ -35,12 +35,11 @@ export const ResizingTextarea = ({
 				minLength={1}
 				value={value}
 				onInput={(e) => onInput((e.target as HTMLTextAreaElement).value)}
-				autoFocus
 				style={{
 					height,
 				}}
 				ref={textAreaRef}
-			></textarea>
+			/>
 			<div class="form-text">Markdown is supported.</div>
 			<div
 				ref={shadowRef}

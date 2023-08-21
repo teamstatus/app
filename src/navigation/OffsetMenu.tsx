@@ -29,7 +29,7 @@ export const OffsetMenu = ({ onClick }: { onClick: () => unknown }) => (
 				data-bs-dismiss="offcanvas"
 				aria-label="Close"
 				onClick={onClick}
-			></button>
+			/>
 		</div>
 		<div class="offcanvas-body d-flex flex-column justify-content-between">
 			<AppNavigation onClick={onClick} />

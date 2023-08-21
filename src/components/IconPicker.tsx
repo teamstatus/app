@@ -65,9 +65,10 @@ export const IconPicker = ({ onIcon }: { onIcon: (icon: string) => void }) => {
 					<div>
 						{Object.entries(skinTones).map(([name, emoji]) => (
 							<button
+								type="button"
 								class={cx('btn btn-sm me-1', {
-									['btn-outline-secondary']: skinToneFilter !== name,
-									['btn-secondary']: skinToneFilter === name,
+									'btn-outline-secondary': skinToneFilter !== name,
+									'btn-secondary': skinToneFilter === name,
 								})}
 								onClick={() =>
 									setSkinToneFilter(name as keyof typeof skinTones)
@@ -78,6 +79,7 @@ export const IconPicker = ({ onIcon }: { onIcon: (icon: string) => void }) => {
 							</button>
 						))}
 						<button
+							type="button"
 							class="btn btn-sm btn-outline-secondary"
 							onClick={() => setSkinToneFilter(undefined)}
 							disabled={skinToneFilter === undefined}

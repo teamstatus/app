@@ -139,6 +139,7 @@ export const SyncSettings = ({
 			<div class="d-flex align-items-center justify-content-end mt-4">
 				<span>
 					<button
+						type="button"
 						class={cx('btn', {
 							'btn-primary': isValid,
 							'btn-secondary': !isValid,
@@ -152,6 +153,7 @@ export const SyncSettings = ({
 						<AddIcon />
 					</button>
 					<button
+						type="button"
 						class={'btn btn-secondary ms-1'}
 						onClick={() => {
 							onUpdate(selectedProjects, startDate, endDate)

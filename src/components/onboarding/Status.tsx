@@ -10,12 +10,9 @@ import { ReactionRole, useStatus, type Status } from '#context/Status.js'
 import { OnboardingInfo } from '#views/OnboardingInfo.js'
 import { PlusCircle, PlusIcon, SmilePlus } from 'lucide-preact'
 
-const byReaction =
-	(role: ReactionRole) =>
-	({ reactions }: Status) =>
-		reactions.find(
-			(reaction) => 'role' in reaction && reaction.role === role,
-		) !== undefined
+const byReaction = (role: ReactionRole) => ({ reactions }: Status) =>
+	reactions.find((reaction) => 'role' in reaction && reaction.role === role) !==
+	undefined
 
 export const StatusOnboarding = ({
 	project,

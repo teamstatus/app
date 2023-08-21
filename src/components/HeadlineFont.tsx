@@ -1,4 +1,10 @@
-export const AsHeadline = ({ children }: { children: ChildNode | string }) => (
+import type { ComponentChildren } from 'preact'
+
+export const AsHeadline = ({
+	children,
+}: {
+	children: ComponentChildren | string
+}) => (
 	<span
 		style={{
 			fontFamily: 'var(--headline-font)',

@@ -16,7 +16,7 @@ export const WithStatus = ({
 }) => {
 	const { projectStatus } = useStatus()
 	const [status, setStatus] = useState<TStatus | undefined>(
-		projectStatus[project.id]?.find(({ id }) => id === id),
+		projectStatus[project.id]?.find(({ id: statusId }) => statusId === id),
 	)
 
 	useEffect(() => {

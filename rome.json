@@ -1,0 +1,43 @@
+{
+	"$schema": "https://docs.rome.tools/schemas/12.1.3/schema.json",
+	"organizeImports": {
+		"enabled": false
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"all": true,
+			"nursery": {
+				"useNamingConvention": "off"
+			},
+			"a11y": {
+				"noSvgWithoutTitle": "off",
+				"useKeyWithClickEvents": "off"
+			},
+			"style": { "noImplicitBoolean": "off", "noUnusedTemplateLiteral": "off" },
+			"suspicious": {
+				"noExplicitAny": "warn"
+			},
+			"correctness": {
+				"noUndeclaredVariables": "error"
+			}
+		}
+	},
+	"javascript": {
+		"formatter": {
+			"semicolons": "asNeeded",
+			"quoteStyle": "single",
+			"jsxQuoteStyle": "double"
+		},
+		"globals": [
+			"BUILD_TIME",
+			"VERSION",
+			"ImportMetaEnv",
+			"API_ENDPOINT",
+			"WS_ENDPOINT"
+		]
+	},
+	"files": {
+		"ignore": ["./build"]
+	}
+}

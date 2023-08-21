@@ -44,6 +44,7 @@ export const ProjectMenu = ({ actions }: { actions?: Action[] }) => {
 				visibleProjects.map(
 					({ project, personalization: { color, icon, alias } }) => (
 						<div class="d-flex flex-column align-items-center">
+							{/* rome-ignore lint/a11y/useValidAnchor: needed to close the menu*/}
 							<a
 								href={`/project/${encodeURIComponent(project.id)}`}
 								class="mb-1 d-flex align-items-center text-decoration-none text-dark"
@@ -102,6 +103,7 @@ export const ProjectMenu = ({ actions }: { actions?: Action[] }) => {
 						<>
 							{!showSecondaryActions && (
 								<button
+									type="button"
 									class="btn d-flex align-items-center justify-content-center mb-2"
 									style={{
 										border: 0,
@@ -141,6 +143,7 @@ export const ProjectMenu = ({ actions }: { actions?: Action[] }) => {
 						/>
 					))}
 					<button
+						type="button"
 						onClick={() => showProjectsMenu(true)}
 						style={{
 							borderRadius: '100%',
@@ -161,6 +164,7 @@ export const ProjectMenu = ({ actions }: { actions?: Action[] }) => {
 			)}
 			{projectsMenuVisible && (
 				<div class="d-flex">
+					{/* rome-ignore lint/a11y/useValidAnchor: needed to close the menu */}
 					<a
 						href={`/personalize-projects`}
 						style={{
@@ -192,6 +196,7 @@ const CloseButton = ({
 	class?: string
 }) => (
 	<button
+		type="button"
 		onClick={onClick}
 		style={{
 			borderRadius: '100%',
@@ -219,6 +224,7 @@ const ActionButton = ({
 	if (action.disabled === true)
 		return (
 			<button
+				type="button"
 				disabled
 				class="btn d-flex align-items-center justify-content-center mb-2"
 				style={{
@@ -235,21 +241,25 @@ const ActionButton = ({
 				{action.icon ?? <AddIcon />}
 			</button>
 		)
+
 	return (
-		<a
-			href={action.href}
-			onClick={onClick}
-			style={{
-				borderRadius: '100%',
-				...colorStyle(action.color),
-				display: 'block',
-				height: '48px',
-				width: '48px',
-				boxShadow: '0 0 8px 0 #00000075',
-			}}
-			class="d-flex align-items-center justify-content-center mb-2"
-		>
-			{action.icon ?? <AddIcon />}
-		</a>
+		<>
+			{/* rome-ignore lint/a11y/useValidAnchor: needed to close the menu */}
+			<a
+				href={action.href}
+				onClick={onClick}
+				style={{
+					borderRadius: '100%',
+					...colorStyle(action.color),
+					display: 'block',
+					height: '48px',
+					width: '48px',
+					boxShadow: '0 0 8px 0 #00000075',
+				}}
+				class="d-flex align-items-center justify-content-center mb-2"
+			>
+				{action.icon ?? <AddIcon />}
+			</a>
+		</>
 	)
 }

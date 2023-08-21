@@ -104,6 +104,7 @@ export const InviteToProject = ({
 								</div>
 								<div class="d-flex align-items-center justify-content-end">
 									<button
+										type="button"
 										class={cx('btn', {
 											'btn-primary': isValid,
 											'btn-secondary': !isValid,

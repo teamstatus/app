@@ -54,7 +54,6 @@ export const Organizations = ({ onboarding }: { onboarding?: string }) => {
 													{organization.name ?? organization.id}
 												</a>
 											</div>
-											<div></div>
 										</div>
 										<hr />
 									</>

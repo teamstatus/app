@@ -22,6 +22,7 @@ export const AppNavigation = ({ onClick }: { onClick?: () => unknown }) => {
 				<>
 					{user.id !== undefined && (
 						<>
+							{/* rome-ignore lint/a11y/useValidAnchor: needed to close the menu */}
 							<a
 								href={linkUrl(['syncs'], { onboarding })}
 								class="btn btn-link text-body text-decoration-none"
@@ -29,6 +30,7 @@ export const AppNavigation = ({ onClick }: { onClick?: () => unknown }) => {
 							>
 								<SyncsIcon /> <span class="ms-2">Syncs</span>
 							</a>
+							{/* rome-ignore lint/a11y/useValidAnchor: needed to close the menu */}
 							<a
 								href={linkUrl(['organizations'], { onboarding })}
 								class="btn btn-link text-body text-decoration-none"
@@ -42,6 +44,7 @@ export const AppNavigation = ({ onClick }: { onClick?: () => unknown }) => {
 					<Home onClick={onClick} onboarding={onboarding} />
 					<Help onClick={onClick} onboarding={onboarding} />
 					<hr class={'w-100'} />
+					{/* rome-ignore lint/a11y/useValidAnchor: needed to close the menu */}
 					<a
 						href={linkUrl(['user'], { onboarding })}
 						class="btn btn-link text-body text-decoration-none"
@@ -65,6 +68,7 @@ export const AppNavigation = ({ onClick }: { onClick?: () => unknown }) => {
 			)}
 			{!user && (
 				<>
+					{/* rome-ignore lint/a11y/useValidAnchor: needed to close the menu */}
 					<a
 						href={linkUrl(['login'], { onboarding })}
 						class="btn btn-link text-body text-decoration-none"
@@ -89,6 +93,7 @@ const Home = ({
 	onboarding?: string
 	onClick?: () => unknown
 }) => (
+	// rome-ignore lint/a11y/useValidAnchor: needed to close the menu
 	<a
 		href={linkUrl([''], { onboarding })}
 		class="btn btn-link text-body text-decoration-none"
@@ -106,6 +111,7 @@ const Help = ({
 	onboarding?: string
 	onClick?: () => unknown
 }) => (
+	// rome-ignore lint/a11y/useValidAnchor: needed to close the menu
 	<a
 		href={linkUrl(['help'], { onboarding })}
 		class="btn btn-link text-body text-decoration-none"

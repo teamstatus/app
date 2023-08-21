@@ -21,17 +21,15 @@ export const gradient = (colors: string[]) =>
 		.join(',')})`
 
 export const colors = [
-	...logoColors
-		.map((color) => [
-			new Color(color).darken(0.45).hex(),
-			new Color(color).darken(0.3).hex(),
-			new Color(color).darken(0.15).hex(),
-			color,
-			new Color(color).lighten(0.15).hex(),
-			new Color(color).lighten(0.3).hex(),
-			new Color(color).lighten(0.45).hex(),
-		])
-		.flat(),
+	...logoColors.flatMap((color) => [
+		new Color(color).darken(0.45).hex(),
+		new Color(color).darken(0.3).hex(),
+		new Color(color).darken(0.15).hex(),
+		color,
+		new Color(color).lighten(0.15).hex(),
+		new Color(color).lighten(0.3).hex(),
+		new Color(color).lighten(0.45).hex(),
+	]),
 	'#333',
 	'#666',
 	'#999',
@@ -59,7 +57,7 @@ export const Colorpicker = ({
 							onClick={() => {
 								onColor(color)
 							}}
-						></button>
+						/>
 					))}
 			</div>
 			<div>

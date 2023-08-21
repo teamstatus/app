@@ -1,4 +1,7 @@
-import { useProjects, type Invitation } from '#context/Projects.js'
+import {
+	useProjects,
+	type Invitation as TInvitation,
+} from '#context/Projects.js'
 import { parseInvitationId } from '#proto/ids.js'
 import { RolePill } from '#components/RolePill.js'
 import { AcceptInvitationIcon } from './Icons.js'
@@ -22,7 +25,7 @@ export const Invitations = () => {
 	)
 }
 
-const Invitation = ({ invitation }: { invitation: Invitation }) => {
+const Invitation = ({ invitation }: { invitation: TInvitation }) => {
 	const { projectId } = parseInvitationId(invitation.id)
 	const { acceptProjectInvitation } = useProjects()
 

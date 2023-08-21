@@ -85,8 +85,7 @@ export const WithSync = ({
 		.sort(byNumberOfQuestions(status))
 
 	const statusWithQuestions: Status[] = projectsInSync
-		.map(({ id }) => status[id])
-		.flat()
+		.flatMap(({ id }) => status[id])
 		.filter(isStatus)
 		.filter(
 			({ reactions }) =>

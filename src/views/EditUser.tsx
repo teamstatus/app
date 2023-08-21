@@ -88,7 +88,6 @@ const EditUserProfile = ({ user }: { user: UserContext }) => {
 											}
 										})
 									}}
-									autoFocus
 								/>
 							</div>
 							<div class="mb-3">
@@ -112,6 +111,7 @@ const EditUserProfile = ({ user }: { user: UserContext }) => {
 							</div>
 							<div class="d-flex align-items-center justify-content-end">
 								<button
+									type="button"
 									class={cx('btn', {
 										'btn-primary': isValid,
 										'btn-secondary': !isValid,
