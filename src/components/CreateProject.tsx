@@ -1,58 +1,28 @@
+import { AddIcon } from '#components/Icons.js'
+import { Role, useProjects, type Project } from '#context/Projects.js'
+import { isProjectId, slugPart } from '#proto/ids.js'
 import cx from 'classnames'
 import { useState } from 'preact/hooks'
-import { AddIcon } from '#components/Icons.js'
-import {
-	useProjects,
-	type Organization,
-	type Project,
-	Role,
-} from '#context/Projects.js'
-import { isProjectId, slugPart } from '#proto/ids.js'
 
 export const CreateProject = ({
-	organization,
+	organizationId,
 	onProject,
 }: {
-	organization?: Organization
+	organizationId: string
 	onProject: (project: Project) => void
 }) => {
 	const [name, setName] = useState<string>('')
-	const { addProject, organizations, projects } = useProjects()
-	const [organizationId, setOrganization] = useState<string>(
-		organizations[0]?.id ?? organization?.id ?? '',
-	)
+	const { addProject, projects } = useProjects()
 	const [error, setError] = useState<string | undefined>()
 	const [id, setId] = useState('')
-
 	const projectId = `${organizationId}#${id}`
 	const isValid = isProjectId(projectId) && projects[projectId] === undefined
+
 	return (
 		<>
 			{error !== undefined && (
 				<div class="alert alert-danger" role="alert">
 					An error occured ({error})!
-				</div>
-			)}
-			{organization === undefined && (
-				<div class="mb-3">
-					<label for="organization" class="form-label">
-						Organization
-					</label>
-					<select
-						class="form-select"
-						aria-label="Default select example"
-						id="organization"
-						value={organizationId}
-						onChange={(e) =>
-							setOrganization((e.target as HTMLSelectElement).value)
-						}
-					>
-						{organizations.map(({ id, name }) => (
-							<option value={id}>
-								{name !== undefined ? `${name} (${id})` : id}
-							</option>
-						))}
-					</select>
 				</div>
 			)}
 			<div class="mb-3 ">

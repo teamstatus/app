@@ -3,14 +3,13 @@ import { FormContainer } from '#components/FormContainer.js'
 import { LogoHeader } from '#components/LogoHeader.js'
 import { Main } from '#components/Main.js'
 import { ProjectMenu } from '#components/ProjectMenu.js'
-import { type Organization } from '#context/Projects.js'
 import { navigateTo } from '#util/link.js'
 
 export const CreateProject = ({
 	organization,
 	onboarding,
 }: {
-	organization?: Organization
+	organization: string
 	onboarding?: string
 }) => {
 	return (
@@ -20,7 +19,7 @@ export const CreateProject = ({
 				<div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-4">
 					<FormContainer header={<h1>Create a new project</h1>}>
 						<CreateForm
-							organization={organization}
+							organizationId={organization}
 							onProject={(project) => {
 								navigateTo(['project', project.id], { onboarding })
 							}}
