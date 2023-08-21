@@ -2,7 +2,12 @@ import { LogoHeader } from '#components/LogoHeader.js'
 import { ProjectMenu } from '#components/ProjectMenu.js'
 import { Main } from '#components/Main.js'
 import { Role, useProjects } from '#context/Projects.js'
-import { EditIcon, MembersIcon, OrganizationIcon } from '#components/Icons.js'
+import {
+	DeleteIcon,
+	EditIcon,
+	MembersIcon,
+	OrganizationIcon,
+} from '#components/Icons.js'
 import { parseProjectId } from '#proto/ids.js'
 import { NotFound } from '#components/NotFound.js'
 import { EditMenu } from '#components/EditMenu.js'
@@ -18,7 +23,7 @@ export const Organization = ({
 	onboarding?: string
 }) => {
 	const showOnboardingInfo = onboarding !== undefined
-	const { organizations, projects } = useProjects()
+	const { organizations, projects, deleteProject } = useProjects()
 
 	const organization = organizations.find(({ id: i }) => id === i)
 
@@ -68,7 +73,10 @@ export const Organization = ({
 									<h2>Projects</h2>
 									{organizationProjects.map((project) => (
 										<>
-											<div class="my-2 d-flex justify-content-between align-items-center">
+											<div
+												class="my-2 d-flex justify-content-between align-items-center"
+												key={project.id}
+											>
 												<div>
 													<small class="text-muted text-nowrap">
 														{project.id}
@@ -87,6 +95,24 @@ export const Organization = ({
 													<RolePill role={project.role} class="mb-1" />
 													{project.role === Role.OWNER && (
 														<EditMenu>
+															<button
+																type="button"
+																title={'Delete'}
+																class={'btn btn-sm btn-outline-danger ms-2'}
+																onClick={() => {
+																	if (
+																		confirm(
+																			`Really delete project ${
+																				project.name ?? project.id
+																			}? This cannot be undone.`,
+																		)
+																	) {
+																		deleteProject(project)
+																	}
+																}}
+															>
+																<DeleteIcon size={18} />
+															</button>
 															<a
 																href={`/project/${encodeURIComponent(
 																	project.id,

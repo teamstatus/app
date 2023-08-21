@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from 'preact/hooks'
 import { ulid } from 'ulid'
 import { parseInvitationId, parseProjectId } from '#proto/ids.js'
 import { useAuth } from './Auth.js'
-import { CREATE, GET, UPDATE } from '#api/client.js'
+import { CREATE, DELETE, GET, UPDATE } from '#api/client.js'
 import { notReady } from '#api/notReady.js'
 
 export type Organization = {
@@ -56,6 +56,7 @@ export type ProjectsContext = {
 		project: Project,
 		update: { name: string },
 	) => ReturnType<typeof UPDATE>
+	deleteProject: (project: Project) => ReturnType<typeof DELETE>
 }
 
 export const ProjectsContext = createContext<ProjectsContext>({
@@ -67,6 +68,7 @@ export const ProjectsContext = createContext<ProjectsContext>({
 	organizations: [],
 	invitations: [],
 	updateProject: notReady<Record<string, never>>,
+	deleteProject: notReady<Record<string, never>>,
 })
 
 export const Provider = ({ children }: { children: ComponentChildren }) => {
@@ -204,17 +206,23 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 						update,
 						project.version,
 					).ok(() => {
+						setProjects((projects) => ({
+							...projects,
+							[project.id]: {
+								...(projects[project.id] as Project),
+								...update,
+								version: project.version + 1,
+							},
+						}))
+					}),
+				deleteProject: (project) =>
+					DELETE(
+						`/project/${encodeURIComponent(project.id)}`,
+						project.version,
+					).ok(() => {
 						setProjects((projects) => {
-							const updated = projects[project.id] as Project
-							console.log
-							return {
-								...projects,
-								[project.id]: {
-									...(projects[project.id] as Project),
-									...update,
-									version: updated.version + 1,
-								},
-							}
+							delete projects[project.id]
+							return { ...projects }
 						})
 					}),
 			}}
