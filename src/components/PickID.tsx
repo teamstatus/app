@@ -2,28 +2,30 @@ import cx from 'classnames'
 import { useState } from 'preact/hooks'
 import { useAuth } from '#context/Auth.js'
 import { isUserId, slugPart } from '#proto/ids.js'
-import { AddIcon } from './Icons.js'
+import { InFlightIcon, UpdateIcon } from './Icons.js'
 import { CREATE } from '#api/client.js'
 import { Aside } from './Aside.js'
 import { navigateTo } from '#util/link.js'
 import { FormContainer } from './FormContainer.js'
+import { AsHeadline } from './HeadlineFont.js'
 
-export const SelectID = ({ redirect }: { redirect: string }) => {
+export const PickID = ({ redirect }: { redirect: string }) => {
 	const [id, setId] = useState('')
-	const [name, setName] = useState('')
 	const [error, setError] = useState<string | undefined>()
 	const { setUser, user } = useAuth()
 	if (user === undefined) return null
 	const userId = `@${id}`
 	const isValid = isUserId(userId)
+	const [submitting, setSubmitting] = useState<boolean>(false)
 	return (
 		<Aside class="container">
 			<div class="row mt-4">
 				<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
-					<FormContainer header={<h2>Please select a user ID</h2>}>
+					<FormContainer header={<h2>Pick a user ID</h2>}>
 						<p>
-							All users need a user ID, like <code>@alex</code>. Please select
-							one for yourself:
+							In <AsHeadline>teamstatus.space</AsHeadline>, all users need are
+							identified using an ID, like <code>@alex</code>. Please pick one
+							for yourself:
 						</p>
 						<div class="mb-3 ">
 							<label for="idInput" class="form-label">
@@ -42,21 +44,7 @@ export const SelectID = ({ redirect }: { redirect: string }) => {
 									required
 								/>
 							</div>
-
 							<div class="form-text">(required)</div>
-						</div>
-						<div class="mb-3 ">
-							<label for="nameInput" class="form-label">
-								Your name
-							</label>
-							<input
-								type="text"
-								class="form-control"
-								id="nameInput"
-								onInput={(e) => setName((e.target as HTMLInputElement).value)}
-								value={name}
-								placeholder='e.g. "Alex Doe"'
-							/>
 						</div>
 						{error !== undefined && (
 							<div class="alert alert-danger" role="alert">
@@ -70,9 +58,10 @@ export const SelectID = ({ redirect }: { redirect: string }) => {
 									'btn-primary': isValid,
 									'btn-secondary': !isValid,
 								})}
-								disabled={!isValid}
+								disabled={!isValid || submitting}
 								onClick={() => {
-									CREATE(`/me/user`, { id: userId, name })
+									setSubmitting(true)
+									CREATE(`/me/user`, { id: userId })
 										.ok(() => {
 											setUser({
 												...user,
@@ -82,9 +71,12 @@ export const SelectID = ({ redirect }: { redirect: string }) => {
 											navigateTo([], { redirect })
 										})
 										.fail((problem) => setError(problem.title))
+										.anyway(() => {
+											setSubmitting(false)
+										})
 								}}
 							>
-								<AddIcon />
+								{submitting ? <InFlightIcon /> : <UpdateIcon />}
 							</button>
 						</div>
 					</FormContainer>

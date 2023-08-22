@@ -1,6 +1,6 @@
 import { AsHeadline } from './HeadlineFont.js'
 import { OpenmojiIcon } from './OpenmojiIcon.js'
-import { redirectAfterLogin } from './redirectAfterLogin.js'
+import { LinkWithAuthentication } from './LinkWithAuthentication.js'
 
 export const Intro = () => (
 	<>
@@ -53,8 +53,10 @@ export const Intro = () => (
 		<p>
 			So, in order to share your first status, let's create an organization for
 			you. Head over to{' '}
-			<a href={redirectAfterLogin('/organization/create')}>organizations</a> to
-			get started.
+			<LinkWithAuthentication pathParams={['organizations']} onboarding>
+				organizations
+			</LinkWithAuthentication>{' '}
+			to get started.
 		</p>
 	</>
 )

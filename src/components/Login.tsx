@@ -5,6 +5,7 @@ import { type ProblemDetail } from '#context/ProblemDetail.js'
 import { ProgressBar } from './ProgressBar.js'
 import { AsHeadline } from './HeadlineFont.js'
 import { GET, CREATE } from '#api/client.js'
+import { FormContainer } from './FormContainer.js'
 
 export const Login = ({ redirect }: { redirect?: string }) => {
 	const { setUser, autoLoginState } = useAuth()
@@ -28,8 +29,7 @@ export const Login = ({ redirect }: { redirect?: string }) => {
 					login token.
 				</div>
 			)}
-			<section>
-				<h1>Login</h1>
+			<FormContainer header={<h1>Login</h1>}>
 				{autoLoginState === 'in_progress' && (
 					<ProgressBar title="Logging you in ..." />
 				)}
@@ -141,7 +141,6 @@ export const Login = ({ redirect }: { redirect?: string }) => {
 												GET<UserContext>(`/me`)
 													.ok((user) => {
 														setUser(user)
-														document.location.assign(redirect ?? '/')
 													})
 													.fail((problem) => {
 														console.error(error)
@@ -166,7 +165,7 @@ export const Login = ({ redirect }: { redirect?: string }) => {
 						</div>
 					</>
 				)}
-			</section>
+			</FormContainer>
 		</>
 	)
 }

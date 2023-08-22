@@ -39,11 +39,12 @@ import {
 	Building2,
 	CheckCircle,
 } from 'lucide-preact'
+import cx from 'classnames'
 
 const strokeWidth = 1
 const size = 24
 const icon =
-	(Icon: LucideIcon) =>
+	(Icon: LucideIcon, className?: string) =>
 	({
 		class: c,
 		color: col,
@@ -58,7 +59,7 @@ const icon =
 		(
 			<Icon
 				strokeWidth={sw ?? strokeWidth}
-				class={c}
+				class={cx('lucide', c, className)}
 				size={s ?? size}
 				color={col}
 			/>
@@ -105,3 +106,4 @@ export const HomeIcon = icon(Home)
 export const ContactIcon = icon(MessageSquare)
 export const DashboardIcon = icon(Rocket)
 export const OrganizationIcon = icon(Building2)
+export const InFlightIcon = icon(UploadCloud, 'pulsate')

@@ -15,6 +15,7 @@ export const CreateProject = ({
 	return (
 		<>
 			<LogoHeader />
+
 			<Main class="container">
 				<div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-4">
 					<FormContainer header={<h1>Create a new project</h1>}>

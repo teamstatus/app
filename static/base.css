@@ -76,3 +76,21 @@ h6 strong {
   filter: blur(5px);
   user-select: none;
 }
+
+.pulsate {
+  animation: pulsate 1s infinite;
+}
+
+@keyframes pulsate {
+  0% {
+    transform: scale(1.2);
+  }
+
+  70% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(1.2);
+  }
+}

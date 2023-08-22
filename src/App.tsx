@@ -34,7 +34,7 @@ import { SyncExportTeams } from '#views/SyncExportTeams.js'
 import { SyncExportConfluence } from '#views/SyncExportConfluence.js'
 import { Provider as OpenmojiProvider } from '#context/Openmoji.js'
 import { IDOnboardingRedirect } from '#views/UsernameOnbaordingRedirect.js'
-import { IDSelection } from '#views/IDSelection.js'
+import { ID } from '#views/ID.js'
 
 export const App = () => (
 	<AuthProvider>
@@ -48,8 +48,6 @@ export const Routing = () => {
 	const { user } = useAuth()
 
 	const userId = user?.id
-
-	console.log({ user, userId })
 
 	if (user !== undefined && userId !== undefined) {
 		return (
@@ -125,7 +123,7 @@ export const Routing = () => {
 		return (
 			<Router>
 				<Route path="/" component={Home} />
-				<Route path="/id" component={IDSelection} />
+				<Route path="/id" component={ID} />
 				<Route path="/login" component={IDOnboardingRedirect} />
 				<Route path="/organization/create" component={IDOnboardingRedirect} />
 				<Route path="/help" component={Help} />
