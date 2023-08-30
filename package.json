@@ -25,7 +25,7 @@
 		"@nordicsemiconductor/from-env": "2.0.0",
 		"@preact/preset-vite": "2.5.0",
 		"@types/color": "^3.0.3",
-		"@types/lodash-es": "4.17.8",
+		"@types/lodash-es": "4.17.9",
 		"bootstrap": "5.3.1",
 		"check-node-version": "4.2.1",
 		"handlebars": "4.7.8",
