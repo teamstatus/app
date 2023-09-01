@@ -74,7 +74,7 @@
 		"rehype-stringify": "9.0.4",
 		"remark": "14.0.3",
 		"remark-rehype": "10.1.0",
-		"tsx": "3.12.7",
+		"tsx": "3.12.8",
 		"ulid": "2.3.0"
 	}
 }
