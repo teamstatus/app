@@ -18,7 +18,7 @@ export const CreateStatus = ({
 	const isValid = message.length > 0
 	const [error, setError] = useState<string | undefined>()
 	const { addProjectStatus } = useStatus()
-	if (user?.id === undefined) return null
+	if (user === undefined) return null
 	return (
 		<form
 			onSubmit={(e) => {

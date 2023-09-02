@@ -66,7 +66,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 		<SyncsContext.Provider
 			value={{
 				addSync: (projectIds, title, inclusiveStartDate, inclusiveEndDate) => {
-					if (user?.id === undefined) return { error: `Not authorized!` }
+					if (user === undefined) return { error: `Not authorized!` }
 					const id = ulid()
 					const newSync: Sync = {
 						id,

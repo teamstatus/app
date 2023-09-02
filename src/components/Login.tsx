@@ -1,14 +1,13 @@
 import cx from 'classnames'
 import { useState } from 'preact/hooks'
-import { type UserContext, useAuth } from '#context/Auth.js'
+import { useAuth } from '#context/Auth.js'
 import { type ProblemDetail } from '#context/ProblemDetail.js'
 import { ProgressBar } from './ProgressBar.js'
 import { AsHeadline } from './HeadlineFont.js'
-import { GET, CREATE } from '#api/client.js'
 import { FormContainer } from './FormContainer.js'
 
 export const Login = ({ redirect }: { redirect?: string }) => {
-	const { setUser, autoLoginState } = useAuth()
+	const { autoLoginState, loginRequest, pinLogin, loggedIn } = useAuth()
 	const [success, setSuccess] = useState<string | undefined>()
 	const [loading, setLoading] = useState<boolean>(false)
 	const [error, setError] = useState<ProblemDetail>()
@@ -17,6 +16,8 @@ export const Login = ({ redirect }: { redirect?: string }) => {
 
 	const isPINValid = /^[0-9]{8}$/.test(pin)
 	const isEmailValid = /.@./.test(email)
+
+	if (loggedIn) return null
 
 	return (
 		<>
@@ -77,14 +78,13 @@ export const Login = ({ redirect }: { redirect?: string }) => {
 										setSuccess(undefined)
 										setError(undefined)
 										setPIN('')
-										CREATE(`/login/email`, { email })
+										loginRequest(email)
 											.ok(() => {
 												setSuccess(
 													'Please check your mailbox for a mail from notification@teamstatus.space.',
 												)
 											})
 											.fail((problem) => {
-												console.error(problem)
 												setError(problem)
 											})
 											.anyway(() => {
@@ -131,25 +131,17 @@ export const Login = ({ redirect }: { redirect?: string }) => {
 										setLoading(true)
 										setError(undefined)
 										setSuccess(undefined)
-										CREATE<Record<string, never>>(`/login/email/pin`, {
-											email,
-											pin,
-										})
-											.ok(() => {
+										pinLogin(email, pin)
+											.ok((user) => {
 												setSuccess('Logged in.')
 												setPIN('')
-												GET<UserContext>(`/me`)
-													.ok((user) => {
-														setUser(user)
-													})
-													.fail((problem) => {
-														console.error(error)
-														setError(problem)
-													})
 											})
 											.fail((problem) => {
 												console.error(error)
 												setError(problem)
+											})
+											.anyway(() => {
+												setLoading(false)
 											})
 									}}
 								>

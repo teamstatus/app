@@ -26,7 +26,6 @@ export const User = () => {
 									<dd>{user.name}</dd>
 								</>
 							)}
-
 							{user.pronouns !== undefined && (
 								<>
 									<dt>Pronouns</dt>

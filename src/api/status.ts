@@ -1,5 +1,6 @@
 import type { Status } from '#context/Status'
-import { GET, type RequestResult } from '#api/client.js'
+import { GET } from '#api/client.js'
+import type { RequestResult } from '#api/requestResult.js'
 
 export const fetchProjectStatus = (
 	id: string,

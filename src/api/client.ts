@@ -1,17 +1,7 @@
 import pThrottle from 'p-throttle'
 import type { ProblemDetail } from '#context/ProblemDetail.js'
 import { InternalError } from '#context/InternalError.js'
-
-type ProblemHandler = (problem: ProblemDetail) => unknown
-type SuccessHandler<Response extends Record<string, unknown>> = (
-	result: Response,
-) => unknown
-type AnywayHandler = () => unknown
-export type RequestResult<Result extends Record<string, unknown>> = {
-	fail: (problemHandler: ProblemHandler) => RequestResult<Result>
-	ok: (resultHandler: SuccessHandler<Result>) => RequestResult<Result>
-	anyway: (anywayHandler: AnywayHandler) => RequestResult<Result>
-}
+import { requestResult, type RequestResult } from '#api/requestResult.js'
 
 export const throttle = pThrottle({
 	limit: 2,
@@ -28,10 +18,6 @@ export const request = <Result extends Record<string, unknown>>(
 	resource: string,
 	requestOptions?: RequestInit & { cacheError?: boolean },
 ): RequestResult<Result> => {
-	const successHandler: SuccessHandler<Result>[] = []
-	const problemHandler: ProblemHandler[] = []
-	const anywayHandler: AnywayHandler[] = []
-
 	const method = requestOptions?.method ?? 'GET'
 	const base = new URL(API_ENDPOINT)
 	const url = new URL(
@@ -85,39 +71,23 @@ export const request = <Result extends Record<string, unknown>>(
 		requestPromise[key] = p
 	}
 
+	const { request, onFail, onSuccess } = requestResult<Result>()
+
 	p.request
 		.then((res) => {
 			if ('problem' in res) {
-				problemHandler.map((handler) => handler(res.problem))
+				onFail(res.problem)
 				if (requestOptions?.cacheError === false) delete requestPromise[key]
 			}
-			if ('result' in res) successHandler.map((handler) => handler(res.result))
-			anywayHandler.map((handler) => handler())
+			if ('result' in res) onSuccess(res.result)
 		})
 		.catch((error) => {
 			console.error(error)
-			problemHandler.map((handler) =>
-				handler(InternalError((error as Error).message)),
-			)
+			onFail(InternalError((error as Error).message))
 			if (requestOptions?.cacheError === false) delete requestPromise[key]
 		})
 
-	const r: RequestResult<Result> = {
-		fail: (handler) => {
-			problemHandler.push(handler)
-			return r
-		},
-		ok: (handler) => {
-			successHandler.push(handler)
-			return r
-		},
-		anyway: (handler) => {
-			anywayHandler.push(handler)
-			return r
-		},
-	}
-
-	return r
+	return request
 }
 
 export const GET = <Response extends Record<string, unknown>>(

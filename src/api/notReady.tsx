@@ -1,9 +1,7 @@
 import { InternalError } from '#context/InternalError.js'
-import { type RequestResult } from './client.js'
+import type { RequestResult } from '#api/requestResult.js'
 
-export const notReady = <
-	Result extends Record<string, unknown>,
->(): RequestResult<Result> => ({
+export const notReady = <Result,>(): RequestResult<Result> => ({
 	anyway: (handler) => {
 		handler()
 		return notReady()

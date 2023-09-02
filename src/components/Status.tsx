@@ -29,9 +29,8 @@ export const Status = ({
 	const [customReactionVisible, showCustomReaction] = useState(false)
 	const [operationsVisible, showOperations] = useState(false)
 	const { user } = useAuth()
-	const userId = user?.id
 	const { addReaction, deleteReaction, deleteStatus } = useStatus()
-	const canEdit = userId === status.author
+	const canEdit = user?.id === status.author
 	const hasOperations = canEdit
 
 	useEffect(() => {
@@ -98,7 +97,7 @@ export const Status = ({
 			>
 				<div>
 					{status.reactions.map((reaction) => {
-						const isAuthor = reaction.author === userId
+						const isAuthor = reaction.author === user?.id
 						return (
 							<Reaction
 								reaction={reaction}

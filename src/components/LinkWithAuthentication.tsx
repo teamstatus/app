@@ -27,18 +27,6 @@ export const LinkWithAuthentication = ({
 			</a>
 		)
 	}
-	if (user.id === undefined) {
-		// No username selected
-		return (
-			<a
-				href={linkUrl(['id'], {
-					redirect: linkUrl(pathParams, { onboarding: onboardingValue }),
-				})}
-			>
-				{children}
-			</a>
-		)
-	}
 	return (
 		<a href={linkUrl(pathParams, { onboarding: onboardingValue })}>
 			{children}

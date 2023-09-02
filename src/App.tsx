@@ -33,8 +33,6 @@ import { EditUser } from '#views/EditUser.js'
 import { SyncExportTeams } from '#views/SyncExportTeams.js'
 import { SyncExportConfluence } from '#views/SyncExportConfluence.js'
 import { Provider as OpenmojiProvider } from '#context/Openmoji.js'
-import { IDOnboardingRedirect } from '#views/UsernameOnbaordingRedirect.js'
-import { ID } from '#views/ID.js'
 
 export const App = () => (
 	<AuthProvider>
@@ -47,9 +45,7 @@ export const App = () => (
 export const Routing = () => {
 	const { user } = useAuth()
 
-	const userId = user?.id
-
-	if (user !== undefined && userId !== undefined) {
+	if (user !== undefined) {
 		return (
 			<UserProfilesProvider>
 				<ProjectsProvider>
@@ -119,24 +115,13 @@ export const Routing = () => {
 		)
 	}
 
-	if (user !== undefined && userId === undefined) {
-		return (
-			<Router>
-				<Route path="/" component={Home} />
-				<Route path="/id" component={ID} />
-				<Route path="/login" component={IDOnboardingRedirect} />
-				<Route path="/organization/create" component={IDOnboardingRedirect} />
-				<Route path="/help" component={Help} />
-			</Router>
-		)
-	}
-
 	return (
 		<Router>
 			<Route path="/" component={Home} />
 			<Route path="/login" component={Login} />
 			<Route path="/help" component={Help} />
 			<Route path="/sync/:id" component={PublicSync} />
+			<Route path="/organization/create" component={LoginRedirect} />
 		</Router>
 	)
 }
