@@ -1,20 +1,22 @@
+import { AsHeadline } from '#components/HeadlineFont.js'
+
 export const Support = () => (
 	<>
 		<h2>Support</h2>
 		<p>
-			Head over to{' '}
+			Premium support is available via e-mail at{' '}
+			<a href="mailto:premium@teamstatus.space">premium@teamstatus.space</a>.
+		</p>
+		<p>
+			You are invited to submit ideas for improvement in the{' '}
 			<a
-				href="https://github.com/orgs/teamstatus/discussions"
+				href="/project/%24teamstatus%23feedback"
 				target="_blank"
 				rel="noreferrer noopener"
 			>
-				our discussions on GitHub
+				<AsHeadline>$teamstatus#feedback</AsHeadline>
 			</a>{' '}
-			to receive support.
-		</p>
-		<p>
-			Premium support is available via e-mail at{' '}
-			<a href="mailto:premium@teamstatus.space">premium@teamstatus.space</a>.
+			project.
 		</p>
 	</>
 )
