@@ -19,6 +19,7 @@ export const Dashboard = ({ redirect }: { redirect?: string }) => {
 	return (
 		<>
 			<LogoHeader animated />
+			<Onboarding />
 			<Main class="container">
 				<section>
 					<div class="row mt-4">
@@ -45,7 +46,6 @@ export const Dashboard = ({ redirect }: { redirect?: string }) => {
 				</section>
 			</Main>
 			<Invitations />
-			<Onboarding />
 			<ProjectMenu />
 		</>
 	)
