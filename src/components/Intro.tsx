@@ -8,8 +8,9 @@ export const Intro = () => (
 			About <AsHeadline>teamstatus.space</AsHeadline>
 		</h1>
 		<p>
-			<AsHeadline>teamstatus.space</AsHeadline> allows distributed teams to
-			collect status updates and collect them for a sync meeting.
+			<AsHeadline>teamstatus.space</AsHeadline> allows distributed teams collect
+			project status updates asynchronously and distributed to speed up their
+			sync meetings.
 		</p>
 		<p>
 			It is made by <a href="https://coderbyheart.com/">Markus Tacker</a>, in
@@ -20,10 +21,11 @@ export const Intro = () => (
 			working on, as it happens. It may be small updates, or big releases.
 		</p>
 		<p>
-			Status updates are associated to projects, which belong to organizations.
+			Status updates are associated with projects, which belong to
+			organizations.
 		</p>
 		<p>
-			You can invite coworkers to the projects you are working on. They than can
+			You can invite coworkers to the projects you are working on. They then can
 			also add their own status to the project.
 		</p>
 		<p>
@@ -36,7 +38,7 @@ export const Intro = () => (
 		</p>
 		<p>
 			And when it's time for a sync meeting with your collaborators, you create
-			a new sync which collect all the status updates from the projects your
+			a new sync which collects all the status updates from the projects your
 			meeting is about, from all the collaborators and a time frame you can
 			specify.
 		</p>
@@ -48,7 +50,14 @@ export const Intro = () => (
 		<p>
 			And since you can share what happened in advance, you can spend your time
 			during the meeting to discuss the highlights and the open question which
-			ensures that everyone's time is used most efficiently.
+			<a
+				href="https://coderbyheart.com/speed-up-your-meetings-with-pre-written-meeting-minutes"
+				target="_blank"
+				rel="me friend met noreferrer noopener"
+			>
+				ensures that everyone's time is used most efficiently
+			</a>
+			.
 		</p>
 		<p>
 			So, in order to share your first status, let's create an organization for
