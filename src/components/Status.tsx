@@ -109,29 +109,47 @@ export const Status = ({
 							/>
 						)
 					})}
+					{!customReactionVisible && (
+						<>
+							{!reactionsVisible && (
+								<button
+									type="button"
+									class="btn btn-light"
+									onClick={() => showReactions(true)}
+								>
+									<AddReactionIcon size={18} />
+								</button>
+							)}
+							{reactionsVisible && (
+								<>
+									<button
+										type="button"
+										class="btn btn-light"
+										onClick={() => showReactions(false)}
+									>
+										<CloseIcon size={18} />
+									</button>
+									<SelectReaction
+										onReaction={(reaction) => {
+											addReaction(status, reaction)
+										}}
+									/>
+									<button
+										type="button"
+										class="btn btn-light me-1"
+										onClick={() => {
+											showReactions(false)
+											showCustomReaction(true)
+										}}
+									>
+										<AddIcon size={18} />
+									</button>
+								</>
+							)}
+						</>
+					)}
 				</div>
-				{reactionsVisible && (
-					<div>
-						<button
-							type="button"
-							class="btn btn-light me-1"
-							onClick={() => {
-								showReactions(false)
-								showCustomReaction(true)
-							}}
-						>
-							<AddIcon size={18} />
-						</button>
-						<button
-							type="button"
-							class="btn btn-light"
-							onClick={() => showReactions(false)}
-						>
-							<CloseIcon size={18} />
-						</button>
-					</div>
-				)}
-				{!reactionsVisible && (
+				{!reactionsVisible && !customReactionVisible && (
 					<div class="text-nowrap">
 						{status.persisted === false && (
 							<PersistencePendingIcon class="me-1" />
@@ -177,27 +195,7 @@ export const Status = ({
 								</button>
 							</>
 						)}
-						{!reactionsVisible && (
-							<button
-								type="button"
-								class="btn btn-light"
-								onClick={() => showReactions(true)}
-							>
-								<AddReactionIcon size={18} />
-							</button>
-						)}
 					</div>
-				)}
-				{reactionsVisible && (
-					<>
-						<div class="d-flex align-items-end justify-content-end flex-wrap">
-							<SelectReaction
-								onReaction={(reaction) => {
-									addReaction(status, reaction)
-								}}
-							/>
-						</div>
-					</>
 				)}
 			</div>
 			{customReactionVisible && (

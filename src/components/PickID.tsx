@@ -18,7 +18,7 @@ export const PickID = () => {
 	const [submitting, setSubmitting] = useState<boolean>(false)
 	return (
 		<Aside class="container">
-			<div class="row mt-4">
+			<div class="row mt-sm-4">
 				<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
 					<FormContainer header={<h2>Pick a user ID</h2>}>
 						<p>

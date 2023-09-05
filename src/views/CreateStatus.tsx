@@ -3,7 +3,6 @@ import { FormContainer } from '#components/FormContainer.js'
 import { Main } from '#components/Main.js'
 import { NotFound } from '#components/NotFound.js'
 import { ProjectHeader } from '#components/ProjectHeader.js'
-import { ProjectMenu } from '#components/ProjectMenu.js'
 import { StatusOnboarding } from '#components/onboarding/Status.js'
 import { useProjects } from '#context/Projects.js'
 import { navigateTo } from '#util/link.js'
@@ -29,7 +28,7 @@ export const CreateStatus = ({
 			{showOnboardingInfo && (
 				<StatusOnboarding project={project} step={'create_status'} />
 			)}
-			<Main class="container mt-3">
+			<Main class="container mt-sm-4">
 				<div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3">
 					<FormContainer header={<h1>Create a new status</h1>}>
 						<CreateForm
@@ -41,7 +40,6 @@ export const CreateStatus = ({
 					</FormContainer>
 				</div>
 			</Main>
-			<ProjectMenu />
 		</>
 	)
 }

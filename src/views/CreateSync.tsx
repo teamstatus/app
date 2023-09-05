@@ -5,7 +5,6 @@ import { useProjects, type Project } from '#context/Projects.js'
 import { LogoHeader } from '#components/LogoHeader.js'
 import { type Status } from '#context/Status.js'
 import { Main } from '#components/Main.js'
-import { ProjectMenu } from '#components/ProjectMenu.js'
 import { fetchProjectStatus } from '#api/status.js'
 import { FormContainer } from '#components/FormContainer.js'
 import { SyncOnboarding } from '#components/onboarding/Sync.js'
@@ -59,7 +58,7 @@ export const CreateSync = ({ onboarding }: { onboarding?: string }) => {
 				)}
 				{createdSyncId === undefined && (
 					<>
-						<header class="mt-3">
+						<header class="mt-sm-4">
 							<div class="row">
 								<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
 									<FormContainer header={<h1>Create a new sync</h1>}>
@@ -91,7 +90,6 @@ export const CreateSync = ({ onboarding }: { onboarding?: string }) => {
 					</>
 				)}
 			</Main>
-			<ProjectMenu />
 		</>
 	)
 }
