@@ -48,6 +48,7 @@ export const AppNavigation = ({ onClick }: { onClick?: () => unknown }) => {
 					>
 						<UserIcon />
 						<span class="ms-2">Profile</span>
+						<code class="ms-2">{user.id}</code>
 					</a>
 				</>
 			)}
