@@ -31,7 +31,7 @@ export const Login = ({ redirect }: { redirect?: string }) => {
 				</div>
 			)}
 			<FormContainer header={<h1>Login</h1>}>
-				{autoLoginState === 'in_progress' && (
+				{(loading || autoLoginState === 'in_progress') && (
 					<ProgressBar title="Logging you in ..." />
 				)}
 				{success !== undefined && (

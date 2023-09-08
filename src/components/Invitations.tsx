@@ -4,9 +4,10 @@ import {
 } from '#context/Projects.js'
 import { parseInvitationId } from '#proto/ids.js'
 import { RolePill } from '#components/RolePill.js'
-import { AcceptInvitationIcon } from './Icons.js'
+import { AcceptInvitationIcon, InFlightIcon } from './Icons.js'
 import { ProjectId } from './ProjectId.js'
 import { Aside } from './Aside.js'
+import { useState } from 'preact/hooks'
 
 export const Invitations = () => {
 	const { invitations } = useProjects()
@@ -28,6 +29,7 @@ export const Invitations = () => {
 const Invitation = ({ invitation }: { invitation: TInvitation }) => {
 	const { projectId } = parseInvitationId(invitation.id)
 	const { acceptProjectInvitation } = useProjects()
+	const [inFlight, setInFlight] = useState<boolean>(false)
 
 	return (
 		<div class="d-flex align-items-center justify-content-between mb-2">
@@ -43,10 +45,14 @@ const Invitation = ({ invitation }: { invitation: TInvitation }) => {
 				type="button"
 				class="btn btn-outline-primary btn-sm"
 				onClick={() => {
-					acceptProjectInvitation(invitation.id)
+					setInFlight(true)
+					acceptProjectInvitation(invitation.id).anyway(() => {
+						setInFlight(false)
+					})
 				}}
+				disabled={inFlight}
 			>
-				<AcceptInvitationIcon />
+				{inFlight ? <InFlightIcon /> : <AcceptInvitationIcon />}
 			</button>
 		</div>
 	)

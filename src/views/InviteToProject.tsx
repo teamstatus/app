@@ -9,6 +9,7 @@ import { ProjectMenu } from '#components/ProjectMenu.js'
 import { ProgressBar } from '#components/ProgressBar.js'
 import { Main } from '#components/Main.js'
 import { WithProject } from '#components/WithProject.js'
+import { useAuth } from '#context/Auth'
 
 export const InviteToProject = ({
 	id,
@@ -17,6 +18,7 @@ export const InviteToProject = ({
 }) => (
 	<WithProject id={id}>
 		{({ project }) => {
+			const { user } = useAuth()
 			const { inviteToProject } = useProjects()
 			const [invitee, setInvitee] = useState<string>('')
 			const [role, setRole] = useState<Role>(Role.MEMBER)
@@ -26,6 +28,7 @@ export const InviteToProject = ({
 
 			const userId = `@${invitee}`
 			const isValid =
+				userId !== user?.id &&
 				isUserId(userId) &&
 				[Role.OWNER, Role.MEMBER, Role.WATCHER].includes(role)
 

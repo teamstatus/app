@@ -16,7 +16,8 @@ const requestPromise: Record<string, CachedRequest<any>> = {}
 
 export const request = <Result extends Record<string, unknown>>(
 	resource: string,
-	requestOptions?: RequestInit & { cacheError?: boolean },
+	requestOptions?: RequestInit,
+	options?: { cacheError?: boolean; cache?: boolean },
 ): RequestResult<Result> => {
 	const method = requestOptions?.method ?? 'GET'
 	const base = new URL(API_ENDPOINT)
@@ -31,7 +32,9 @@ export const request = <Result extends Record<string, unknown>>(
 		// Cache time expired
 		p.ts.getTime() + 60 * 60 * 1000 < Date.now() ||
 		// Not a cacheable method
-		method !== 'GET'
+		method !== 'GET' ||
+		// cache disabled
+		options?.cache === false
 	) {
 		p = {
 			ts: new Date(),
@@ -77,14 +80,14 @@ export const request = <Result extends Record<string, unknown>>(
 		.then((res) => {
 			if ('problem' in res) {
 				onFail(res.problem)
-				if (requestOptions?.cacheError === false) delete requestPromise[key]
+				if (options?.cacheError === false) delete requestPromise[key]
 			}
 			if ('result' in res) onSuccess(res.result)
 		})
 		.catch((error) => {
 			console.error(error)
 			onFail(InternalError((error as Error).message))
-			if (requestOptions?.cacheError === false) delete requestPromise[key]
+			if (options?.cacheError === false) delete requestPromise[key]
 		})
 
 	return request
@@ -92,8 +95,8 @@ export const request = <Result extends Record<string, unknown>>(
 
 export const GET = <Response extends Record<string, unknown>>(
 	resource: string,
-	options?: { cacheError?: boolean },
-): RequestResult<Response> => request<Response>(resource, options)
+	options?: { cacheError?: boolean; cache?: boolean },
+): RequestResult<Response> => request<Response>(resource, {}, options)
 
 export const CREATE = <Response extends Record<string, unknown>>(
 	resource: string,

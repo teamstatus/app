@@ -92,28 +92,32 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 
 	useEffect(() => {
 		if (user === undefined) return
-		GET<{ projects: Project[] }>(`/projects`).ok(({ projects }) => {
-			setProjects(
-				projects.reduce(
-					(projects, project) => ({
-						...projects,
-						[project.id]: {
-							...project,
-							organizationId: parseProjectId(project.id).organization,
-						},
-					}),
-					{},
-				),
-			)
-		})
+		GET<{ projects: Project[] }>(`/projects`, { cache: false }).ok(
+			({ projects }) => {
+				setProjects(
+					projects.reduce(
+						(projects, project) => ({
+							...projects,
+							[project.id]: {
+								...project,
+								organizationId: parseProjectId(project.id).organization,
+							},
+						}),
+						{},
+					),
+				)
+			},
+		)
 	}, [projectsListFetchId, user])
 
 	// Fetch invites
 	useEffect(() => {
 		if (user === undefined) return
-		GET<{ invitations: Invitation[] }>(`/invitations`).ok(({ invitations }) => {
-			setInvitations(invitations ?? [])
-		})
+		GET<{ invitations: Invitation[] }>(`/invitations`, { cache: false }).ok(
+			({ invitations }) => {
+				setInvitations(invitations ?? [])
+			},
+		)
 	}, [projectsListFetchId, user])
 
 	return (
