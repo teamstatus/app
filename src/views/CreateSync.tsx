@@ -47,7 +47,7 @@ export const CreateSync = ({ onboarding }: { onboarding?: string }) => {
 			<Main class="container">
 				{createdSyncId !== undefined && (
 					<div class="row">
-						<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+						<div class="col-12 col-lg-8 offset-lg-2">
 							<div class="alert alert-success" role="alert">
 								<a href={linkUrl(['sync', createdSyncId], { onboarding })}>
 									Sync created!
@@ -60,7 +60,7 @@ export const CreateSync = ({ onboarding }: { onboarding?: string }) => {
 					<>
 						<header class="mt-sm-4">
 							<div class="row">
-								<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+								<div class="col-12 col-lg-8 offset-lg-2">
 									<FormContainer header={<h1>Create a new sync</h1>}>
 										<SyncSettings
 											projects={Object.values(projects)}
@@ -76,7 +76,7 @@ export const CreateSync = ({ onboarding }: { onboarding?: string }) => {
 							</div>
 						</header>
 						<div class="row mt-3">
-							<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+							<div class="col-12 col-lg-8 offset-lg-2">
 								{selectedProjects.map((id) => (
 									<ProjectSync
 										key={id}

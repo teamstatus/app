@@ -23,7 +23,7 @@ export const Dashboard = ({ redirect }: { redirect?: string }) => {
 			<Main class="container">
 				<section>
 					<div class="row mt-4">
-						<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+						<div class="col-12 col-lg-8 offset-lg-2">
 							<h1>
 								Welcome{' '}
 								<strong>{user?.id ?? user?.email ?? 'anonymous'}</strong>!

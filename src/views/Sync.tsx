@@ -29,7 +29,7 @@ export const Sync = ({ id }: { id: string }) => (
 					>
 						<div class="container py-4">
 							<header class="row">
-								<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+								<div class="col-12 col-lg-8 offset-lg-2">
 									<SyncTitle sync={sync} />
 									<p class="mt-2">
 										Export for{' '}
@@ -55,7 +55,7 @@ export const Sync = ({ id }: { id: string }) => (
 						>
 							<div class="container mb-4 py-4">
 								<div class="row">
-									<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+									<div class="col-12 col-lg-8 offset-lg-2">
 										<h2>Questions</h2>
 										<hr class="mt-2 mb-4" />
 										{statusWithQuestions.map((status) => (
@@ -82,7 +82,7 @@ export const Sync = ({ id }: { id: string }) => (
 					{projectsWithStatus.map(({ project, status }) => (
 						<div class="container ">
 							<div class="row mt-3">
-								<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+								<div class="col-12 col-lg-8 offset-lg-2">
 									<ProjectSync
 										key={project.id}
 										project={project}

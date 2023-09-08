@@ -13,9 +13,7 @@ export const OnboardingInfo = ({ children }: { children: ComponentChild }) => {
 		>
 			<div class="container mt-lg-4">
 				<div class="row">
-					<div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3">
-						{children}
-					</div>
+					<div class="col-12 col-lg-8 offset-lg-2">{children}</div>
 				</div>
 			</div>
 		</Aside>

@@ -20,7 +20,7 @@ export const Syncs = ({ onboarding }: { onboarding?: string }) => {
 			{showOnboardingInfo && <SyncOnboarding />}
 			<Main class="container">
 				<div class="row mt-3">
-					<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+					<div class="col-12 col-lg-8 offset-lg-2">
 						<section>
 							<div class="d-flex justify-content-between align-items-center">
 								<h1>Syncs</h1>

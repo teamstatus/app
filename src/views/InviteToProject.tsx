@@ -36,7 +36,7 @@ export const InviteToProject = ({
 				<>
 					<ProjectHeader project={project} />
 					<Main class="container mt-3">
-						<div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3 mt-sm-4">
+						<div class="col-12 col-lg-8 offset-lg-2 mt-sm-4">
 							<section>
 								<h1>Invite a member</h1>
 								{success !== undefined && (

@@ -8,7 +8,7 @@ export const Problem = ({ problem }: { problem: ProblemDetail }) => (
 		<LogoHeader />
 		<Main class="container">
 			<div class="row mt-3">
-				<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+				<div class="col-12 col-lg-8 offset-lg-2">
 					<div class="alert alert-danger" role="alert">
 						{problem.title} ({problem.status})
 						{problem.detail !== undefined && (

@@ -15,7 +15,7 @@ export const Invitations = () => {
 	return (
 		<Aside class="container">
 			<div class="row mt-2">
-				<div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+				<div class="col-12 col-lg-8 offset-lg-2">
 					<h2>Open invitations</h2>
 					{invitations.map((invitation) => (
 						<Invitation invitation={invitation} />
