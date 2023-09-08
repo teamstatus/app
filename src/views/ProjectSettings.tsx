@@ -1,5 +1,5 @@
 import cx from 'classnames'
-import { useState } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
 import { UpdateIcon } from '#components/Icons.js'
 import { type ProblemDetail } from '#context/ProblemDetail.js'
 import { useProjects } from '#context/Projects.js'
@@ -16,13 +16,22 @@ export const ProjectSettings = ({
 }) => (
 	<WithProject id={id}>
 		{({ project }) => {
-			const { updateProject } = useProjects()
+			const { updateProject, listMembers, projects } = useProjects()
 			const [name, setName] = useState<string>(project?.name ?? '')
 			const [error, setError] = useState<ProblemDetail | undefined>()
 			const [inviting, setUpdating] = useState(false)
 			const [success, setSuccess] = useState<string>()
 
 			const isValid = name.length > 0
+
+			useEffect(() => {
+				const project = projects[id]
+				if (project === undefined) return
+
+				listMembers(project).ok((members) => {
+					console.log(members)
+				})
+			}, [projects])
 
 			return (
 				<>

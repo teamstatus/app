@@ -1,8 +1,8 @@
 import cx from 'classnames'
-import { useState } from 'preact/hooks'
-import { AddIcon } from '#components/Icons.js'
+import { useEffect, useState } from 'preact/hooks'
+import { AddIcon, DeleteIcon } from '#components/Icons.js'
 import { type ProblemDetail } from '#context/ProblemDetail.js'
-import { Role, useProjects } from '#context/Projects.js'
+import { Role, useProjects, type Project } from '#context/Projects.js'
 import { isUserId, slugPart } from '#proto/ids.js'
 import { ProjectHeader } from '#components/ProjectHeader.js'
 import { ProjectMenu } from '#components/ProjectMenu.js'
@@ -10,6 +10,8 @@ import { ProgressBar } from '#components/ProgressBar.js'
 import { Main } from '#components/Main.js'
 import { WithProject } from '#components/WithProject.js'
 import { useAuth } from '#context/Auth'
+import { RolePill } from '#components/RolePill'
+import { FormContainer } from '#components/FormContainer'
 
 export const InviteToProject = ({
 	id,
@@ -37,8 +39,7 @@ export const InviteToProject = ({
 					<ProjectHeader project={project} />
 					<Main class="container mt-3">
 						<div class="col-12 col-lg-8 offset-lg-2 mt-sm-4">
-							<section>
-								<h1>Invite a member</h1>
+							<FormContainer header={<h1>Invite a member</h1>}>
 								{success !== undefined && (
 									<div class="alert alert-success" role="alert">
 										{success}
@@ -130,7 +131,8 @@ export const InviteToProject = ({
 										<AddIcon />
 									</button>
 								</div>
-							</section>
+							</FormContainer>
+							<Members project={project} />
 						</div>
 					</Main>
 					<ProjectMenu />
@@ -139,3 +141,44 @@ export const InviteToProject = ({
 		}}
 	</WithProject>
 )
+
+type ProjectMember = {
+	id: string // e.g. "$teamstatus#feedback:@coderbyheart"
+	project: string // e.g. "$teamstatus#feedback",
+	role: Role // e.g. "owner",
+	user: string // e.g. "@coderbyheart"
+}
+
+const Members = ({ project }: { project: Project }) => {
+	const { listMembers } = useProjects()
+	const [members, setMembers] = useState<ProjectMember[]>([])
+
+	useEffect(() => {
+		listMembers(project).ok(({ members }) => {
+			setMembers(members as ProjectMember[])
+		})
+	}, [project])
+
+	if (members.length === 0) return null
+
+	return (
+		<section class="mt-4">
+			<h2>Members</h2>
+			{members.map((member) => (
+				<div class="d-flex align-items-center justify-content-between mb-2">
+					<div class={'me-2'}>
+						{member.user}
+						<RolePill role={member.role} class="ms-1" />
+					</div>
+					<button
+						type="button"
+						class="btn btn-outline-primary btn-sm"
+						disabled={true}
+					>
+						<DeleteIcon />
+					</button>
+				</div>
+			))}
+		</section>
+	)
+}

@@ -57,6 +57,7 @@ export type ProjectsContext = {
 		update: { name: string },
 	) => ReturnType<typeof UPDATE>
 	deleteProject: (project: Project) => ReturnType<typeof DELETE>
+	listMembers: (project: Project) => ReturnType<typeof GET>
 }
 
 export const ProjectsContext = createContext<ProjectsContext>({
@@ -69,6 +70,7 @@ export const ProjectsContext = createContext<ProjectsContext>({
 	invitations: [],
 	updateProject: notReady<Record<string, never>>,
 	deleteProject: notReady<Record<string, never>>,
+	listMembers: notReady<Record<string, never>>,
 })
 
 export const Provider = ({ children }: { children: ComponentChildren }) => {
@@ -229,6 +231,8 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 							return { ...projects }
 						})
 					}),
+				listMembers: (project) =>
+					GET(`/project/${encodeURIComponent(project.id)}/members`),
 			}}
 		>
 			{children}
