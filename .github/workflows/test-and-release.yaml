@@ -36,6 +36,7 @@ jobs:
       - name: Run end-to-end tests
         env:
           API_ENDPOINT: ${{ vars.API_ENDPOINT }}
+          WS_ENDPOINT: ${{ vars.WS_ENDPOINT }}
         run: npx playwright test
 
   test-and-release:
