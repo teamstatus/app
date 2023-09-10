@@ -11,7 +11,35 @@ permissions:
   actions: write
 
 jobs:
+  e2e-tests:
+    runs-on: ubuntu-22.04
+    environment: e2e-tests
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "20.x"
+
+      - name: Keep npm cache around to speed up installs
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: build-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        run: npm ci --no-audit
+
+      - name: Install playwright
+        run: npx playwright install
+
+      - name: Run end-to-end tests
+        env:
+          API_ENDPOINT: ${{ vars.API_ENDPOINT }}
+        run: npx playwright test
+
   test-and-release:
+    needs: e2e-tests
     runs-on: ubuntu-22.04
 
     steps:
@@ -19,7 +47,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: "18.x"
+          node-version: "20.x"
 
       - name: Keep npm cache around to speed up installs
         uses: actions/cache@v3
@@ -32,6 +60,12 @@ jobs:
 
       - name: Check TypeScript
         run: npx tsc
+
+      - name: Install playwright
+        run: npx playwright install
+
+      - name: Run end-to-end tests
+        run: npx playwright test
 
       - name: Semantic release
         if: github.ref == 'refs/heads/saga'

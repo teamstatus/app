@@ -1,10 +1,10 @@
-import { useState } from 'preact/hooks'
-import { MenuIcon } from './Icons.js'
-import { OffsetMenu } from '#navigation/OffsetMenu.js'
-import { AnimatedLogo } from '#navigation/AnimatedLogo.js'
+import { useState } from "preact/hooks";
+import { MenuIcon } from "./Icons.js";
+import { OffsetMenu } from "#navigation/OffsetMenu.js";
+import { AnimatedLogo } from "#navigation/AnimatedLogo.js";
 
 export const LogoHeader = ({ animated }: { animated?: boolean }) => {
-	const [collapsed, setCollapsed] = useState(true)
+	const [collapsed, setCollapsed] = useState(true);
 
 	return (
 		<>
@@ -16,6 +16,7 @@ export const LogoHeader = ({ animated }: { animated?: boolean }) => {
 							type="button"
 							class="btn btn-outline-secondary btn-sm"
 							onClick={() => setCollapsed((c) => !c)}
+							data-testid="show-menu"
 						>
 							<MenuIcon />
 						</button>
@@ -24,5 +25,5 @@ export const LogoHeader = ({ animated }: { animated?: boolean }) => {
 			</header>
 			{!collapsed && <OffsetMenu onClick={() => setCollapsed((c) => !c)} />}
 		</>
-	)
-}
+	);
+};

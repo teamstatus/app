@@ -25,9 +25,11 @@
 		"@nordicsemiconductor/from-env": "2.0.0",
 		"@playwright/test": "1.37.1",
 		"@preact/preset-vite": "2.5.0",
+		"@types/chance": "1.1.4",
 		"@types/color": "^3.0.4",
 		"@types/lodash-es": "4.17.9",
 		"bootstrap": "5.3.1",
+		"chance": "1.1.11",
 		"check-node-version": "4.2.1",
 		"handlebars": "4.7.8",
 		"husky": "8.0.3",
@@ -44,7 +46,7 @@
 		"*.{json,ts,tsx}": ["npx rome format --write", "npx rome check"]
 	},
 	"engines": {
-		"node": ">=18",
+		"node": ">=20",
 		"npm": ">=9"
 	},
 	"release": {
