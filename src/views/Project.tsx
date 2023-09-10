@@ -104,6 +104,7 @@ export const Project = ({
 						}),
 						color,
 						disabled: !canCreateStatus(project.role),
+						testId: 'create-status',
 					},
 				]}
 			/>

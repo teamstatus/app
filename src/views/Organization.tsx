@@ -151,6 +151,7 @@ export const Organization = ({
 							onboarding,
 							organization: id,
 						}),
+						testId: 'create-project',
 					},
 				]}
 			/>

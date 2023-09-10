@@ -68,6 +68,7 @@ export const Organizations = ({ onboarding }: { onboarding?: string }) => {
 						href: linkUrl(['organization', 'create'], {
 							onboarding,
 						}),
+						testId: 'create-organization',
 					},
 				]}
 			/>

@@ -14,6 +14,7 @@ type Action = {
 	disabled?: boolean
 	icon?: VNode<any>
 	secondary?: boolean
+	testId?: string
 }
 
 export const ProjectMenu = ({ actions }: { actions?: Action[] }) => {
@@ -257,6 +258,7 @@ const ActionButton = ({
 					boxShadow: '0 0 8px 0 #00000075',
 				}}
 				class="d-flex align-items-center justify-content-center mb-2"
+				data-testid={action.testId ?? ''}
 			>
 				{action.icon ?? <AddIcon />}
 			</a>

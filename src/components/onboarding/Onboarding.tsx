@@ -6,7 +6,7 @@ export const Onboarding = () => (
 		<h2>Getting started</h2>
 		<p>
 			If you are new to <AsHeadline>teamstatus.space</AsHeadline>, then{' '}
-			<a href="/organizations?onboarding=1">
+			<a href="/organizations?onboarding=1" data-testid="onboarding-start">
 				let's familiarize yourself with how it works
 			</a>
 			.
