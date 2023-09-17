@@ -1,16 +1,14 @@
-import { decodeTime } from 'ulid'
 import { useSyncs } from '#context/Syncs.js'
 import { LogoHeader } from '#components/LogoHeader.js'
 import { ProjectMenu } from '#components/ProjectMenu.js'
 import { Main } from '#components/Main.js'
-import { DeleteIcon, SyncIcon } from '#components/Icons.js'
-import { ShortDate } from '#components/ShortDate.js'
-import { EditMenu } from '#components/EditMenu.js'
+import { SyncIcon } from '#components/Icons.js'
 import { SyncOnboarding } from '#components/onboarding/Sync.js'
 import { linkUrl } from '#util/link.js'
+import { SyncView } from '#components/SyncView'
 
 export const Syncs = ({ onboarding }: { onboarding?: string }) => {
-	const { syncs, deleteSync } = useSyncs()
+	const { syncs } = useSyncs()
 	const syncItems = Object.values(syncs)
 	const showOnboardingInfo = onboarding !== undefined
 
@@ -39,39 +37,9 @@ export const Syncs = ({ onboarding }: { onboarding?: string }) => {
 								</>
 							)}
 							{syncItems.length > 0 &&
-								syncItems.map((sync) => {
-									const ts = new Date(decodeTime(sync.id))
-									return (
-										<>
-											<div
-												class="my-2 d-flex justify-content-between align-items-center"
-												key={sync.id}
-											>
-												<div>
-													<small class="text-muted text-nowrap">
-														<ShortDate date={ts} />
-													</small>
-													<br />
-													<a href={linkUrl(['sync', sync.id], { onboarding })}>
-														{sync.title}
-													</a>
-												</div>
-												<EditMenu>
-													<button
-														type="button"
-														class="btn btn-sm btn-outline-danger me-1"
-														onClick={() => {
-															deleteSync(sync)
-														}}
-													>
-														<DeleteIcon size={18} />
-													</button>
-												</EditMenu>
-											</div>
-											<hr />
-										</>
-									)
-								})}
+								syncItems.map((sync) => (
+									<SyncView sync={sync} onboarding={onboarding} />
+								))}
 						</section>
 					</div>
 				</div>

@@ -3,13 +3,17 @@ import { Invitations } from '#components/Invitations.js'
 import { LogoHeader } from '#components/LogoHeader.js'
 import { Main } from '#components/Main.js'
 import { ProjectMenu } from '#components/ProjectMenu.js'
+import { SyncView } from '#components/SyncView'
 import { Onboarding } from '#components/onboarding/Onboarding.js'
 import { useAuth } from '#context/Auth.js'
+import { useSyncs } from '#context/Syncs'
 import { route } from 'preact-router'
 import { useEffect } from 'preact/hooks'
 
 export const Dashboard = ({ redirect }: { redirect?: string }) => {
 	const { user } = useAuth()
+	const { syncs } = useSyncs()
+	const syncItems = Object.values(syncs)
 
 	useEffect(() => {
 		if (redirect === undefined) return
@@ -26,18 +30,26 @@ export const Dashboard = ({ redirect }: { redirect?: string }) => {
 					<div class="row mt-4">
 						<div class="col-12 col-lg-8 offset-lg-2">
 							<h1>
-								Welcome{' '}
+								Welcome to your dashboard,{' '}
 								<strong>{user?.id ?? user?.email ?? 'anonymous'}</strong>!
 							</h1>
 							<p>
-								This is your Dashboard, and we haven't figured out what to show
-								you here, yet.
+								If you would like to see something else on your dashboard,{' '}
+								<a href="/project/%24teamstatus%23feedback">let me know!</a>
 							</p>
-							<p>
-								<a href="/project/%24teamstatus%23feedback">
-									Suggestions welcome!
-								</a>
-							</p>
+							{syncItems.length > 0 && (
+								<>
+									<h2>Your syncs</h2>
+									<p>
+										This is the list of syncs in your projects in the last 30
+										days.
+									</p>
+									{syncItems.map((sync) => (
+										<SyncView sync={sync} />
+									))}
+								</>
+							)}
+							{syncItems.length === 0 && <hr />}
 						</div>
 					</div>
 				</section>
@@ -45,7 +57,6 @@ export const Dashboard = ({ redirect }: { redirect?: string }) => {
 				<section>
 					<div class="row mt-4">
 						<div class="col-12 col-lg-8 offset-lg-2">
-							<hr />
 							<h2 class="mt-4">Feedback wanted</h2>
 							<p>
 								In September 2023, <AsHeadline>teamstatus.space</AsHeadline>{' '}
