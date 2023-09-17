@@ -9,6 +9,8 @@ export const login = async (page: Page) => {
 	await page.getByPlaceholder('e.g. "12345678"').fill('12345678')
 	await page.getByRole('button', { name: 'Sign in' }).click()
 	await expect(
-		page.getByRole('heading', { name: `Welcome @${username}!` }),
+		page.getByRole('heading', {
+			name: `Welcome to your dashboard, @${username}!`,
+		}),
 	).toBeVisible()
 }

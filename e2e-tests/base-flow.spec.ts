@@ -24,7 +24,9 @@ test('register and select an ID', async ({ page }) => {
 	await page.getByPlaceholder('e.g. "they/them"').fill('they/them')
 	await page.getByRole('complementary').getByRole('button').click()
 	await expect(
-		page.getByRole('heading', { name: `Welcome @${username}!` }),
+		page.getByRole('heading', {
+			name: `Welcome to your dashboard, @${username}!`,
+		}),
 	).toBeVisible()
 })
 
