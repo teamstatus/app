@@ -35,7 +35,7 @@
 		"husky": "8.0.3",
 		"openmoji": "14.0.0",
 		"prettier": "3.0.3",
-		"@biomejs/biome": "1.0.0",
+		"@biomejs/biome": "1.2.2",
 		"tsmatchers": "5.0.0",
 		"typescript": "5.2.2",
 		"vite": "4.4.9",
