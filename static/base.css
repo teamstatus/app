@@ -68,6 +68,10 @@ h6 strong {
   font-weight: 500;
 }
 
+.markdown {
+  overflow-wrap: break-word;
+}
+
 .markdown p:last-child {
   margin-bottom: 0;
 }
