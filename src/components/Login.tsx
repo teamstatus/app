@@ -1,5 +1,5 @@
 import cx from 'classnames'
-import { useState } from 'preact/hooks'
+import { useState, useEffect } from 'preact/hooks'
 import { useAuth } from '#context/Auth.js'
 import { type ProblemDetail } from '#context/ProblemDetail.js'
 import { ProgressBar } from './ProgressBar.js'
@@ -16,6 +16,29 @@ export const Login = ({ redirect }: { redirect?: string }) => {
 
 	const isPINValid = /^[0-9]{8}$/.test(pin)
 	const isEmailValid = /.@./.test(email)
+
+	const submitPin = () => {
+		setLoading(true)
+		setError(undefined)
+		setSuccess(undefined)
+		pinLogin(email, pin)
+			.ok((user) => {
+				setSuccess('Logged in.')
+				setPIN('')
+			})
+			.fail((problem) => {
+				console.error(error)
+				setError(problem)
+			})
+			.anyway(() => {
+				setLoading(false)
+			})
+	}
+
+	useEffect(() => {
+		if (!isPINValid) return
+		submitPin()
+	}, [pin])
 
 	if (loggedIn) return null
 
@@ -128,21 +151,7 @@ export const Login = ({ redirect }: { redirect?: string }) => {
 										'btn-secondary': !isPINValid,
 									})}
 									onClick={() => {
-										setLoading(true)
-										setError(undefined)
-										setSuccess(undefined)
-										pinLogin(email, pin)
-											.ok((user) => {
-												setSuccess('Logged in.')
-												setPIN('')
-											})
-											.fail((problem) => {
-												console.error(error)
-												setError(problem)
-											})
-											.anyway(() => {
-												setLoading(false)
-											})
+										submitPin()
 									}}
 								>
 									Sign in
