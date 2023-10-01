@@ -18,7 +18,6 @@ test('register and select an ID', async ({ page }) => {
 	await page.getByPlaceholder('e.g. "alex@example.com"').fill(email)
 	await page.getByRole('button', { name: 'Request PIN' }).click()
 	await page.getByPlaceholder('e.g. "12345678"').fill('12345678')
-	await page.getByRole('button', { name: 'Sign in' }).click()
 	await page.getByPlaceholder('e.g. "alex"').fill(username)
 	await page.getByPlaceholder('e.g. "Alex Doe"').fill(name)
 	await page.getByPlaceholder('e.g. "they/them"').fill('they/them')
