@@ -21,6 +21,7 @@
 	"author": "Markus Tacker <m@coderbyheart.com> | coderbyheart.com",
 	"license": "MIT",
 	"devDependencies": {
+		"@biomejs/biome": "1.1.2-nightly.9c28238",
 		"@nordicsemiconductor/asset-tracker-cloud-code-style": "12.0.93",
 		"@nordicsemiconductor/from-env": "2.0.0",
 		"@playwright/test": "1.38.1",
@@ -35,7 +36,6 @@
 		"husky": "8.0.3",
 		"openmoji": "14.0.0",
 		"prettier": "3.0.3",
-		"@biomejs/biome": "1.2.2",
 		"tsmatchers": "5.0.0",
 		"typescript": "5.2.2",
 		"vite": "4.4.9",
@@ -43,7 +43,7 @@
 	},
 	"lint-staged": {
 		"*.{md,yaml,yml}": ["prettier --write"],
-		"*.{json,ts,tsx}": ["npx rome format --write", "npx rome check"]
+		"*.{json,ts,tsx}": ["npx biome format --write", "npx biome check"]
 	},
 	"engines": {
 		"node": ">=20",
