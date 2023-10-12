@@ -69,7 +69,7 @@
 		"color": "4.2.3",
 		"date-fns": "2.30.0",
 		"lodash-es": "4.17.21",
-		"lucide-preact": "0.285.0",
+		"lucide-preact": "0.286.0",
 		"micromark": "4.0.0",
 		"p-throttle": "5.1.0",
 		"preact": "10.18.1",
