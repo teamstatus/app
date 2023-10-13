@@ -24,7 +24,7 @@
 		"@biomejs/biome": "1.2.2",
 		"@nordicsemiconductor/asset-tracker-cloud-code-style": "12.0.94",
 		"@nordicsemiconductor/from-env": "2.0.0",
-		"@playwright/test": "1.38.1",
+		"@playwright/test": "1.39.0",
 		"@preact/preset-vite": "2.5.0",
 		"@types/chance": "1.1.4",
 		"@types/color": "^3.0.4",
