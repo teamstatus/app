@@ -3,7 +3,7 @@ import { CloseIcon, ProjectsIcon, AddIcon, SubMenuIcon } from './Icons.js'
 import { useUI } from '#context/UI.js'
 import { SettingsIcon } from 'lucide-preact'
 import { gradient, logoColors } from './Colorpicker.js'
-import { type VNode } from 'preact'
+import type { VNode } from 'preact'
 import { useState } from 'preact/hooks'
 import { OpenmojiIcon } from './OpenmojiIcon.js'
 import { colorStyle } from '../util/colorStyle.js'
@@ -45,7 +45,7 @@ export const ProjectMenu = ({ actions }: { actions?: Action[] }) => {
 				visibleProjects.map(
 					({ project, personalization: { color, icon, alias } }) => (
 						<div class="d-flex flex-column align-items-center">
-							{/* rome-ignore lint/a11y/useValidAnchor: needed to close the menu*/}
+							{/* biome-ignore lint/a11y/useValidAnchor: needed to close the menu*/}
 							<a
 								href={`/project/${encodeURIComponent(project.id)}`}
 								class="mb-1 d-flex align-items-center text-decoration-none text-dark"
@@ -165,7 +165,7 @@ export const ProjectMenu = ({ actions }: { actions?: Action[] }) => {
 			)}
 			{projectsMenuVisible && (
 				<div class="d-flex">
-					{/* rome-ignore lint/a11y/useValidAnchor: needed to close the menu */}
+					{/* biome-ignore lint/a11y/useValidAnchor: needed to close the menu */}
 					<a
 						href={`/personalize-projects`}
 						style={{
@@ -245,7 +245,7 @@ const ActionButton = ({
 
 	return (
 		<>
-			{/* rome-ignore lint/a11y/useValidAnchor: needed to close the menu */}
+			{/* biome-ignore lint/a11y/useValidAnchor: needed to close the menu */}
 			<a
 				href={action.href}
 				onClick={onClick}
