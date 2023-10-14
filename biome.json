@@ -1,5 +1,5 @@
 {
-	"$schema": "https://docs.rome.tools/schemas/12.1.3/schema.json",
+	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
 	"organizeImports": {
 		"enabled": false
 	},
@@ -7,9 +7,6 @@
 		"enabled": true,
 		"rules": {
 			"all": true,
-			"nursery": {
-				"useNamingConvention": "off"
-			},
 			"a11y": {
 				"noSvgWithoutTitle": "off",
 				"useKeyWithClickEvents": "off"
@@ -20,6 +17,9 @@
 			},
 			"correctness": {
 				"noUndeclaredVariables": "error"
+			},
+			"nursery": {
+				"useImportRestrictions": "warn"
 			}
 		}
 	},
