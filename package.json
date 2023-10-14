@@ -22,7 +22,7 @@
 	"license": "MIT",
 	"devDependencies": {
 		"@biomejs/biome": "1.2.2",
-		"@commitlint/config-conventional": "17.7.0",
+		"@commitlint/config-conventional": "17.8.0",
 		"@nordicsemiconductor/from-env": "2.0.0",
 		"@playwright/test": "1.39.0",
 		"@preact/preset-vite": "2.6.0",
