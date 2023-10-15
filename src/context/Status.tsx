@@ -31,6 +31,7 @@ export type Status = {
 	project: string // '$teamstatus#development'
 	author: string // '@coderbyheart'
 	message: string // 'Added Reaction API.'
+	attributeTo?: string // '@blake'
 	id: string // '01H0ZTK03XXT2FD5ND5E6DH7KD'
 	version: number // 1
 	reactions: PersistedReaction[]
@@ -42,6 +43,7 @@ export type StatusContext = {
 	addProjectStatus: (
 		projectId: string,
 		message: string,
+		attributeTo?: string,
 	) => { error: string } | { id: string }
 	updateStatus: (
 		status: Status,
@@ -122,13 +124,14 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 		<StatusContext.Provider
 			value={{
 				projectStatus: status,
-				addProjectStatus: (projectId, message) => {
+				addProjectStatus: (projectId, message, attributeTo) => {
 					const author = user?.id
 					if (author === undefined) return { error: 'Not authorized!' }
 					const id = ulid()
 					const newStatus: Status = {
 						id,
 						message,
+						attributeTo,
 						author,
 						project: projectId,
 						reactions: [],
@@ -142,6 +145,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 					CREATE(`/project/${encodeURIComponent(projectId)}/status`, {
 						id,
 						message,
+						attributeTo,
 					}).ok(() => {
 						setStatus((status) => {
 							const projectStatus = status[projectId] ?? []

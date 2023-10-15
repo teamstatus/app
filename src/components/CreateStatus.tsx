@@ -5,6 +5,7 @@ import type { Project } from '#context/Projects.js'
 import { useStatus } from '#context/Status.js'
 import { useAuth } from '#context/Auth.js'
 import { ResizingTextarea } from '#components/ResizingTextarea.js'
+import { slugPart } from '#proto/ids'
 
 export const CreateStatus = ({
 	onStatus,
@@ -17,6 +18,7 @@ export const CreateStatus = ({
 	const [message, setMessage] = useState<string>('')
 	const isValid = message.length > 0
 	const [error, setError] = useState<string | undefined>()
+	const [attributeTo, setAttributeTo] = useState<string>('')
 	const { addProjectStatus } = useStatus()
 	if (user === undefined) return null
 	return (
@@ -31,7 +33,7 @@ export const CreateStatus = ({
 					An error occured ({error})!
 				</div>
 			)}
-			<div class="mb-3">
+			<div>
 				<label for="statusUpdate" class="form-label">
 					Describe your status update
 				</label>
@@ -40,6 +42,21 @@ export const CreateStatus = ({
 					id="statusUpdate"
 					placeholder='e.g. "Implemented the validation for the UI"'
 					onInput={setMessage}
+				/>
+			</div>
+			<div class="mb-3">
+				<label for="attributeTo" class="form-label">
+					Attribute this status to someone else
+				</label>
+				<input
+					type="text"
+					class="form-control"
+					id="attributeTo"
+					onInput={(e) => setAttributeTo((e.target as HTMLInputElement).value)}
+					value={attributeTo}
+					placeholder='e.g. "blake"'
+					pattern={`^${slugPart}$`}
+					required
 				/>
 			</div>
 			<div class="d-flex align-items-center justify-content-end">
@@ -51,7 +68,11 @@ export const CreateStatus = ({
 					})}
 					disabled={!isValid}
 					onClick={() => {
-						const res = addProjectStatus(project.id, message)
+						const res = addProjectStatus(
+							project.id,
+							message,
+							attributeTo.length > 0 ? attributeTo : undefined,
+						)
 						if ('error' in res) {
 							setError(res.error)
 						} else {

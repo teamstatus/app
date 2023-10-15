@@ -40,3 +40,15 @@ const UserInfo = (
 		</span>
 	)
 }
+
+export const UserName = ({ id }: { id: string }) => {
+	const { get, profiles } = useUserProfiles()
+	const [profile, setProfile] = useState<TUserProfile | undefined>(profiles[id])
+
+	useEffect(() => {
+		if (profile !== undefined) return
+		get(id).ok(({ user }) => setProfile(user))
+	}, [profile])
+
+	return <span>{profile?.name ?? id}</span>
+}

@@ -1,4 +1,4 @@
-import { UserProfile } from '#components/UserProfile.js'
+import { UserName, UserProfile } from '#components/UserProfile.js'
 import { useAuth } from '#context/Auth.js'
 import { useStatus, type Status as TStatus } from '#context/Status.js'
 import cx from 'classnames'
@@ -82,7 +82,18 @@ export const Status = ({
 					</span>
 					<span class="mx-1">&middot;</span>
 					<span class="text-nowrap d-flex align-items-center">
-						<UserProfile id={status.author} />
+						{status.attributeTo !== undefined && (
+							<>
+								{status.attributeTo} (
+								<span>
+									attributed by <UserName id={status.author} />
+								</span>
+								)
+							</>
+						)}
+						{status.attributeTo === undefined && (
+							<UserProfile id={status.author} />
+						)}
 					</span>
 				</small>
 			</div>
