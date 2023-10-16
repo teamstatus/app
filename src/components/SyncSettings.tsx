@@ -17,14 +17,49 @@ export const SyncSettings = ({
 	) => void
 	onCreated: (syncId: string) => void
 }) => {
+	const search = new URLSearchParams(document.location.search)
+	const prefill = {
+		title: search.get('sync:title'),
+		selectedProjects: search.get('sync:projectIds')?.split(',') ?? [],
+		start: search.get('sync:start'),
+		end: search.get('sync:end'),
+	}
+
+	let maybePrefilledStart: Date | undefined = undefined
+	if (prefill.start !== null) {
+		maybePrefilledStart = new Date(prefill.start)
+	}
+
+	let maybePrefilledEnd: Date | undefined = undefined
+	if (prefill.end !== null) {
+		maybePrefilledEnd = new Date(prefill.end)
+	}
+
+	if (maybePrefilledStart !== undefined && maybePrefilledEnd !== undefined) {
+		const delta = maybePrefilledEnd.getTime() - maybePrefilledStart.getTime()
+		// FIXME: shift start and end date by delta
+		void delta
+	}
+
 	const { addSync } = useSyncs()
 	const { organizations } = useProjects()
-	const [startDay, setStartDay] = useState('') // '2023-06-11'
-	const [endDay, setEndDay] = useState('') // '2023-06-11'
-	const [startTime, setStartTime] = useState('00:00') // '00:35'
-	const [endTime, setEndTime] = useState('00:00') // '00:35'
-	const [selectedProjects, setSelectedProjects] = useState<string[]>([])
-	const [name, setName] = useState('')
+	// FIXME: format to local ISO date
+	const [startDay, setStartDay] = useState(
+		maybePrefilledStart?.toISOString().slice(0, 10) ?? '',
+	) // '2023-06-11'
+	const [endDay, setEndDay] = useState(
+		maybePrefilledEnd?.toISOString().slice(0, 10) ?? '',
+	) // '2023-06-11'
+	const [startTime, setStartTime] = useState(
+		maybePrefilledStart?.toTimeString().slice(0, 5) ?? '00:00',
+	) // '00:35'
+	const [endTime, setEndTime] = useState(
+		maybePrefilledEnd?.toTimeString().slice(0, 5) ?? '00:00',
+	) // '00:35'
+	const [selectedProjects, setSelectedProjects] = useState<string[]>(
+		prefill?.selectedProjects ?? [],
+	)
+	const [name, setName] = useState(prefill?.title ?? '')
 
 	const startDate =
 		startDay.length > 0 && startTime.length > 0

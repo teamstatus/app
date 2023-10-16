@@ -38,6 +38,7 @@ import {
 	Rocket,
 	Building2,
 	CheckCircle,
+	Copy,
 } from 'lucide-preact'
 import cx from 'classnames'
 
@@ -107,3 +108,4 @@ export const ContactIcon = icon(MessageSquare)
 export const DashboardIcon = icon(Rocket)
 export const OrganizationIcon = icon(Building2)
 export const InFlightIcon = icon(UploadCloud, 'pulsate')
+export const CopyIcon = icon(Copy)

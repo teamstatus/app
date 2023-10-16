@@ -7,6 +7,7 @@ import { linkUrl } from '#util/link.js'
 import { useAuth } from '#context/Auth'
 import { ProjectId } from './ProjectId'
 import { useState } from 'preact/hooks'
+import { CopyIcon } from 'lucide-preact'
 
 export const SyncView = ({
 	sync,
@@ -51,8 +52,9 @@ export const SyncView = ({
 					<br />
 					<a href={linkUrl(['sync', sync.id], { onboarding })}>{sync.title}</a>
 				</div>
-				{sync.owner === user?.id && (
-					<EditMenu>
+
+				<EditMenu>
+					{sync.owner === user?.id && (
 						<button
 							type="button"
 							class="btn btn-sm btn-outline-danger me-1"
@@ -62,8 +64,20 @@ export const SyncView = ({
 						>
 							<DeleteIcon size={18} />
 						</button>
-					</EditMenu>
-				)}
+					)}
+					<a
+						class="btn btn-sm btn-outline-secondary me-1"
+						href={linkUrl(['sync', 'create'], {
+							onboarding,
+							'sync:title': sync.title,
+							'sync:projectIds': sync.projectIds.join(','),
+							'sync:start': sync.inclusiveStartDate?.toISOString(),
+							'sync:end': sync.inclusiveEndDate?.toISOString(),
+						})}
+					>
+						<CopyIcon size={18} />
+					</a>
+				</EditMenu>
 			</div>
 			<hr />
 		</>
