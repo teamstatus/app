@@ -46,7 +46,7 @@ export const CreateSync = ({ onboarding }: { onboarding?: string }) => {
 			)}
 			<Main class="container">
 				{createdSyncId !== undefined && (
-					<div class="row">
+					<div class="row mt-sm-4">
 						<div class="col-12 col-lg-8 offset-lg-2">
 							<div class="alert alert-success" role="alert">
 								<a href={linkUrl(['sync', createdSyncId], { onboarding })}>

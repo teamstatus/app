@@ -1,8 +1,8 @@
 import cx from 'classnames'
 import { useState } from 'preact/hooks'
-import { type Project } from '#context/Projects.js'
+import { useProjects, type Project } from '#context/Projects.js'
 import { useSyncs } from '#context/Syncs.js'
-import { AddIcon, ApplyIcon } from './Icons.js'
+import { AddIcon, ApplyIcon, DownIcon } from './Icons.js'
 
 export const SyncSettings = ({
 	projects,
@@ -18,6 +18,7 @@ export const SyncSettings = ({
 	onCreated: (syncId: string) => void
 }) => {
 	const { addSync } = useSyncs()
+	const { organizations } = useProjects()
 	const [startDay, setStartDay] = useState('') // '2023-06-11'
 	const [endDay, setEndDay] = useState('') // '2023-06-11'
 	const [startTime, setStartTime] = useState('00:00') // '00:35'
@@ -39,29 +40,83 @@ export const SyncSettings = ({
 		(startDate?.getTime() ?? Number.MIN_SAFE_INTEGER) <
 			(endDate?.getTime() ?? Number.MAX_SAFE_INTEGER)
 
+	const projectsByOrganization = projects.reduce<Record<string, Project[]>>(
+		(byOrg, project) => {
+			byOrg[project.organizationId] = [
+				...(byOrg[project.organizationId] ?? []),
+				project,
+			]
+			return byOrg
+		},
+		{},
+	)
+
 	return (
 		<section>
-			<label class="mb-2">Projects</label>
-			{projects.map((project) => (
-				<div class="form-check">
-					<label htmlFor={project.id}>
-						<input
-							class="form-check-input"
-							type="checkbox"
-							id={project.id}
-							onClick={() => {
-								setSelectedProjects((selectedProjects) =>
-									selectedProjects.includes(project.id)
-										? selectedProjects.filter((id) => id !== project.id)
-										: [...selectedProjects, project.id],
+			<label for="startDate" class="form-label">
+				Project
+			</label>
+			{Object.entries(projectsByOrganization)
+				.sort(([idA], [idB]) => idA.localeCompare(idB))
+				.map(([organizationId, projects]) => {
+					return (
+						<section class="mb-2">
+							<p class="mb-1">
+								{organizations.find(({ id }) => id === organizationId)?.name ??
+									organizationId}
+							</p>
+							{projects.length > 1 && (
+								<p class="mb-1">
+									<label title={'select all'}>
+										<input
+											type="checkbox"
+											class="form-check-input me-1"
+											onClick={(e) => {
+												const projectIds = projects.map(({ id }) => id)
+												if ((e.target as HTMLInputElement).checked) {
+													setSelectedProjects((p) => [
+														...new Set([...p, ...projectIds]),
+													])
+												} else {
+													setSelectedProjects((p) =>
+														p.filter((id) => !projectIds.includes(id)),
+													)
+												}
+											}}
+										/>{' '}
+										<span class="text-muted">
+											<DownIcon /> select all
+										</span>
+									</label>
+								</p>
+							)}
+							{projects.map((project) => {
+								return (
+									<div class="form-check">
+										<label htmlFor={project.id}>
+											<input
+												class="form-check-input"
+												type="checkbox"
+												id={project.id}
+												onClick={() => {
+													setSelectedProjects((selectedProjects) =>
+														selectedProjects.includes(project.id)
+															? selectedProjects.filter(
+																	(id) => id !== project.id,
+															  )
+															: [...selectedProjects, project.id],
+													)
+												}}
+												checked={selectedProjects.includes(project.id)}
+											/>
+											{project.name ?? project.id}
+										</label>
+									</div>
 								)
-							}}
-							checked={selectedProjects.includes(project.id)}
-						/>
-						{project.id}
-					</label>
-				</div>
-			))}
+							})}
+						</section>
+					)
+				})}
 			{Object.values(projects).length === 0 && (
 				<div>
 					<p>You have no projects,yet.</p>
