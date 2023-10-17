@@ -3,6 +3,8 @@ import { useState } from 'preact/hooks'
 import { useProjects, type Project } from '#context/Projects.js'
 import { useSyncs } from '#context/Syncs.js'
 import { AddIcon, ApplyIcon, DownIcon } from './Icons.js'
+import { format } from 'date-fns-tz'
+import { addMilliseconds } from 'date-fns'
 
 export const SyncSettings = ({
 	projects,
@@ -35,26 +37,36 @@ export const SyncSettings = ({
 		maybePrefilledEnd = new Date(prefill.end)
 	}
 
+	let adjusted = false
 	if (maybePrefilledStart !== undefined && maybePrefilledEnd !== undefined) {
 		const delta = maybePrefilledEnd.getTime() - maybePrefilledStart.getTime()
-		// FIXME: shift start and end date by delta
-		void delta
+		maybePrefilledStart = addMilliseconds(maybePrefilledStart, delta)
+		maybePrefilledEnd = addMilliseconds(maybePrefilledEnd, delta)
+		adjusted = true
 	}
 
 	const { addSync } = useSyncs()
 	const { organizations } = useProjects()
 	// FIXME: format to local ISO date
 	const [startDay, setStartDay] = useState(
-		maybePrefilledStart?.toISOString().slice(0, 10) ?? '',
+		maybePrefilledStart !== undefined
+			? format(maybePrefilledStart, 'yyyy-MM-dd')
+			: '',
 	) // '2023-06-11'
 	const [endDay, setEndDay] = useState(
-		maybePrefilledEnd?.toISOString().slice(0, 10) ?? '',
+		maybePrefilledEnd !== undefined
+			? format(maybePrefilledEnd, 'yyyy-MM-dd')
+			: '',
 	) // '2023-06-11'
 	const [startTime, setStartTime] = useState(
-		maybePrefilledStart?.toTimeString().slice(0, 5) ?? '00:00',
+		maybePrefilledStart !== undefined
+			? format(maybePrefilledStart, 'HH:mm')
+			: '00:00',
 	) // '00:35'
 	const [endTime, setEndTime] = useState(
-		maybePrefilledEnd?.toTimeString().slice(0, 5) ?? '00:00',
+		maybePrefilledEnd !== undefined
+			? format(maybePrefilledEnd, 'HH:mm')
+			: '00:00',
 	) // '00:35'
 	const [selectedProjects, setSelectedProjects] = useState<string[]>(
 		prefill?.selectedProjects ?? [],
@@ -161,7 +173,16 @@ export const SyncSettings = ({
 					</p>
 				</div>
 			)}
-			<div class={'row mt-3'}>
+			{adjusted && (
+				<div class={'row mt-3'}>
+					<div class="col">
+						<div class="alert alert-warning">
+							Start and end date have been adjusted to the next period.
+						</div>
+					</div>
+				</div>
+			)}
+			<div class={'row'}>
 				<div class="col mb-3">
 					<label for="startDate" class="form-label">
 						Start day
