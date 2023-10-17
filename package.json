@@ -40,7 +40,7 @@
 		"tsmatchers": "5.0.0",
 		"typescript": "5.2.2",
 		"vite": "4.4.11",
-		"wrangler": "3.13.1"
+		"wrangler": "3.13.2"
 	},
 	"lint-staged": {
 		"*.{md,yaml,yml}": ["prettier --write"],
@@ -70,12 +70,12 @@
 		"color": "4.2.3",
 		"date-fns": "2.30.0",
 		"lodash-es": "4.17.21",
-		"lucide-preact": "0.287.0",
+		"lucide-preact": "0.288.0",
 		"micromark": "4.0.0",
 		"p-throttle": "5.1.0",
 		"preact": "10.18.1",
 		"preact-router": "4.1.2",
-		"tsx": "3.13.0",
+		"tsx": "3.14.0",
 		"ulid": "2.3.0"
 	}
 }
