@@ -117,8 +117,9 @@ export const SyncSettings = ({
 									<label title={'select all'}>
 										<input
 											type="checkbox"
-											class="form-check-input me-1"
-											onClick={(e) => {
+											style={{ display: 'none' }}
+											class="form-check-input"
+											onInput={(e) => {
 												const projectIds = projects.map(({ id }) => id)
 												if ((e.target as HTMLInputElement).checked) {
 													setSelectedProjects((p) => [
@@ -139,7 +140,7 @@ export const SyncSettings = ({
 							)}
 							{projects.map((project) => {
 								return (
-									<div class="form-check">
+									<div class="form-check ms-1">
 										<label htmlFor={project.id}>
 											<input
 												class="form-check-input"
