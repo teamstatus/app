@@ -2,7 +2,12 @@
 	"name": "@teamstatus/app",
 	"version": "0.0.0-development",
 	"description": "Teamstatus.space web application written using Vite and Preact",
-	"keywords": ["spa", "webapp", "vite", "preact"],
+	"keywords": [
+		"spa",
+		"webapp",
+		"vite",
+		"preact"
+	],
 	"type": "module",
 	"scripts": {
 		"prepare": "husky install && check-node-version --package && npx tsx --no-warnings openmoji-convert.ts",
@@ -24,7 +29,7 @@
 		"@biomejs/biome": "1.4.1",
 		"@commitlint/config-conventional": "18.4.3",
 		"@nordicsemiconductor/from-env": "3.0.0",
-		"@playwright/test": "1.39.0",
+		"@playwright/test": "1.40.1",
 		"@preact/preset-vite": "2.7.0",
 		"@types/chance": "1.1.6",
 		"@types/color": "3.0.6",
@@ -43,15 +48,22 @@
 		"wrangler": "3.18.0"
 	},
 	"lint-staged": {
-		"*.{md,yaml,yml}": ["prettier --write"],
-		"*.{json,ts,tsx}": ["npx biome format --write", "npx biome check"]
+		"*.{md,yaml,yml,json}": [
+			"prettier --write"
+		],
+		"*.{ts,tsx}": [
+			"npx biome format --write",
+			"npx biome check"
+		]
 	},
 	"engines": {
 		"node": ">=20",
 		"npm": ">=9"
 	},
 	"release": {
-		"branches": ["saga"],
+		"branches": [
+			"saga"
+		],
 		"remoteTags": true,
 		"plugins": [
 			"@semantic-release/commit-analyzer",
