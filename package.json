@@ -78,7 +78,7 @@
 		]
 	},
 	"dependencies": {
-		"classnames": "2.3.3",
+		"classnames": "2.4.0",
 		"color": "4.2.3",
 		"date-fns": "2.30.0",
 		"date-fns-tz": "2.0.0",
