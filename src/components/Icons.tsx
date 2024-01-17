@@ -26,7 +26,6 @@ import {
 	UserCircle2,
 	Users,
 	X,
-	type LucideIcon,
 	Menu,
 	LogIn,
 	Settings,
@@ -41,6 +40,14 @@ import {
 	Copy,
 } from 'lucide-preact'
 import cx from 'classnames'
+import type { FunctionComponent, JSX } from 'preact'
+interface LucideProps extends Partial<Omit<JSX.SVGAttributes, 'ref' | 'size'>> {
+	color?: string
+	size?: string | number
+	strokeWidth?: string | number
+	absoluteStrokeWidth?: boolean
+}
+type LucideIcon = FunctionComponent<LucideProps>
 
 const strokeWidth = 1
 const size = 24
@@ -56,15 +63,14 @@ const icon =
 		color?: string
 		size?: number
 		strokeWidth?: number
-	}) =>
-		(
-			<Icon
-				strokeWidth={sw ?? strokeWidth}
-				class={cx('lucide', c, className)}
-				size={s ?? size}
-				color={col}
-			/>
-		)
+	}) => (
+		<Icon
+			strokeWidth={sw ?? strokeWidth}
+			class={cx('lucide', c, className)}
+			size={s ?? size}
+			color={col}
+		/>
+	)
 
 export const UserIcon = icon(User)
 export const CalendarIcon = icon(Calendar)
