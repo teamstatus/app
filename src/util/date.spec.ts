@@ -21,7 +21,7 @@ describe('date utils', () => {
 	test('formatTime()', () => assert.equal(formatTime(d), '9:25 PM')) // Users time-zone format
 	test('formatTimezone()', () => assert.equal(formatTimezone(d), '+01:00'))
 	test('relativeTime()', () => {
-		const now = new Date('2024-02-07T19:25:37.163Z')
+		const now = new Date('2024-02-07T21:25:37.163Z')
 		assert.equal(relativeTime(d, now), 'about 1 hour ago')
 	})
 })
