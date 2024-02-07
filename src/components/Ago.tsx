@@ -1,14 +1,12 @@
-import { formatDistanceToNow } from 'date-fns'
+import { relativeTime } from '#util/date.js'
 import { useEffect, useState } from 'preact/hooks'
 
 export const Ago = ({ date }: { date: Date }) => {
-	const [relTime, setRelTime] = useState<string>(
-		formatDistanceToNow(date, { addSuffix: true }),
-	)
+	const [relTime, setRelTime] = useState<string>(relativeTime(date))
 
 	useEffect(() => {
 		const i = setInterval(() => {
-			setRelTime(formatDistanceToNow(date, { addSuffix: true }))
+			setRelTime(relativeTime(date))
 		}, 10 * 1000)
 
 		return () => {

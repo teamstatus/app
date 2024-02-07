@@ -1,17 +1,17 @@
-import { format } from 'date-fns'
 import { decodeTime } from 'ulid'
 import { type Sync } from '#context/Syncs.js'
 import { CalendarIcon, ClockIcon, EndDateIcon, StartDateIcon } from './Icons.js'
 import { ShortDate } from './ShortDate.js'
 import { UserProfile } from '#components/UserProfile.js'
+import { formatDay, formatTime, formatTimezone } from '#util/date.js'
 
 const FormattedDate = ({ date }: { date: Date }) => (
 	<time dateTime={date.toISOString()} class="d-flex align-items-center">
 		<CalendarIcon size={20} class="me-1" />
-		{format(date, 'yyyy-MM-dd')}
+		{formatDay(date)}
 		<ClockIcon size={20} class="ms-2 me-1" />
-		{format(date, 'HH:mm')}
-		<small class="text-muted ms-1">{format(date, 'xxx')}</small>
+		{formatTime(date)}
+		<small class="text-muted ms-1">{formatTimezone(date)}</small>
 	</time>
 )
 

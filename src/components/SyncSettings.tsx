@@ -3,8 +3,7 @@ import { useState } from 'preact/hooks'
 import { useProjects, type Project } from '#context/Projects.js'
 import { useSyncs } from '#context/Syncs.js'
 import { AddIcon, ApplyIcon, DownIcon } from './Icons.js'
-import { format } from 'date-fns-tz'
-import { addMilliseconds } from 'date-fns'
+import { formatDay, formatTime, addMilliseconds } from '#util/date.js'
 
 export const SyncSettings = ({
 	projects,
@@ -49,24 +48,18 @@ export const SyncSettings = ({
 	const { organizations } = useProjects()
 	// FIXME: format to local ISO date
 	const [startDay, setStartDay] = useState(
-		maybePrefilledStart !== undefined
-			? format(maybePrefilledStart, 'yyyy-MM-dd')
-			: '',
+		maybePrefilledStart !== undefined ? formatDay(maybePrefilledStart) : '',
 	) // '2023-06-11'
 	const [endDay, setEndDay] = useState(
-		maybePrefilledEnd !== undefined
-			? format(maybePrefilledEnd, 'yyyy-MM-dd')
-			: '',
+		maybePrefilledEnd !== undefined ? formatDay(maybePrefilledEnd) : '',
 	) // '2023-06-11'
 	const [startTime, setStartTime] = useState(
 		maybePrefilledStart !== undefined
-			? format(maybePrefilledStart, 'HH:mm')
+			? formatTime(maybePrefilledStart)
 			: '00:00',
 	) // '00:35'
 	const [endTime, setEndTime] = useState(
-		maybePrefilledEnd !== undefined
-			? format(maybePrefilledEnd, 'HH:mm')
-			: '00:00',
+		maybePrefilledEnd !== undefined ? formatTime(maybePrefilledEnd) : '00:00',
 	) // '00:35'
 	const [selectedProjects, setSelectedProjects] = useState<string[]>(
 		prefill?.selectedProjects ?? [],
