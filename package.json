@@ -27,7 +27,7 @@
 	"license": "MIT",
 	"devDependencies": {
 		"@biomejs/biome": "1.6.4",
-		"@commitlint/config-conventional": "19.1.0",
+		"@commitlint/config-conventional": "19.2.2",
 		"@nordicsemiconductor/from-env": "3.0.1",
 		"@playwright/test": "1.42.1",
 		"@preact/preset-vite": "2.8.2",
@@ -37,7 +37,7 @@
 		"bootstrap": "5.3.3",
 		"chance": "1.1.11",
 		"check-node-version": "4.2.1",
-		"commitlint": "19.2.1",
+		"commitlint": "19.2.2",
 		"handlebars": "4.7.8",
 		"husky": "9.0.11",
 		"openmoji": "15.0.0",
