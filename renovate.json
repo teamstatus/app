@@ -1,3 +1,13 @@
 {
-	"extends": ["github>teamstatus/aws-backend"]
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["github>teamstatus/aws-backend"],
+  "packageRules": [
+    {
+      "matchPackagePatterns": [
+        "mcr.microsoft.com/playwright",
+        "@playwright/test"
+      ],
+      "groupName": "playwright"
+    }
+  ]
 }
