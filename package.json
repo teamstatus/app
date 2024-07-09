@@ -35,7 +35,7 @@
 		"@types/color": "3.0.6",
 		"@types/lodash-es": "4.17.12",
 		"bootstrap": "5.3.3",
-		"chance": "1.1.11",
+		"chance": "1.1.12",
 		"check-node-version": "4.2.1",
 		"commitlint": "19.3.0",
 		"handlebars": "4.7.8",
