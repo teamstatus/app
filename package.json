@@ -29,7 +29,7 @@
 		"@biomejs/biome": "1.8.3",
 		"@commitlint/config-conventional": "19.2.2",
 		"@nordicsemiconductor/from-env": "3.0.1",
-		"@playwright/test": "1.45.1",
+		"@playwright/test": "1.45.2",
 		"@preact/preset-vite": "2.9.0",
 		"@types/chance": "1.1.6",
 		"@types/color": "3.0.6",
