@@ -43,7 +43,7 @@
 		"openmoji": "15.0.0",
 		"prettier": "3.3.3",
 		"tsmatchers": "5.0.2",
-		"typescript": "5.5.4",
+		"typescript": "5.6.2",
 		"vite": "5.4.3",
 		"wrangler": "3.75.0"
 	},
