@@ -45,7 +45,7 @@
 		"tsmatchers": "5.0.2",
 		"typescript": "5.6.2",
 		"vite": "5.4.8",
-		"wrangler": "3.78.9"
+		"wrangler": "3.78.10"
 	},
 	"lint-staged": {
 		"*.{md,yaml,yml,json}": [
