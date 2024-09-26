@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   e2e-tests:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     environment: e2e-tests
     container: mcr.microsoft.com/playwright:v1.45.2
     steps:
@@ -39,7 +39,7 @@ jobs:
 
   test-and-release:
     needs: e2e-tests
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
       - uses: actions/checkout@v4
