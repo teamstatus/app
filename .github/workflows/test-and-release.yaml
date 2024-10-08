@@ -14,7 +14,7 @@ jobs:
   e2e-tests:
     runs-on: ubuntu-22.04
     environment: e2e-tests
-    container: mcr.microsoft.com/playwright:v1.45.2
+    container: mcr.microsoft.com/playwright:v1.48.0
     steps:
       - uses: actions/checkout@v4
 
