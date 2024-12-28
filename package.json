@@ -83,7 +83,7 @@
 		"lodash-es": "4.17.21",
 		"lucide-preact": "0.469.0",
 		"micromark": "4.0.1",
-		"p-throttle": "6.2.0",
+		"p-throttle": "7.0.0",
 		"preact": "10.25.4",
 		"preact-router": "4.1.2",
 		"tsx": "4.19.2",
