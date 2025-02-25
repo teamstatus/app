@@ -81,7 +81,7 @@
 		"classnames": "2.5.1",
 		"color": "4.2.3",
 		"lodash-es": "4.17.21",
-		"lucide-preact": "0.475.0",
+		"lucide-preact": "0.476.0",
 		"micromark": "4.0.1",
 		"p-throttle": "7.0.0",
 		"preact": "10.26.2",
