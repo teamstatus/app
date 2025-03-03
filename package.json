@@ -41,7 +41,7 @@
 		"handlebars": "4.7.8",
 		"husky": "9.1.7",
 		"openmoji": "15.1.0",
-		"prettier": "3.5.2",
+		"prettier": "3.5.3",
 		"tsmatchers": "5.0.2",
 		"typescript": "5.8.2",
 		"vite": "5.4.14",
