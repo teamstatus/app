@@ -11,7 +11,7 @@
 				"noSvgWithoutTitle": "off",
 				"useKeyWithClickEvents": "off"
 			},
-			"style": { "noImplicitBoolean": "off", "noUnusedTemplateLiteral": "off" },
+			"style": { "noImplicitBoolean": "off", "noUnusedTemplateLiteral": "off",  "useBlockStatements":"warn" },
 			"suspicious": {
 				"noExplicitAny": "warn"
 			},

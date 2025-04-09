@@ -34,7 +34,7 @@ export const AnimatedLogo = ({ animated }: { animated?: boolean }) => {
 				class="me-2"
 			/>
 			{'teamstatus.space'.split('').map((s, i) => (
-				<span key={s} style={{ color: colorAtIndex(i) }}>
+				<span key={`${s}-${i.toString()}`} style={{ color: colorAtIndex(i) }}>
 					{s}
 				</span>
 			))}
