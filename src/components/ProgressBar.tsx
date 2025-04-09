@@ -9,6 +9,7 @@ export const ProgressBar = ({ title }: { title: string }) => (
 				aria-valuemin={0}
 				aria-valuemax={100}
 				style="width: 50%"
+				tabIndex={-1}
 			/>
 		</div>
 		<p>{title}</p>

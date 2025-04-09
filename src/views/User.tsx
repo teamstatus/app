@@ -1,8 +1,8 @@
-import { useAuth } from '#context/Auth.js'
-import { LogoHeader } from '#components/LogoHeader.js'
-import { ProjectMenu } from '#components/ProjectMenu.js'
-import { Main } from '#components/Main.js'
-import { EditIcon } from '#components/Icons.js'
+import { useAuth } from '#context/Auth.tsx'
+import { LogoHeader } from '#components/LogoHeader.tsx'
+import { ProjectMenu } from '#components/ProjectMenu.tsx'
+import { Main } from '#components/Main.tsx'
+import { EditIcon } from '#components/Icons.tsx'
 
 export const User = () => {
 	const { user } = useAuth()

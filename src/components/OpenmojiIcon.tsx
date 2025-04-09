@@ -1,4 +1,4 @@
-import { useOpenmoji } from '#context/Openmoji.js'
+import { useOpenmoji } from '#context/Openmoji.tsx'
 
 export const OpenmojiIcon = ({
 	emoji,

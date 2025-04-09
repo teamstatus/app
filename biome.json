@@ -20,6 +20,9 @@
 			},
 			"nursery": {
 				"useImportRestrictions": "warn"
+			},
+			"performance": {
+				"noAccumulatingSpread": "warn"
 			}
 		}
 	},

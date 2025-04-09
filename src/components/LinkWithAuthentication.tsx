@@ -1,6 +1,6 @@
 import type { ComponentChildren } from 'preact'
-import { linkUrl } from '#util/link.js'
-import { useAuth } from '#context/Auth.js'
+import { linkUrl } from '#util/link.ts'
+import { useAuth } from '#context/Auth.tsx'
 
 export const LinkWithAuthentication = ({
 	pathParams,

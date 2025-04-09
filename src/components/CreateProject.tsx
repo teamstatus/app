@@ -1,6 +1,6 @@
-import { AddIcon } from '#components/Icons.js'
-import { Role, useProjects, type Project } from '#context/Projects.js'
-import { isProjectId, slugPart } from '#proto/ids.js'
+import { AddIcon } from '#components/Icons.tsx'
+import { Role, useProjects, type Project } from '#context/Projects.tsx'
+import { isProjectId, slugPart } from '#proto/ids.ts'
 import cx from 'classnames'
 import { useState } from 'preact/hooks'
 

@@ -2,7 +2,7 @@ import { fromEnv } from '@nordicsemiconductor/from-env'
 import preact from '@preact/preset-vite'
 import Handlebars from 'handlebars'
 import { defineConfig } from 'vite'
-import { homepage, version } from './siteInfo.js'
+import { homepage, version } from './siteInfo.ts'
 
 const { apiEndpoint, wsEndpoint } = fromEnv({
 	apiEndpoint: 'API_ENDPOINT',

@@ -1,10 +1,10 @@
-import { useSyncs } from '#context/Syncs.js'
-import { LogoHeader } from '#components/LogoHeader.js'
-import { ProjectMenu } from '#components/ProjectMenu.js'
-import { Main } from '#components/Main.js'
-import { SyncIcon } from '#components/Icons.js'
-import { SyncOnboarding } from '#components/onboarding/Sync.js'
-import { linkUrl } from '#util/link.js'
+import { useSyncs } from '#context/Syncs.tsx'
+import { LogoHeader } from '#components/LogoHeader.tsx'
+import { ProjectMenu } from '#components/ProjectMenu.tsx'
+import { Main } from '#components/Main.tsx'
+import { SyncIcon } from '#components/Icons.tsx'
+import { SyncOnboarding } from '#components/onboarding/Sync.tsx'
+import { linkUrl } from '#util/link.ts'
 import { SyncView } from '#components/SyncView'
 
 export const Syncs = ({ onboarding }: { onboarding?: string }) => {
@@ -38,7 +38,7 @@ export const Syncs = ({ onboarding }: { onboarding?: string }) => {
 							)}
 							{syncItems.length > 0 &&
 								syncItems.map((sync) => (
-									<SyncView sync={sync} onboarding={onboarding} />
+									<SyncView key={sync.id} sync={sync} onboarding={onboarding} />
 								))}
 						</section>
 					</div>

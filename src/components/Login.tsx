@@ -1,10 +1,10 @@
 import cx from 'classnames'
-import { useState, useEffect } from 'preact/hooks'
-import { useAuth } from '#context/Auth.js'
-import { type ProblemDetail } from '#context/ProblemDetail.js'
-import { ProgressBar } from './ProgressBar.js'
-import { AsHeadline } from './HeadlineFont.js'
-import { FormContainer } from './FormContainer.js'
+import { useState, useEffect, useCallback } from 'preact/hooks'
+import { useAuth } from '#context/Auth.tsx'
+import type { ProblemDetail } from '#context/ProblemDetail.tsx'
+import { ProgressBar } from './ProgressBar.tsx'
+import { AsHeadline } from './HeadlineFont.tsx'
+import { FormContainer } from './FormContainer.tsx'
 
 export const Login = ({ redirect }: { redirect?: string }) => {
 	const { autoLoginState, loginRequest, pinLogin, loggedIn } = useAuth()
@@ -12,33 +12,33 @@ export const Login = ({ redirect }: { redirect?: string }) => {
 	const [loading, setLoading] = useState<boolean>(false)
 	const [error, setError] = useState<ProblemDetail>()
 	const [email, setEmail] = useState('')
-	const [pin, setPIN] = useState('')
+	const [pin, setPin] = useState('')
 
-	const isPINValid = /^[0-9]{8}$/.test(pin)
+	const isPinValid = /^[0-9]{8}$/.test(pin)
 	const isEmailValid = /.@./.test(email)
 
-	const submitPin = () => {
+	const submitPin = useCallback(() => {
 		setLoading(true)
 		setError(undefined)
 		setSuccess(undefined)
 		pinLogin(email, pin)
-			.ok((user) => {
+			.ok(() => {
 				setSuccess('Logged in.')
-				setPIN('')
+				setPin('')
 			})
 			.fail((problem) => {
-				console.error(error)
+				console.error(problem)
 				setError(problem)
 			})
 			.anyway(() => {
 				setLoading(false)
 			})
-	}
+	}, [email, pin, pinLogin])
 
 	useEffect(() => {
-		if (!isPINValid) return
+		if (!isPinValid) return
 		submitPin()
-	}, [pin])
+	}, [isPinValid, submitPin])
 
 	if (loggedIn) return null
 
@@ -100,7 +100,7 @@ export const Login = ({ redirect }: { redirect?: string }) => {
 										setLoading(true)
 										setSuccess(undefined)
 										setError(undefined)
-										setPIN('')
+										setPin('')
 										loginRequest(email)
 											.ok(() => {
 												setSuccess(
@@ -134,7 +134,7 @@ export const Login = ({ redirect }: { redirect?: string }) => {
 									type="text"
 									class="form-control"
 									id="pinInput"
-									onInput={(e) => setPIN((e.target as HTMLInputElement).value)}
+									onInput={(e) => setPin((e.target as HTMLInputElement).value)}
 									value={pin}
 									placeholder='e.g. "12345678"'
 									maxLength={8}
@@ -145,10 +145,10 @@ export const Login = ({ redirect }: { redirect?: string }) => {
 							<div class="ms-3">
 								<button
 									type="submit"
-									disabled={!isPINValid || loading}
+									disabled={!isPinValid || loading}
 									class={cx('btn text-nowrap', {
-										'btn-primary': isPINValid,
-										'btn-secondary': !isPINValid,
+										'btn-primary': isPinValid,
+										'btn-secondary': !isPinValid,
 									})}
 									onClick={() => {
 										submitPin()

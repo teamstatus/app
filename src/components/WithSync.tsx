@@ -1,13 +1,13 @@
-import { GET } from '#api/client.js'
-import { type ProblemDetail } from '#context/ProblemDetail.js'
-import { useProjects, type Project } from '#context/Projects.js'
-import { ReactionRole, type Status } from '#context/Status.js'
-import { useSyncs, type Sync, type Sync as TSync } from '#context/Syncs.js'
+import { GET } from '#api/client.ts'
+import type { ProblemDetail } from '#context/ProblemDetail.tsx'
+import { useProjects, type Project } from '#context/Projects.tsx'
+import { ReactionRole, type Status } from '#context/Status.tsx'
+import { useSyncs, type Sync, type Sync as tSync } from '#context/Syncs.tsx'
 import type { VNode } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
 import { decodeTime } from 'ulid'
-import { NotFound } from '#components/NotFound.js'
-import { Problem } from '#components/Problem.js'
+import { NotFound } from '#components/NotFound.tsx'
+import { Problem } from '#components/Problem.tsx'
 
 export type ProjectStatusMap = Record<string, Status[]>
 
@@ -28,12 +28,12 @@ export const WithSync = ({
 	const { syncs } = useSyncs()
 	const { projects } = useProjects()
 	const [problem, setProblem] = useState<ProblemDetail>()
-	const [sync, setSync] = useState<TSync | undefined>(syncs[id])
+	const [sync, setSync] = useState<tSync | undefined>(syncs[id])
 	const [status, setStatus] = useState<ProjectStatusMap>({})
 
 	useEffect(() => {
 		if (sync !== undefined) return
-		GET<{ sync: TSync }>(`/sync/${encodeURIComponent(id)}`)
+		GET<{ sync: tSync }>(`/sync/${encodeURIComponent(id)}`)
 			.fail(setProblem)
 			.ok(({ sync }) => {
 				setSync({
@@ -48,7 +48,7 @@ export const WithSync = ({
 							: undefined,
 				})
 			})
-	}, [id])
+	}, [id, sync])
 
 	useEffect(() => {
 		if (sync === undefined) return
@@ -68,7 +68,7 @@ export const WithSync = ({
 				)
 			},
 		)
-	}, [sync])
+	}, [id, sync])
 
 	if (problem !== undefined) {
 		return <Problem problem={problem} />

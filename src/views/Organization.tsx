@@ -1,19 +1,19 @@
-import { LogoHeader } from '#components/LogoHeader.js'
-import { ProjectMenu } from '#components/ProjectMenu.js'
-import { Main } from '#components/Main.js'
-import { Role, useProjects } from '#context/Projects.js'
+import { LogoHeader } from '#components/LogoHeader.tsx'
+import { ProjectMenu } from '#components/ProjectMenu.tsx'
+import { Main } from '#components/Main.tsx'
+import { Role, useProjects } from '#context/Projects.tsx'
 import {
 	DeleteIcon,
 	EditIcon,
 	MembersIcon,
 	OrganizationIcon,
-} from '#components/Icons.js'
-import { parseProjectId } from '#proto/ids.js'
-import { NotFound } from '#components/NotFound.js'
-import { EditMenu } from '#components/EditMenu.js'
-import { RolePill } from '#components/RolePill.js'
-import { ProjectOnboarding } from '#components/onboarding/Project.js'
-import { linkUrl } from '#util/link.js'
+} from '#components/Icons.tsx'
+import { parseProjectId } from '#proto/ids.ts'
+import { NotFound } from '#components/NotFound.tsx'
+import { EditMenu } from '#components/EditMenu.tsx'
+import { RolePill } from '#components/RolePill.tsx'
+import { ProjectOnboarding } from '#components/onboarding/Project.tsx'
+import { linkUrl } from '#util/link.ts'
 
 export const Organization = ({
 	id,
@@ -135,7 +135,7 @@ export const Organization = ({
 													)}
 												</div>
 											</div>
-											<hr />
+											<hr key={`hr-${project.id}`} />
 										</>
 									))}
 								</section>

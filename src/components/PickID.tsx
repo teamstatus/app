@@ -1,11 +1,11 @@
 import cx from 'classnames'
 import { useState } from 'preact/hooks'
-import { useAuth } from '#context/Auth.js'
-import { isUserId, slugPart } from '#proto/ids.js'
-import { InFlightIcon, UpdateIcon } from './Icons.js'
-import { Aside } from './Aside.js'
-import { FormContainer } from './FormContainer.js'
-import { AsHeadline } from './HeadlineFont.js'
+import { useAuth } from '#context/Auth.tsx'
+import { isUserId, slugPart } from '#proto/ids.ts'
+import { InFlightIcon, UpdateIcon } from './Icons.tsx'
+import { Aside } from './Aside.tsx'
+import { FormContainer } from './FormContainer.tsx'
+import { AsHeadline } from './HeadlineFont.tsx'
 
 export const PickID = () => {
 	const [id, setId] = useState('')

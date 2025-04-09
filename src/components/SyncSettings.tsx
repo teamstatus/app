@@ -1,9 +1,9 @@
 import cx from 'classnames'
 import { useState } from 'preact/hooks'
-import { useProjects, type Project } from '#context/Projects.js'
-import { useSyncs } from '#context/Syncs.js'
-import { AddIcon, ApplyIcon, DownIcon } from './Icons.js'
-import { formatDay, formatTime, addMilliseconds } from '#util/date.js'
+import { useProjects, type Project } from '#context/Projects.tsx'
+import { useSyncs } from '#context/Syncs.tsx'
+import { AddIcon, ApplyIcon, DownIcon } from './Icons.tsx'
+import { formatDay, formatTime, addMilliseconds } from '#util/date.ts'
 
 export const SyncSettings = ({
 	projects,
@@ -26,12 +26,12 @@ export const SyncSettings = ({
 		end: search.get('sync:end'),
 	}
 
-	let maybePrefilledStart: Date | undefined = undefined
+	let maybePrefilledStart: Date | undefined
 	if (prefill.start !== null) {
 		maybePrefilledStart = new Date(prefill.start)
 	}
 
-	let maybePrefilledEnd: Date | undefined = undefined
+	let maybePrefilledEnd: Date | undefined
 	if (prefill.end !== null) {
 		maybePrefilledEnd = new Date(prefill.end)
 	}
@@ -100,7 +100,7 @@ export const SyncSettings = ({
 				.sort(([idA], [idB]) => idA.localeCompare(idB))
 				.map(([organizationId, projects]) => {
 					return (
-						<section class="mb-2">
+						<section key={organizationId} class="mb-2">
 							<p class="mb-1">
 								{organizations.find(({ id }) => id === organizationId)?.name ??
 									organizationId}
@@ -133,8 +133,8 @@ export const SyncSettings = ({
 							)}
 							{projects.map((project) => {
 								return (
-									<div class="form-check ms-1">
-										<label htmlFor={project.id}>
+									<div key={project.id} class="form-check ms-1">
+										<label for={project.id}>
 											<input
 												class="form-check-input"
 												type="checkbox"
@@ -144,7 +144,7 @@ export const SyncSettings = ({
 														selectedProjects.includes(project.id)
 															? selectedProjects.filter(
 																	(id) => id !== project.id,
-															  )
+																)
 															: [...selectedProjects, project.id],
 													)
 												}}

@@ -1,7 +1,7 @@
 import { createContext, type ComponentChildren } from 'preact'
 import { useContext, useEffect, useState } from 'preact/hooks'
-import { useProjects, type Project } from './Projects.js'
-import { orderIds } from '#util/orderIds.js'
+import { useProjects, type Project } from './Projects.tsx'
+import { orderIds } from '#util/orderIds.ts'
 
 export type ProjectPersonalization = {
 	icon?: string

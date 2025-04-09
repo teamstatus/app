@@ -2,9 +2,9 @@ import { useEffect, useState } from 'preact/hooks'
 import {
 	useOpenmoji,
 	type OpenmojiIcon as OpenmojiIconType,
-} from '#context/Openmoji.js'
-import { OpenmojiIcon } from '#components/OpenmojiIcon.js'
-import { CloseIcon } from '#components/Icons.js'
+} from '#context/Openmoji.tsx'
+import { OpenmojiIcon } from '#components/OpenmojiIcon.tsx'
+import { CloseIcon } from '#components/Icons.tsx'
 import cx from 'classnames'
 
 const skinTones = {
@@ -32,8 +32,8 @@ export const IconPicker = ({ onIcon }: { onIcon: (icon: string) => void }) => {
 					skinToneFilter === undefined
 						? true
 						: skinToneFilter === 'neutral'
-						? !search.includes('skin tone')
-						: search.includes(`${skinToneFilter} skin tone`),
+							? !search.includes('skin tone')
+							: search.includes(`${skinToneFilter} skin tone`),
 				)
 				.filter(
 					({ search: s, emoji }) =>
@@ -42,7 +42,7 @@ export const IconPicker = ({ onIcon }: { onIcon: (icon: string) => void }) => {
 				)
 				.slice(0, 50),
 		)
-	}, [search, skinToneFilter])
+	}, [search, skinToneFilter, icons])
 	return (
 		<div>
 			<div class="mb-3 d-flex justify-items-start align-items-start flex-row">
@@ -61,10 +61,11 @@ export const IconPicker = ({ onIcon }: { onIcon: (icon: string) => void }) => {
 					/>
 				</div>
 				<div>
-					<label class="form-label text-nowrap">Filter by skin tone</label>
+					<span class="form-label text-nowrap">Filter by skin tone</span>
 					<div>
 						{Object.entries(skinTones).map(([name, emoji]) => (
 							<button
+								key={name}
 								type="button"
 								class={cx('btn btn-sm me-1', {
 									'btn-outline-secondary': skinToneFilter !== name,
@@ -92,6 +93,7 @@ export const IconPicker = ({ onIcon }: { onIcon: (icon: string) => void }) => {
 			<div>
 				{match.map((icon) => (
 					<button
+						key={icon.hexcode}
 						type="button"
 						class="btn btn-sm btn-outline-secondary me-1 mb-1"
 						onClick={() => {

@@ -1,5 +1,5 @@
-import { Login as LoginComponent } from '#components/Login.js'
-import { LogoHeader } from '#components/LogoHeader.js'
+import { Login as LoginComponent } from '#components/Login.tsx'
+import { LogoHeader } from '#components/LogoHeader.tsx'
 import { PickID } from '#components/PickID'
 import { useAuth } from '#context/Auth'
 

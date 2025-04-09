@@ -1,4 +1,4 @@
-import type { RequestResult } from '#api/requestResult.js'
+import type { RequestResult } from '#api/requestResult.ts'
 
 export const resolve = <Result extends Record<string, unknown>>(
 	resolveWith: Result,

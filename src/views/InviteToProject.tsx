@@ -1,14 +1,14 @@
 import cx from 'classnames'
 import { useEffect, useState } from 'preact/hooks'
-import { AddIcon, DeleteIcon } from '#components/Icons.js'
-import { type ProblemDetail } from '#context/ProblemDetail.js'
-import { Role, useProjects, type Project } from '#context/Projects.js'
-import { isUserId, slugPart } from '#proto/ids.js'
-import { ProjectHeader } from '#components/ProjectHeader.js'
-import { ProjectMenu } from '#components/ProjectMenu.js'
-import { ProgressBar } from '#components/ProgressBar.js'
-import { Main } from '#components/Main.js'
-import { WithProject } from '#components/WithProject.js'
+import { AddIcon, DeleteIcon } from '#components/Icons.tsx'
+import type { ProblemDetail } from '#context/ProblemDetail.tsx'
+import { Role, useProjects, type Project } from '#context/Projects.tsx'
+import { isUserId, slugPart } from '#proto/ids.ts'
+import { ProjectHeader } from '#components/ProjectHeader.tsx'
+import { ProjectMenu } from '#components/ProjectMenu.tsx'
+import { ProgressBar } from '#components/ProgressBar.tsx'
+import { Main } from '#components/Main.tsx'
+import { WithProject } from '#components/WithProject.tsx'
 import { useAuth } from '#context/Auth'
 import { RolePill } from '#components/RolePill'
 import { FormContainer } from '#components/FormContainer'
@@ -73,7 +73,7 @@ export const InviteToProject = ({
 									<div class="form-text">(required)</div>
 								</div>
 								<div class="mb-3">
-									<label class="form-label">Role</label>
+									<span class="form-label">Role</span>
 									{[
 										{
 											role: Role.OWNER,
@@ -90,7 +90,7 @@ export const InviteToProject = ({
 												'Watcher: can read status, and create reactions',
 										},
 									].map(({ role: r, description }) => (
-										<div class="form-check">
+										<div key={r} class="form-check">
 											<input
 												class="form-check-input"
 												type="radio"
@@ -157,7 +157,7 @@ const Members = ({ project }: { project: Project }) => {
 		listMembers(project).ok(({ members }) => {
 			setMembers(members as ProjectMember[])
 		})
-	}, [project])
+	}, [project, listMembers])
 
 	if (members.length === 0) return null
 
@@ -165,7 +165,10 @@ const Members = ({ project }: { project: Project }) => {
 		<section class="mt-4">
 			<h2>Members</h2>
 			{members.map((member) => (
-				<div class="d-flex align-items-center justify-content-between mb-2">
+				<div
+					key={member.id}
+					class="d-flex align-items-center justify-content-between mb-2"
+				>
 					<div class={'me-2'}>
 						{member.user}
 						<RolePill role={member.role} class="ms-1" />

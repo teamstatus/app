@@ -1,8 +1,8 @@
 import { createContext, type ComponentChildren } from 'preact'
 import { useContext, useEffect, useState } from 'preact/hooks'
 import { ulid } from 'ulid'
-import { useAuth } from './Auth.js'
-import { CREATE, DELETE, GET, UPDATE } from '#api/client.js'
+import { useAuth } from './Auth.tsx'
+import { CREATE, DELETE, GET, UPDATE } from '#api/client.ts'
 
 // Reactions can have special roles
 export enum ReactionRole {
@@ -111,10 +111,9 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 				setNextStartKey((keys) => {
 					if (nextStartKey !== undefined) {
 						return { ...keys, [id]: nextStartKey }
-					} else {
-						delete keys[id]
-						return { ...keys }
 					}
+					delete keys[id]
+					return { ...keys }
 				})
 			})
 		}

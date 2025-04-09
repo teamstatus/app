@@ -1,7 +1,7 @@
-import { InternalError } from '#context/InternalError.js'
-import type { RequestResult } from '#api/requestResult.js'
+import { InternalError } from '#context/InternalError.tsx'
+import type { RequestResult } from '#api/requestResult.ts'
 
-export const notReady = <Result,>(): RequestResult<Result> => ({
+export const notReady = <Result>(): RequestResult<Result> => ({
 	anyway: (handler) => {
 		handler()
 		return notReady()

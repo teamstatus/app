@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'preact/hooks'
+import { Fragment } from 'preact/jsx-runtime'
 
 export const ResizingTextarea = ({
 	value,
@@ -24,7 +25,7 @@ export const ResizingTextarea = ({
 		}
 		const current = textAreaRef.current?.getBoundingClientRect()?.height ?? 0
 		if (next > current) setHeight(next)
-	}, [shadowRef, value])
+	}, [height])
 
 	return (
 		<>
@@ -51,9 +52,9 @@ export const ResizingTextarea = ({
 				}}
 			>
 				{value.split('\n').map((t) => (
-					<>
+					<Fragment key={t}>
 						{t} <br />
-					</>
+					</Fragment>
 				))}
 			</div>
 		</>

@@ -1,5 +1,5 @@
-import { type Project } from '#context/Projects.js'
-import { ProjectId } from './ProjectId.js'
+import type { Project } from '#context/Projects.tsx'
+import { ProjectId } from './ProjectId.tsx'
 
 export const ProjectName = ({ project }: { project: Project }) => (
 	<>

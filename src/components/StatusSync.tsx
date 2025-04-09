@@ -1,8 +1,8 @@
 import { decodeTime } from 'ulid'
-import { ReactionRole, type Reaction, type Status } from '#context/Status.js'
-import { Markdown } from './Markdown.js'
-import { ShortDate } from './ShortDate.js'
-import { UserName, UserProfile } from '#components/UserProfile.js'
+import { ReactionRole, type Reaction, type Status } from '#context/Status.tsx'
+import { Markdown } from './Markdown.tsx'
+import { ShortDate } from './ShortDate.tsx'
+import { UserName, UserProfile } from '#components/UserProfile.tsx'
 
 export const StatusSync = ({ status }: { status: Status }) => (
 	<div class="mb-1 mt-2">
@@ -31,8 +31,8 @@ export const StatusSync = ({ status }: { status: Status }) => (
 				{status.attributeTo === undefined && <UserProfile id={status.author} />}
 			</div>
 		</div>
-		{signficantReactionsByAuthor(status).map((reaction) => (
-			<div>
+		{signficantReactionsByAuthor(status).map((reaction, i) => (
+			<div key={`${reaction.emoji}-${i}-${reaction.description ?? ''}`}>
 				{reaction.emoji}{' '}
 				<em>{reaction.description ?? 'No description available.'}</em>
 			</div>

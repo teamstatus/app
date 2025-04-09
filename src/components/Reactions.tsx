@@ -1,48 +1,48 @@
-import { useAuth } from '#context/Auth.js'
-import { useOpenmoji } from '#context/Openmoji.js'
+import { useAuth } from '#context/Auth.tsx'
+import { useOpenmoji } from '#context/Openmoji.tsx'
 import {
 	ReactionRole,
 	type PersistedReaction,
-	type Reaction as TReaction,
-} from '#context/Status.js'
+	type Reaction as tReaction,
+} from '#context/Status.tsx'
 import {
 	AuthorIcon,
 	PersistencePendingIcon,
 	QuestionIcon,
 	SignificantIcon,
-} from './Icons.js'
+} from './Icons.tsx'
 
-export const bugFix: TReaction = {
+export const bugFix: tReaction = {
 	description: 'A bug was fixed',
 	emoji: '🐞',
 	role: ReactionRole.SIGNIFICANT,
 }
 
-export const newVersionRelease: TReaction = {
+export const newVersionRelease: tReaction = {
 	description: 'A new version was released',
 	emoji: '🚀',
 	role: ReactionRole.SIGNIFICANT,
 }
 
-export const decision: TReaction = {
+export const decision: tReaction = {
 	description: 'A decision was made',
 	emoji: '✍️',
 	role: ReactionRole.SIGNIFICANT,
 }
 
-export const importantEvent: TReaction = {
+export const importantEvent: tReaction = {
 	description: 'An important event occurred',
 	emoji: '📆',
 	role: ReactionRole.SIGNIFICANT,
 }
 
-export const question: TReaction = {
+export const question: tReaction = {
 	description: 'This item needs to be elaborated during the next sync meeting',
 	emoji: '🙋',
 	role: ReactionRole.QUESTION,
 }
 
-export const praise: TReaction = {
+export const praise: tReaction = {
 	emoji: '🌟',
 	description: 'This is amazing!',
 }
@@ -51,7 +51,7 @@ export const thumbsUp = {
 	emoji: '👍️',
 }
 
-export const reactionPresets: TReaction[] = [
+export const reactionPresets: tReaction[] = [
 	newVersionRelease,
 	decision,
 	importantEvent,
@@ -63,11 +63,15 @@ export const reactionPresets: TReaction[] = [
 export const SelectReaction = ({
 	onReaction,
 }: {
-	onReaction: (reaction: TReaction) => void
+	onReaction: (reaction: tReaction) => void
 }) => (
 	<>
 		{reactionPresets.map((reaction) => (
-			<Reaction reaction={reaction} onClick={() => onReaction(reaction)} />
+			<Reaction
+				key={`${reaction.description}-${reaction.emoji}`}
+				reaction={reaction}
+				onClick={() => onReaction(reaction)}
+			/>
 		))}
 	</>
 )
@@ -76,7 +80,7 @@ export const Reaction = ({
 	reaction,
 	onClick,
 }: {
-	reaction: TReaction | PersistedReaction
+	reaction: tReaction | PersistedReaction
 	onClick?: () => void
 }) => {
 	const { user } = useAuth()
@@ -92,7 +96,7 @@ export const ReactionView = ({
 }: {
 	byUser?: boolean
 	onClick?: () => void
-	reaction: TReaction
+	reaction: tReaction
 	class?: string
 }) => {
 	const { svgFromEmoji } = useOpenmoji()

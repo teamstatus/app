@@ -1,8 +1,8 @@
-import { Markdown } from '#components/Markdown.js'
-import { byTimeDesc } from '#components/ProjectSync.js'
-import { ShortDate } from '#components/ShortDate.js'
-import { signficantReactionsByAuthor } from '#components/StatusSync.js'
-import { WithSync } from '#components/WithSync.js'
+import { Markdown } from '#components/Markdown.tsx'
+import { byTimeDesc } from '#components/ProjectSync.tsx'
+import { ShortDate } from '#components/ShortDate.tsx'
+import { signficantReactionsByAuthor } from '#components/StatusSync.tsx'
+import { WithSync } from '#components/WithSync.tsx'
 import { decodeTime } from 'ulid'
 
 export const SyncExportTeams = ({ id }: { id: string }) => (
@@ -28,15 +28,17 @@ export const SyncExportTeams = ({ id }: { id: string }) => (
 
 					return (
 						<>
-							<table>
+							<table key={`project-${project.id}`}>
 								<tr>
 									<th colSpan={2}>{project.name ?? project.id}</th>
 								</tr>
 								{status.sort(byTimeDesc).map((status) => (
-									<tr>
+									<tr key={status.id}>
 										<td>
 											{signficantReactionsByAuthor(status).map((reaction) => (
-												<p>
+												<p
+													key={`${reaction.emoji}-${reaction.description ?? ''}`}
+												>
 													{reaction.emoji}{' '}
 													<strong>
 														{reaction.description ??
@@ -59,7 +61,7 @@ export const SyncExportTeams = ({ id }: { id: string }) => (
 									</tr>
 								))}
 							</table>
-							<br />
+							<br key={`br-${project.id}`} />
 						</>
 					)
 				})}

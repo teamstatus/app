@@ -1,7 +1,7 @@
-import type { Reaction as TReaction } from '#context/Status.js'
-import { ReactionRole } from '#context/Status.js'
-import { OpenmojiIcon } from './OpenmojiIcon.js'
-import { Reaction, ReactionView, Role, reactionPresets } from './Reactions.js'
+import type { Reaction as tReaction } from '#context/Status.tsx'
+import { ReactionRole } from '#context/Status.tsx'
+import { OpenmojiIcon } from './OpenmojiIcon.tsx'
+import { Reaction, ReactionView, Role, reactionPresets } from './Reactions.tsx'
 
 export const ReactionsHelp = () => (
 	<>
@@ -34,7 +34,10 @@ export const ReactionsHelp = () => (
 		<section class="mb-3">
 			<h3>Reaction examples</h3>
 			{reactionPresets.map((reaction) => (
-				<div class="d-flex align-items-center justify-content-start">
+				<div
+					key={`${reaction.emoji}-${reaction.description ?? ''}`}
+					class="d-flex align-items-center justify-content-start"
+				>
 					<Reaction reaction={reaction} />
 					<span>
 						{reaction.description !== undefined ? (
@@ -53,7 +56,7 @@ export const ReactionsHelp = () => (
 	</>
 )
 
-export const ExplainRole = ({ reaction }: { reaction: TReaction }) => {
+export const ExplainRole = ({ reaction }: { reaction: tReaction }) => {
 	switch ('role' in reaction && reaction.role) {
 		case ReactionRole.QUESTION:
 			return (

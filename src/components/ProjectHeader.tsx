@@ -1,11 +1,11 @@
 import Color from 'color'
-import { type Project } from '#context/Projects.js'
-import { useSettings } from '#context/Settings.js'
-import { MenuIcon } from '#components/Icons.js'
+import type { Project } from '#context/Projects.tsx'
+import { useSettings } from '#context/Settings.tsx'
+import { MenuIcon } from '#components/Icons.tsx'
 import { useState } from 'preact/hooks'
-import { OffsetMenu } from '#navigation/OffsetMenu.js'
-import { ProjectName } from '#components/ProjectName.js'
-import { OpenmojiIcon } from '#components/OpenmojiIcon.js'
+import { OffsetMenu } from '#navigation/OffsetMenu.tsx'
+import { ProjectName } from '#components/ProjectName.tsx'
+import { OpenmojiIcon } from '#components/OpenmojiIcon.tsx'
 
 export const ProjectHeader = ({ project }: { project: Project }) => {
 	const { getProjectPersonalization } = useSettings()

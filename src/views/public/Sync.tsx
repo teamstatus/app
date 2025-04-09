@@ -1,5 +1,5 @@
-import { LogoHeader } from '#components/LogoHeader.js'
-import { redirectAfterLogin } from '#components/redirectAfterLogin.js'
+import { LogoHeader } from '#components/LogoHeader.tsx'
+import { redirectAfterLogin } from '#util/redirectAfterLogin'
 
 export const Sync = ({ id }: { id: string }) => (
 	<>

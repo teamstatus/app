@@ -1,10 +1,10 @@
 import { createContext, type ComponentChildren } from 'preact'
 import { useContext, useEffect, useState } from 'preact/hooks'
 import { ulid } from 'ulid'
-import { parseInvitationId, parseProjectId } from '#proto/ids.js'
-import { useAuth } from './Auth.js'
-import { CREATE, DELETE, GET, UPDATE } from '#api/client.js'
-import { notReady } from '#api/notReady.js'
+import { parseInvitationId, parseProjectId } from '#proto/ids.ts'
+import { useAuth } from './Auth.tsx'
+import { CREATE, DELETE, GET, UPDATE } from '#api/client.ts'
+import { notReady } from '#api/notReady.ts'
 
 export type Organization = {
 	id: string
@@ -77,7 +77,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 	const [projects, setProjects] = useState<Record<string, Project>>({})
 	const [organizations, setOrganizations] = useState<Organization[]>([])
 	const { user } = useAuth()
-	const [projectsListFetchId, setProjectsListId] = useState(ulid())
+	const [, setProjectsListId] = useState(ulid())
 	const [invitations, setInvitations] = useState<Invitation[]>([])
 	const refreshProjects = () => {
 		setProjectsListId(ulid())
@@ -110,7 +110,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 				)
 			},
 		)
-	}, [projectsListFetchId, user])
+	}, [user])
 
 	// Fetch invites
 	useEffect(() => {
@@ -120,7 +120,7 @@ export const Provider = ({ children }: { children: ComponentChildren }) => {
 				setInvitations(invitations ?? [])
 			},
 		)
-	}, [projectsListFetchId, user])
+	}, [user])
 
 	return (
 		<ProjectsContext.Provider

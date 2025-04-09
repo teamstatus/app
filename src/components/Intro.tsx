@@ -1,6 +1,6 @@
-import { AsHeadline } from './HeadlineFont.js'
-import { OpenmojiIcon } from './OpenmojiIcon.js'
-import { LinkWithAuthentication } from './LinkWithAuthentication.js'
+import { AsHeadline } from './HeadlineFont.tsx'
+import { OpenmojiIcon } from './OpenmojiIcon.tsx'
+import { LinkWithAuthentication } from './LinkWithAuthentication.tsx'
 
 export const Intro = () => (
 	<>

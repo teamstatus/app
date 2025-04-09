@@ -48,9 +48,13 @@ export const Colorpicker = ({
 			<p class="mb-1">Pick a predefined color:</p>
 			<div>
 				{colors
-					.sort((a, b) => parseInt(a.slice(1), 16) - parseInt(b.slice(1), 16))
+					.sort(
+						(a, b) =>
+							Number.parseInt(a.slice(1), 16) - Number.parseInt(b.slice(1), 16),
+					)
 					.map((color) => (
 						<button
+							key={color}
 							type="button"
 							class="btn btn-outline-secondary px-3 py-3 me-1 mb-1"
 							style={{ backgroundColor: color }}
@@ -61,7 +65,7 @@ export const Colorpicker = ({
 					))}
 			</div>
 			<div>
-				<label htmlFor="customColor">or select a custom color:</label>
+				<label for="customColor">or select a custom color:</label>
 				<label class="d-flex align-items-center justify-content-start">
 					<input
 						type="color"

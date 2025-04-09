@@ -12,13 +12,12 @@ export const orderIds = (
 			id,
 			...ids.slice(idx + 2),
 		] as string[]
-	} else {
-		if (idx === 0) return ids
-		return [
-			...ids.slice(0, idx - 1),
-			id,
-			ids[idx - 1],
-			...ids.slice(idx + 1),
-		] as string[]
 	}
+	if (idx === 0) return ids
+	return [
+		...ids.slice(0, idx - 1),
+		id,
+		ids[idx - 1],
+		...ids.slice(idx + 1),
+	] as string[]
 }

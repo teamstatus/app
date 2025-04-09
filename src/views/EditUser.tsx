@@ -1,12 +1,12 @@
-import { LogoHeader } from '#components/LogoHeader.js'
-import { ProjectMenu } from '#components/ProjectMenu.js'
-import { Main } from '#components/Main.js'
+import { LogoHeader } from '#components/LogoHeader.tsx'
+import { ProjectMenu } from '#components/ProjectMenu.tsx'
+import { Main } from '#components/Main.tsx'
 import { useState } from 'preact/hooks'
-import { UpdateIcon } from '#components/Icons.js'
+import { UpdateIcon } from '#components/Icons.tsx'
 import cx from 'classnames'
 import { route } from 'preact-router'
-import type { ProblemDetail } from '#context/ProblemDetail.js'
-import { useAuth, type UserContext } from '#context/Auth.js'
+import type { ProblemDetail } from '#context/ProblemDetail.tsx'
+import { useAuth, type UserContext } from '#context/Auth.tsx'
 
 export const EditUser = () => {
 	const { user } = useAuth()

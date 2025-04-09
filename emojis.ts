@@ -15,7 +15,7 @@ for (const emoji of emojis
 	console.log(
 		codePoints
 			.slice(0, 2)
-			.map((s) => String.fromCharCode(parseInt(`0x${s}`, 16)))
+			.map((s) => String.fromCharCode(Number.parseInt(`0x${s}`, 16)))
 			.join(''),
 		emoji[2],
 	)

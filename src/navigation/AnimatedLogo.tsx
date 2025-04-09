@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'preact/hooks'
-import { logoColors } from '#components/Colorpicker.js'
+import { logoColors } from '#components/Colorpicker.tsx'
 
 export const AnimatedLogo = ({ animated }: { animated?: boolean }) => {
 	const [enableAnimation, setEnableAnimation] = useState<boolean>(
@@ -34,7 +34,9 @@ export const AnimatedLogo = ({ animated }: { animated?: boolean }) => {
 				class="me-2"
 			/>
 			{'teamstatus.space'.split('').map((s, i) => (
-				<span style={{ color: colorAtIndex(i) }}>{s}</span>
+				<span key={s} style={{ color: colorAtIndex(i) }}>
+					{s}
+				</span>
 			))}
 		</h1>
 	)

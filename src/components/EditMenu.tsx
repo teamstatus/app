@@ -1,4 +1,4 @@
-import { CollapseRightIcon, SubMenuIcon } from '#components/Icons.js'
+import { CollapseRightIcon, SubMenuIcon } from '#components/Icons.tsx'
 import { useState } from 'preact/hooks'
 import type { ComponentChildren } from 'preact'
 

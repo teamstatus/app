@@ -1,5 +1,5 @@
-import { NotFound } from '#components/NotFound.js'
-import { useProjects, type Project } from '#context/Projects.js'
+import { NotFound } from '#components/NotFound.tsx'
+import { useProjects, type Project } from '#context/Projects.tsx'
 import type { ComponentChildren } from 'preact'
 
 export const WithProject = ({

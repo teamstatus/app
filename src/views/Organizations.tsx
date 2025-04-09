@@ -1,10 +1,10 @@
-import { LogoHeader } from '#components/LogoHeader.js'
-import { ProjectMenu } from '#components/ProjectMenu.js'
-import { Main } from '#components/Main.js'
-import { useProjects } from '#context/Projects.js'
-import { OrganizationIcon } from '#components/Icons.js'
-import { OrganizationOnboarding } from '#components/onboarding/Organization.js'
-import { linkUrl } from '#util/link.js'
+import { LogoHeader } from '#components/LogoHeader.tsx'
+import { ProjectMenu } from '#components/ProjectMenu.tsx'
+import { Main } from '#components/Main.tsx'
+import { useProjects } from '#context/Projects.tsx'
+import { OrganizationIcon } from '#components/Icons.tsx'
+import { OrganizationOnboarding } from '#components/onboarding/Organization.tsx'
+import { linkUrl } from '#util/link.ts'
 
 export const Organizations = ({ onboarding }: { onboarding?: string }) => {
 	const { organizations } = useProjects()
@@ -40,7 +40,10 @@ export const Organizations = ({ onboarding }: { onboarding?: string }) => {
 							{organizations.length > 0 &&
 								organizations.map((organization) => (
 									<>
-										<div class="my-2 d-flex justify-content-between">
+										<div
+											key={`hr-${organization.id}`}
+											class="my-2 d-flex justify-content-between"
+										>
 											<div>
 												<small class="text-muted text-nowrap">
 													{organization.id}
@@ -55,7 +58,7 @@ export const Organizations = ({ onboarding }: { onboarding?: string }) => {
 												</a>
 											</div>
 										</div>
-										<hr />
+										<hr key={`hr-${organization.id}`} />
 									</>
 								))}
 						</section>

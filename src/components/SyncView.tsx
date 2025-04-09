@@ -1,9 +1,9 @@
 import { decodeTime } from 'ulid'
-import { type Sync, useSyncs } from '#context/Syncs.js'
-import { DeleteIcon } from '#components/Icons.js'
-import { ShortDate } from '#components/ShortDate.js'
-import { EditMenu } from '#components/EditMenu.js'
-import { linkUrl } from '#util/link.js'
+import { type Sync, useSyncs } from '#context/Syncs.tsx'
+import { DeleteIcon } from '#components/Icons.tsx'
+import { ShortDate } from '#components/ShortDate.tsx'
+import { EditMenu } from '#components/EditMenu.tsx'
+import { linkUrl } from '#util/link.ts'
 import { useAuth } from '#context/Auth'
 import { ProjectId } from './ProjectId'
 import { useState } from 'preact/hooks'
@@ -40,7 +40,7 @@ export const SyncView = ({
 							<span onClick={() => setProjectsCollapsed((c) => !c)}>
 								{sync.projectIds.map((id, idx, arr) => (
 									<>
-										<ProjectId id={id} />
+										<ProjectId key={id} id={id} />
 										{idx < arr.length - 1 && (
 											<span class="ms-1 me-1">&middot;</span>
 										)}

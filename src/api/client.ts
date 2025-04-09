@@ -1,7 +1,7 @@
 import pThrottle from 'p-throttle'
-import type { ProblemDetail } from '#context/ProblemDetail.js'
-import { InternalError } from '#context/InternalError.js'
-import { requestResult, type RequestResult } from '#api/requestResult.js'
+import type { ProblemDetail } from '#context/ProblemDetail.tsx'
+import { InternalError } from '#context/InternalError.tsx'
+import { requestResult, type RequestResult } from '#api/requestResult.ts'
 
 export const throttle = pThrottle({
 	limit: 2,
@@ -59,12 +59,16 @@ export const request = <Result extends Record<string, unknown>>(
 					const problem = await res.json()
 					console.error(problem)
 					return { problem }
-				} else if (!res.ok) {
+				}
+
+				if (!res.ok) {
 					return { problem: InternalError(await res.text()) }
-				} else if (
+				}
+
+				if (
 					(res.headers.get('content-type')?.includes('application/json') ??
 						false) &&
-					parseInt(res.headers.get('content-length') ?? '0', 10) > 0
+					Number.parseInt(res.headers.get('content-length') ?? '0', 10) > 0
 				) {
 					return { result: await res.json() }
 				}

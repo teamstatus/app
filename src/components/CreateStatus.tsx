@@ -1,10 +1,10 @@
 import cx from 'classnames'
 import { useState } from 'preact/hooks'
-import { AddIcon } from '#components/Icons.js'
-import type { Project } from '#context/Projects.js'
-import { useStatus } from '#context/Status.js'
-import { useAuth } from '#context/Auth.js'
-import { ResizingTextarea } from '#components/ResizingTextarea.js'
+import { AddIcon } from '#components/Icons.tsx'
+import type { Project } from '#context/Projects.tsx'
+import { useStatus } from '#context/Status.tsx'
+import { useAuth } from '#context/Auth.tsx'
+import { ResizingTextarea } from '#components/ResizingTextarea.tsx'
 import { slugPart } from '#proto/ids'
 
 export const CreateStatus = ({

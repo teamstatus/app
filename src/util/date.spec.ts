@@ -6,7 +6,7 @@ import {
 	formatTime,
 	formatTimezone,
 	relativeTime,
-} from './date.js'
+} from './date.ts'
 
 describe('date utils', () => {
 	const d = new Date('2024-02-07T20:25:37.163Z')

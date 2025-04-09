@@ -1,9 +1,9 @@
 import { createContext, type ComponentChildren } from 'preact'
 import { useContext, useEffect, useState } from 'preact/hooks'
 import { ulid } from 'ulid'
-import { useAuth } from './Auth.js'
-import { GET, CREATE, DELETE } from '#api/client.js'
-import { notReady } from '#api/notReady.js'
+import { useAuth } from './Auth.tsx'
+import { GET, CREATE, DELETE } from '#api/client.ts'
+import { notReady } from '#api/notReady.ts'
 
 export type Sync = {
 	id: string

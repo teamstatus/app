@@ -1,5 +1,5 @@
-import { AsHeadline } from '#components/HeadlineFont.js'
-import { OnboardingInfo } from '#views/OnboardingInfo.js'
+import { AsHeadline } from '#components/HeadlineFont.tsx'
+import { OnboardingInfo } from '#views/OnboardingInfo.tsx'
 
 export const Onboarding = () => (
 	<OnboardingInfo>
