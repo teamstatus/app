@@ -6,10 +6,10 @@ import { useStatus } from '#context/Status.tsx'
 import { ProjectMenu } from '#components/ProjectMenu.tsx'
 import { Main } from '#components/Main.tsx'
 import { NotFound } from '#components/NotFound.tsx'
-import { useEffect } from 'preact/hooks'
 import { EditIcon, MembersIcon } from '#components/Icons.tsx'
 import { StatusOnboarding } from '#components/onboarding/Status.tsx'
 import { linkUrl } from '#util/link.ts'
+import { useEffect } from 'preact/hooks'
 
 export const Project = ({
 	id,
@@ -30,6 +30,7 @@ export const Project = ({
 	const showOnboardingInfo = onboarding !== undefined
 
 	useEffect(() => {
+		console.log('observe', id)
 		observe(id)
 	}, [id, observe])
 
@@ -47,7 +48,7 @@ export const Project = ({
 					{status.map((status) => (
 						<div key={status.id} class="row">
 							<div class="col-12 col-lg-8 offset-lg-2">
-								<Status status={status} key={status.id} />
+								<Status status={status} />
 								<hr class="mt-1 mb-2" />
 							</div>
 						</div>

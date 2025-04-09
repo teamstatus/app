@@ -1,8 +1,8 @@
 import { createContext, type ComponentChildren } from 'preact'
-import { useContext, useEffect, useState } from 'preact/hooks'
 import { ulid } from 'ulid'
 import { useAuth } from './Auth.tsx'
 import { CREATE, DELETE, GET, UPDATE } from '#api/client.ts'
+import { useContext, useRef, useState } from 'preact/hooks'
 
 // Reactions can have special roles
 export enum ReactionRole {
@@ -79,265 +79,272 @@ type Page<Result extends Record<string, any>> = {
 	nextStartKey?: string
 } & Result
 
-const projectStatusPromiseMap: Record<
-	string,
-	ReturnType<typeof GET<Page<{ status: Status[] }>>>
-> = {}
-
 export const Provider = ({ children }: { children: ComponentChildren }) => {
 	const [status, setStatus] = useState<Record<string, Status[]>>({})
 	const { user } = useAuth()
-	const [observedProjects, setObservedProjects] = useState<
-		{ id: string; startKey?: string }[]
-	>([])
-	const [nextStartKey, setNextStartKey] = useState<Record<string, string>>({})
+	const observedProjects = useRef<Map<string, string | undefined | null>>(
+		new Map(),
+	)
 
-	useEffect(() => {
-		for (const { id, startKey } of observedProjects) {
-			const k = `${id}:${startKey ?? 'initial'}`
-			if (projectStatusPromiseMap[k] !== undefined) continue
-			projectStatusPromiseMap[k] = GET<Page<{ status: Status[] }>>(
-				`/project/${encodeURIComponent(id)}/status${
-					startKey === undefined
-						? ''
-						: `?${new URLSearchParams({ startKey }).toString()}`
-				}`,
-			).ok(({ status, nextStartKey }) => {
-				setStatus((projectStatus) => ({
-					...projectStatus,
-					[id]: [...(projectStatus[id] ?? []), ...status],
-				}))
+	const fetchStatus = (id: string) => {
+		const startKey = observedProjects.current.get(id)
+		if (startKey === null) return
+		GET<Page<{ status: Status[] }>>(
+			`/project/${encodeURIComponent(id)}/status${
+				startKey === undefined
+					? ''
+					: `?${new URLSearchParams({ startKey }).toString()}`
+			}`,
+		).ok(({ status, nextStartKey }) => {
+			setStatus((projectStatus) => ({
+				...projectStatus,
+				[id]: [...(projectStatus[id] ?? []), ...status],
+			}))
+			observedProjects.current.set(id, nextStartKey ?? null)
+		})
+	}
 
-				setNextStartKey((keys) => {
-					if (nextStartKey !== undefined) {
-						return { ...keys, [id]: nextStartKey }
+	const addProjectStatus = (
+		projectId: string,
+		message: string,
+		attributeTo?: string,
+	) => {
+		const author = user?.id
+		if (author === undefined) return { error: 'Not authorized!' }
+		const id = ulid()
+		const newStatus: Status = {
+			id,
+			message,
+			attributeTo,
+			author,
+			project: projectId,
+			reactions: [],
+			version: 1,
+			persisted: false,
+		}
+		setStatus((status) => ({
+			...status,
+			[projectId]: [newStatus, ...(status[projectId] ?? [])],
+		}))
+		CREATE(`/project/${encodeURIComponent(projectId)}/status`, {
+			id,
+			message,
+			attributeTo,
+		}).ok(() => {
+			setStatus((status) => {
+				const projectStatus = status[projectId] ?? []
+				const persistedStatus = projectStatus.find(
+					({ id: statusId }) => id === statusId,
+				)
+
+				let updatedStatus = projectStatus.filter(
+					({ id: statusId }) => statusId !== id,
+				)
+				if (persistedStatus !== undefined) {
+					updatedStatus = [
+						{ ...persistedStatus, persisted: true },
+						...updatedStatus,
+					]
+				}
+				return {
+					...status,
+					[projectId]: updatedStatus,
+				}
+			})
+		})
+
+		return { id }
+	}
+
+	const deleteStatus = (
+		statusToDelete: Status,
+	): { success: true } | { error: string } => {
+		const exists = status[statusToDelete.project]?.find(
+			({ id }) => id === statusToDelete.id,
+		)
+		if (!exists) return { error: `Status ${status.id} not found` }
+
+		setStatus((status) => ({
+			...status,
+			[statusToDelete.project]: (status[statusToDelete.project] ?? []).filter(
+				({ id }) => id !== statusToDelete.id,
+			),
+		}))
+
+		DELETE(`/status/${encodeURIComponent(statusToDelete.id)}`, exists.version)
+
+		return { success: true }
+	}
+
+	const addReaction = (status: Status, reaction: Reaction) => {
+		const author = user?.id
+		if (author === undefined) return { error: 'Not authorized!' }
+
+		const id = ulid()
+		const newReaction: PersistedReaction = {
+			id,
+			author,
+			status: status.id,
+			...reaction,
+			persisted: false,
+		}
+		let added = false
+		setStatus((s) => {
+			const statusToUpdate = s[status.project]?.find(
+				({ id }) => id === status.id,
+			)
+			if (statusToUpdate === undefined) return s
+
+			const reactionHashs = statusToUpdate.reactions.map(reactionHash)
+			if (reactionHashs.includes(reactionHash(newReaction))) return s
+			added = true
+			return {
+				...s,
+				[status.project]: (s[status.project] ?? []).map((st) => {
+					if (st.id !== status.id) return st
+					return {
+						...st,
+						reactions: [...st.reactions, newReaction],
 					}
-					delete keys[id]
-					return { ...keys }
-				})
+				}),
+			}
+		})
+		if (added) {
+			CREATE(`/status/${encodeURIComponent(status.id)}/reaction`, {
+				id,
+				...reaction,
+			}).ok(() => {
+				setStatus((s) => ({
+					...s,
+					[status.project]: (s[status.project] ?? []).map((st) => {
+						if (st.id !== status.id) return st
+						return {
+							...st,
+							reactions: st.reactions.map((reaction) => {
+								if (reaction.id === id)
+									return {
+										...reaction,
+										persisted: true,
+									}
+								return reaction
+							}),
+						}
+					}),
+				}))
 			})
 		}
-	}, [observedProjects])
+		return { id }
+	}
+
+	const deleteReaction = (
+		status: Status,
+		reaction: PersistedReaction,
+	): { success: true } | { error: string } => {
+		const author = user?.id
+		if (author === undefined) return { error: 'Not authorized!' }
+		if (reaction.author !== author) return { error: 'Not author!' }
+		let deleted = false
+		setStatus((s) => {
+			const statusToUpdate = s[status.project]?.find(
+				({ id }) => id === status.id,
+			)
+			if (statusToUpdate === undefined) return s
+			deleted = true
+			return {
+				...s,
+				[status.project]: (s[status.project] ?? []).map((st) => {
+					if (st.id !== status.id) return st
+					return {
+						...st,
+						reactions: st.reactions.filter(({ id }) => id !== reaction.id),
+					}
+				}),
+			}
+		})
+		if (deleted) {
+			DELETE(`/reaction/${encodeURIComponent(reaction.id)}`, 1)
+		}
+		return { success: true }
+	}
+
+	const updateStatus = (status: Status, message: string) => {
+		setStatus((allStatus) => {
+			let updatedStatus = (allStatus[status.project] ?? [])?.find(
+				({ id }) => id === status.id,
+			)
+			if (updatedStatus === undefined)
+				updatedStatus = {
+					...status,
+				}
+			updatedStatus.message = message
+			updatedStatus.persisted = false
+			const remainingStatus = (allStatus[status.project] ?? []).filter(
+				({ id }) => id !== status.id,
+			)
+
+			return {
+				...allStatus,
+				[status.project]: [updatedStatus, ...remainingStatus],
+			}
+		})
+		UPDATE(`/status/${status.id}`, { message }, status.version).ok(() => {
+			setStatus((allStatus) => {
+				const projectStatus = allStatus[status.project] ?? []
+				const persistedStatus = projectStatus.find(
+					({ id: statusId }) => status.id === statusId,
+				)
+
+				let updatedStatus = projectStatus.filter(
+					({ id: statusId }) => statusId !== status.id,
+				)
+				if (persistedStatus !== undefined) {
+					updatedStatus = [
+						{
+							...persistedStatus,
+							persisted: true,
+							version: persistedStatus.version + 1,
+						},
+						...updatedStatus,
+					]
+				}
+				return {
+					...allStatus,
+					[status.project]: updatedStatus,
+				}
+			})
+		})
+
+		return { version: status.version + 1 }
+	}
+
+	const observe = (id: string) => {
+		if (observedProjects.current.has(id)) return
+		observedProjects.current.set(id, undefined)
+		fetchStatus(id)
+	}
+
+	const hasMore = (id: string) =>
+		typeof observedProjects.current.get(id) === 'string'
+
+	const fetchMore = (id: string) => {
+		const startKey = observedProjects.current.get(id)
+		if (startKey === null) return
+		fetchStatus(id)
+	}
 
 	return (
 		<StatusContext.Provider
 			value={{
 				projectStatus: status,
-				addProjectStatus: (projectId, message, attributeTo) => {
-					const author = user?.id
-					if (author === undefined) return { error: 'Not authorized!' }
-					const id = ulid()
-					const newStatus: Status = {
-						id,
-						message,
-						attributeTo,
-						author,
-						project: projectId,
-						reactions: [],
-						version: 1,
-						persisted: false,
-					}
-					setStatus((status) => ({
-						...status,
-						[projectId]: [newStatus, ...(status[projectId] ?? [])],
-					}))
-					CREATE(`/project/${encodeURIComponent(projectId)}/status`, {
-						id,
-						message,
-						attributeTo,
-					}).ok(() => {
-						setStatus((status) => {
-							const projectStatus = status[projectId] ?? []
-							const persistedStatus = projectStatus.find(
-								({ id: statusId }) => id === statusId,
-							)
-
-							let updatedStatus = projectStatus.filter(
-								({ id: statusId }) => statusId !== id,
-							)
-							if (persistedStatus !== undefined) {
-								updatedStatus = [
-									{ ...persistedStatus, persisted: true },
-									...updatedStatus,
-								]
-							}
-							return {
-								...status,
-								[projectId]: updatedStatus,
-							}
-						})
-					})
-
-					return { id }
-				},
-				deleteStatus: (statusToDelete: Status) => {
-					const exists = status[statusToDelete.project]?.find(
-						({ id }) => id === statusToDelete.id,
-					)
-					if (!exists) return { error: `Status ${status.id} not found` }
-
-					setStatus((status) => ({
-						...status,
-						[statusToDelete.project]: (
-							status[statusToDelete.project] ?? []
-						).filter(({ id }) => id !== statusToDelete.id),
-					}))
-
-					DELETE(
-						`/status/${encodeURIComponent(statusToDelete.id)}`,
-						exists.version,
-					)
-
-					return { success: true }
-				},
-				addReaction: (status, reaction) => {
-					const author = user?.id
-					if (author === undefined) return { error: 'Not authorized!' }
-
-					const id = ulid()
-					const newReaction: PersistedReaction = {
-						id,
-						author,
-						status: status.id,
-						...reaction,
-						persisted: false,
-					}
-					let added = false
-					setStatus((s) => {
-						const statusToUpdate = s[status.project]?.find(
-							({ id }) => id === status.id,
-						)
-						if (statusToUpdate === undefined) return s
-
-						const reactionHashs = statusToUpdate.reactions.map(reactionHash)
-						if (reactionHashs.includes(reactionHash(newReaction))) return s
-						added = true
-						return {
-							...s,
-							[status.project]: (s[status.project] ?? []).map((st) => {
-								if (st.id !== status.id) return st
-								return {
-									...st,
-									reactions: [...st.reactions, newReaction],
-								}
-							}),
-						}
-					})
-					if (added) {
-						CREATE(`/status/${encodeURIComponent(status.id)}/reaction`, {
-							id,
-							...reaction,
-						}).ok(() => {
-							setStatus((s) => ({
-								...s,
-								[status.project]: (s[status.project] ?? []).map((st) => {
-									if (st.id !== status.id) return st
-									return {
-										...st,
-										reactions: st.reactions.map((reaction) => {
-											if (reaction.id === id)
-												return {
-													...reaction,
-													persisted: true,
-												}
-											return reaction
-										}),
-									}
-								}),
-							}))
-						})
-					}
-					return { id }
-				},
-				deleteReaction: (status, reaction) => {
-					const author = user?.id
-					if (author === undefined) return { error: 'Not authorized!' }
-					if (reaction.author !== author) return { error: 'Not author!' }
-					let deleted = false
-					setStatus((s) => {
-						const statusToUpdate = s[status.project]?.find(
-							({ id }) => id === status.id,
-						)
-						if (statusToUpdate === undefined) return s
-						deleted = true
-						return {
-							...s,
-							[status.project]: (s[status.project] ?? []).map((st) => {
-								if (st.id !== status.id) return st
-								return {
-									...st,
-									reactions: st.reactions.filter(
-										({ id }) => id !== reaction.id,
-									),
-								}
-							}),
-						}
-					})
-					if (deleted) {
-						DELETE(`/reaction/${encodeURIComponent(reaction.id)}`, 1)
-					}
-					return { success: true }
-				},
-				updateStatus: (status, message) => {
-					setStatus((allStatus) => {
-						let updatedStatus = (allStatus[status.project] ?? [])?.find(
-							({ id }) => id === status.id,
-						)
-						if (updatedStatus === undefined)
-							updatedStatus = {
-								...status,
-							}
-						updatedStatus.message = message
-						updatedStatus.persisted = false
-						const remainingStatus = (allStatus[status.project] ?? []).filter(
-							({ id }) => id !== status.id,
-						)
-
-						return {
-							...allStatus,
-							[status.project]: [updatedStatus, ...remainingStatus],
-						}
-					})
-					UPDATE(`/status/${status.id}`, { message }, status.version).ok(() => {
-						setStatus((allStatus) => {
-							const projectStatus = allStatus[status.project] ?? []
-							const persistedStatus = projectStatus.find(
-								({ id: statusId }) => status.id === statusId,
-							)
-
-							let updatedStatus = projectStatus.filter(
-								({ id: statusId }) => statusId !== status.id,
-							)
-							if (persistedStatus !== undefined) {
-								updatedStatus = [
-									{
-										...persistedStatus,
-										persisted: true,
-										version: persistedStatus.version + 1,
-									},
-									...updatedStatus,
-								]
-							}
-							return {
-								...allStatus,
-								[status.project]: updatedStatus,
-							}
-						})
-					})
-
-					return { version: status.version + 1 }
-				},
-				observe: (id) => {
-					setObservedProjects((observed) => [...new Set([...observed, { id }])])
-				},
-				hasMore: (id) => nextStartKey[id] !== undefined,
-				fetchMore: (id) => {
-					const startKey = nextStartKey[id]
-					if (startKey === undefined) return
-					setObservedProjects((observed) => [
-						...new Set([...observed, { id, startKey }]),
-					])
-				},
+				addProjectStatus: (projectId, message, attributeTo) =>
+					addProjectStatus(projectId, message, attributeTo),
+				deleteStatus: (statusToDelete) => deleteStatus(statusToDelete),
+				addReaction: (status, reaction) => addReaction(status, reaction),
+				deleteReaction: (status, reaction) => deleteReaction(status, reaction),
+				updateStatus: (status, message) => updateStatus(status, message),
+				observe: (id) => observe(id),
+				hasMore: (id) => hasMore(id),
+				fetchMore: (id) => fetchMore(id),
 			}}
 		>
 			{children}

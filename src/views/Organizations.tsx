@@ -41,7 +41,7 @@ export const Organizations = ({ onboarding }: { onboarding?: string }) => {
 								organizations.map((organization) => (
 									<>
 										<div
-											key={`hr-${organization.id}`}
+											key={organization.id}
 											class="my-2 d-flex justify-content-between"
 										>
 											<div>
