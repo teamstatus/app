@@ -1,92 +1,80 @@
 {
-  "name": "@teamstatus/app",
-  "version": "0.0.0-development",
-  "description": "Teamstatus.space web application written using Vite and Preact",
-  "keywords": [
-    "spa",
-    "webapp",
-    "vite",
-    "preact"
-  ],
-  "type": "module",
-  "scripts": {
-    "prepare": "husky && check-node-version --package && node --experimental-transform-types --no-warnings openmoji-convert.ts",
-    "start": "vite",
-    "build": "node --max_old_space_size=8192 ./node_modules/vite/bin/vite.js build --emptyOutDir",
-    "test": "node --experimental-transform-types --no-warnings --test --test-reporter spec src/**/*.spec.ts"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/teamstatus/app.git"
-  },
-  "bugs": {
-    "url": "https://github.com/teamstatus/app/issues"
-  },
-  "homepage": "https://github.com/teamstatus/app#readme",
-  "author": "Markus Tacker <m@coderbyheart.com> | coderbyheart.com",
-  "license": "MIT",
-  "devDependencies": {
-    "@biomejs/biome": "1.9.4",
-    "@commitlint/config-conventional": "19.8.0",
-    "@nordicsemiconductor/from-env": "3.0.1",
-    "@playwright/test": "1.51.1",
-    "@preact/preset-vite": "2.10.1",
-    "@types/chance": "1.1.6",
-    "@types/color": "4.2.0",
-    "@types/lodash-es": "4.17.12",
-    "bootstrap": "5.3.5",
-    "chance": "1.1.12",
-    "check-node-version": "4.2.1",
-    "commitlint": "19.8.0",
-    "handlebars": "4.7.8",
-    "husky": "9.1.7",
-    "lint-staged": "15.5.0",
-    "openmoji": "15.1.0",
-    "prettier": "3.5.3",
-    "tsmatchers": "5.0.2",
-    "typescript": "5.8.3",
-    "vite": "6.2.5",
-    "wrangler": "4.9.1"
-  },
-  "lint-staged": {
-    "*.{md,yaml,yml,json}": [
-      "prettier --write"
-    ],
-    "*.{ts,tsx}": [
-      "npx biome format --write",
-      "npx biome check"
-    ]
-  },
-  "engines": {
-    "node": ">=22.7.0",
-    "npm": ">=9"
-  },
-  "release": {
-    "branches": [
-      "saga"
-    ],
-    "remoteTags": true,
-    "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
-      [
-        "@semantic-release/github",
-        {
-          "successComment": false,
-          "failTitle": false
-        }
-      ]
-    ]
-  },
-  "dependencies": {
-    "classnames": "2.5.1",
-    "color": "5.0.0",
-    "lodash-es": "4.17.21",
-    "lucide-preact": "0.487.0",
-    "micromark": "4.0.2",
-    "p-throttle": "7.0.0",
-    "preact": "10.26.5",
-    "preact-router": "4.1.2",
-    "ulid": "3.0.0"
-  }
+	"name": "@teamstatus/app",
+	"version": "0.0.0-development",
+	"description": "Teamstatus.space web application written using Vite and Preact",
+	"keywords": ["spa", "webapp", "vite", "preact"],
+	"type": "module",
+	"scripts": {
+		"prepare": "husky && check-node-version --package && node --experimental-transform-types --no-warnings openmoji-convert.ts",
+		"start": "vite",
+		"build": "node --max_old_space_size=8192 ./node_modules/vite/bin/vite.js build --emptyOutDir",
+		"test": "node --experimental-transform-types --no-warnings --test --test-reporter spec src/**/*.spec.ts"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/teamstatus/app.git"
+	},
+	"bugs": {
+		"url": "https://github.com/teamstatus/app/issues"
+	},
+	"homepage": "https://github.com/teamstatus/app#readme",
+	"author": "Markus Tacker <m@coderbyheart.com> | coderbyheart.com",
+	"license": "MIT",
+	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
+		"@commitlint/config-conventional": "19.8.0",
+		"@nordicsemiconductor/from-env": "3.0.1",
+		"@playwright/test": "1.51.1",
+		"@preact/preset-vite": "2.10.1",
+		"@types/chance": "1.1.6",
+		"@types/color": "4.2.0",
+		"@types/lodash-es": "4.17.12",
+		"bootstrap": "5.3.5",
+		"chance": "1.1.12",
+		"check-node-version": "4.2.1",
+		"commitlint": "19.8.0",
+		"handlebars": "4.7.8",
+		"husky": "9.1.7",
+		"lint-staged": "15.5.0",
+		"openmoji": "15.1.0",
+		"prettier": "3.5.3",
+		"tsmatchers": "5.0.2",
+		"typescript": "5.8.3",
+		"vite": "6.2.5",
+		"wrangler": "4.9.1"
+	},
+	"lint-staged": {
+		"*.{md,yaml,yml,json}": ["prettier --write"],
+		"*.{ts,tsx}": ["npx biome format --write", "npx biome check"]
+	},
+	"engines": {
+		"node": ">=22.7.0",
+		"npm": ">=9"
+	},
+	"release": {
+		"branches": ["saga"],
+		"remoteTags": true,
+		"plugins": [
+			"@semantic-release/commit-analyzer",
+			"@semantic-release/release-notes-generator",
+			[
+				"@semantic-release/github",
+				{
+					"successComment": false,
+					"failTitle": false
+				}
+			]
+		]
+	},
+	"dependencies": {
+		"classnames": "2.5.1",
+		"color": "5.0.0",
+		"lodash-es": "4.17.21",
+		"lucide-preact": "0.487.0",
+		"micromark": "4.0.2",
+		"p-throttle": "7.0.0",
+		"preact": "10.26.5",
+		"preact-router": "4.1.2",
+		"ulid": "3.0.0"
+	}
 }
