@@ -86,6 +86,6 @@
     "p-throttle": "7.0.0",
     "preact": "10.26.5",
     "preact-router": "4.1.2",
-    "ulid": "2.4.0"
+    "ulid": "3.0.0"
   }
 }
