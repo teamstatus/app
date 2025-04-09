@@ -1,4 +1,4 @@
-import { AsHeadline } from '#components/HeadlineFont.js'
+import { AsHeadline } from '#components/HeadlineFont.tsx'
 
 export const Support = () => (
 	<>

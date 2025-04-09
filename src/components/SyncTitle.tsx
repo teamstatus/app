@@ -1,9 +1,14 @@
 import { decodeTime } from 'ulid'
-import { type Sync } from '#context/Syncs.js'
-import { CalendarIcon, ClockIcon, EndDateIcon, StartDateIcon } from './Icons.js'
-import { ShortDate } from './ShortDate.js'
-import { UserProfile } from '#components/UserProfile.js'
-import { formatDay, formatTime, formatTimezone } from '#util/date.js'
+import type { Sync } from '#context/Syncs.tsx'
+import {
+	CalendarIcon,
+	ClockIcon,
+	EndDateIcon,
+	StartDateIcon,
+} from './Icons.tsx'
+import { ShortDate } from './ShortDate.tsx'
+import { UserProfile } from '#components/UserProfile.tsx'
+import { formatDay, formatTime, formatTimezone } from '#util/date.ts'
 
 const FormattedDate = ({ date }: { date: Date }) => (
 	<time dateTime={date.toISOString()} class="d-flex align-items-center">

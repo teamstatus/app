@@ -1,8 +1,8 @@
 import { createContext, type ComponentChildren } from 'preact'
 import { useContext, useEffect, useState } from 'preact/hooks'
-import { CREATE, GET, UPDATE } from '#api/client.js'
-import { notReady } from '#api/notReady.js'
-import { requestResult, type RequestResult } from '#api/requestResult.js'
+import { CREATE, GET, UPDATE } from '#api/client.ts'
+import { notReady } from '#api/notReady.ts'
+import { requestResult, type RequestResult } from '#api/requestResult.ts'
 import { InternalError } from './InternalError'
 
 type AuthContext = {

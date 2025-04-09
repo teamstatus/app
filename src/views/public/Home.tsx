@@ -1,6 +1,6 @@
-import { Intro } from '#components/Intro.js'
+import { Intro } from '#components/Intro.tsx'
 import { Login } from '#components/Login'
-import { LogoHeader } from '#components/LogoHeader.js'
+import { LogoHeader } from '#components/LogoHeader.tsx'
 
 export const Home = () => (
 	<>

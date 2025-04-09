@@ -1,5 +1,5 @@
-import { MembersIcon, OwnerIcon, WatcherIcon } from '#components/Icons.js'
-import { Role } from '#context/Projects.js'
+import { MembersIcon, OwnerIcon, WatcherIcon } from '#components/Icons.tsx'
+import { Role } from '#context/Projects.tsx'
 
 export const RolePill = ({
 	role,

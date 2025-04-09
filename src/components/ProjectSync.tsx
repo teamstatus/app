@@ -1,9 +1,9 @@
 import { decodeTime } from 'ulid'
-import { type Project } from '#context/Projects.js'
-import { type Status } from '#context/Status.js'
-import { StatusSync } from '#components/StatusSync.js'
+import type { Project } from '#context/Projects.tsx'
+import type { Status } from '#context/Status.tsx'
+import { StatusSync } from '#components/StatusSync.tsx'
 import './ProjectSync.css'
-import { ShortDate } from '#components/ShortDate.js'
+import { ShortDate } from '#components/ShortDate.tsx'
 
 export const byTimeDesc = (s1: Status, s2: Status): number =>
 	decodeTime(s2.id) - decodeTime(s1.id)
@@ -32,20 +32,18 @@ export const ProjectSync = ({
 
 		<hr class="mt-2 mb-4" />
 		{status.length === 0 && (
-			<>
-				<p>
-					{startDate === undefined && <em>No updates.</em>}
-					{startDate !== undefined && (
-						<em>
-							No updates since <ShortDate date={startDate} />.
-						</em>
-					)}
-				</p>
-			</>
+			<p>
+				{startDate === undefined && <em>No updates.</em>}
+				{startDate !== undefined && (
+					<em>
+						No updates since <ShortDate date={startDate} />.
+					</em>
+				)}
+			</p>
 		)}
 		{status.sort(byTimeDesc).map((status, i, arr) => (
 			<>
-				<StatusSync status={status} />
+				<StatusSync status={status} key={status.id} />
 				{arr.length > 1 && i !== arr.length - 1 && (
 					<hr style={{ opacity: 0.1 }} />
 				)}

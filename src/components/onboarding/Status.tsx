@@ -1,18 +1,21 @@
-import { AsHeadline } from '#components/HeadlineFont.js'
-import { UpdateIcon } from '#components/Icons.js'
+import { AsHeadline } from '#components/HeadlineFont.tsx'
+import { UpdateIcon } from '#components/Icons.tsx'
 import {
 	ReactionView,
 	newVersionRelease,
 	question,
-} from '#components/Reactions.js'
-import { type Project } from '#context/Projects.js'
-import { ReactionRole, useStatus, type Status } from '#context/Status.js'
-import { OnboardingInfo } from '#views/OnboardingInfo.js'
+} from '#components/Reactions.tsx'
+import type { Project } from '#context/Projects.tsx'
+import { ReactionRole, useStatus, type Status } from '#context/Status.tsx'
+import { OnboardingInfo } from '#views/OnboardingInfo.tsx'
 import { PlusCircle, PlusIcon, SmilePlus } from 'lucide-preact'
 
-const byReaction = (role: ReactionRole) => ({ reactions }: Status) =>
-	reactions.find((reaction) => 'role' in reaction && reaction.role === role) !==
-	undefined
+const byReaction =
+	(role: ReactionRole) =>
+	({ reactions }: Status) =>
+		reactions.find(
+			(reaction) => 'role' in reaction && reaction.role === role,
+		) !== undefined
 
 export const StatusOnboarding = ({
 	project,
@@ -62,13 +65,11 @@ export const StatusOnboarding = ({
 					)}
 
 					{status.length === 1 && (
-						<>
-							<p class="mt-3">
-								Great! Let's create another status.
-								<br />
-								How about you try formatting the message with Markdown?
-							</p>
-						</>
+						<p class="mt-3">
+							Great! Let's create another status.
+							<br />
+							How about you try formatting the message with Markdown?
+						</p>
 					)}
 					{status.length > 1 && (
 						<p class="text-secondary mb-0">

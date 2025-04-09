@@ -1,13 +1,13 @@
 import cx from 'classnames'
 import { useEffect, useState } from 'preact/hooks'
-import { UpdateIcon } from '#components/Icons.js'
-import { type ProblemDetail } from '#context/ProblemDetail.js'
-import { useProjects } from '#context/Projects.js'
-import { ProjectHeader } from '#components/ProjectHeader.js'
-import { ProjectMenu } from '#components/ProjectMenu.js'
-import { ProgressBar } from '#components/ProgressBar.js'
-import { Main } from '#components/Main.js'
-import { WithProject } from '#components/WithProject.js'
+import { UpdateIcon } from '#components/Icons.tsx'
+import type { ProblemDetail } from '#context/ProblemDetail.tsx'
+import { useProjects } from '#context/Projects.tsx'
+import { ProjectHeader } from '#components/ProjectHeader.tsx'
+import { ProjectMenu } from '#components/ProjectMenu.tsx'
+import { ProgressBar } from '#components/ProgressBar.tsx'
+import { Main } from '#components/Main.tsx'
+import { WithProject } from '#components/WithProject.tsx'
 
 export const ProjectSettings = ({
 	id,
@@ -31,7 +31,7 @@ export const ProjectSettings = ({
 				listMembers(project).ok((members) => {
 					console.log(members)
 				})
-			}, [projects])
+			}, [projects, id, listMembers])
 
 			return (
 				<>

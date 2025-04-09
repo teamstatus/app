@@ -1,7 +1,7 @@
 import { useState } from 'preact/hooks'
-import { MenuIcon } from './Icons.js'
-import { OffsetMenu } from '#navigation/OffsetMenu.js'
-import { AnimatedLogo } from '#navigation/AnimatedLogo.js'
+import { MenuIcon } from './Icons.tsx'
+import { OffsetMenu } from '#navigation/OffsetMenu.tsx'
+import { AnimatedLogo } from '#navigation/AnimatedLogo.tsx'
 
 export const LogoHeader = ({ animated }: { animated?: boolean }) => {
 	const [collapsed, setCollapsed] = useState(true)

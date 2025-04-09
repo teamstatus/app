@@ -1,8 +1,8 @@
-import { CreateProject as CreateForm } from '#components/CreateProject.js'
-import { FormContainer } from '#components/FormContainer.js'
-import { LogoHeader } from '#components/LogoHeader.js'
-import { Main } from '#components/Main.js'
-import { navigateTo } from '#util/link.js'
+import { CreateProject as CreateForm } from '#components/CreateProject.tsx'
+import { FormContainer } from '#components/FormContainer.tsx'
+import { LogoHeader } from '#components/LogoHeader.tsx'
+import { Main } from '#components/Main.tsx'
+import { navigateTo } from '#util/link.ts'
 
 export const CreateProject = ({
 	organization,

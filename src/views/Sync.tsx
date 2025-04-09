@@ -1,14 +1,14 @@
-import { logoColors } from '#components/Colorpicker.js'
-import { QuestionIcon } from '#components/Icons.js'
-import { LogoHeader } from '#components/LogoHeader.js'
-import { Main } from '#components/Main.js'
-import { ProjectMenu } from '#components/ProjectMenu.js'
-import { ProjectSync } from '#components/ProjectSync.js'
-import { StatusSync } from '#components/StatusSync.js'
-import { SyncTitle } from '#components/SyncTitle.js'
-import { UserProfile } from '#components/UserProfile.js'
-import { WithSync } from '#components/WithSync.js'
-import { ReactionRole, type Status } from '#context/Status.js'
+import { logoColors } from '#components/Colorpicker.tsx'
+import { QuestionIcon } from '#components/Icons.tsx'
+import { LogoHeader } from '#components/LogoHeader.tsx'
+import { Main } from '#components/Main.tsx'
+import { ProjectMenu } from '#components/ProjectMenu.tsx'
+import { ProjectSync } from '#components/ProjectSync.tsx'
+import { StatusSync } from '#components/StatusSync.tsx'
+import { SyncTitle } from '#components/SyncTitle.tsx'
+import { UserProfile } from '#components/UserProfile.tsx'
+import { WithSync } from '#components/WithSync.tsx'
+import { ReactionRole, type Status } from '#context/Status.tsx'
 import Color from 'color'
 
 export type ProjectStatusMap = Record<string, Status[]>
@@ -60,7 +60,7 @@ export const Sync = ({ id }: { id: string }) => (
 										<hr class="mt-2 mb-4" />
 										{statusWithQuestions.map((status) => (
 											<>
-												<StatusSync status={status} />
+												<StatusSync key={status.id} status={status} />
 												{status.reactions
 													.filter(
 														(r) =>
@@ -68,8 +68,14 @@ export const Sync = ({ id }: { id: string }) => (
 													)
 													.map((reaction) => (
 														<>
-															<QuestionIcon class="me-1" />
-															<UserProfile id={reaction.author} />
+															<QuestionIcon
+																key={`${reaction.id}`}
+																class="me-1"
+															/>
+															<UserProfile
+																key={`${reaction.id}-user`}
+																id={reaction.author}
+															/>
 														</>
 													))}
 											</>
@@ -80,11 +86,10 @@ export const Sync = ({ id }: { id: string }) => (
 						</div>
 					)}
 					{projectsWithStatus.map(({ project, status }) => (
-						<div class="container ">
+						<div key={project.id} class="container ">
 							<div class="row mt-3">
 								<div class="col-12 col-lg-8 offset-lg-2">
 									<ProjectSync
-										key={project.id}
 										project={project}
 										status={status}
 										startDate={sync.inclusiveStartDate}

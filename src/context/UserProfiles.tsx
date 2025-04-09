@@ -1,7 +1,7 @@
-import { GET } from '#api/client.js'
+import { GET } from '#api/client.ts'
 import { createContext, type ComponentChildren } from 'preact'
-import { notReady } from '#api/notReady.js'
-import { resolve } from '#api/resolve.js'
+import { notReady } from '#api/notReady.ts'
+import { resolve } from '#api/resolve.ts'
 import { useContext, useState } from 'preact/hooks'
 
 export type UserProfile = {

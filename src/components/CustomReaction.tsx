@@ -1,22 +1,22 @@
-import { ReactionRole, type Reaction as TReaction } from '#context/Status.js'
+import { ReactionRole, type Reaction as tReaction } from '#context/Status.tsx'
 import { useState } from 'preact/hooks'
-import { IconPicker } from './IconPicker.js'
-import { CloseIcon, QuestionIcon, SignificantIcon } from './Icons.js'
-import { Reaction } from './Reactions.js'
-import { FormContainer } from './FormContainer.js'
+import { IconPicker } from './IconPicker.tsx'
+import { CloseIcon, QuestionIcon, SignificantIcon } from './Icons.tsx'
+import { Reaction } from './Reactions.tsx'
+import { FormContainer } from './FormContainer.tsx'
 
 export const CustomReaction = ({
 	onReaction,
 	onClose,
 }: {
-	onReaction: (reaction: TReaction) => unknown
+	onReaction: (reaction: tReaction) => unknown
 	onClose: () => unknown
 }) => {
 	const [icon, setIcon] = useState<string>('❔')
 	const [description, setDescription] = useState<string>('')
 	const [role, setRole] = useState<ReactionRole | undefined>()
 
-	const reaction: TReaction = {
+	const reaction: tReaction = {
 		emoji: icon,
 		role,
 		description,
@@ -74,11 +74,10 @@ export const CustomReaction = ({
 					/>
 				</div>
 				<div>
-					<label class="form-label">Role</label>
+					<span class="form-label">Role</span>
 				</div>
-				<div
+				<fieldset
 					class="btn-group"
-					role="group"
 					aria-label="Basic radio toggle button group"
 				>
 					<input
@@ -117,7 +116,7 @@ export const CustomReaction = ({
 					<label class="btn btn-outline-primary" for="significantRole">
 						<SignificantIcon strokeWidth={2} /> Significant
 					</label>
-				</div>
+				</fieldset>
 			</form>
 		</FormContainer>
 	)

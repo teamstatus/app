@@ -1,17 +1,19 @@
-import { useEffect, useState } from 'preact/hooks'
+import { useCallback, useEffect, useState } from 'preact/hooks'
 import {
 	useUserProfiles,
-	type UserProfile as TUserProfile,
-} from '#context/UserProfiles.js'
+	type UserProfile as tUserProfile,
+} from '#context/UserProfiles.tsx'
 
 export const UserProfile = ({ id }: { id: string }) => {
 	const { get, profiles } = useUserProfiles()
-	const [profile, setProfile] = useState<TUserProfile | undefined>(profiles[id])
+	const [profile, setProfile] = useState<tUserProfile | undefined>(profiles[id])
+
+	const getProfile = useCallback(() => get(id), [get, id])
 
 	useEffect(() => {
 		if (profile !== undefined) return
-		get(id).ok(({ user }) => setProfile(user))
-	}, [profile])
+		getProfile().ok(({ user }) => setProfile(user))
+	}, [profile, getProfile])
 
 	return <UserInfo id={id} name={profile?.name} pronouns={profile?.pronouns} />
 }
@@ -43,12 +45,14 @@ const UserInfo = (
 
 export const UserName = ({ id }: { id: string }) => {
 	const { get, profiles } = useUserProfiles()
-	const [profile, setProfile] = useState<TUserProfile | undefined>(profiles[id])
+	const [profile, setProfile] = useState<tUserProfile | undefined>(profiles[id])
+
+	const getProfile = useCallback(() => get(id), [get, id])
 
 	useEffect(() => {
 		if (profile !== undefined) return
-		get(id).ok(({ user }) => setProfile(user))
-	}, [profile])
+		getProfile().ok(({ user }) => setProfile(user))
+	}, [profile, getProfile])
 
 	return <span>{profile?.name ?? id}</span>
 }

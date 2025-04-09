@@ -1,11 +1,11 @@
-import { CreateStatus as CreateForm } from '#components/CreateStatus.js'
-import { FormContainer } from '#components/FormContainer.js'
-import { Main } from '#components/Main.js'
-import { NotFound } from '#components/NotFound.js'
-import { ProjectHeader } from '#components/ProjectHeader.js'
-import { StatusOnboarding } from '#components/onboarding/Status.js'
-import { useProjects } from '#context/Projects.js'
-import { navigateTo } from '#util/link.js'
+import { CreateStatus as CreateForm } from '#components/CreateStatus.tsx'
+import { FormContainer } from '#components/FormContainer.tsx'
+import { Main } from '#components/Main.tsx'
+import { NotFound } from '#components/NotFound.tsx'
+import { ProjectHeader } from '#components/ProjectHeader.tsx'
+import { StatusOnboarding } from '#components/onboarding/Status.tsx'
+import { useProjects } from '#context/Projects.tsx'
+import { navigateTo } from '#util/link.ts'
 
 export const CreateStatus = ({
 	id,

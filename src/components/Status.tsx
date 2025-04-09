@@ -1,10 +1,10 @@
-import { UserName, UserProfile } from '#components/UserProfile.js'
-import { useAuth } from '#context/Auth.js'
-import { useStatus, type Status as TStatus } from '#context/Status.js'
+import { UserName, UserProfile } from '#components/UserProfile.tsx'
+import { useAuth } from '#context/Auth.tsx'
+import { useStatus, type Status as tStatus } from '#context/Status.tsx'
 import cx from 'classnames'
 import { useEffect, useState } from 'preact/hooks'
 import { decodeTime } from 'ulid'
-import { Ago } from './Ago.js'
+import { Ago } from './Ago.tsx'
 import {
 	AddIcon,
 	AddReactionIcon,
@@ -13,16 +13,16 @@ import {
 	EditIcon,
 	PersistencePendingIcon,
 	SubMenuIcon,
-} from './Icons.js'
-import { Markdown } from './Markdown.js'
-import { Reaction, SelectReaction } from './Reactions.js'
-import { CustomReaction } from './CustomReaction.js'
+} from './Icons.tsx'
+import { Markdown } from './Markdown.tsx'
+import { Reaction, SelectReaction } from './Reactions.tsx'
+import { CustomReaction } from './CustomReaction.tsx'
 
 export const Status = ({
 	status,
 	onReactionsVisible,
 }: {
-	status: TStatus
+	status: tStatus
 	onReactionsVisible?: (visible: boolean) => void
 }) => {
 	const [reactionsVisible, showReactions] = useState(false)
@@ -35,7 +35,7 @@ export const Status = ({
 
 	useEffect(() => {
 		onReactionsVisible?.(reactionsVisible)
-	}, [reactionsVisible])
+	}, [reactionsVisible, onReactionsVisible])
 
 	useEffect(() => {
 		if (!reactionsVisible) return
@@ -111,6 +111,7 @@ export const Status = ({
 						const isAuthor = reaction.author === user?.id
 						return (
 							<Reaction
+								key={reaction.id}
 								reaction={reaction}
 								onClick={() => {
 									if (isAuthor) {

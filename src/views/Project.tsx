@@ -1,15 +1,15 @@
-import { ProjectHeader } from '#components/ProjectHeader.js'
-import { Status } from '#components/Status.js'
-import { Role, canCreateStatus, useProjects } from '#context/Projects.js'
-import { useSettings } from '#context/Settings.js'
-import { useStatus } from '#context/Status.js'
-import { ProjectMenu } from '#components/ProjectMenu.js'
-import { Main } from '#components/Main.js'
-import { NotFound } from '#components/NotFound.js'
+import { ProjectHeader } from '#components/ProjectHeader.tsx'
+import { Status } from '#components/Status.tsx'
+import { Role, canCreateStatus, useProjects } from '#context/Projects.tsx'
+import { useSettings } from '#context/Settings.tsx'
+import { useStatus } from '#context/Status.tsx'
+import { ProjectMenu } from '#components/ProjectMenu.tsx'
+import { Main } from '#components/Main.tsx'
+import { NotFound } from '#components/NotFound.tsx'
 import { useEffect } from 'preact/hooks'
-import { EditIcon, MembersIcon } from '#components/Icons.js'
-import { StatusOnboarding } from '#components/onboarding/Status.js'
-import { linkUrl } from '#util/link.js'
+import { EditIcon, MembersIcon } from '#components/Icons.tsx'
+import { StatusOnboarding } from '#components/onboarding/Status.tsx'
+import { linkUrl } from '#util/link.ts'
 
 export const Project = ({
 	id,
@@ -31,7 +31,7 @@ export const Project = ({
 
 	useEffect(() => {
 		observe(id)
-	}, [id])
+	}, [id, observe])
 
 	const project = projects[id]
 	if (project === undefined) {
@@ -45,7 +45,7 @@ export const Project = ({
 			<Main class="container mt-3" key={project.id}>
 				<section>
 					{status.map((status) => (
-						<div class="row">
+						<div key={status.id} class="row">
 							<div class="col-12 col-lg-8 offset-lg-2">
 								<Status status={status} key={status.id} />
 								<hr class="mt-1 mb-2" />

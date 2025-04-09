@@ -1,10 +1,10 @@
-import { Markdown } from '#components/Markdown.js'
-import { byTimeDesc } from '#components/ProjectSync.js'
-import { ShortDate } from '#components/ShortDate.js'
-import { signficantReactionsByAuthor } from '#components/StatusSync.js'
-import { WithSync } from '#components/WithSync.js'
-import type { Status } from '#context/Status.js'
-import type { Sync } from '#context/Syncs.js'
+import { Markdown } from '#components/Markdown.tsx'
+import { byTimeDesc } from '#components/ProjectSync.tsx'
+import { ShortDate } from '#components/ShortDate.tsx'
+import { signficantReactionsByAuthor } from '#components/StatusSync.tsx'
+import { WithSync } from '#components/WithSync.tsx'
+import type { Status } from '#context/Status.tsx'
+import type { Sync } from '#context/Syncs.tsx'
 import { decodeTime } from 'ulid'
 
 export const SyncExportConfluence = ({ id }: { id: string }) => (
@@ -12,7 +12,7 @@ export const SyncExportConfluence = ({ id }: { id: string }) => (
 		{({ sync, projectsWithStatus }) => (
 			<ul>
 				{projectsWithStatus.map(({ project, status }) => (
-					<li>
+					<li key={project.id}>
 						<h2>
 							<strong>{project.name ?? project.id}</strong>
 						</h2>
@@ -40,9 +40,9 @@ const RenderProject = ({ status, sync }: { status: Status[]; sync: Sync }) => {
 	return (
 		<ul>
 			{status.sort(byTimeDesc).map((status) => (
-				<li>
+				<li key={status.id}>
 					{signficantReactionsByAuthor(status).map((reaction) => (
-						<span>
+						<span key={`${reaction.emoji}-${reaction.description ?? ''}`}>
 							{reaction.emoji}{' '}
 							<strong>
 								{reaction.description ?? 'No description available.'}

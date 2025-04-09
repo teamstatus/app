@@ -6,7 +6,7 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "ES2022",
+    "module": "ESNext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "noEmit": true,
@@ -22,15 +22,34 @@
     "jsxImportSource": "preact",
     "baseUrl": "src",
     "paths": {
-      "react": ["./node_modules/preact/compat/"],
-      "react-dom": ["./node_modules/preact/compat/"],
-      "#api/*": ["api/*"],
-      "#components/*": ["components/*"],
-      "#context/*": ["context/*"],
-      "#navigation/*": ["navigation/*"],
-      "#proto/*": ["proto/*"],
-      "#util/*": ["util/*"],
-      "#views/*": ["views/*"]
-    }
+      "react": [
+        "./node_modules/preact/compat/"
+      ],
+      "react-dom": [
+        "./node_modules/preact/compat/"
+      ],
+      "#api/*": [
+        "api/*"
+      ],
+      "#components/*": [
+        "components/*"
+      ],
+      "#context/*": [
+        "context/*"
+      ],
+      "#navigation/*": [
+        "navigation/*"
+      ],
+      "#proto/*": [
+        "proto/*"
+      ],
+      "#util/*": [
+        "util/*"
+      ],
+      "#views/*": [
+        "views/*"
+      ]
+    },
+    "allowImportingTsExtensions": true
   }
 }

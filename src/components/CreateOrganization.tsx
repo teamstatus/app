@@ -1,8 +1,8 @@
 import cx from 'classnames'
 import { useState } from 'preact/hooks'
-import { AddIcon } from '#components/Icons.js'
-import { useProjects, type Organization } from '#context/Projects.js'
-import { isOrganizationId, slugPart } from '#proto/ids.js'
+import { AddIcon } from '#components/Icons.tsx'
+import { useProjects, type Organization } from '#context/Projects.tsx'
+import { isOrganizationId, slugPart } from '#proto/ids.ts'
 
 export const CreateOrganization = ({
 	onOrganization,

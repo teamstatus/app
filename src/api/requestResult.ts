@@ -1,4 +1,4 @@
-import type { ProblemDetail } from '#context/ProblemDetail.js'
+import type { ProblemDetail } from '#context/ProblemDetail.tsx'
 
 type ProblemHandler = (problem: ProblemDetail) => unknown
 type SuccessHandler<Response> = (result: Response) => unknown

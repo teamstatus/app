@@ -1,6 +1,6 @@
-import { Ago } from '#components/Ago.js'
-import { AsHeadline } from '#components/HeadlineFont.js'
-import { AppNavigation } from './AppNavigation.js'
+import { Ago } from '#components/Ago.tsx'
+import { AsHeadline } from '#components/HeadlineFont.tsx'
+import { AppNavigation } from './AppNavigation.tsx'
 
 export const OffsetMenu = ({ onClick }: { onClick: () => unknown }) => (
 	<div

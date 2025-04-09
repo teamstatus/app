@@ -1,5 +1,5 @@
-import { Aside } from '#components/Aside.js'
-import { logoColors } from '#components/Colorpicker.js'
+import { Aside } from '#components/Aside.tsx'
+import { logoColors } from '#components/Colorpicker.tsx'
 import Color from 'color'
 import type { ComponentChild } from 'preact'
 

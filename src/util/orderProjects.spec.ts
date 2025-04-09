@@ -1,6 +1,6 @@
 import { describe, test as it } from 'node:test'
-import assert from 'node:assert'
-import { orderIds } from './orderIds.js'
+import assert from 'node:assert/strict'
+import { orderIds } from './orderIds.ts'
 
 const examples: [string[], string, 'up' | 'down', string[]][] = [
 	[['$acme'], '$acme', 'up', ['$acme']],

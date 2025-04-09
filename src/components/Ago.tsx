@@ -1,4 +1,4 @@
-import { relativeTime } from '#util/date.js'
+import { relativeTime } from '#util/date.ts'
 import { useEffect, useState } from 'preact/hooks'
 
 export const Ago = ({ date }: { date: Date }) => {

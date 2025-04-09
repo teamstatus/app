@@ -1,9 +1,9 @@
-import { Main } from '#components/Main.js'
-import { ProjectHeader } from '#components/ProjectHeader.js'
-import { ProjectMenu } from '#components/ProjectMenu.js'
-import { Status as StatusView } from '#components/Status.js'
-import { WithProject } from '#components/WithProject.js'
-import { WithStatus } from '#components/WithStatus.js'
+import { Main } from '#components/Main.tsx'
+import { ProjectHeader } from '#components/ProjectHeader.tsx'
+import { ProjectMenu } from '#components/ProjectMenu.tsx'
+import { Status as StatusView } from '#components/Status.tsx'
+import { WithProject } from '#components/WithProject.tsx'
+import { WithStatus } from '#components/WithStatus.tsx'
 
 export const Status = ({
 	statusId,

@@ -1,11 +1,11 @@
-import { LogoHeader } from '#components/LogoHeader.js'
-import { ProjectMenu } from '#components/ProjectMenu.js'
-import { Main } from '#components/Main.js'
+import { LogoHeader } from '#components/LogoHeader.tsx'
+import { ProjectMenu } from '#components/ProjectMenu.tsx'
+import { Main } from '#components/Main.tsx'
 import {
 	useUserProfiles,
-	type UserProfile as TUserProfile,
-} from '#context/UserProfiles.js'
-import { useEffect, useState } from 'preact/hooks'
+	type UserProfile as tUserProfile,
+} from '#context/UserProfiles.tsx'
+import { useCallback, useEffect, useState } from 'preact/hooks'
 
 export const UserProfile = ({
 	id,
@@ -15,11 +15,13 @@ export const UserProfile = ({
 	version?: string
 }) => {
 	const { get } = useUserProfiles()
-	const [profile, setProfile] = useState<TUserProfile>()
+	const [profile, setProfile] = useState<tUserProfile>()
+
+	const getProfile = useCallback(() => get(id), [get, id])
 
 	useEffect(() => {
-		get(id).ok(({ user }) => setProfile(user))
-	}, [id, version])
+		getProfile().ok(({ user }) => setProfile(user))
+	}, [getProfile])
 
 	return (
 		<>

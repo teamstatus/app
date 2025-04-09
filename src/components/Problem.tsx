@@ -1,7 +1,7 @@
-import { LogoHeader } from '#components/LogoHeader.js'
-import { type ProblemDetail } from '#context/ProblemDetail.js'
-import { ProjectMenu } from '#components/ProjectMenu.js'
-import { Main } from '#components/Main.js'
+import { LogoHeader } from '#components/LogoHeader.tsx'
+import type { ProblemDetail } from '#context/ProblemDetail.tsx'
+import { ProjectMenu } from '#components/ProjectMenu.tsx'
+import { Main } from '#components/Main.tsx'
 
 export const Problem = ({ problem }: { problem: ProblemDetail }) => (
 	<>

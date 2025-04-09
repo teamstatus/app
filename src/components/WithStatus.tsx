@@ -1,9 +1,9 @@
-import { type Project } from '#context/Projects.js'
-import { useStatus, type Status as TStatus } from '#context/Status.js'
-import { NotFound } from '#components/NotFound.js'
+import type { Project } from '#context/Projects.tsx'
+import { useStatus, type Status as tStatus } from '#context/Status.tsx'
+import { NotFound } from '#components/NotFound.tsx'
 import type { ComponentChildren } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
-import { fetchProjectStatusById } from '#api/status.js'
+import { fetchProjectStatusById } from '#api/status.ts'
 
 export const WithStatus = ({
 	id,
@@ -12,17 +12,17 @@ export const WithStatus = ({
 }: {
 	id: string
 	project: Project
-	children: (args: { status: TStatus }) => ComponentChildren
+	children: (args: { status: tStatus }) => ComponentChildren
 }) => {
 	const { projectStatus } = useStatus()
-	const [status, setStatus] = useState<TStatus | undefined>(
+	const [status, setStatus] = useState<tStatus | undefined>(
 		projectStatus[project.id]?.find(({ id: statusId }) => statusId === id),
 	)
 
 	useEffect(() => {
 		if (status !== undefined) return
 		fetchProjectStatusById(project.id, id).ok(({ status }) => setStatus(status))
-	}, [status])
+	}, [status, id, project])
 
 	if (status === undefined) {
 		return <NotFound>Status not found: {id}</NotFound>

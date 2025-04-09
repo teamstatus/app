@@ -1,38 +1,38 @@
 import Router, { Route } from 'preact-router'
-import { Provider as AuthProvider, useAuth } from '#context/Auth.js'
-import { Provider as ProjectsProvider } from '#context/Projects.js'
-import { Provider as SettingsProvider } from '#context/Settings.js'
-import { Provider as StatusProvider } from '#context/Status.js'
-import { Provider as SyncsProvider } from '#context/Syncs.js'
-import { Dashboard } from '#views/Dashboard.js'
-import { CreateStatus } from '#views/CreateStatus.js'
-import { CreateOrganization } from '#views/CreateOrganization.js'
-import { CreateProject } from '#views/CreateProject.js'
-import { CreateSync } from '#views/CreateSync.js'
-import { EditStatus } from '#views/EditStatus.js'
-import { InviteToProject } from '#views/InviteToProject.js'
-import { Project } from '#views/Project.js'
-import { PersonalizeProjects } from '#views/PersonalizeProjects.js'
-import { Sync } from '#views/Sync.js'
-import { Syncs } from '#views/Syncs.js'
-import { User } from '#views/User.js'
-import { Sync as PublicSync } from '#views/public/Sync.js'
-import { Provider as UIProvider } from '#context/UI.js'
-import { Help } from '#views/public/Help.js'
-import { Home } from '#views/public/Home.js'
-import { Login } from '#views/public/Login.js'
-import { LoginRedirect } from '#views/LoginRedirect.js'
-import { Reactions } from '#views/Reactions.js'
-import { Organizations } from '#views/Organizations.js'
-import { Organization } from '#views/Organization.js'
-import { Status } from '#views/Status.js'
-import { ProjectSettings } from '#views/ProjectSettings.js'
-import { UserProfile } from '#views/UserProfile.js'
-import { Provider as UserProfilesProvider } from '#context/UserProfiles.js'
-import { EditUser } from '#views/EditUser.js'
-import { SyncExportTeams } from '#views/SyncExportTeams.js'
-import { SyncExportConfluence } from '#views/SyncExportConfluence.js'
-import { Provider as OpenmojiProvider } from '#context/Openmoji.js'
+import { Provider as AuthProvider, useAuth } from '#context/Auth.tsx'
+import { Provider as ProjectsProvider } from '#context/Projects.tsx'
+import { Provider as SettingsProvider } from '#context/Settings.tsx'
+import { Provider as StatusProvider } from '#context/Status.tsx'
+import { Provider as SyncsProvider } from '#context/Syncs.tsx'
+import { Dashboard } from '#views/Dashboard.tsx'
+import { CreateStatus } from '#views/CreateStatus.tsx'
+import { CreateOrganization } from '#views/CreateOrganization.tsx'
+import { CreateProject } from '#views/CreateProject.tsx'
+import { CreateSync } from '#views/CreateSync.tsx'
+import { EditStatus } from '#views/EditStatus.tsx'
+import { InviteToProject } from '#views/InviteToProject.tsx'
+import { Project } from '#views/Project.tsx'
+import { PersonalizeProjects } from '#views/PersonalizeProjects.tsx'
+import { Sync } from '#views/Sync.tsx'
+import { Syncs } from '#views/Syncs.tsx'
+import { User } from '#views/User.tsx'
+import { Sync as PublicSync } from '#views/public/Sync.tsx'
+import { Provider as UiProvider } from '#context/UI.tsx'
+import { Help } from '#views/public/Help.tsx'
+import { Home } from '#views/public/Home.tsx'
+import { Login } from '#views/public/Login.tsx'
+import { LoginRedirect } from '#views/LoginRedirect.tsx'
+import { Reactions } from '#views/Reactions.tsx'
+import { Organizations } from '#views/Organizations.tsx'
+import { Organization } from '#views/Organization.tsx'
+import { Status } from '#views/Status.tsx'
+import { ProjectSettings } from '#views/ProjectSettings.tsx'
+import { UserProfile } from '#views/UserProfile.tsx'
+import { Provider as UserProfilesProvider } from '#context/UserProfiles.tsx'
+import { EditUser } from '#views/EditUser.tsx'
+import { SyncExportTeams } from '#views/SyncExportTeams.tsx'
+import { SyncExportConfluence } from '#views/SyncExportConfluence.tsx'
+import { Provider as OpenmojiProvider } from '#context/Openmoji.tsx'
 
 export const App = () => (
 	<AuthProvider>
@@ -52,7 +52,7 @@ export const Routing = () => {
 					<SettingsProvider>
 						<StatusProvider>
 							<SyncsProvider>
-								<UIProvider>
+								<UiProvider>
 									<Router>
 										<Route path="/" component={Dashboard} />
 										<Route path="/login" component={LoginRedirect} />
@@ -106,7 +106,7 @@ export const Routing = () => {
 										<Route path="/user/:id" component={UserProfile} />
 										<Route path="/reactions" component={Reactions} />
 									</Router>
-								</UIProvider>
+								</UiProvider>
 							</SyncsProvider>
 						</StatusProvider>
 					</SettingsProvider>

@@ -1,4 +1,4 @@
-import { useAuth } from '#context/Auth.js'
+import { useAuth } from '#context/Auth.tsx'
 import {
 	HelpIcon,
 	LogoutIcon,
@@ -7,8 +7,8 @@ import {
 	UserIcon,
 	HomeIcon,
 	OrganizationIcon,
-} from '#components/Icons.js'
-import { linkUrl } from '#util/link.js'
+} from '#components/Icons.tsx'
+import { linkUrl } from '#util/link.ts'
 
 export const AppNavigation = ({ onClick }: { onClick?: () => unknown }) => {
 	const { user, logout, loggedIn } = useAuth()
@@ -73,19 +73,17 @@ export const AppNavigation = ({ onClick }: { onClick?: () => unknown }) => {
 				</>
 			)}
 			{loggedIn && (
-				<>
-					<button
-						type="button"
-						onClick={() => {
-							logout()
-							onClick?.()
-						}}
-						class="btn btn-link text-body text-decoration-none"
-					>
-						<LogoutIcon />
-						<span class="ms-2">Log out</span>
-					</button>
-				</>
+				<button
+					type="button"
+					onClick={() => {
+						logout()
+						onClick?.()
+					}}
+					class="btn btn-link text-body text-decoration-none"
+				>
+					<LogoutIcon />
+					<span class="ms-2">Log out</span>
+				</button>
 			)}
 		</nav>
 	)

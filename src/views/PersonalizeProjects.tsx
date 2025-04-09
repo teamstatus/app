@@ -1,23 +1,23 @@
 import cx from 'classnames'
 import { useState } from 'preact/hooks'
-import { Colorpicker } from '#components/Colorpicker.js'
+import { Colorpicker } from '#components/Colorpicker.tsx'
 import {
 	DownIcon,
 	HiddenIcon,
 	ProjectsIcon,
 	UpIcon,
 	VisibleIcon,
-} from '#components/Icons.js'
-import { useProjects, type Project } from '#context/Projects.js'
-import { useSettings, type ProjectPersonalization } from '#context/Settings.js'
-import { LogoHeader } from '#components/LogoHeader.js'
-import { ProjectMenu } from '#components/ProjectMenu.js'
-import { ProjectId } from '#components/ProjectId.js'
-import { Main } from '#components/Main.js'
+} from '#components/Icons.tsx'
+import { useProjects, type Project } from '#context/Projects.tsx'
+import { useSettings, type ProjectPersonalization } from '#context/Settings.tsx'
+import { LogoHeader } from '#components/LogoHeader.tsx'
+import { ProjectMenu } from '#components/ProjectMenu.tsx'
+import { ProjectId } from '#components/ProjectId.tsx'
+import { Main } from '#components/Main.tsx'
 import Color from 'color'
-import { OpenmojiIcon } from '#components/OpenmojiIcon.js'
-import { IconPicker } from '#components/IconPicker.js'
-import { FormContainer } from '#components/FormContainer.js'
+import { OpenmojiIcon } from '#components/OpenmojiIcon.tsx'
+import { IconPicker } from '#components/IconPicker.tsx'
+import { FormContainer } from '#components/FormContainer.tsx'
 
 export const PersonalizeProjects = () => {
 	const { projects } = useProjects()

@@ -1,6 +1,8 @@
 // Compile the openmoji data into a more slimline format
 
-import openmojiData from './node_modules/openmoji/data/openmoji.json'
+import openmojiData from './node_modules/openmoji/data/openmoji.json' with {
+	type: 'json',
+}
 import { readFile, writeFile, mkdir } from 'node:fs/promises'
 import path from 'node:path'
 

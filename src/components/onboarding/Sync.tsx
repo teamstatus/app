@@ -1,6 +1,6 @@
-import { AsHeadline } from '#components/HeadlineFont.js'
-import { AddIcon, ApplyIcon } from '#components/Icons.js'
-import { OnboardingInfo } from '#views/OnboardingInfo.js'
+import { AsHeadline } from '#components/HeadlineFont.tsx'
+import { AddIcon, ApplyIcon } from '#components/Icons.tsx'
+import { OnboardingInfo } from '#views/OnboardingInfo.tsx'
 import { PlusCircle } from 'lucide-preact'
 
 export const SyncOnboarding = ({

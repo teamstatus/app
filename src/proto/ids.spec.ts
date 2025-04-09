@@ -7,7 +7,7 @@ import {
 	isProjectId,
 	isUserId,
 	parseProjectId,
-} from './ids.js'
+} from './ids.ts'
 
 describe('identifiers', async () => {
 	describe('user IDs', async () => {

@@ -1,6 +1,6 @@
-import { AsHeadline } from '#components/HeadlineFont.js'
-import { useProjects, type Organization } from '#context/Projects.js'
-import { OnboardingInfo } from '#views/OnboardingInfo.js'
+import { AsHeadline } from '#components/HeadlineFont.tsx'
+import { useProjects, type Organization } from '#context/Projects.tsx'
+import { OnboardingInfo } from '#views/OnboardingInfo.tsx'
 import { PlusCircle } from 'lucide-preact'
 
 export const ProjectOnboarding = ({

@@ -1,6 +1,6 @@
-import { LogoHeader } from '#components/LogoHeader.js'
-import { ReactionsHelp } from '#components/ReactionsHelp.js'
-import { Support } from '#components/Support.js'
+import { LogoHeader } from '#components/LogoHeader.tsx'
+import { ReactionsHelp } from '#components/ReactionsHelp.tsx'
+import { Support } from '#components/Support.tsx'
 
 export const Help = () => (
 	<>

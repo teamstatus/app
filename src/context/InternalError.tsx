@@ -1,4 +1,4 @@
-import { type ProblemDetail } from './ProblemDetail.js'
+import type { ProblemDetail } from './ProblemDetail.tsx'
 
 export const InternalError = (message?: string): ProblemDetail => ({
 	type: new URL(`https://teamstatus.space/error/InternalError`),

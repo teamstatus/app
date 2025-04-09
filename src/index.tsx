@@ -1,6 +1,6 @@
 import { render } from 'preact'
-import { App } from './App.js'
-import { relativeTime } from '#util/date.js'
+import { App } from './App.tsx'
+import { relativeTime } from '#util/date.ts'
 
 console.debug('API endpoint', API_ENDPOINT)
 console.debug('WS endpoint', WS_ENDPOINT)

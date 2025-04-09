@@ -1,5 +1,5 @@
 import { route } from 'preact-router'
-import { withParams } from '#util/withParams.js'
+import { withParams } from '#util/withParams.ts'
 
 export const navigateTo = (
 	pathParams: string[],

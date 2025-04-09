@@ -1,12 +1,12 @@
 import {
 	useProjects,
-	type Invitation as TInvitation,
-} from '#context/Projects.js'
-import { parseInvitationId } from '#proto/ids.js'
-import { RolePill } from '#components/RolePill.js'
-import { AcceptInvitationIcon, InFlightIcon } from './Icons.js'
-import { ProjectId } from './ProjectId.js'
-import { Aside } from './Aside.js'
+	type Invitation as tInvitation,
+} from '#context/Projects.tsx'
+import { parseInvitationId } from '#proto/ids.ts'
+import { RolePill } from '#components/RolePill.tsx'
+import { AcceptInvitationIcon, InFlightIcon } from './Icons.tsx'
+import { ProjectId } from './ProjectId.tsx'
+import { Aside } from './Aside.tsx'
 import { useState } from 'preact/hooks'
 
 export const Invitations = () => {
@@ -18,7 +18,7 @@ export const Invitations = () => {
 				<div class="col-12 col-lg-8 offset-lg-2">
 					<h2>Open invitations</h2>
 					{invitations.map((invitation) => (
-						<Invitation invitation={invitation} />
+						<Invitation key={invitation.id} invitation={invitation} />
 					))}
 				</div>
 			</div>
@@ -26,7 +26,7 @@ export const Invitations = () => {
 	)
 }
 
-const Invitation = ({ invitation }: { invitation: TInvitation }) => {
+const Invitation = ({ invitation }: { invitation: tInvitation }) => {
 	const { projectId } = parseInvitationId(invitation.id)
 	const { acceptProjectInvitation } = useProjects()
 	const [inFlight, setInFlight] = useState<boolean>(false)

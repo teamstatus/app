@@ -1,12 +1,12 @@
 import type { PlaywrightTestConfig } from '@playwright/test'
 import { devices } from '@playwright/test'
-import path from 'path'
-const isCI = process.env.CI !== undefined
+import path from 'node:path'
+const isCi = process.env.CI !== undefined
 
 const config: PlaywrightTestConfig = {
 	testDir: path.join(process.cwd(), 'e2e-tests'),
-	forbidOnly: isCI,
-	retries: isCI ? 3 : 1,
+	forbidOnly: isCi,
+	retries: isCi ? 3 : 1,
 	use: {
 		trace: 'on-first-retry',
 		video: 'on-first-retry',

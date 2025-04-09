@@ -1,8 +1,8 @@
-import { CreateOrganization as CreateForm } from '#components/CreateOrganization.js'
-import { FormContainer } from '#components/FormContainer.js'
-import { LogoHeader } from '#components/LogoHeader.js'
-import { Main } from '#components/Main.js'
-import { navigateTo } from '#util/link.js'
+import { CreateOrganization as CreateForm } from '#components/CreateOrganization.tsx'
+import { FormContainer } from '#components/FormContainer.tsx'
+import { LogoHeader } from '#components/LogoHeader.tsx'
+import { Main } from '#components/Main.tsx'
+import { navigateTo } from '#util/link.ts'
 
 export const CreateOrganization = ({ onboarding }: { onboarding?: string }) => (
 	<>

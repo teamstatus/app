@@ -1,5 +1,5 @@
 import type { ComponentChildren } from 'preact'
-import { useUI } from '#context/UI.js'
+import { useUI } from '#context/UI.tsx'
 import cx from 'classnames'
 
 export const Main = ({

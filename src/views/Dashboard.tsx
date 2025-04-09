@@ -1,11 +1,11 @@
 import { AsHeadline } from '#components/HeadlineFont'
-import { Invitations } from '#components/Invitations.js'
-import { LogoHeader } from '#components/LogoHeader.js'
-import { Main } from '#components/Main.js'
-import { ProjectMenu } from '#components/ProjectMenu.js'
+import { Invitations } from '#components/Invitations.tsx'
+import { LogoHeader } from '#components/LogoHeader.tsx'
+import { Main } from '#components/Main.tsx'
+import { ProjectMenu } from '#components/ProjectMenu.tsx'
 import { SyncView } from '#components/SyncView'
-import { Onboarding } from '#components/onboarding/Onboarding.js'
-import { useAuth } from '#context/Auth.js'
+import { Onboarding } from '#components/onboarding/Onboarding.tsx'
+import { useAuth } from '#context/Auth.tsx'
 import { useSyncs } from '#context/Syncs'
 import { route } from 'preact-router'
 import { useEffect } from 'preact/hooks'
@@ -45,7 +45,7 @@ export const Dashboard = ({ redirect }: { redirect?: string }) => {
 										days.
 									</p>
 									{syncItems.map((sync) => (
-										<SyncView sync={sync} />
+										<SyncView key={sync.id} sync={sync} />
 									))}
 								</>
 							)}

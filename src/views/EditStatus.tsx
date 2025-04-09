@@ -1,14 +1,14 @@
 import cx from 'classnames'
 import { route } from 'preact-router'
 import { useState } from 'preact/hooks'
-import { UpdateIcon } from '#components/Icons.js'
-import { ProjectHeader } from '#components/ProjectHeader.js'
-import { useStatus, type Status } from '#context/Status.js'
-import { Main } from '#components/Main.js'
-import { ProjectMenu } from '#components/ProjectMenu.js'
-import { WithStatus } from '#components/WithStatus.js'
-import { WithProject } from '#components/WithProject.js'
-import { ResizingTextarea } from '#components/ResizingTextarea.js'
+import { UpdateIcon } from '#components/Icons.tsx'
+import { ProjectHeader } from '#components/ProjectHeader.tsx'
+import { useStatus, type Status } from '#context/Status.tsx'
+import { Main } from '#components/Main.tsx'
+import { ProjectMenu } from '#components/ProjectMenu.tsx'
+import { WithStatus } from '#components/WithStatus.tsx'
+import { WithProject } from '#components/WithProject.tsx'
+import { ResizingTextarea } from '#components/ResizingTextarea.tsx'
 
 export const EditStatus = ({
 	statusId,

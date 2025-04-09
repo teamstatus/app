@@ -1,12 +1,12 @@
-import { useSettings } from '#context/Settings.js'
-import { CloseIcon, ProjectsIcon, AddIcon, SubMenuIcon } from './Icons.js'
-import { useUI } from '#context/UI.js'
+import { useSettings } from '#context/Settings.tsx'
+import { CloseIcon, ProjectsIcon, AddIcon, SubMenuIcon } from './Icons.tsx'
+import { useUI } from '#context/UI.tsx'
 import { SettingsIcon } from 'lucide-preact'
-import { gradient, logoColors } from './Colorpicker.js'
+import { gradient, logoColors } from './Colorpicker.tsx'
 import type { VNode } from 'preact'
 import { useState } from 'preact/hooks'
-import { OpenmojiIcon } from './OpenmojiIcon.js'
-import { colorStyle } from '../util/colorStyle.js'
+import { OpenmojiIcon } from './OpenmojiIcon.tsx'
+import { colorStyle } from '../util/colorStyle.ts'
 
 type Action = {
 	href: string
@@ -44,7 +44,7 @@ export const ProjectMenu = ({ actions }: { actions?: Action[] }) => {
 				visibleProjects.length > 0 &&
 				visibleProjects.map(
 					({ project, personalization: { color, icon, alias } }) => (
-						<div class="d-flex flex-column align-items-center">
+						<div key={project.id} class="d-flex flex-column align-items-center">
 							{/* biome-ignore lint/a11y/useValidAnchor: needed to close the menu*/}
 							<a
 								href={`/project/${encodeURIComponent(project.id)}`}
@@ -123,8 +123,9 @@ export const ProjectMenu = ({ actions }: { actions?: Action[] }) => {
 							)}
 							{showSecondaryActions && (
 								<>
-									{secondaryActions.map((action) => (
+									{secondaryActions.map((action, i) => (
 										<ActionButton
+											key={`${action.href}-${i}`}
 											action={action}
 											onClick={() => showProjectsMenu(false)}
 										/>
@@ -137,8 +138,9 @@ export const ProjectMenu = ({ actions }: { actions?: Action[] }) => {
 							)}
 						</>
 					)}
-					{primaryActions.map((action) => (
+					{primaryActions.map((action, i) => (
 						<ActionButton
+							key={`${action.href}-${i}`}
 							action={action}
 							onClick={() => showProjectsMenu(false)}
 						/>
