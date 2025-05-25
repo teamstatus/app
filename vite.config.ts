@@ -4,9 +4,8 @@ import Handlebars from 'handlebars'
 import { defineConfig } from 'vite'
 import { homepage, version } from './siteInfo.ts'
 
-const { apiEndpoint, wsEndpoint } = fromEnv({
+const { apiEndpoint } = fromEnv({
 	apiEndpoint: 'API_ENDPOINT',
-	wsEndpoint: 'WS_ENDPOINT',
 })(process.env)
 
 const replaceInIndex = (data: Record<string, string>) => ({
@@ -58,6 +57,5 @@ export default defineConfig({
 		VERSION: JSON.stringify(version),
 		BUILD_TIME: JSON.stringify(new Date().toISOString()),
 		API_ENDPOINT: JSON.stringify(apiEndpoint.replace(/\/$/g, '')),
-		WS_ENDPOINT: JSON.stringify(wsEndpoint.replace(/\/$/g, '')),
 	},
 })

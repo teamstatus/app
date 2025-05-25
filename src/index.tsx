@@ -3,7 +3,6 @@ import { App } from './App.tsx'
 import { relativeTime } from '#util/date.ts'
 
 console.debug('API endpoint', API_ENDPOINT)
-console.debug('WS endpoint', WS_ENDPOINT)
 console.debug('version', VERSION)
 console.debug('build time', BUILD_TIME, relativeTime(new Date(BUILD_TIME)))
 

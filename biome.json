@@ -40,8 +40,7 @@
 			"BUILD_TIME",
 			"VERSION",
 			"ImportMetaEnv",
-			"API_ENDPOINT",
-			"WS_ENDPOINT"
+			"API_ENDPOINT"
 		]
 	},
 	"files": {
