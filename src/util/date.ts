@@ -24,14 +24,14 @@ export const relativeTime = (date: Date, now = new Date()): string =>
 const relaTime = (date: Date, now: Date): string => {
 	const delta = (now.getTime() - date.getTime()) / 1000
 	if (delta < 60) return rtf.format(-Math.ceil(delta), 'seconds')
-	if (delta < 60 * 60) return rtf.format(-Math.round(delta / 60), 'minutes')
+	if (delta < 60 * 60) return rtf.format(-Math.ceil(delta / 60), 'minutes')
 	if (delta < 60 * 60 * 24)
-		return rtf.format(-Math.round(delta / 60 / 60), 'hours')
+		return rtf.format(-Math.ceil(delta / 60 / 60), 'hours')
 	if (delta < 60 * 60 * 24 * 30)
-		return rtf.format(-Math.round(delta / 60 / 60 / 24), 'days')
+		return rtf.format(-Math.ceil(delta / 60 / 60 / 24), 'days')
 	if (delta < 60 * 60 * 24 * 30 * 12)
-		return rtf.format(-Math.round(delta / 60 / 60 / 24 / 12), 'months')
-	return rtf.format(-Math.round(delta / 60 / 60 / 24 / 12 / 356), 'years')
+		return rtf.format(-Math.ceil(delta / 60 / 60 / 24 / 12), 'months')
+	return rtf.format(-Math.ceil(delta / 60 / 60 / 24 / 12 / 356), 'years')
 }
 
 export const addMilliseconds = (date: Date, milliseconds: number): Date =>

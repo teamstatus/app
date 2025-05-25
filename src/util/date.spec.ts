@@ -24,4 +24,11 @@ describe('date utils', () => {
 		const now = new Date('2024-02-07T21:25:37.163Z')
 		assert.equal(relativeTime(d, now), 'about 1 hour ago')
 	})
+	test('reativeTime() with a year', () => {
+		const now = new Date('2025-05-25T20:23:02.903Z')
+		assert.equal(
+			relativeTime(new Date('2023-08-22T23:15:57.401Z'), now),
+			'about 1 year ago',
+		)
+	})
 })
