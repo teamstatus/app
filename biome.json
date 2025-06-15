@@ -20,7 +20,8 @@
 				"noExplicitAny": "warn"
 			},
 			"correctness": {
-				"noUndeclaredVariables": "error"
+				"noUndeclaredVariables": "error",
+				"useJsxKeyInIterable": "warn"
 			},
 			"nursery": {
 				"useImportRestrictions": "warn"

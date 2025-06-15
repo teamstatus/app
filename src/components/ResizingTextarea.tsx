@@ -17,15 +17,16 @@ export const ResizingTextarea = ({
 	const [height, setHeight] = useState<string | number>('auto')
 
 	useEffect(() => {
+		void value // Trigger re-render when value changes
 		if (shadowRef.current === null) return
 		const next = shadowRef.current.scrollHeight
 		if (typeof height === 'string') {
-			setHeight(next)
+			setHeight(next + 16)
 			return
 		}
 		const current = textAreaRef.current?.getBoundingClientRect()?.height ?? 0
 		if (next > current) setHeight(next)
-	}, [height])
+	}, [value, height])
 
 	return (
 		<>
@@ -52,7 +53,7 @@ export const ResizingTextarea = ({
 				}}
 			>
 				{value.split('\n').map((t) => (
-					<Fragment key={t}>
+					<Fragment>
 						{t} <br />
 					</Fragment>
 				))}
