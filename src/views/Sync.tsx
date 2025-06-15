@@ -36,12 +36,25 @@ export const Sync = ({ id }: { id: string }) => (
 										<a href={`/sync/${encodeURIComponent(id)}/export/teams`}>
 											Teams
 										</a>{' '}
-										&middot;{' '}
+										(
+										<a
+											href={`/sync/${encodeURIComponent(id)}/export/teams?status=without-links`}
+										>
+											<abbr title={'without links to statuses'}>no links</abbr>
+										</a>
+										) &middot;{' '}
 										<a
 											href={`/sync/${encodeURIComponent(id)}/export/confluence`}
 										>
 											Confluence
+										</a>{' '}
+										(
+										<a
+											href={`/sync/${encodeURIComponent(id)}/export/confluence?status=without-links`}
+										>
+											<abbr title={'without links to statuses'}>no links</abbr>
 										</a>
+										)
 									</p>
 								</div>
 							</header>

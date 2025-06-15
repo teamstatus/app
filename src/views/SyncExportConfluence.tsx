@@ -26,6 +26,9 @@ export const SyncExportConfluence = ({ id }: { id: string }) => (
 
 const RenderProject = ({ status, sync }: { status: Status[]; sync: Sync }) => {
 	const startDate = sync.inclusiveStartDate
+	const noLinks =
+		new URLSearchParams(window.location.search).get('status') ===
+		'without-links'
 	if (status.length === 0)
 		return (
 			<>
@@ -50,16 +53,18 @@ const RenderProject = ({ status, sync }: { status: Status[]; sync: Sync }) => {
 						</span>
 					))}
 					<Markdown markdown={status.message} />
-					<small>
-						<a
-							href={`/project/${encodeURIComponent(
-								status.project,
-							)}/status/${encodeURIComponent(status.id)}`}
-							class="text-muted"
-						>
-							<ShortDate date={new Date(decodeTime(status.id))} />
-						</a>
-					</small>
+					{!noLinks && (
+						<small>
+							<a
+								href={`/project/${encodeURIComponent(
+									status.project,
+								)}/status/${encodeURIComponent(status.id)}`}
+								class="text-muted"
+							>
+								<ShortDate date={new Date(decodeTime(status.id))} />
+							</a>
+						</small>
+					)}
 				</li>
 			))}
 		</ul>
