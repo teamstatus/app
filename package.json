@@ -68,7 +68,7 @@
 	},
 	"dependencies": {
 		"classnames": "2.5.1",
-		"color": "5.0.0",
+		"color": "5.0.2",
 		"lodash-es": "4.17.21",
 		"lucide-preact": "0.544.0",
 		"micromark": "4.0.2",
