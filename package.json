@@ -21,8 +21,8 @@
 	"author": "Markus Tacker <m@coderbyheart.com> | coderbyheart.com",
 	"license": "MIT",
 	"devDependencies": {
-		"@biomejs/biome": "1.9.4",
-		"@commitlint/config-conventional": "19.8.1",
+		"@biomejs/biome": "2.2.4",
+		"@commitlint/config-conventional": "20.0.0",
 		"@nordicsemiconductor/from-env": "3.0.1",
 		"@playwright/test": "1.55.1",
 		"@preact/preset-vite": "2.10.2",
@@ -32,16 +32,16 @@
 		"bootstrap": "5.3.8",
 		"chance": "1.1.13",
 		"check-node-version": "4.2.1",
-		"commitlint": "19.8.1",
+		"commitlint": "20.1.0",
 		"handlebars": "4.7.8",
 		"husky": "9.1.7",
 		"lint-staged": "16.2.3",
-		"openmoji": "15.1.0",
+		"openmoji": "16.0.0",
 		"prettier": "3.6.2",
-		"tsmatchers": "5.0.3",
-		"typescript": "5.9.2",
-		"vite": "6.3.6",
-		"wrangler": "4.40.2"
+		"tsmatchers": "6.0.1",
+		"typescript": "5.9.3",
+		"vite": "7.1.7",
+		"wrangler": "4.40.3"
 	},
 	"lint-staged": {
 		"*.{md,yaml,yml,json}": ["prettier --write"],
@@ -72,7 +72,7 @@
 		"lodash-es": "4.17.21",
 		"lucide-preact": "0.544.0",
 		"micromark": "4.0.2",
-		"p-throttle": "7.0.0",
+		"p-throttle": "8.0.0",
 		"preact": "10.27.2",
 		"preact-router": "4.1.2",
 		"ulid": "3.0.1"
