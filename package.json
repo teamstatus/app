@@ -40,7 +40,7 @@
 		"prettier": "3.6.2",
 		"tsmatchers": "6.0.1",
 		"typescript": "5.9.3",
-		"vite": "7.1.11",
+		"vite": "7.1.12",
 		"wrangler": "4.44.0"
 	},
 	"lint-staged": {
