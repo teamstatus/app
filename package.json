@@ -41,7 +41,7 @@
 		"tsmatchers": "6.0.2",
 		"typescript": "5.9.3",
 		"vite": "7.2.6",
-		"wrangler": "4.51.0"
+		"wrangler": "4.52.1"
 	},
 	"lint-staged": {
 		"*.{md,yaml,yml,json}": ["prettier --write"],
