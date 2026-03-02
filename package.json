@@ -70,7 +70,7 @@
 		"classnames": "2.5.1",
 		"color": "5.0.3",
 		"lodash-es": "4.17.23",
-		"lucide-preact": "0.575.0",
+		"lucide-preact": "0.576.0",
 		"micromark": "4.0.2",
 		"p-throttle": "8.1.0",
 		"preact": "10.28.4",
