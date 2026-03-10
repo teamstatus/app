@@ -73,7 +73,7 @@
 		"lucide-preact": "0.577.0",
 		"micromark": "4.0.2",
 		"p-throttle": "8.1.0",
-		"preact": "10.28.4",
+		"preact": "10.29.0",
 		"preact-router": "4.1.2",
 		"ulid": "3.0.2"
 	}
