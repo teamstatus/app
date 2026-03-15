@@ -21,7 +21,7 @@
 	"author": "Markus Tacker <m@coderbyheart.com> | coderbyheart.com",
 	"license": "MIT",
 	"devDependencies": {
-		"@biomejs/biome": "2.4.6",
+		"@biomejs/biome": "2.4.7",
 		"@commitlint/config-conventional": "20.4.4",
 		"@nordicsemiconductor/from-env": "3.0.1",
 		"@playwright/test": "1.55.1",
