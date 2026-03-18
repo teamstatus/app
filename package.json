@@ -27,7 +27,7 @@
 		"@playwright/test": "1.55.1",
 		"@preact/preset-vite": "2.10.4",
 		"@types/chance": "1.1.7",
-		"@types/color": "4.2.0",
+		"@types/color": "4.2.1",
 		"@types/lodash-es": "4.17.12",
 		"bootstrap": "5.3.8",
 		"chance": "1.1.13",
