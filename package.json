@@ -32,7 +32,7 @@
 		"bootstrap": "5.3.8",
 		"chance": "1.1.13",
 		"check-node-version": "4.2.1",
-		"commitlint": "20.5.0",
+		"commitlint": "20.5.2",
 		"handlebars": "4.7.9",
 		"husky": "9.1.7",
 		"lint-staged": "16.4.0",
