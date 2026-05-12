@@ -23,7 +23,7 @@ jobs:
           node-version: "22.x"
 
       - name: Keep npm cache around to speed up installs
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.npm
           key: build-${{ hashFiles('**/package-lock.json') }}
@@ -48,7 +48,7 @@ jobs:
           node-version: "22.x"
 
       - name: Keep npm cache around to speed up installs
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.npm
           key: build-${{ hashFiles('**/package-lock.json') }}
