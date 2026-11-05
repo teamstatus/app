@@ -16,7 +16,7 @@ jobs:
     environment: e2e-tests
     container: mcr.microsoft.com/playwright:v1.55.1
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - uses: actions/setup-node@v5
         with:
@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - uses: actions/setup-node@v5
         with:
